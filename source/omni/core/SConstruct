@@ -1,0 +1,10 @@
+import os
+
+env = Environment ()
+env["CXX"] = "clang++"
+env['ENV']['TERM'] = os.environ['TERM'] # For clang++ color output to work
+env.Append (CPPPATH = ["../../../interface"])
+env.Append (LIBS= ["boost_signals"])
+env.Append (CPPFLAGS = ["-std=c++11"])
+env.ParseConfig ("llvm-config-3.2 --cppflags --libs core --ldflags")
+env.Program ("omni", source = ["object.cpp", "function.cpp", "module.cpp", "context.cpp", "type.cpp", "omni.cpp"])
