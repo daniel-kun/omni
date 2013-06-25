@@ -14,6 +14,7 @@ namespace omni {
 namespace core {
 
 class type_impl;
+class module;
 
 /**
 The type class allows access to built-in and custom (class) types.
@@ -28,12 +29,15 @@ class OMNI_CORE_API type {
 public:
     typedef std::list <function>::const_iterator FunctionIt;
 
-    type (omni::core::module & module, types t);
-    type (omni::core::module & module, std::string const & name);
-    type (omni::core::module & module, std::string const & uuid, std::string const & name);
+    type (module & module, types t);
+    type (module & module, std::string const & name);
+    type (module & module, std::string const & uuid, std::string const & name);
 
     std::string const & getUuid () const;
     types getType () const;
+
+	module const & getModule () const;
+	module & getModule ();
 
     function & addFunction (std::string const & name);
 

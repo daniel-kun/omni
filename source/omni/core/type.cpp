@@ -1,6 +1,7 @@
 #include <omni/core/type.hpp>
+#include <omni/core/module.hpp>
 #include <omni/core/context.hpp>
-#include <llvm/DerivedTypes.h>
+#include <llvm/IR/DerivedTypes.h>
 #include <sstream>
 #include <stdexcept>
 
@@ -31,6 +32,7 @@ omni::core::type::type (omni::core::module & module, ::omni::core::types t) :
     _impl (new type_impl (module))
 {
     _impl->_type = t;
+	_impl->_uuid = module.getContext ().generateUuid ();
 }
 
 /**
@@ -71,11 +73,27 @@ omni::core::types omni::core::type::getType () const
 }
 
 /**
+Returns the module this type resides in.
+**/
+omni::core::module const & omni::core::type::getModule () const
+{
+	return _impl->_module;
+}
+
+/**
+Returns the module this type resides in.
+**/
+omni::core::module & omni::core::type::getModule ()
+{
+	return _impl->_module;
+}
+
+/**
 Adds a new function named name to this type.
 **/
 omni::core::function & omni::core::type::addFunction (std::string const & name)
 {
-    _impl->_functions.push_back (function (_impl->_module, name));
+    _impl->_functions.push_back (function (* this, name));
     return _impl->_functions.back ();
 }
 

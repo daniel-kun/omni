@@ -1,6 +1,6 @@
 #include <omni/core/context.hpp>
 
-#include <llvm/LLVMContext.h>
+#include <llvm/IR/LLVMContext.h>
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -13,12 +13,17 @@ Implementation details for context
 **/
 class omni::core::context_impl {
 public:
-    std::shared_ptr <llvm::LLVMContext> _llvmContext;
+	context_impl (llvm::LLVMContext & context) :
+		_llvmContext (context)
+	{
+	}
+    llvm::LLVMContext & _llvmContext;
 };
 
 // Implementation of omni::core::context
 
-omni::core::context::context ()
+omni::core::context::context () :
+	_impl (new context_impl (llvm::getGlobalContext ()))
 {
 }
 
@@ -35,19 +40,22 @@ void omni::core::context::save (std::ostream & stream)
 
 llvm::LLVMContext const & omni::core::context::getLLVMContext () const
 {
-    return * _impl->_llvmContext;
+    return _impl->_llvmContext;
 }
 
 llvm::LLVMContext & omni::core::context::getLLVMContext ()
 {
-    return * _impl->_llvmContext;
+    return _impl->_llvmContext;
 }
 
 std::string omni::core::context::generateUuid ()
 {
+	/*
     boost::uuids::uuid result = boost::uuids::random_generator () ();
     std::stringstream str;
     str << result;
     return str.str ();
+	*/
+	return std::string ();
 }
 

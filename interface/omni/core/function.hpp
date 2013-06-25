@@ -10,12 +10,12 @@
 namespace omni {
 namespace core {
 
-class module;
+class type;
 class function_impl;
 
 class OMNI_CORE_API function : public omni::core::object {
 public:
-    function (module & module, std::string const & name);
+    function (type & type, std::string const & name);
 
     void setName (std::string const & name);
     std::string getName () const;

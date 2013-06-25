@@ -1,32 +1,41 @@
 #include <omni/core/function.hpp>
 #include <omni/core/module.hpp>
-#include <llvm/Function.h>
-#include <llvm/Module.h>
-#include <llvm/DerivedTypes.h>
+#include <omni/core/type.hpp>
+#include <llvm/IR/Function.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/DerivedTypes.h>
+#include <omni/core/context.hpp>
 
 /**
 Implementation details for function
 **/
 class omni::core::function_impl {
 public:
-    function_impl (module & module) :
-        _module (module)
+    function_impl (type & type) :
+        _type (type)
     {
     }
 
-    module                         & _module;
-    std::shared_ptr <llvm::Function> _llvmFunction;
+    type             & _type;
+	llvm::Function   * _llvmFunction;
+	llvm::BasicBlock * _llvmBody;
 };
 
 // Implementation of omni::core::function
-
-omni::core::function::function (omni::core::module & module, std::string const & name) :
-    _impl (new function_impl (module))
+/**
+Initialises this function for type `type' with the name `name'. This should
+only be used internally - to create a new function, use type::addFunction.
+**/
+omni::core::function::function (omni::core::type & type, std::string const & name) :
+    _impl (new function_impl (type))
 {
-    llvm::Module & llvmMod (_impl->_module.getLLVMModule ());
-    llvm::Type * voidType = llvm::Type::getVoidTy (llvmMod.getContext ());
+	llvm::LLVMContext & context (_impl->_type.getModule ().getContext ().getLLVMContext ());
+    llvm::Module & llvmMod (_impl->_type.getModule ().getLLVMModule ());
+	llvm::Type * voidType = llvm::Type::getVoidTy (context);
     auto function = llvmMod.getOrInsertFunction (name, voidType, NULL);
-    _impl->_llvmFunction.reset (llvm::cast <llvm::Function> (function));
+    _impl->_llvmFunction = llvm::cast <llvm::Function> (function);
+	_impl->_llvmFunction->setCallingConv (llvm::CallingConv::C);
+	_impl->_llvmBody = llvm::BasicBlock::Create (context, llvm::Twine (), _impl->_llvmFunction);
 }
 
 /**
@@ -52,4 +61,3 @@ std::string const & omni::core::function::getTypeName ()
     static std::string result ("function");
     return result;
 }
-

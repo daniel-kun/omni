@@ -1,5 +1,6 @@
 #include <omni/core/module.hpp>
-#include <llvm/Module.h>
+#include <omni/core/context.hpp>
+#include <llvm/IR/Module.h>
 #include <string>
 
 /**
@@ -25,6 +26,7 @@ Initialises this object as a new module in the context `context' without a name.
 omni::core::module::module (omni::core::context & context) :
     _impl (new module_impl (context))
 {
+	_impl->_llvmModule.reset (new llvm::Module (std::string (), context.getLLVMContext ()));
 }
 
 /**
@@ -33,6 +35,7 @@ Initialises this object as a new module in the context `context' with the name `
 omni::core::module::module (omni::core::context & context, std::string const & name) :
     _impl (new module_impl (context))
 {
+	_impl->_llvmModule.reset (new llvm::Module (name, context.getLLVMContext ()));
 }
 
 /**
