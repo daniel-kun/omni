@@ -26,29 +26,29 @@ class module_impl;
 **/
 class OMNI_CORE_API module : public omni::core::object {
 public:
-    typedef std::list <type>::iterator TypeIt;
+	typedef std::list <type>::iterator TypeIt;
 
-              module (context & context);
-              module (context & context, std::string const & name);
+			  module (context & context);
+			  module (context & context, std::string const & name);
 
-    context const & getContext () const;
-    context       & getContext ();
+	context const & getContext () const;
+	context       & getContext ();
 
-    type & addClass (std::string const & name);
+	type & addClass (std::string const & name);
 
-    TypeIt typesBegin ();
-    TypeIt typesBegin () const;
-    TypeIt typesEnd ();
-    TypeIt typesEnd () const;
+	TypeIt typesBegin ();
+	TypeIt typesBegin () const;
+	TypeIt typesEnd ();
+	TypeIt typesEnd () const;
 
-    llvm::Module       & getLLVMModule ();
-    llvm::Module const & getLLVMModule () const;
+	llvm::Module       & getLLVMModule ();
+	llvm::Module const & getLLVMModule () const;
 
-    // Minimal RTTI implementation
-    static std::string const & getTypeName ();
+	// Minimal RTTI implementation
+	static std::string const & getTypeName ();
 
 private:
-    std::shared_ptr <module_impl> _impl;
+	std::shared_ptr <module_impl> _impl;
 }; // class module 
 
 } // namespace core

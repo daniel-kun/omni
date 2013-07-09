@@ -17,7 +17,7 @@ public:
 		_llvmContext (context)
 	{
 	}
-    llvm::LLVMContext & _llvmContext;
+	llvm::LLVMContext & _llvmContext;
 };
 
 // Implementation of omni::core::context
@@ -29,33 +29,38 @@ omni::core::context::context () :
 
 void omni::core::context::save (std::string const & fileName)
 {
-    std::ofstream stream (fileName);
-    save (stream);
+	std::ofstream stream (fileName);
+	save (stream);
 }
 
 void omni::core::context::save (std::ostream & stream)
 {
-    // TODO: Save to .ll file
+	// TODO: Save to .ll file
 }
 
 llvm::LLVMContext const & omni::core::context::getLLVMContext () const
 {
-    return _impl->_llvmContext;
+	return _impl->_llvmContext;
 }
 
 llvm::LLVMContext & omni::core::context::getLLVMContext ()
 {
-    return _impl->_llvmContext;
+	return _impl->_llvmContext;
 }
 
 std::string omni::core::context::generateUuid ()
 {
 	/*
-    boost::uuids::uuid result = boost::uuids::random_generator () ();
-    std::stringstream str;
-    str << result;
-    return str.str ();
+	boost::uuids::uuid result = boost::uuids::random_generator () ();
+	std::stringstream str;
+	str << result;
+	return str.str ();
 	*/
 	return std::string ();
 }
 
+std::string const & omni::core::context::getTypeName ()
+{
+    static std::string const result ("context");
+    return result;
+}

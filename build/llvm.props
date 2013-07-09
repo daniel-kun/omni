@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IncludePath>C:\Program Files %28x86%29\LLVM\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files (x86)\LLVM\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>LLVMAsmParser.lib;LLVMInstrumentation.lib;LLVMLinker.lib;LLVMBitReader.lib;LLVMDebugInfo.lib;LLVMJIT.lib;LLVMipo.lib;LLVMVectorize.lib;LLVMBitWriter.lib;LLVMTableGen.lib;LLVMHexagonCodeGen.lib;LLVMHexagonDesc.lib;LLVMHexagonInfo.lib;LLVMHexagonAsmPrinter.lib;LLVMNVPTXCodeGen.lib;LLVMNVPTXDesc.lib;LLVMNVPTXInfo.lib;LLVMNVPTXAsmPrinter.lib;LLVMMBlazeAsmParser.lib;LLVMMBlazeDisassembler.lib;LLVMMBlazeCodeGen.lib;LLVMMBlazeDesc.lib;LLVMMBlazeInfo.lib;LLVMMBlazeAsmPrinter.lib;LLVMCppBackendCodeGen.lib;LLVMCppBackendInfo.lib;LLVMMSP430CodeGen.lib;LLVMMSP430Desc.lib;LLVMMSP430Info.lib;LLVMMSP430AsmPrinter.lib;LLVMXCoreCodeGen.lib;LLVMXCoreDesc.lib;LLVMXCoreInfo.lib;LLVMMipsDisassembler.lib;LLVMMipsAsmParser.lib;LLVMMipsCodeGen.lib;LLVMMipsDesc.lib;LLVMMipsInfo.lib;LLVMMipsAsmPrinter.lib;LLVMARMDisassembler.lib;LLVMARMAsmParser.lib;LLVMARMCodeGen.lib;LLVMARMDesc.lib;LLVMARMInfo.lib;LLVMARMAsmPrinter.lib;LLVMPowerPCCodeGen.lib;LLVMPowerPCDesc.lib;LLVMPowerPCInfo.lib;LLVMPowerPCAsmPrinter.lib;LLVMSparcCodeGen.lib;LLVMSparcDesc.lib;LLVMSparcInfo.lib;LLVMX86AsmParser.lib;LLVMX86Disassembler.lib;LLVMX86CodeGen.lib;LLVMX86Desc.lib;LLVMX86Info.lib;LLVMX86AsmPrinter.lib;LLVMX86Utils.lib;LLVMR600CodeGen.lib;LLVMSelectionDAG.lib;LLVMAsmPrinter.lib;LLVMR600Desc.lib;LLVMR600AsmPrinter.lib;LLVMR600Info.lib;LLVMMCDisassembler.lib;LLVMMCParser.lib;LLVMInterpreter.lib;LLVMCodeGen.lib;LLVMScalarOpts.lib;LLVMInstCombine.lib;LLVMTransformUtils.lib;LLVMipa.lib;LLVMAnalysis.lib;LLVMMCJIT.lib;LLVMRuntimeDyld.lib;LLVMExecutionEngine.lib;LLVMTarget.lib;LLVMMC.lib;LLVMObject.lib;LLVMCore.lib;LLVMSupport.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

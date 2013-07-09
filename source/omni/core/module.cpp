@@ -8,14 +8,14 @@ Implementation details for module
 **/
 class omni::core::module_impl {
 public:
-    module_impl (context & context) :
-        _context (context)
-    {
-    }
+	module_impl (context & context) :
+		_context (context)
+	{
+	}
 
-    context                      & _context;
-    std::list <type>               _types;
-    std::shared_ptr <llvm::Module> _llvmModule;
+	context                      & _context;
+	std::list <type>               _types;
+	std::shared_ptr <llvm::Module> _llvmModule;
 };
 
 // Implementation of omni::core::module
@@ -24,7 +24,7 @@ public:
 Initialises this object as a new module in the context `context' without a name.
 **/
 omni::core::module::module (omni::core::context & context) :
-    _impl (new module_impl (context))
+	_impl (new module_impl (context))
 {
 	_impl->_llvmModule.reset (new llvm::Module (std::string (), context.getLLVMContext ()));
 }
@@ -33,7 +33,7 @@ omni::core::module::module (omni::core::context & context) :
 Initialises this object as a new module in the context `context' with the name `name'.
 **/
 omni::core::module::module (omni::core::context & context, std::string const & name) :
-    _impl (new module_impl (context))
+	_impl (new module_impl (context))
 {
 	_impl->_llvmModule.reset (new llvm::Module (name, context.getLLVMContext ()));
 }
@@ -43,7 +43,7 @@ Returns the context this module resides in.
 **/
 omni::core::context const & omni::core::module::getContext () const
 {
-    return _impl->_context;
+	return _impl->_context;
 }
 
 /**
@@ -51,7 +51,7 @@ Returns the context this module resides in.
 **/
 omni::core::context & omni::core::module::getContext ()
 {
-    return _impl->_context;
+	return _impl->_context;
 }
 
 /**
@@ -60,8 +60,8 @@ The type object will be of type types::Class.
 **/
 omni::core::type & omni::core::module::addClass (std::string const & name)
 {
-    _impl->_types.push_back (type (* this, name));
-    return _impl->_types.back ();
+	_impl->_types.push_back (type (* this, name));
+	return _impl->_types.back ();
 }
 
 /**
@@ -69,7 +69,7 @@ Returns a begin-iterator for the types in this module.
 **/
 omni::core::module::TypeIt omni::core::module::typesBegin ()
 {
-    return _impl->_types.begin ();
+	return _impl->_types.begin ();
 }
 
 /**
@@ -77,7 +77,7 @@ Returns a begin-iterator for the types in this module.
 **/
 omni::core::module::TypeIt omni::core::module::typesBegin () const
 {
-    return _impl->_types.begin ();
+	return _impl->_types.begin ();
 }
 
 /**
@@ -85,7 +85,7 @@ Returns an end-iterator for the types in this module.
 **/
 omni::core::module::TypeIt omni::core::module::typesEnd ()
 {
-    return _impl->_types.end ();
+	return _impl->_types.end ();
 }
 
 /**
@@ -93,7 +93,7 @@ Returns an end-iterator for the types in this module.
 **/
 omni::core::module::TypeIt omni::core::module::typesEnd () const
 {
-    return _impl->_types.end ();
+	return _impl->_types.end ();
 }
 
 /**
@@ -101,7 +101,7 @@ Returns the low-level LLVMModule for this module.
 **/
 llvm::Module & omni::core::module::getLLVMModule ()
 {
-    return * _impl->_llvmModule;
+	return * _impl->_llvmModule;
 }
 
 /**
@@ -109,12 +109,12 @@ Returns the low-level LLVMModule for this module.
 **/
 llvm::Module const & omni::core::module::getLLVMModule () const
 {
-    return * _impl->_llvmModule;
+	return * _impl->_llvmModule;
 }
 
 std::string const & omni::core::module::getTypeName ()
 {
-    static std::string result ("module");
-    return result;
+	static std::string const result ("module");
+	return result;
 }
 

@@ -21,18 +21,18 @@ same name getTypeName and the return type std::string const &, too. This is a mi
 **/
 class OMNI_CORE_API object {
 public:
-              object ();
-    virtual ~ object ();
+			  object ();
+	virtual ~ object ();
 
-    boost::signal <void (object & sender, std::string const & propertyName)> & propertyChangedSignal ();
+	boost::signal <void (object & sender, std::string const & propertyName)> & propertyChangedSignal ();
 
-    static std::string const & getTypeName ();
+	static std::string const & getTypeName ();
 
 protected:
-    void onPropertyChanged (std::string const & propertyName);
+	void onPropertyChanged (std::string const & propertyName);
 
 private:
-    std::shared_ptr <object_impl> _impl;
+	std::shared_ptr <object_impl> _impl;
 }; // class object
 
 } // namespace core

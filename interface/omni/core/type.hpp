@@ -27,32 +27,33 @@ types are the only place where functions can actually exist in.
 **/
 class OMNI_CORE_API type {
 public:
-    typedef std::list <function>::const_iterator FunctionIt;
+	typedef std::list <function>::const_iterator function_const_it;
+	typedef std::list <function>::iterator function_it;
 
-    type (module & module, types t);
-    type (module & module, std::string const & name);
-    type (module & module, std::string const & uuid, std::string const & name);
+	type (module & module, types t);
+	type (module & module, std::string const & name);
+	type (module & module, std::string const & uuid, std::string const & name);
 
-    std::string const & getUuid () const;
-    types getType () const;
+	std::string const & getUuid () const;
+	types getType () const;
 
 	module const & getModule () const;
 	module & getModule ();
 
-    function & addFunction (std::string const & name);
+	function & addFunction (std::string const & name);
 
-    FunctionIt functionsBegin ();
-    FunctionIt functionsBegin () const;
-    FunctionIt functionsEnd ();
-    FunctionIt functionsEnd () const;
+	function_it		  functionsBegin ();
+	function_const_it functionsBegin () const;
+	function_it       functionsEnd ();
+	function_const_it functionsEnd () const;
 
-    static types getBasicTypeOf (types t);
+	static types getBasicTypeOf (types t);
 
-    // Minimal RTTI
-    static std::string const & getTypeName ();
+	// Minimal RTTI
+	static std::string const & getTypeName ();
 
 private:
-    std::shared_ptr <type_impl> _impl;
+	std::shared_ptr <type_impl> _impl;
 }; // class type 
 
 } // namespace core

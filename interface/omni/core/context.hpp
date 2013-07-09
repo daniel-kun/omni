@@ -21,18 +21,20 @@ class context_impl;
 **/
 class OMNI_CORE_API context : public object {
 public:
-    context ();
+	context ();
 
-    void save (std::string const & fileName);
-    void save (std::ostream & stream);
+	void save (std::string const & fileName);
+	void save (std::ostream & stream);
 
-    llvm::LLVMContext const & getLLVMContext () const;
-    llvm::LLVMContext       & getLLVMContext ();
+	llvm::LLVMContext const & getLLVMContext () const;
+	llvm::LLVMContext       & getLLVMContext ();
 
-    static std::string generateUuid ();
+	static std::string generateUuid ();
+
+    static std::string const & getTypeName ();
 
 private:
-    std::shared_ptr <context_impl> _impl;
+	std::shared_ptr <context_impl> _impl;
 }; // class context
 
 } // namespace core
