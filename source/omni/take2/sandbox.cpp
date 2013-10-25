@@ -1,4 +1,3 @@
-#include "clang_sandbox.hpp"
 #include <omni/take2/sandbox.hpp>
 #include <omni/take2/context.hpp>
 #include <omni/take2/type.hpp>
@@ -9,18 +8,9 @@
 #include <omni/take2/block.hpp>
 #include <omni/take2/return_statement.hpp>
 #include <omni/take2/function.hpp>
-#include <iostream>
-#include <string>
 
-extern "C" { // Declarations for functions defined in .ll-code
-void template_basic ();
-int test();
-}
-
-void sandbox_take2 ()
+void omni::take2::sandbox ()
 {
-    using namespace omni::take2;
-
     context c;
     std::shared_ptr <type> signedIntType (new type (type_class::t_signedInt));
     std::shared_ptr <literal> leftLiteral (new builtin_literal <int> (10));
@@ -63,22 +53,4 @@ void sandbox_take2 ()
     pm.run(* module);
     delete module;
     */
-}
-
-
-int main (int argc, char * argv[])
-{
-    //template_basic ();
-    //clang_sandbox ();
-    try {
-	    sandbox_take2 ();
-    } catch (std::exception const & e) {
-        std::cerr << e.what () << std::endl;
-    }
-
-	std::cout << "Finished!" << std::endl;
-    std::string line;
-    std::getline (std::cin, line);
-
-    return 0;
 }

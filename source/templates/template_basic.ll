@@ -179,7 +179,13 @@ exit:
     ret void
 }
 
-define i32 @main()
+define i32 @test()
+{
+	%result = add i32 10, 9
+	ret i32 %result
+}
+
+define i32 @main_()
 {
     call void @template_basic ()
     ret i32 0

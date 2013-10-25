@@ -11,10 +11,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\sandbox\clang_sandbox.cpp" />
+    <ClCompile Include="..\source\sandbox\example_clang_interpreter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\source\sandbox\example_thomaslee.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\source\sandbox\main.cpp" />
+    <ClCompile Include="..\source\sandbox\sandbox_basic.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\source\templates\template_basic.ll">
@@ -30,6 +37,14 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">LLVM: %(Filename).ll</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntermediateOutputPath)/%(Filename).obj</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\sandbox\clang_sandbox.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="omni-take2.vcxproj">
+      <Project>{c04196c6-45be-4b8f-a1b6-8984594abd17}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{652D9F2E-2984-45E8-B620-38C85C0BD6B3}</ProjectGuid>

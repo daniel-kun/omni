@@ -21,6 +21,15 @@
     <ClCompile Include="..\source\sandbox\example_thomaslee.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\sandbox\clang_sandbox.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\sandbox\example_clang_interpreter.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\sandbox\sandbox_basic.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\source\templates\template_basic.ll">
@@ -29,5 +38,10 @@
     <CustomBuild Include="..\source\sandbox\scratchpad.ll">
       <Filter>Quelldateien</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\source\sandbox\clang_sandbox.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

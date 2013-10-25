@@ -1,0 +1,96 @@
+('statement
+    // TODO: for, while, do-while, if, switch, try...
+    ?('variable-declaration)
+    ?('function-call)
+    ?('expression))
+
+('expression
+    ?('variable)
+    ?('literal)
+    ?('expression 'binary-operator 'expression)
+    ?('prefix-operator 'expression)
+    ?('expression 'postfix-operator)
+    ?('indexable ['expression])
+    ?('function-call)
+    ?('cast)
+    ?('new-statement)
+    ?('ctor-call))
+
+('variable-declaration
+    ?('type 'identifier)
+    ?('type 'identifier = 'expression)
+    ?('type 'identifier ['variable])
+    ?('type 'identifier ['variable] = ['expression*])
+    )
+
+('variable
+    ; <<variablename>>
+    )
+
+('identifier
+    ; [a-zA-Z-_]
+    )
+
+('function-call
+    ;('function-name ('expression*))
+    )
+
+('binary-operator
+    +
+    -
+    *
+    /
+    &&
+    ||
+    +=
+    -=
+    *=
+    /=
+    =)
+
+('cast
+    ; TODO - which casts are useful / required?)
+    )
+
+('new-statement
+    ?(new 'type ()))
+
+('prefix-operator
+    -
+    +
+    !
+    ++
+    --)
+
+('postfix-operator
+    ++
+    --)
+
+('literal
+    ; literal of any 'builtin-type, e.g. true/false for booleans, 'a' for a char, -32 for an signed byte, 254 for an unsigned byte, "asdf" for an string, 12.434f for a float, 9384.2323d for a double, ...)
+
+
+('type
+    ?(type *)
+    ?(array<'type>
+    ?('builtin-type)
+    ?('class))
+
+('builtin-type
+    char
+    unsigned byte
+    signed byte
+    unsigned short
+    signed short
+    unsigned int
+    signed int
+    unsigned long
+    signed long
+    unsigned verylong
+    signed verylong
+    float
+    double
+    string)
+
+('indexable
+    any array variable)

@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "omni-templates", "omni-temp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "omni-sandbox", "omni-sandbox.vcxproj", "{652D9F2E-2984-45E8-B620-38C85C0BD6B3}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "omni-take2", "omni-take2.vcxproj", "{C04196C6-45BE-4B8F-A1B6-8984594ABD17}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +33,10 @@ Global
 		{652D9F2E-2984-45E8-B620-38C85C0BD6B3}.Debug|Win32.Build.0 = Debug|Win32
 		{652D9F2E-2984-45E8-B620-38C85C0BD6B3}.Release|Win32.ActiveCfg = Release|Win32
 		{652D9F2E-2984-45E8-B620-38C85C0BD6B3}.Release|Win32.Build.0 = Release|Win32
+		{C04196C6-45BE-4B8F-A1B6-8984594ABD17}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C04196C6-45BE-4B8F-A1B6-8984594ABD17}.Debug|Win32.Build.0 = Debug|Win32
+		{C04196C6-45BE-4B8F-A1B6-8984594ABD17}.Release|Win32.ActiveCfg = Release|Win32
+		{C04196C6-45BE-4B8F-A1B6-8984594ABD17}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

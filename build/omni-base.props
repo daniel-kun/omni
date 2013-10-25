@@ -13,7 +13,7 @@
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <AdditionalIncludeDirectories>$(SolutionDir)\..\interface</AdditionalIncludeDirectories>
       <MinimalRebuild>false</MinimalRebuild>
-      <DisableSpecificWarnings>4224;4996;4251;4514;4820;4548;4668;4625;4710;4365;4512;4310;4626;4061;4244;4100;4640;4180</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4224;4996;4251;4514;4820;4548;4668;4625;4710;4365;4512;4310;4626;4061;4244;4100;4640;4180;4800;4242;4127</DisableSpecificWarnings>
     </ClCompile>
     <Link />
   </ItemDefinitionGroup>
