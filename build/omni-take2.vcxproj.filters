@@ -81,6 +81,12 @@
     <ClInclude Include="..\interface\omni\take2\take2.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="..\interface\omni\take2\already_exists_error.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\take2\domain.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\take2\sandbox.cpp">
@@ -116,9 +122,6 @@
     <ClCompile Include="..\source\omni\take2\id.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\omni\take2\id_domain.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\omni\take2\literal.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -150,6 +153,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="..\source\omni\take2\variable_expression.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\take2\already_exists_error.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\take2\domain.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

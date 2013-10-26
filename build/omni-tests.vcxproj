@@ -80,13 +80,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\source\tests\core\tests.cpp" />
-    <ClCompile Include="..\source\tests\core\test_function.cpp" />
-    <ClCompile Include="..\source\tests\core\test_instruction.cpp\test_instruction.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_context.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="omni-core.vcxproj">
-      <Project>{42415fdc-19d2-4e86-8875-0f8a46f7bffe}</Project>
+    <ProjectReference Include="omni-take2.vcxproj">
+      <Project>{c04196c6-45be-4b8f-a1b6-8984594abd17}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

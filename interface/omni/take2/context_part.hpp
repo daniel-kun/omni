@@ -2,11 +2,11 @@
 #define OMNI_TAKE2_CONTEXT_PART_HPP
 
 #include <omni/take2/take2.hpp>
+#include <omni/take2/id.hpp>
 #include <string>
 
 namespace omni {
 namespace take2 {
-    class id;
 
 	/**
 	Base class for all information that is part of a context, such as variable declarations.
@@ -14,12 +14,19 @@ namespace take2 {
 	**/
 	class OMNI_TAKE2_API context_part {
 	public:
+        context_part ();
+        context_part (std::string const & name);
 		virtual ~ context_part () = 0;
 
 		std::string getName () const;
-		std::string setName (const std::string & name);
+		void setName (const std::string & name);
 
-		const id & getId () const;
+        void setId (id newId);
+		id getId () const;
+
+    private:
+        std::string _name;
+        id _id;
 	};
 
 } // namespace take2

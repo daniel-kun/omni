@@ -7,9 +7,7 @@
     <LibraryPath>D:\Projects\thirdparty\boost_1_53_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
-    <Link>
-      <AdditionalDependencies>libboost_random-vc110-mt-1_53.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
+    <Link />
   </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

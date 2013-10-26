@@ -24,14 +24,13 @@ namespace take2 {
         function (context & context, std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
         virtual ~ function ();
 
-        llvm::Function * llvmFunction (llvm::Module * llvmModule);
+        llvm::Function * llvmFunction (llvm::Module & llvmModule);
 
 		std::vector <std::shared_ptr <parameter>> getParameters () const; // TODO
 		const std::shared_ptr <block> getBody () const;
 
     private:
         context & _context;
-        std::string _name;
         std::shared_ptr <type> _returnType;
         std::shared_ptr <block> _body;
 	};

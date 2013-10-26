@@ -15,13 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\source\tests\core\test_function.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\tests\core\test_instruction.cpp\test_instruction.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\tests\core\tests.cpp">
+    <ClCompile Include="..\source\omni\tests\test_context.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

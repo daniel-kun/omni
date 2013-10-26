@@ -2,7 +2,7 @@
 #define OMNI_TAKE2_ID_HPP
 
 #include <omni/take2/take2.hpp>
-#include <omni/take2/id_domain.hpp>
+#include <omni/take2/domain.hpp>
 #include <string>
 
 namespace omni {
@@ -14,7 +14,18 @@ namespace take2 {
 	**/
 	class OMNI_TAKE2_API id {
 	public:
+        id ();
+        id (domain domain, std::string id);
+
+        bool operator<(id const & rhs) const;
+
+        bool isValid () const;
+        domain getDomain () const;
 		std::string getId () const;
+
+    private:
+        domain _domain;
+        std::string _id;
 	};
 
 } // namespace take2
