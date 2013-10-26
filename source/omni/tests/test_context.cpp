@@ -69,6 +69,7 @@ BOOST_AUTO_TEST_CASE (createAndFindFunction)
 
     BOOST_CHECK (c.findPartById (func->getId ()) != std::shared_ptr <context_part> ());
     BOOST_CHECK (std::dynamic_pointer_cast <function> (c.findPartById (func->getId ()))->getName () == functionName);
+
 }
 
 BOOST_AUTO_TEST_SUITE_END()
