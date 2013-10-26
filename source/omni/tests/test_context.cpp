@@ -58,9 +58,17 @@ BOOST_AUTO_TEST_CASE (createAndFindFunction)
     std::shared_ptr <block> emptyBody (new block ());
     const std::string functionName = "test";
     std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (new type (type_class::t_signedInt)), emptyBody);
+    
+    BOOST_CHECK (func->getName () == functionName);
+    
     BOOST_CHECK (c.findFunctionByName (func->getName ()) != nullptr);
+    BOOST_CHECK (c.findFunctionByName (func->getName ())->getName () == functionName);
+
     BOOST_CHECK (c.findFunctionByName (functionName) != nullptr);
+    BOOST_CHECK (c.findFunctionByName (functionName)->getName () == functionName);
+
     BOOST_CHECK (c.findPartById (func->getId ()) != std::shared_ptr <context_part> ());
+    BOOST_CHECK (std::dynamic_pointer_cast <function> (c.findPartById (func->getId ()))->getName () == functionName);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
