@@ -1,4 +1,5 @@
 #include <omni/take2/function.hpp>
+#include <omni/take2/context.hpp>
 #include <omni/take2/type.hpp>
 #include <omni/take2/block.hpp>
 #include <omni/take2/statement.hpp>
@@ -8,12 +9,11 @@
 #include <llvm/IR/CallingConv.h>
 #include <llvm/IR/Module.h>
 
-omni::take2::function::function (context & context,
-                                 std::string const & name,
+omni::take2::function::function (std::string const & name,
                                  std::shared_ptr <type> returnType,
                                  std::shared_ptr <block> body) :
     context_part (name),
-    _context (context),
+    _llvmFunction (nullptr),
     _returnType (returnType),
     _body (body)
 {
@@ -25,11 +25,15 @@ omni::take2::function::~function ()
 
 llvm::Function * omni::take2::function::llvmFunction (llvm::Module & llvmModule)
 {
-    llvm::Function * result = llvm::cast <llvm::Function> (llvmModule.getOrInsertFunction (getName (), _returnType->llvmType (), nullptr));
-    result->setCallingConv (llvm::CallingConv::C);
-    llvm::BasicBlock * body = llvm::BasicBlock::Create (llvm::getGlobalContext (), "__entry__", result);
-    for (auto i : _body->getStatements ()) {
-        i->llvmEmit (body);
+    if (_llvmFunction != nullptr) {
+        return _llvmFunction;
+    } else {
+        llvm::Function * _llvmFunction = llvm::cast <llvm::Function> (llvmModule.getOrInsertFunction (getName (), _returnType->llvmType (), nullptr));
+        _llvmFunction->setCallingConv (llvm::CallingConv::C);
+        llvm::BasicBlock * body = llvm::BasicBlock::Create (getContext ()->llvmContext (), "__entry__", _llvmFunction);
+        for (auto i : _body->getStatements ()) {
+            i->llvmEmit (body);
+        }
+        return _llvmFunction;
     }
-    return result;
 }

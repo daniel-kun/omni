@@ -1,12 +1,14 @@
 #include <omni/take2/type.hpp>
+#include <omni/take2/context.hpp>
 #include <omni/take2/not_implemented_error.hpp>
 
 #include <llvm/IR/DerivedTypes.h>
 #include <llvm/IR/LLVMContext.h>
 
-omni::take2::type::type (omni::take2::type_class typeClass) :
+omni::take2::type::type (context & context, omni::take2::type_class typeClass) :
     _typeClass (typeClass)
 {
+    setContext (& context);
 }
 
 omni::take2::type::~ type ()
@@ -17,7 +19,7 @@ llvm::Type * omni::take2::type::llvmType ()
 {
     switch (_typeClass) {
     case type_class::t_signedInt:
-        return llvm::IntegerType::get (llvm::getGlobalContext (), 32);
+        return llvm::IntegerType::get (getContext ()->llvmContext (), 32);
         break;
     default:
         throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);

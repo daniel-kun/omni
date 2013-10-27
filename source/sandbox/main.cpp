@@ -22,9 +22,9 @@ void sandbox_take2 ()
     using namespace omni::take2;
 
     context c;
-    std::shared_ptr <type> signedIntType (new type (type_class::t_signedInt));
-    std::shared_ptr <literal> leftLiteral (new builtin_literal <int> (10));
-    std::shared_ptr <literal> rightLiteral (new builtin_literal <int> (9));
+    std::shared_ptr <type> signedIntType (new type (c, type_class::t_signedInt));
+    std::shared_ptr <literal> leftLiteral (new builtin_literal <int> (c, 10));
+    std::shared_ptr <literal> rightLiteral (new builtin_literal <int> (c, 9));
     std::shared_ptr <literal_expression> leftOperand (new literal_expression (leftLiteral));
     std::shared_ptr <literal_expression> rightOperand (new literal_expression (rightLiteral));
     std::shared_ptr <binary_operator_expression> sandboxExpression (new binary_operator_expression (
@@ -37,8 +37,8 @@ void sandbox_take2 ()
 //    mainBody->appendStatement (sandboxStatement);
     std::shared_ptr <return_statement> returnStatement (new return_statement (sandboxExpression));
     mainBody->appendStatement (returnStatement);
-    std::shared_ptr <type> mainReturnType (new type (type_class::t_signedInt));
-    std::shared_ptr <function> main (new function (c, "test", mainReturnType, mainBody));
+    std::shared_ptr <type> mainReturnType (new type (c, type_class::t_signedInt));
+    std::shared_ptr <function> main (new function ("test", mainReturnType, mainBody));
     c.addFunction (main);
     //c.setEntryPoint (main);
     c.emitAssemblyFile ("C:/temp/test.ll");

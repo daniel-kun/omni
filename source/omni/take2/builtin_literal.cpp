@@ -3,8 +3,8 @@
 #include <omni/take2/type.hpp>
 
 template <>
-omni::take2::builtin_literal <signed int>::builtin_literal (int value) :
-    literal (static_cast <std::shared_ptr <type>> (new type (type_class::t_signedInt))),
+omni::take2::builtin_literal <signed int>::builtin_literal (context & context, int value) :
+    literal (static_cast <std::shared_ptr <type>> (new type (context, type_class::t_signedInt))),
     _value (value)
 {
 }

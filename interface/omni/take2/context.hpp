@@ -8,6 +8,11 @@
 #include <string>
 #include <map>
 
+namespace llvm {
+    class raw_ostream;
+    class LLVMContext;
+}
+
 namespace omni {
 namespace take2 {
     class function;
@@ -20,10 +25,15 @@ namespace take2 {
 	**/
 	class OMNI_TAKE2_API context {
 	public:
+        context ();
+        virtual ~ context ();
+
         std::shared_ptr <context_part> findPartById (id id);
 
         id createId (domain domain);
         void setEntryPoint (std::shared_ptr <function> function);
+        void emitAssemblyFile (std::ostream & stream);
+        void emitAssemblyFile (llvm::raw_ostream & stream);
         void emitAssemblyFile (std::string const & fileName);
 
         std::shared_ptr <function> createFunction (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
@@ -31,9 +41,14 @@ namespace take2 {
         void addFunction (std::shared_ptr <function> function);
         bool removeFunction (std::shared_ptr <function> function);
 
+        const llvm::LLVMContext & llvmContext () const;
+        llvm::LLVMContext & llvmContext ();
+
 	private:
         typedef std::map <std::string, std::shared_ptr <context_part>> id_to_parts_map;
         typedef std::map <domain, id_to_parts_map> domain_id_to_parts_map;
+
+        std::unique_ptr <llvm::LLVMContext> _llvmContext;
         std::shared_ptr <function> _entryPoint;
         domain_id_to_parts_map _parts;
 	};

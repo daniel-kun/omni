@@ -2,6 +2,7 @@
 #define OMNI_TAKE2_LITERAL_HPP
 
 #include <omni/take2/take2.hpp>
+#include <omni/take2/context_part.hpp>
 #include <memory>
 
 namespace llvm {
@@ -12,7 +13,7 @@ namespace omni {
 namespace take2 {
     class type;
 
-    class OMNI_TAKE2_API literal {
+    class OMNI_TAKE2_API literal : public context_part {
     public:
         literal (std::shared_ptr <type> type);
         virtual ~ literal ();

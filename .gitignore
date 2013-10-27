@@ -4,3 +4,4 @@
 /build/Debug
 /build/bin
 *.user
+/test

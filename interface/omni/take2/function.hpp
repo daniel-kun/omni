@@ -21,7 +21,7 @@ namespace take2 {
 
 	class OMNI_TAKE2_API function : public context_part {
 	public:
-        function (context & context, std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
+        function (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
         virtual ~ function ();
 
         llvm::Function * llvmFunction (llvm::Module & llvmModule);
@@ -30,7 +30,7 @@ namespace take2 {
 		const std::shared_ptr <block> getBody () const;
 
     private:
-        context & _context;
+        llvm::Function * _llvmFunction;
         std::shared_ptr <type> _returnType;
         std::shared_ptr <block> _body;
 	};

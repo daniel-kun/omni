@@ -15,6 +15,18 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/lexical_cast.hpp>
 
+omni::take2::context::context () :
+    _llvmContext (new llvm::LLVMContext ()),
+    _entryPoint (),
+    _parts ()
+{
+}
+
+omni::take2::context::~ context ()
+{
+
+}
+
 /**
 Finds any part of this context by it's unique id. The part has to be added to this context before it can be found.
 This happens when the part is created using one of the create...-functions or the part has been added via one of the add...-functions.
@@ -61,7 +73,7 @@ That's why this function will automatically be assigned a new id.
 **/
 std::shared_ptr <omni::take2::function> omni::take2::context::createFunction (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body)
 {
-    std::shared_ptr <function> result (new function (* this, name, returnType, body));
+    std::shared_ptr <function> result (new function (name, returnType, body));
     addFunction (result);
     return result;
 }
@@ -77,6 +89,7 @@ void omni::take2::context::addFunction (std::shared_ptr <omni::take2::function> 
     if (findFunctionByName (function->getName ()).get () != nullptr) {
         throw already_exists_error (domain::function, function->getName ());
     }
+    function->setContext (this);
     id newFunctionId = createId (domain::function);
     function->setId (newFunctionId);
     id_to_parts_map & functionMap (_parts [domain::function]);
@@ -115,12 +128,24 @@ bool omni::take2::context::removeFunction (std::shared_ptr <omni::take2::functio
         return f.second == function;
     });
     if (found != functionMap.end ()) {
+        found->second->setContext (nullptr);
         functionMap.erase (found);
         return true;
     } else {
         return false;
     }
 }
+
+const llvm::LLVMContext & omni::take2::context::llvmContext () const
+{
+    return * _llvmContext;
+}
+
+llvm::LLVMContext & omni::take2::context::llvmContext ()
+{
+    return * _llvmContext;
+}
+
 
 /**
 Sets the entry point for this context.
@@ -133,12 +158,38 @@ void omni::take2::context::setEntryPoint (std::shared_ptr <function> function)
 }
 
 /**
-Emits llvm IR language code to the standard output.
-@param fileName Currently ignored.
+Emits llvm IR language code to the file at path fileName.
+@param fileName Path to the file where the code should be written to.
+// TODO error reporting
 **/
 void omni::take2::context::emitAssemblyFile (std::string const & fileName)
 {
-    llvm::Module module ("test", llvm::getGlobalContext ());
+    std::string errorInfo;
+    llvm::raw_fd_ostream fileStream (fileName.c_str (), errorInfo);
+    emitAssemblyFile (fileStream);
+}
+
+/**
+Emits llvm IR language code to the stream `stream'.
+This function is not very fast since it first writes the whole code to a temporary buffer and then 
+writes the whole buffer to `stream'. If you need a more efficient way, use emitAssemblyFile(llvm::raw_ostream).
+@param stream The std stream where the code should be written to.
+**/
+void omni::take2::context::emitAssemblyFile (std::ostream & stream)
+{
+    std::string tmp;
+    llvm::raw_string_ostream rawStream (tmp);
+    emitAssemblyFile (rawStream);
+    stream << tmp;
+}
+
+/**
+Emits llvm IR language code to the llvm stream `stream'.
+@param stream The llvm stream wher the code should be written to.
+**/
+void omni::take2::context::emitAssemblyFile (llvm::raw_ostream & stream)
+{
+    llvm::Module module ("test", * _llvmContext);
     
     for (auto f : _parts [domain::function]) {
         function & func = * std::dynamic_pointer_cast <function> (f.second);
@@ -148,6 +199,7 @@ void omni::take2::context::emitAssemblyFile (std::string const & fileName)
     llvm::verifyModule (module, llvm::PrintMessageAction);
 
     llvm::PassManager pm;
-    pm.add (llvm::createPrintModulePass(& llvm::outs()));
+    pm.add (llvm::createPrintModulePass (& stream));
     pm.run (module);
 }
+

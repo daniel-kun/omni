@@ -9,10 +9,12 @@
 
 namespace omni {
 namespace take2 {
+    class context;
+
     template <typename T>
     class OMNI_TAKE2_API builtin_literal : public literal {
     public:
-        builtin_literal (T value);
+        builtin_literal (context & context, T value);
         
         virtual llvm::Value * llvmValue ();
 

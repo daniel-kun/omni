@@ -14,7 +14,7 @@ namespace take2 {
 
 	class OMNI_TAKE2_API type : public context_part {
 	public:
-		type (type_class typeClass);
+		type (context & context, type_class typeClass);
 		virtual ~ type ();
 
         llvm::Type * llvmType ();
