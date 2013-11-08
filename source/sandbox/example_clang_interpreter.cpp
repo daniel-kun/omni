@@ -1,3 +1,4 @@
+#if 0
 // Code taken from http://www.llvm.org/svn/llvm-project/cfe/trunk/examples/clang-interpreter/main.cpp
 // Stored here for future reference
 
@@ -157,3 +158,5 @@ int main(int argc, const char **argv, char * const *envp) {
 
   return Res;
 }
+
+#endif

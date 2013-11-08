@@ -22,6 +22,9 @@
     <Link>
       <AssemblyDebug>true</AssemblyDebug>
     </Link>
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

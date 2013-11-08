@@ -32,9 +32,18 @@ namespace take2 {
 
         id createId (domain domain);
         void setEntryPoint (std::shared_ptr <function> function);
+
         void emitAssemblyFile (std::ostream & stream);
         void emitAssemblyFile (llvm::raw_ostream & stream);
         void emitAssemblyFile (std::string const & fileName);
+        
+        void emitObjectFile (std::ostream & stream);
+        void emitObjectFile (llvm::raw_ostream & stream);
+        void emitObjectFile (std::string const & fileName);
+
+        void emitSharedLibraryFile (std::ostream & stream);
+        void emitSharedLibraryFile (llvm::raw_ostream & stream);
+        void emitSharedLibraryFile (std::string const & fileName);
 
         std::shared_ptr <function> createFunction (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
         std::shared_ptr <function> findFunctionByName (std::string const & name);

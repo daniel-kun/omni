@@ -1,6 +1,9 @@
+#include <fstream>
+
 #include <omni/take2/context.hpp>
 #include <omni/take2/function.hpp>
 #include <omni/take2/already_exists_error.hpp>
+#include <omni/take2/not_implemented_error.hpp>
 #include <omni/take2/context_part.hpp>
 
 #include <llvm/IR/LLVMContext.h>
@@ -8,12 +11,19 @@
 #include <llvm/PassManager.h>
 #include <llvm/Assembly/PrintModulePass.h>
 #include <llvm/Analysis/Verifier.h>
-#include "llvm/Support/raw_ostream.h"
+#include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/FormattedStream.h>
+#include <llvm/Support/TargetRegistry.h>
+#include <llvm/Support/TargetSelect.h>
+#include <llvm/Target/TargetMachine.h>
+#include <llvm/Target/TargetOptions.h>
+#include <llvm/ADT/Triple.h>
 
 #include <boost/uuid/random_generator.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/filesystem.hpp>
 
 omni::take2::context::context () :
     _llvmContext (new llvm::LLVMContext ()),
@@ -173,7 +183,7 @@ void omni::take2::context::emitAssemblyFile (std::string const & fileName)
 Emits llvm IR language code to the stream `stream'.
 This function is not very fast since it first writes the whole code to a temporary buffer and then 
 writes the whole buffer to `stream'. If you need a more efficient way, use emitAssemblyFile(llvm::raw_ostream).
-@param stream The std stream where the code should be written to.
+@param stream The ostream where the code should be written to.
 **/
 void omni::take2::context::emitAssemblyFile (std::ostream & stream)
 {
@@ -203,3 +213,83 @@ void omni::take2::context::emitAssemblyFile (llvm::raw_ostream & stream)
     pm.run (module);
 }
 
+/**
+Emits a native object file (e.g. .obj on win32) to stream.
+This function is not very fast since it first writes the whole object file to a temporary buffer and then 
+writes the whole buffer to `stream'. If you need a more efficient way, use emitObjectFile (llvm::raw_ostream).
+@param stream Any ostream that should receive the content of the objectFile.
+**/
+void omni::take2::context::emitObjectFile (std::ostream & stream)
+{
+    std::string tmp;
+    llvm::raw_string_ostream rawStream (tmp);
+    emitObjectFile (rawStream);
+    stream << tmp;
+}
+
+/**
+Emits a native object file (e.g. .obj on win32) to stream.
+@param stream Any llvm::raw_ostream that should receive the content of the objectFile.
+**/
+void omni::take2::context::emitObjectFile (llvm::raw_ostream & stream)
+{
+    llvm::Module module ("test", * _llvmContext);
+    
+    for (auto f : _parts [domain::function]) {
+        function & func = * std::dynamic_pointer_cast <function> (f.second);
+        func.llvmFunction (module);
+    }
+
+    llvm::verifyModule (module, llvm::PrintMessageAction);
+
+    std::string errors;
+    std::string targetTriple = "i686-pc-win32";
+    llvm::Triple triple = llvm::Triple (targetTriple);
+    llvm::InitializeAllTargets ();
+    llvm::InitializeAllTargetMCs();
+    llvm::InitializeAllAsmPrinters();
+    llvm::InitializeAllAsmParsers();
+
+    const llvm::Target * target = llvm::TargetRegistry::lookupTarget ("", triple, errors);
+    llvm::TargetOptions targetOptions;
+    llvm::TargetMachine * targetMachine = target->createTargetMachine (targetTriple, std::string (), std::string (), targetOptions);
+
+    llvm::PassManager pm;
+    llvm::formatted_raw_ostream formattedStream (stream);
+    targetMachine->addPassesToEmitFile (pm, formattedStream, llvm::TargetMachine::CGFT_ObjectFile);
+    pm.run (module);
+    formattedStream.flush ();
+}
+
+/**
+Emits a native object file (e.g. .obj on win32) to the file `fileName'.
+@param fileName The path of the file where the object file should be written to.
+**/
+void omni::take2::context::emitObjectFile (std::string const & fileName)
+{
+    std::string errorInfo;
+    llvm::raw_fd_ostream rawStream (fileName.c_str (), errorInfo);
+    emitObjectFile (rawStream);
+}
+
+/**
+Emits a shared object file (.so on Linux/Unix, .dll on Windows or .dylib on Mac OS) to the file at the path `fileName'.
+Remember to set the  linkage_type of functions that you want to export frmo your shared object to linkage_type::external.
+For every shared object file, an object file with the same base name but the extension .obj (on Windows) or .o (on Linux/Unix)
+is temporarily created and removed before this function returns.
+For example emitSharedLibraryFile /home/foo/shared.so will temporarily create a file /home/foo/shared.o.
+**/
+void omni::take2::context::emitSharedLibraryFile (std::string const & fileName)
+{
+    boost::filesystem::path sharedLibraryPath (fileName);
+    boost::filesystem::path objectFilePath = sharedLibraryPath;
+    objectFilePath.replace_extension (".obj");
+    emitObjectFile (objectFilePath.string ());
+    if (! boost::filesystem::exists (objectFilePath)) {
+        throw omni::take2::logic_error (__FILE__, __FUNCTION__, __LINE__, "Object file \"" + objectFilePath.string () + "\" does not exist");
+    }
+    std::string command = "..\\tools\\link_helper.cmd \"" + objectFilePath.string () + "\" \"/OUT:" + sharedLibraryPath.string () + "\"";
+    std::system (command.c_str ());
+    boost::system::error_code errorCode;
+    boost::filesystem::remove (objectFilePath, errorCode); // ignores failures on purpose
+}

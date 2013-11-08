@@ -36,11 +36,13 @@
     <Import Project="llvm.props" />
     <Import Project="boost.props" />
     <Import Project="omni-base.props" />
+    <Import Project="lld.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="boost.props" />
     <Import Project="llvm.props" />
     <Import Project="omni-base.props" />
+    <Import Project="lld.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -81,11 +83,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\tests\test_context.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_file_manager.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_function.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="omni-take2.vcxproj">
       <Project>{c04196c6-45be-4b8f-a1b6-8984594abd17}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\tools\link_helper.cmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\interface\omni\tests\test_file_manager.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

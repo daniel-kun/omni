@@ -18,5 +18,19 @@
     <ClCompile Include="..\source\omni\tests\test_context.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\tests\test_function.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\test_file_manager.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\tools\link_helper.cmd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\interface\omni\tests\test_file_manager.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

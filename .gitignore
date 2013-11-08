@@ -5,3 +5,4 @@
 /build/bin
 *.user
 /test
+/build/Release
