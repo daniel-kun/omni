@@ -9,9 +9,7 @@
     <Link>
       <AdditionalDependencies>clangAnalysis.lib;clangARCMigrate.lib;clangAST.lib;clangASTMatchers.lib;clangBasic.lib;clangCodeGen.lib;clangDriver.lib;clangDynamicASTMatchers.lib;clangEdit.lib;clangFormat.lib;clangFrontend.lib;clangFrontendTool.lib;clangLex.lib;clangParse.lib;clangRewriteCore.lib;clangRewriteFrontend.lib;clangSema.lib;clangSerialization.lib;clangStaticAnalyzerCheckers.lib;clangStaticAnalyzerCore.lib;clangStaticAnalyzerFrontend.lib;clangTooling.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <ClCompile>
-      <DisableSpecificWarnings>4224;4996;4251;4514;4820;4548;4668;4625;4710;4365;4512;4310;4626;4061;4244;4100;4640;4180;4800;4242;4127;4510;4355;4610;4345;4946;4291;4146;4826;4624</DisableSpecificWarnings>
-    </ClCompile>
+    <ClCompile />
   </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

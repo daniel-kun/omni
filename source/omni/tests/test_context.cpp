@@ -14,90 +14,13 @@
 #include <lld/Driver/WinLinkInputGraph.h>
 #include <lld/ReaderWriter/PECOFFLinkingContext.h>
 #include <boost/filesystem.hpp>
+#include <omni/tests/test_utils.hpp>
 #include <set>
 #include <memory>
 #include <iostream>
-#ifdef WIN32
-#include <Windows.h>
-#else
-#endif
 
 #define BOOST_TEST_MODULE OmniTake2
 #include <boost/test/unit_test.hpp>
-
-namespace {
-    /**
-    Emits a shared library file with the name fileBaseName.dll. The library exports a function "main" that calls the
-    function `func'. That way, it does not matter whether func's linkage_type is external or not.
-    Main automatically has the same return type as func. func and main may not take parameters.
-    @return The path of the created shared library file.
-    **/
-    boost::filesystem::path emitSharedLibraryWithFunction (std::shared_ptr <omni::take2::function> func,
-                                                           omni::tests::test_file_manager & testFileManager,
-                                                           std::string const & fileBaseName)
-    {
-        using namespace omni::take2;
-        // First, add a function that calls the wanted function.
-        std::shared_ptr <type> returnType  (func->getReturnType ());
-        std::shared_ptr <block> body (new block ());
-        std::shared_ptr <expression> callExpression (new function_call_expression (func));
-        std::shared_ptr <statement> returnStatement (new return_statement (callExpression));
-        body->appendStatement (returnStatement);
-        std::shared_ptr <function> caller (new function ("main", returnType, body));
-        caller->setLinkageType (linkage_type::external);
-        context & c (* func->getContext ());
-        c.addFunction (caller);
-        std::string sharedLibraryName = testFileManager.getTestFileName (fileBaseName + ".dll").string ();
-        c.emitSharedLibraryFile (sharedLibraryName);
-
-        BOOST_CHECK (boost::filesystem::exists(sharedLibraryName));
-        return sharedLibraryName;
-    }
-
-    /**
-    Runs the function `function' and returns it's result in a string representation.
-    **/
-    template <typename Return>
-    Return runFunction (std::shared_ptr <omni::take2::function> func,
-                             omni::tests::test_file_manager & testFileManager,
-                             std::string const & fileBaseName)
-    {
-        boost::filesystem::path sharedLibraryPath = emitSharedLibraryWithFunction (func, testFileManager, fileBaseName);
-        boost::filesystem::path expPath = sharedLibraryPath;
-        boost::filesystem::path libPath = sharedLibraryPath;
-        testFileManager.getTestFileName (expPath.replace_extension (".exp").filename ().string ()); // To get rid of the temporary files after the test finishes
-        testFileManager.getTestFileName (expPath.replace_extension (".lib").filename ().string ()); // To get rid of the temporary files after the test finishes
-        boost::filesystem::path objectFilePath = sharedLibraryPath;
-        boost::filesystem::path objectFilePath2 = sharedLibraryPath;
-        BOOST_CHECK (! boost::filesystem::exists (objectFilePath.replace_extension (".obj"))); // There shall not be a temporary file anymore
-        BOOST_CHECK (! boost::filesystem::exists (objectFilePath2.replace_extension (".o")));   // There shall not be a temporary file anymore
-#ifdef WIN32
-        HMODULE lib = ::LoadLibraryA (sharedLibraryPath.string ().c_str ());
-        HMODULE nullModule = nullptr;
-        BOOST_CHECK_NE (lib, nullModule);
-        if (lib != nullptr) {
-            typedef int (* testFunc) ();
-            testFunc f = (testFunc) ::GetProcAddress(lib, "main");
-            testFunc nullTestFunc = nullptr;
-            BOOST_CHECK_NE (f, nullTestFunc);
-            if (f != nullptr) {
-                int result = (*f)();
-                ::FreeLibrary (lib);
-                return result;
-            } else {
-                ::FreeLibrary (lib);
-                throw omni::take2::logic_error (__FILE__, __FUNCTION__, __LINE__,
-                                                "Test function could not be found in temporarily created shared object file \"" + sharedLibraryPath.string () + "\".");
-            }
-        }
-        throw omni::take2::logic_error (__FILE__, __FUNCTION__, __LINE__,
-                                        "Test shared object could not be loaded: \"" + sharedLibraryPath.string () + "\".");
-#else
-        throw omni::take2::not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
-#endif
-    }
-
-}
 
 BOOST_AUTO_TEST_SUITE(contextTests)
 
@@ -259,7 +182,7 @@ BOOST_AUTO_TEST_CASE (emitSharedLibraryFile)
     const std::string functionName = "test";
     std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (new type (c, type_class::t_signedInt)), body);
     omni::tests::test_file_manager testFileManager;
-    int functionCallResult = runFunction <int> (func, testFileManager, "emitSharedLibraryFile");
+    int functionCallResult = omni::tests::runFunction <int> (func, testFileManager, "emitSharedLibraryFile");
     BOOST_CHECK_EQUAL (functionCallResult, 42);
 }
 

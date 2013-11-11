@@ -21,7 +21,13 @@
     <ClCompile Include="..\source\omni\tests\test_function.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\omni\tests\test_file_manager.cpp">
+    <ClCompile Include="..\tests\test_file_manager.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\test_binary_operator_expression.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\test_utils.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -30,6 +36,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\interface\omni\tests\test_file_manager.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\tests\test_utils.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>

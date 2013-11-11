@@ -96,7 +96,8 @@ Adds the function `function' to this context, if there is not already another fu
 **/
 void omni::take2::context::addFunction (std::shared_ptr <omni::take2::function> function)
 {
-    if (findFunctionByName (function->getName ()).get () != nullptr) {
+    std::shared_ptr <omni::take2::function> func = findFunctionByName (function->getName ());
+    if (func.get () != nullptr) {
         throw already_exists_error (domain::function, function->getName ());
     }
     function->setContext (this);
