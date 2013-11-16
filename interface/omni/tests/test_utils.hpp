@@ -54,12 +54,15 @@ Return omni::tests::runFunction (std::shared_ptr <omni::take2::function> func,
 //    BOOST_CHECK (! boost::filesystem::exists (objectFilePath2.replace_extension (".o")));   // There shall not be a temporary file anymore
 #ifdef WIN32
     HMODULE lib = ::LoadLibraryA (sharedLibraryPath.string ().c_str ());
-    HMODULE nullModule = nullptr;
+//    HMODULE nullModule = nullptr;
 //    BOOST_CHECK_NE (lib, nullModule);
     if (lib != nullptr) {
         typedef int (* testFunc) ();
-        testFunc f = (testFunc) ::GetProcAddress(lib, functionName.c_str ());
-        testFunc nullTestFunc = nullptr;
+#pragma warning(push)
+#pragma warning(disable:4191)
+        testFunc f = reinterpret_cast <testFunc> (::GetProcAddress(lib, functionName.c_str ()));
+#pragma warning(pop)
+//        testFunc nullTestFunc = nullptr;
 //        BOOST_CHECK_NE (f, nullTestFunc);
         if (f != nullptr) {
             int result = (*f)();

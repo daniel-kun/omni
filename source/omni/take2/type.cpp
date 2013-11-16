@@ -18,8 +18,17 @@ omni::take2::type::~ type ()
 llvm::Type * omni::take2::type::llvmType ()
 {
     switch (_typeClass) {
+    case type_class::t_unsignedInt:
     case type_class::t_signedInt:
         return llvm::IntegerType::get (getContext ()->llvmContext (), 32);
+        break;
+    case type_class::t_unsignedShort:
+    case type_class::t_signedShort:
+        return llvm::IntegerType::get (getContext ()->llvmContext (), 16);
+        break;
+    case type_class::t_unsignedByte:
+    case type_class::t_signedByte:
+        return llvm::IntegerType::get (getContext ()->llvmContext (), 8);
         break;
     default:
         throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);

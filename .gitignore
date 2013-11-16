@@ -1,6 +1,6 @@
 /build/omni.opensdf
 /build/omni.sdf
-/build/omni.v11.suo
+/build/*.suo
 /build/Debug
 /build/bin
 *.user

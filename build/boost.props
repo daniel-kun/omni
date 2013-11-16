@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>D:\Projects\thirdparty\boost_1_53_0;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\Projects\thirdparty\boost_1_53_0\stage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\Projects\thirdparty\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Projects\thirdparty\boost_1_55_0\stage\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link />
