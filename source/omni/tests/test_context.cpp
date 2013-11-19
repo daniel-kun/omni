@@ -9,10 +9,6 @@
 #include <omni/take2/function_call_expression.hpp>
 #include <omni/take2/expression_statement.hpp>
 #include <omni/tests/test_file_manager.hpp>
-#include <lld/Driver/Driver.h>
-#include <lld/Driver/WinLinkInputGraph.h>
-#include <lld/ReaderWriter/PECOFFLinkingContext.h>
-#include <boost/filesystem.hpp>
 #include <omni/tests/test_utils.hpp>
 #include <set>
 #include <memory>
