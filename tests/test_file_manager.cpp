@@ -17,10 +17,12 @@ Creates a new path for the file with the name `fileName' in the tests directory.
 If such a file exists, it is removed before the path is returned.
 Files returned by this function will be removed when this test_file_manager object is destroyed.
 **/
-boost::filesystem::path omni::tests::test_file_manager::getTestFileName (std::string const & fileName)
+boost::filesystem::path omni::tests::test_file_manager::getTestFileName (std::string const & fileName, bool autoDelete)
 {
     boost::filesystem::path path = boost::filesystem::current_path ().parent_path ();
     path /= boost::filesystem::path ("tests") /= fileName;
-    _files.push_back (path);
+    if (autoDelete) {
+        _files.push_back (path);
+    }
     return path;
 }

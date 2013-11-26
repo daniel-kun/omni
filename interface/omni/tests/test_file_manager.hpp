@@ -16,7 +16,7 @@ namespace tests {
     public:
         ~ test_file_manager ();                           
 
-        boost::filesystem::path getTestFileName (std::string const & fileName);
+        boost::filesystem::path getTestFileName (std::string const & fileName, bool autoDelete = true);
 
     private:
         std::vector <boost::filesystem::path> _files;

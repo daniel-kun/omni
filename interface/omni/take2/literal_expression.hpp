@@ -9,18 +9,18 @@ namespace omni {
 namespace take2 {
     class literal;
 
-	/**
-	A literal expression is an expression that simply returns a value that was already defined at compile time.
-	**/
-	class OMNI_TAKE2_API literal_expression : public expression {
-	public:
+    /**
+    A literal expression is an expression that simply returns a value that was already defined at compile time.
+    **/
+    class OMNI_TAKE2_API literal_expression : public expression {
+    public:
         literal_expression (std::shared_ptr <literal> literal);
 
         llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
         std::shared_ptr <literal> _literal;
-	};
+    };
 
 } // namespace take2
 } // namespace omni

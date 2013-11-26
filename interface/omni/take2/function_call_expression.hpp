@@ -14,11 +14,11 @@ namespace omni {
 namespace take2 {
     class function;
 
-	/**
-	A void function call is a statement, not an expression, because it does not have a result.
-	**/
-	class OMNI_TAKE2_API function_call_expression : public expression {
-	public:
+    /**
+    A void function call is a statement, not an expression, because it does not have a result.
+    **/
+    class OMNI_TAKE2_API function_call_expression : public expression {
+    public:
         function_call_expression ();
         function_call_expression (std::shared_ptr <function> func);
 
@@ -30,7 +30,7 @@ namespace take2 {
 
     private:
         std::shared_ptr <function> _function;
-	};
+    };
 
 } // namespace take2
 } // namespace omni

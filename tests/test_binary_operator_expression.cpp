@@ -69,7 +69,13 @@ This offers a better orientation when a BOOST_CHECK_EQUAL failes.
                         omni::take2::binary_operator_expression::binary_operation::binary_plus_operation,\
                         new omni::take2::builtin_literal <decltype(LEFT)> (CONTEXT, LEFT),\
                         new omni::take2::builtin_literal <decltype(RIGHT)> (CONTEXT, RIGHT));\
-    BOOST_CHECK_EQUAL (result, LEFT + RIGHT);\
+    BOOST_CHECK_EQUAL (result, static_cast <decltype (LEFT)> (LEFT + RIGHT));\
+    if (result != static_cast <decltype (LEFT)> (LEFT + RIGHT)) { \
+        std::stringstream fileName; \
+        fileName << "binaryOperatorExpressionTest" << TESTCOUNTER << ".ll"; \
+        omni::tests::test_file_manager testFileManager; \
+        CONTEXT.emitAssemblyFile(testFileManager.getTestFileName (fileName.str (), false).string ()); \
+    } \
 }
 
 

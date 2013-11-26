@@ -12,10 +12,10 @@ namespace llvm {
 namespace omni {
 namespace take2 {
 
-	class OMNI_TAKE2_API type : public context_part {
-	public:
-		type (context & context, type_class typeClass);
-		virtual ~ type ();
+    class OMNI_TAKE2_API type : public context_part {
+    public:
+        type (context & context, type_class typeClass);
+        virtual ~ type ();
 
         llvm::Type * llvmType ();
 
@@ -24,7 +24,7 @@ namespace take2 {
 
     private:
         type_class _typeClass;
-	};
+    };
 
 } // namespace take2
 } // namespace omni

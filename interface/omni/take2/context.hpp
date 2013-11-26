@@ -20,11 +20,11 @@ namespace take2 {
     class block;
     class context_part;
 
-	/**
-	The "context" is an instance of the omni compiler that store some global information, caches, etc.
-	**/
-	class OMNI_TAKE2_API context {
-	public:
+    /**
+    The "context" is an instance of the omni compiler that store some global information, caches, etc.
+    **/
+    class OMNI_TAKE2_API context {
+    public:
         context ();
         virtual ~ context ();
 
@@ -53,14 +53,14 @@ namespace take2 {
         const llvm::LLVMContext & llvmContext () const;
         llvm::LLVMContext & llvmContext ();
 
-	private:
+    private:
         typedef std::map <std::string, std::shared_ptr <context_part>> id_to_parts_map;
         typedef std::map <domain, id_to_parts_map> domain_id_to_parts_map;
 
         std::unique_ptr <llvm::LLVMContext> _llvmContext;
         std::shared_ptr <function> _entryPoint;
         domain_id_to_parts_map _parts;
-	};
+    };
 
 } // namespace take2
 } // namespace omni

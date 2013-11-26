@@ -9,17 +9,17 @@ namespace omni {
 namespace take2 {
     class variable;
 
-	/**
-	A `variable expression' is any mention of a variable that is used to take that variable's value.
-	E.g. in "int foo = x;", the "x" is a variable expression.
-	**/
-	class OMNI_TAKE2_API variable_expression : public expression {
-	public:
-		const std::shared_ptr <variable> getVariable () const;
+    /**
+    A `variable expression' is any mention of a variable that is used to take that variable's value.
+    E.g. in "int foo = x;", the "x" is a variable expression.
+    **/
+    class OMNI_TAKE2_API variable_expression : public expression {
+    public:
+        const std::shared_ptr <variable> getVariable () const;
 
-	private:
-		std::shared_ptr <variable> _variable;
-	};
+    private:
+        std::shared_ptr <variable> _variable;
+    };
 
 } // namespace take2
 } // namespace omni

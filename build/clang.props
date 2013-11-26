@@ -10,6 +10,9 @@
       <AdditionalDependencies>clangAnalysis.lib;clangARCMigrate.lib;clangAST.lib;clangASTMatchers.lib;clangBasic.lib;clangCodeGen.lib;clangDriver.lib;clangDynamicASTMatchers.lib;clangEdit.lib;clangFormat.lib;clangFrontend.lib;clangFrontendTool.lib;clangLex.lib;clangParse.lib;clangRewriteCore.lib;clangRewriteFrontend.lib;clangSema.lib;clangSerialization.lib;clangStaticAnalyzerCheckers.lib;clangStaticAnalyzerCore.lib;clangStaticAnalyzerFrontend.lib;clangTooling.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ClCompile />
+    <ClCompile>
+      <DisableSpecificWarnings>4146;4826;4624;4610;4510;4291;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

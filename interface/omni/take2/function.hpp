@@ -20,8 +20,8 @@ namespace take2 {
     class block;
     class type;
 
-	class OMNI_TAKE2_API function : public context_part {
-	public:
+    class OMNI_TAKE2_API function : public context_part {
+    public:
         function (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
         virtual ~ function ();
 
@@ -33,15 +33,15 @@ namespace take2 {
 
         llvm::Function * llvmFunction (llvm::Module & llvmModule);
 
-		std::vector <std::shared_ptr <parameter>> getParameters () const; // TODO
-		const std::shared_ptr <block> getBody () const;
+        std::vector <std::shared_ptr <parameter>> getParameters () const; // TODO
+        const std::shared_ptr <block> getBody () const;
 
     private:
         llvm::Function * _llvmFunction;
         linkage_type _linkageType;
         std::shared_ptr <type> _returnType;
         std::shared_ptr <block> _body;
-	};
+    };
 
 } // namespace take2
 } // namespace omni

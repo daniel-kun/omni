@@ -71,12 +71,12 @@ int main (int argc, char * argv[])
     //template_basic ();
     //clang_sandbox ();
     try {
-	    sandbox_take2 ();
+        sandbox_take2 ();
     } catch (std::exception const & e) {
         std::cerr << e.what () << std::endl;
     }
 
-	std::cout << "Finished!" << std::endl;
+    std::cout << "Finished!" << std::endl;
     std::string line;
     std::getline (std::cin, line);
 

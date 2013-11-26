@@ -7,9 +7,9 @@
 namespace omni {
 namespace take2 {
 
-	class OMNI_TAKE2_API variable_declaration_statement : public statement {
-	public:
-	};
+    class OMNI_TAKE2_API variable_declaration_statement : public statement {
+    public:
+    };
 
 } // namespace take2
 } // namespace omni

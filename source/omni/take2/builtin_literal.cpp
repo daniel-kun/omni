@@ -37,7 +37,7 @@ llvm::Value * omni::take2::builtin_literal <signed short>::llvmValue ()
 {
     switch (getType ()->getTypeClass ()) {
     case type_class::t_signedShort:
-        return llvm::ConstantInt::get (getType ()->llvmType (), _value, true);
+        return llvm::ConstantInt::getSigned (getType ()->llvmType (), _value);
         break;
     default:
         throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
@@ -61,7 +61,7 @@ llvm::Value * omni::take2::builtin_literal <signed int>::llvmValue ()
 {
     switch (getType ()->getTypeClass ()) {
     case type_class::t_signedInt:
-        return llvm::ConstantInt::get (getType ()->llvmType (), _value, true);
+        return llvm::ConstantInt::getSigned (getType ()->llvmType (), _value);
         break;
     default:
         throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);

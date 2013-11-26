@@ -181,8 +181,8 @@ exit:
 
 define i32 @test()
 {
-	%result = add i32 10, 9
-	ret i32 %result
+    %result = add i32 10, 9
+    ret i32 %result
 }
 
 define i32 @main_()

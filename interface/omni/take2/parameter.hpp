@@ -8,13 +8,13 @@ namespace omni {
 namespace take2 {
     class type;
 
-	/**
-	Function parameter, @see function::getParameters ().
-	**/
-	class OMNI_TAKE2_API parameter : public context_part {
-	public:
-		const type & getType () const;
-	};
+    /**
+    Function parameter, @see function::getParameters ().
+    **/
+    class OMNI_TAKE2_API parameter : public context_part {
+    public:
+        const type & getType () const;
+    };
 
 } // namespace take2
 } // namespace omni
