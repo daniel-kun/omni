@@ -101,6 +101,7 @@
     <ClCompile Include="..\source\omni\take2\variable.cpp" />
     <ClCompile Include="..\source\omni\take2\variable_declaration_statement.cpp" />
     <ClCompile Include="..\source\omni\take2\variable_expression.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_llvm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\interface\omni\take2\context_part.hpp" />

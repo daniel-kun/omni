@@ -61,11 +61,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\omni\tests\test_binary_operator_expression.cpp" />
     <ClCompile Include="..\source\omni\tests\test_context.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_file_manager.cpp" />
     <ClCompile Include="..\source\omni\tests\test_function.cpp" />
-    <ClCompile Include="..\tests\test_binary_operator_expression.cpp" />
-    <ClCompile Include="..\tests\test_file_manager.cpp" />
-    <ClCompile Include="..\tests\test_utils.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="omni-take2.vcxproj">

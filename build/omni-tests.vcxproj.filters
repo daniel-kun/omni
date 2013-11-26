@@ -21,13 +21,13 @@
     <ClCompile Include="..\source\omni\tests\test_function.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\tests\test_file_manager.cpp">
+    <ClCompile Include="..\source\omni\tests\test_binary_operator_expression.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\tests\test_binary_operator_expression.cpp">
+    <ClCompile Include="..\source\omni\tests\test_file_manager.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\tests\test_utils.cpp">
+    <ClCompile Include="..\source\omni\tests\test_utils.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
