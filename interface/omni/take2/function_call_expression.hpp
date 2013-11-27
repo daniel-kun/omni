@@ -4,6 +4,7 @@
 #include <omni/take2/take2.hpp>
 #include <omni/take2/expression.hpp>
 #include <memory>
+#include <vector>
 
 namespace llvm {
     class Value;
@@ -13,6 +14,7 @@ namespace llvm {
 namespace omni {
 namespace take2 {
     class function;
+    class expression;
 
     /**
     A void function call is a statement, not an expression, because it does not have a result.
@@ -21,15 +23,20 @@ namespace take2 {
     public:
         function_call_expression ();
         function_call_expression (std::shared_ptr <function> func);
+        function_call_expression (std::shared_ptr <function> func, std::vector <std::shared_ptr <expression>> parameters);
 
         void setFunction (std::shared_ptr <function> func);
         const std::shared_ptr <function> getFunction () const;
         std::shared_ptr <function> getFunction ();
 
+        void addParameter (std::shared_ptr <expression> parameter);
+        void setParameters (std::vector <std::shared_ptr <expression>> parameters);
+
         virtual llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
         std::shared_ptr <function> _function;
+        std::vector <std::shared_ptr <expression>> _parameters;
     };
 
 } // namespace take2

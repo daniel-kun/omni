@@ -93,6 +93,9 @@
     <ClInclude Include="..\interface\omni\take2\logic_error.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="..\interface\omni\take2\function_prototype.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\take2\sandbox.cpp">
@@ -174,6 +177,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="..\source\omni\tests\test_llvm.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\take2\function_prototype.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -3,6 +3,7 @@
 #include <omni/take2/type.hpp>
 #include <omni/take2/block.hpp>
 #include <omni/take2/statement.hpp>
+#include <omni/take2/parameter.hpp>
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/BasicBlock.h>
@@ -12,45 +13,16 @@
 omni::take2::function::function (std::string const & name,
                                  std::shared_ptr <type> returnType,
                                  std::shared_ptr <block> body) :
-    context_part (name),
-    _llvmFunction (nullptr),
-    _linkageType (linkage_type::internal),
-    _returnType (returnType),
+    function_prototype (name, returnType),
     _body (body)
 {
 }
 
-omni::take2::function::~function ()
+
+const std::shared_ptr <omni::take2::block> omni::take2::function::getBody () const
 {
+    return _body;
 }
-
-/**
-Returns the type that this function returns when it is called at runtime.
-**/
-const std::shared_ptr <omni::take2::type> omni::take2::function::getReturnType () const
-{
-    return _returnType;
-}
-
-/**
-Returns the type that this function returns when it is called at runtime.
-**/
-std::shared_ptr <omni::take2::type> omni::take2::function::getReturnType ()
-{
-    return _returnType;
-}
-
-
-omni::take2::linkage_type omni::take2::function::getLinkageType () const
-{
-    return _linkageType;
-}
-
-void omni::take2::function::setLinkageType (omni::take2::linkage_type linkageType)
-{          
-    _linkageType = linkageType;
-}
-
 
 llvm::Function * omni::take2::function::llvmFunction (llvm::Module & llvmModule)
 {
@@ -58,6 +30,10 @@ llvm::Function * omni::take2::function::llvmFunction (llvm::Module & llvmModule)
         return _llvmFunction;
     } else {
         llvm::Function * _llvmFunction = llvm::cast <llvm::Function> (llvmModule.getOrInsertFunction (getName (), _returnType->llvmType (), nullptr));
+        for (auto i : _parameters) {
+            llvm::Argument * arg = new llvm::Argument (i->getType ().llvmType ());
+            _llvmFunction->getArgumentList ().push_back (arg);
+        }
         _llvmFunction->setCallingConv (llvm::CallingConv::C);
         switch (getLinkageType ()) {
         case linkage_type::internal:

@@ -1,4 +1,5 @@
 #include <omni/take2/binary_operator_expression.hpp>
+#include <omni/take2/not_implemented_error.hpp>
 
 #include <llvm/IR/IRBuilder.h>
 
@@ -12,6 +13,13 @@ omni::take2::binary_operator_expression::binary_operator_expression(binary_opera
 llvm::Value * omni::take2::binary_operator_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <> builder (llvmBasicBlock);
-    return builder.CreateBinOp (llvm::Instruction::BinaryOps::Add, _leftOperand->llvmValue (llvmBasicBlock), _rightOperand->llvmValue (llvmBasicBlock));
+    switch (_operator) {
+    case binary_operation::binary_plus_operation:
+        return builder.CreateBinOp (llvm::Instruction::BinaryOps::Add, _leftOperand->llvmValue (llvmBasicBlock), _rightOperand->llvmValue (llvmBasicBlock));
+    case binary_operation::binary_minus_operation:
+        return builder.CreateBinOp (llvm::Instruction::BinaryOps::Sub, _leftOperand->llvmValue (llvmBasicBlock), _rightOperand->llvmValue (llvmBasicBlock));
+    default:
+        throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
+    }
 }
 

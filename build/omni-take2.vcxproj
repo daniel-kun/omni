@@ -50,6 +50,7 @@
     <ClInclude Include="..\interface\omni\take2\already_exists_error.hpp" />
     <ClInclude Include="..\interface\omni\take2\domain.hpp" />
     <ClInclude Include="..\interface\omni\take2\function_call_expression.hpp" />
+    <ClInclude Include="..\interface\omni\take2\function_prototype.hpp" />
     <ClInclude Include="..\interface\omni\take2\id_domain.hpp" />
     <ClInclude Include="..\interface\omni\take2\binary_operator_expression.hpp" />
     <ClInclude Include="..\interface\omni\take2\block.hpp" />
@@ -86,6 +87,7 @@
     <ClCompile Include="..\source\omni\take2\expression_statement.cpp" />
     <ClCompile Include="..\source\omni\take2\function.cpp" />
     <ClCompile Include="..\source\omni\take2\function_call_expression.cpp" />
+    <ClCompile Include="..\source\omni\take2\function_prototype.cpp" />
     <ClCompile Include="..\source\omni\take2\id.cpp" />
     <ClCompile Include="..\source\omni\take2\linkage_type.cpp" />
     <ClCompile Include="..\source\omni\take2\literal.cpp" />

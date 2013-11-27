@@ -17,7 +17,7 @@ namespace take2 {
     public:
         enum class binary_operation {
             binary_plus_operation, // +
-            binary_minus_operator // -
+            binary_minus_operation // -
         };
 
         binary_operator_expression (binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand);
