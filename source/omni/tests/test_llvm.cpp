@@ -17,13 +17,12 @@
 #include <llvm/IR/CallingConv.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
+#include <llvm/Support/NoFolder.h>
 
-#define BOOST_TEST_MODULE OmniTake2
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE (llvm)
 
-/*
 BOOST_AUTO_TEST_CASE (llvmPlayground)
 {
     llvm::LLVMContext c;
@@ -32,7 +31,7 @@ BOOST_AUTO_TEST_CASE (llvmPlayground)
     llvm::Function * llvmFunction = llvm::cast <llvm::Function>(module.getOrInsertFunction("foo", functionType, nullptr));
     llvmFunction->setCallingConv(llvm::CallingConv::C);
     llvm::BasicBlock * body = llvm::BasicBlock::Create(c, "__entry__", llvmFunction);
-    llvm::IRBuilder <> builder(body);
+    llvm::IRBuilder <true, llvm::NoFolder> builder(body);
     llvm::Value * result = builder.CreateBinOp(llvm::Instruction::BinaryOps::Add, llvm::ConstantInt::getSigned(functionType, 40), llvm::ConstantInt::getSigned(functionType, 2));
     builder.CreateRet(result);
 
@@ -45,6 +44,5 @@ BOOST_AUTO_TEST_CASE (llvmPlayground)
     pm.add(llvm::createPrintModulePass(& fileStream));
     pm.run(module);
 }
-*/
 
 BOOST_AUTO_TEST_SUITE_END ()

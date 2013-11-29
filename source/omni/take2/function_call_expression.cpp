@@ -4,6 +4,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/IRBuilder.h>
+#include <llvm/Support/NoFolder.h>
 
 /**
 Initializes this function call expression without any function to call.
@@ -80,6 +81,6 @@ You can safely dynamic_cast the result to a llvm::CallInst.
 **/
 llvm::Value * omni::take2::function_call_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)
 {
-    llvm::IRBuilder <> builder (llvmBasicBlock);
+    llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     return builder.CreateCall (_function->llvmFunction (* llvmBasicBlock->getParent ()->getParent ()), llvm::ArrayRef <llvm::Value*> ());
 }
