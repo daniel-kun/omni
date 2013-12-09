@@ -10,7 +10,9 @@ namespace take2 {
 
     class OMNI_TAKE2_API function : public function_prototype {
     public:
-        function (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
+        function (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body, bool isExported = false);
+
+        bool isExported () const;
 
         const std::shared_ptr <block> getBody () const;
 
@@ -18,6 +20,7 @@ namespace take2 {
 
     private:
         std::shared_ptr <block> _body;
+        bool _isExported;
     };
 
 } // namespace take2

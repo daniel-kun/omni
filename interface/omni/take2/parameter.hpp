@@ -15,8 +15,8 @@ namespace take2 {
     public:
         parameter (std::shared_ptr <type> type, std::string name);
 
-        const type & getType () const;
-        type & getType ();
+        const std::shared_ptr <type> getType () const;
+        std::shared_ptr <type>  getType ();
 
     private:
         std::shared_ptr <type> _type;

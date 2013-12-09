@@ -13,7 +13,7 @@ namespace llvm {
 
 namespace omni {
 namespace take2 {
-    class function;
+    class function_prototype;
     class expression;
 
     /**
@@ -22,12 +22,12 @@ namespace take2 {
     class OMNI_TAKE2_API function_call_expression : public expression {
     public:
         function_call_expression ();
-        function_call_expression (std::shared_ptr <function> func);
-        function_call_expression (std::shared_ptr <function> func, std::vector <std::shared_ptr <expression>> parameters);
+        function_call_expression (std::shared_ptr <function_prototype> func);
+        function_call_expression (std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters);
 
-        void setFunction (std::shared_ptr <function> func);
-        const std::shared_ptr <function> getFunction () const;
-        std::shared_ptr <function> getFunction ();
+        void setFunction (std::shared_ptr <function_prototype> func);
+        const std::shared_ptr <function_prototype> getFunction () const;
+        std::shared_ptr <function_prototype> getFunction ();
 
         void addParameter (std::shared_ptr <expression> parameter);
         void setParameters (std::vector <std::shared_ptr <expression>> parameters);
@@ -35,7 +35,7 @@ namespace take2 {
         virtual llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
-        std::shared_ptr <function> _function;
+        std::shared_ptr <function_prototype> _function;
         std::vector <std::shared_ptr <expression>> _parameters;
     };
 

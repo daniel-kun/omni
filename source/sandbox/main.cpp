@@ -22,7 +22,7 @@ void sandbox_take2 ()
     using namespace omni::take2;
 
     context c;
-    std::shared_ptr <type> signedIntType (new type (c, type_class::t_signedInt));
+    std::shared_ptr <type> signedIntType (type::sharedType (c, type_class::t_signedInt));
     std::shared_ptr <literal> leftLiteral (new builtin_literal <int> (c, 10));
     std::shared_ptr <literal> rightLiteral (new builtin_literal <int> (c, 9));
     std::shared_ptr <literal_expression> leftOperand (new literal_expression (leftLiteral));
@@ -37,7 +37,7 @@ void sandbox_take2 ()
 //    mainBody->appendStatement (sandboxStatement);
     std::shared_ptr <return_statement> returnStatement (new return_statement (sandboxExpression));
     mainBody->appendStatement (returnStatement);
-    std::shared_ptr <type> mainReturnType (new type (c, type_class::t_signedInt));
+    std::shared_ptr <type> mainReturnType (type::sharedType (c, type_class::t_signedInt));
     std::shared_ptr <function> main (new function ("test", mainReturnType, mainBody));
     c.addFunction (main);
     //c.setEntryPoint (main);

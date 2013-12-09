@@ -7,6 +7,7 @@ namespace omni {
 namespace take2 {
 
     enum class type_class {
+        t_void,
         t_boolean,
         t_unsignedByte,
         t_signedByte,

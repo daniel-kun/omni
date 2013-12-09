@@ -5,6 +5,8 @@
 #include <omni/take2/context_part.hpp>
 #include <omni/take2/type_class.hpp>
 
+#include <boost/noncopyable.hpp>
+
 namespace llvm {
     class Type;
 }
@@ -12,10 +14,12 @@ namespace llvm {
 namespace omni {
 namespace take2 {
 
-    class OMNI_TAKE2_API type : public context_part {
+    class OMNI_TAKE2_API type : public context_part, public boost::noncopyable {
     public:
         type (context & context, type_class typeClass);
         virtual ~ type ();
+
+        static std::shared_ptr <type> sharedType (context & context, type_class typeClass);
 
         llvm::Type * llvmType ();
 

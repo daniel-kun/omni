@@ -60,3 +60,11 @@ omni::take2::id omni::take2::context_part::getId () const
     return _id;
 }
 
+/**
+Can be overridden by specific context_parts.
+Overrides can add entries to 'libraries'. These entries will be added to the linker when @see context::emitSharedLibraryFile is used to create
+a shared library file.
+**/
+void omni::take2::context_part::fillLibraries (std::set <std::string> & libraries)
+{
+}

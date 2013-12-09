@@ -1,5 +1,5 @@
 #include <omni/take2/function_call_expression.hpp>
-#include <omni/take2/function.hpp>
+#include <omni/take2/function_prototype.hpp>
 
 #include <llvm/IR/Function.h>
 #include <llvm/IR/BasicBlock.h>
@@ -18,13 +18,13 @@ omni::take2::function_call_expression::function_call_expression () :
 /**
 Initializes this function call expression to call the function `func'.
 **/
-omni::take2::function_call_expression::function_call_expression (std::shared_ptr <function> func) :
+omni::take2::function_call_expression::function_call_expression (std::shared_ptr <function_prototype> func) :
     _function (func),
     _parameters ()
 {
 }
 
-omni::take2::function_call_expression::function_call_expression (std::shared_ptr <function> func, std::vector <std::shared_ptr <expression>> parameters) :
+omni::take2::function_call_expression::function_call_expression (std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters) :
     _function  (func),
     _parameters (parameters)
 {
@@ -34,7 +34,7 @@ omni::take2::function_call_expression::function_call_expression (std::shared_ptr
 /**
 Sets the function that this expression should call to `func'.
 **/
-void omni::take2::function_call_expression::setFunction (std::shared_ptr <function> func)
+void omni::take2::function_call_expression::setFunction (std::shared_ptr <function_prototype> func)
 {
     _function = func;
 }
@@ -42,7 +42,7 @@ void omni::take2::function_call_expression::setFunction (std::shared_ptr <functi
 /**
 Returns the function that this expression should call. Can be null if no function has been set.
 **/
-const std::shared_ptr <omni::take2::function> omni::take2::function_call_expression::getFunction () const
+const std::shared_ptr <omni::take2::function_prototype> omni::take2::function_call_expression::getFunction () const
 {
     return _function;
 }
@@ -50,7 +50,7 @@ const std::shared_ptr <omni::take2::function> omni::take2::function_call_express
 /**
 Returns the function that this expression should call. Can be null if no function has been set.
 **/
-std::shared_ptr <omni::take2::function> omni::take2::function_call_expression::getFunction ()
+std::shared_ptr <omni::take2::function_prototype> omni::take2::function_call_expression::getFunction ()
 {
     return _function;
 }
@@ -82,5 +82,11 @@ You can safely dynamic_cast the result to a llvm::CallInst.
 llvm::Value * omni::take2::function_call_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
-    return builder.CreateCall (_function->llvmFunction (* llvmBasicBlock->getParent ()->getParent ()), llvm::ArrayRef <llvm::Value*> ());
+
+    std::vector <llvm::Value*> llvmParameters;
+    for (auto p : _parameters) {
+        llvm::Value * val = p->llvmValue (llvmBasicBlock);
+        llvmParameters.push_back (val);
+    }
+    return builder.CreateCall (_function->llvmFunction (* llvmBasicBlock->getParent ()->getParent ()), llvmParameters);
 }

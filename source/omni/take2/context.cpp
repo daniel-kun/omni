@@ -5,9 +5,12 @@
 #include <omni/take2/already_exists_error.hpp>
 #include <omni/take2/not_implemented_error.hpp>
 #include <omni/take2/context_part.hpp>
+#include <omni/take2/context_emit_options.hpp>
+#include <omni/take2/type.hpp>
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
+#include <llvm/IR/IRBuilder.h>
 #include <llvm/PassManager.h>
 #include <llvm/Assembly/PrintModulePass.h>
 #include <llvm/Analysis/Verifier.h>
@@ -24,6 +27,28 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/format.hpp>
+
+namespace {
+    /**
+    Adds a function with the prototype "dllexport x86_stdcallcc i8 @DllMain(i32*, i32, i32*)" if such a function does not already exist.
+    TODO: Implement this in omni instead of llvm.
+    **/
+    void addDllMainIfMissing (omni::take2::context & c, llvm::Module & module)
+    {
+        llvm::Type * i32ptr = llvm::Type::getInt32PtrTy (c.llvmContext ());
+        llvm::Type * i32 = llvm::Type::getInt32Ty (c.llvmContext ());
+        llvm::Type * i8 = llvm::Type::getInt8Ty (c.llvmContext ());
+
+        std::vector <llvm::Type *> params = { i32ptr, i32, i32ptr };
+        llvm::FunctionType * ft = llvm::FunctionType::get (i8, params, false);
+        llvm::Function * func = llvm::Function::Create (ft, llvm::GlobalValue::DLLExportLinkage, "DllMain", & module);
+        func->setCallingConv(llvm::CallingConv::X86_StdCall);
+        llvm::BasicBlock * body = llvm::BasicBlock::Create (c.llvmContext (), "__entry__", func);
+        llvm::IRBuilder <> builder (body);
+        builder.CreateRet (llvm::ConstantInt::get (i8, 1));
+    }
+}
 
 omni::take2::context::context () :
     _llvmContext (new llvm::LLVMContext ()),
@@ -94,9 +119,9 @@ Adds the function `function' to this context, if there is not already another fu
 @param function The function that should be added to this context.
 @exception already_exists_error Is thrown when a function with the same name as `function's name already exists in this context.
 **/
-void omni::take2::context::addFunction (std::shared_ptr <omni::take2::function> function)
+void omni::take2::context::addFunction (std::shared_ptr <omni::take2::function_prototype> function)
 {
-    std::shared_ptr <omni::take2::function> func = findFunctionByName (function->getName ());
+    std::shared_ptr <omni::take2::function_prototype> func = findFunctionByName (function->getName ());
     if (func.get () != nullptr) {
         throw already_exists_error (domain::function, function->getName ());
     }
@@ -113,16 +138,16 @@ Only functions that were created using createFunction or were added via addFunct
 @param The name of the function that should be returned. Should not be empty.
 @return The function with the name `name' that has previously been added to this context.
 **/
-std::shared_ptr <omni::take2::function> omni::take2::context::findFunctionByName (std::string const & name)
+std::shared_ptr <omni::take2::function_prototype> omni::take2::context::findFunctionByName (std::string const & name)
 {
     id_to_parts_map & functionMap (_parts [domain::function]);
     auto found = std::find_if (functionMap.begin (), functionMap.end (), [name] (std::pair <std::string, std::shared_ptr <context_part>> f) -> bool {
         return f.second->getName () == name;
     });
     if (found != functionMap.end ()) {
-        return std::dynamic_pointer_cast <function> (found->second);
+        return std::dynamic_pointer_cast <function_prototype> (found->second);
     } else {
-        return std::shared_ptr <omni::take2::function> ();
+        return std::shared_ptr <omni::take2::function_prototype> ();
     }
 }
 
@@ -132,7 +157,7 @@ createFunction or adding it via addFunction.
 @param function The function to be removed from this context.
 @return true, if `function' was part of this context and has been removed. false, if `function' was not found.
 **/
-bool omni::take2::context::removeFunction (std::shared_ptr <omni::take2::function> function)
+bool omni::take2::context::removeFunction (std::shared_ptr <omni::take2::function_prototype> function)
 {
     id_to_parts_map & functionMap (_parts [domain::function]);
     auto found = std::find_if (functionMap.begin (), functionMap.end (), [function] (std::pair <std::string, std::shared_ptr <context_part>> f) -> bool {
@@ -145,6 +170,22 @@ bool omni::take2::context::removeFunction (std::shared_ptr <omni::take2::functio
     } else {
         return false;
     }
+}
+
+/**
+Returns a shared_ptr for a instance of type for the desired context and type_class.
+Short-hand for creating a type with type::sharedType(*this, typeClass); with the additional benefit that types are cached in this context.
+@see type::sharedType(context&, type_class);
+**/
+std::shared_ptr <omni::take2::type> omni::take2::context::sharedType (type_class typeClass)
+{
+    std::map <type_class, std::shared_ptr <type>>::iterator result = _sharedTypes.find (typeClass);
+    if (result == _sharedTypes.end ()) {
+        std::shared_ptr <omni::take2::type> resultType (new omni::take2::type (* this, typeClass));
+        _sharedTypes [typeClass] = resultType;
+        return resultType;
+    }
+    return result->second;
 }
 
 const llvm::LLVMContext & omni::take2::context::llvmContext () const
@@ -173,11 +214,11 @@ Emits llvm IR language code to the file at path fileName.
 @param fileName Path to the file where the code should be written to.
 // TODO error reporting
 **/
-void omni::take2::context::emitAssemblyFile (std::string const & fileName)
+void omni::take2::context::emitAssemblyFile (std::string const & fileName, const context_emit_options & options)
 {
     std::string errorInfo;
     llvm::raw_fd_ostream fileStream (fileName.c_str (), errorInfo);
-    emitAssemblyFile (fileStream);
+    emitAssemblyFile (fileStream, options);
 }
 
 /**
@@ -186,11 +227,11 @@ This function is not very fast since it first writes the whole code to a tempora
 writes the whole buffer to `stream'. If you need a more efficient way, use emitAssemblyFile(llvm::raw_ostream).
 @param stream The ostream where the code should be written to.
 **/
-void omni::take2::context::emitAssemblyFile (std::ostream & stream)
+void omni::take2::context::emitAssemblyFile (std::ostream & stream, const context_emit_options & options)
 {
     std::string tmp;
     llvm::raw_string_ostream rawStream (tmp);
-    emitAssemblyFile (rawStream);
+    emitAssemblyFile (rawStream, options);
     stream << tmp;
 }
 
@@ -198,12 +239,12 @@ void omni::take2::context::emitAssemblyFile (std::ostream & stream)
 Emits llvm IR language code to the llvm stream `stream'.
 @param stream The llvm stream wher the code should be written to.
 **/
-void omni::take2::context::emitAssemblyFile (llvm::raw_ostream & stream)
+void omni::take2::context::emitAssemblyFile (llvm::raw_ostream & stream, const context_emit_options & options)
 {
     llvm::Module module ("test", * _llvmContext);
     
     for (auto f : _parts [domain::function]) {
-        function & func = * std::dynamic_pointer_cast <function> (f.second);
+        function_prototype & func = * std::dynamic_pointer_cast <function_prototype> (f.second);
         func.llvmFunction (module);
     }
 
@@ -220,11 +261,11 @@ This function is not very fast since it first writes the whole object file to a 
 writes the whole buffer to `stream'. If you need a more efficient way, use emitObjectFile (llvm::raw_ostream).
 @param stream Any ostream that should receive the content of the objectFile.
 **/
-void omni::take2::context::emitObjectFile (std::ostream & stream)
+void omni::take2::context::emitObjectFile (std::ostream & stream, const context_emit_options & options)
 {
     std::string tmp;
     llvm::raw_string_ostream rawStream (tmp);
-    emitObjectFile (rawStream);
+    emitObjectFile (rawStream, options);
     stream << tmp;
 }
 
@@ -232,16 +273,19 @@ void omni::take2::context::emitObjectFile (std::ostream & stream)
 Emits a native object file (e.g. .obj on win32) to stream.
 @param stream Any llvm::raw_ostream that should receive the content of the objectFile.
 **/
-void omni::take2::context::emitObjectFile (llvm::raw_ostream & stream)
+void omni::take2::context::emitObjectFile (llvm::raw_ostream & stream, const context_emit_options & options)
 {
     llvm::Module module ("test", * _llvmContext);
+
+    addDllMainIfMissing (* this, module);
     
     for (auto f : _parts [domain::function]) {
-        function & func = * std::dynamic_pointer_cast <function> (f.second);
+        function_prototype & func = * std::dynamic_pointer_cast <function_prototype> (f.second);
         func.llvmFunction (module);
     }
 
-    llvm::verifyModule (module, llvm::PrintMessageAction);
+    std::string errorInfo;
+    llvm::verifyModule (module, llvm::PrintMessageAction, & errorInfo);
 
     std::string errors;
     std::string targetTriple = "i686-pc-win32";
@@ -266,11 +310,11 @@ void omni::take2::context::emitObjectFile (llvm::raw_ostream & stream)
 Emits a native object file (e.g. .obj on win32) to the file `fileName'.
 @param fileName The path of the file where the object file should be written to.
 **/
-void omni::take2::context::emitObjectFile (std::string const & fileName)
+void omni::take2::context::emitObjectFile (std::string const & fileName, const context_emit_options & options)
 {
     std::string errorInfo;
     llvm::raw_fd_ostream rawStream (fileName.c_str (), errorInfo);
-    emitObjectFile (rawStream);
+    emitObjectFile (rawStream, options);
 }
 
 /**
@@ -280,17 +324,39 @@ For every shared object file, an object file with the same base name but the ext
 is temporarily created and removed before this function returns.
 For example emitSharedLibraryFile /home/foo/shared.so will temporarily create a file /home/foo/shared.o.
 **/
-void omni::take2::context::emitSharedLibraryFile (std::string const & fileName)
+void omni::take2::context::emitSharedLibraryFile (std::string const & fileName, const context_emit_options & options)
 {
     boost::filesystem::path sharedLibraryPath (fileName);
     boost::filesystem::path objectFilePath = sharedLibraryPath;
     objectFilePath.replace_extension (".obj");
-    emitObjectFile (objectFilePath.string ());
+    emitObjectFile (objectFilePath.string (), options);
+    /*
+    boost::filesystem::path assemblyFilePath = objectFilePath;
+    assemblyFilePath.replace_extension (".ll");
+    emitAssemblyFile (assemblyFilePath.string ());
+    */
     if (! boost::filesystem::exists (objectFilePath)) {
         throw omni::take2::logic_error (__FILE__, __FUNCTION__, __LINE__, "Object file \"" + objectFilePath.string () + "\" does not exist");
     }
+    std::set <std::string> additionalLibraries;
+    additionalLibraries.insert ("LIBCMT.LIB");
+    for (auto i : _parts) {
+        for (auto p : i.second) {
+            p.second->fillLibraries (additionalLibraries);
+        }
+    }
     std::string command = "..\\tools\\link_helper.cmd \"" + objectFilePath.string () + "\" \"/OUT:" + sharedLibraryPath.string () + "\"";
-    std::system (command.c_str ());
-    boost::system::error_code errorCode;
-    boost::filesystem::remove (objectFilePath, errorCode); // ignores failures on purpose
+    for (auto librarySearchPath : options.getLibrarySearchPaths ()) {
+        command += " /LIB:\"" + librarySearchPath.string () + "\"";
+    }
+    for (auto library : additionalLibraries) {
+        command += " " + library;
+    }
+    int errorCode = std::system (command.c_str ());
+    if (errorCode != 0) {
+        throw std::runtime_error ((boost::format ("Linking the object file %1% failed.") % objectFilePath).str ().c_str ());
+    }
+    boost::system::error_code ignored;
+    boost::filesystem::remove (objectFilePath, ignored); // ignores failures on purpose
+//    boost::filesystem::remove (assemblyFilePath, errorCode); // ignores failures on purpose
 }

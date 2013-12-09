@@ -3,6 +3,8 @@
 
 #include <omni/take2/take2.hpp>
 #include <omni/take2/domain.hpp>
+#include <omni/take2/type_class.hpp>
+#include <omni/take2/context_emit_options.hpp>
 #include <omni/take2/id.hpp>
 #include <memory>
 #include <string>
@@ -16,6 +18,7 @@ namespace llvm {
 namespace omni {
 namespace take2 {
     class function;
+    class function_prototype;
     class type;
     class block;
     class context_part;
@@ -33,22 +36,24 @@ namespace take2 {
         id createId (domain domain);
         void setEntryPoint (std::shared_ptr <function> function);
 
-        void emitAssemblyFile (std::ostream & stream);
-        void emitAssemblyFile (llvm::raw_ostream & stream);
-        void emitAssemblyFile (std::string const & fileName);
+        void emitAssemblyFile (std::ostream & stream, const context_emit_options & options = context_emit_options ());
+        void emitAssemblyFile (llvm::raw_ostream & stream, const context_emit_options & options = context_emit_options ());
+        void emitAssemblyFile (std::string const & fileName, const context_emit_options & options = context_emit_options ());
         
-        void emitObjectFile (std::ostream & stream);
-        void emitObjectFile (llvm::raw_ostream & stream);
-        void emitObjectFile (std::string const & fileName);
+        void emitObjectFile (std::ostream & stream, const context_emit_options & options = context_emit_options ());
+        void emitObjectFile (llvm::raw_ostream & stream, const context_emit_options & options = context_emit_options ());
+        void emitObjectFile (std::string const & fileName, const context_emit_options & options = context_emit_options ());
 
-        void emitSharedLibraryFile (std::ostream & stream);
-        void emitSharedLibraryFile (llvm::raw_ostream & stream);
-        void emitSharedLibraryFile (std::string const & fileName);
+        void emitSharedLibraryFile (std::ostream & stream, const context_emit_options & options = context_emit_options ());
+        void emitSharedLibraryFile (llvm::raw_ostream & stream, const context_emit_options & options = context_emit_options ());
+        void emitSharedLibraryFile (std::string const & fileName, const context_emit_options & options = context_emit_options ());
 
         std::shared_ptr <function> createFunction (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
-        std::shared_ptr <function> findFunctionByName (std::string const & name);
-        void addFunction (std::shared_ptr <function> function);
-        bool removeFunction (std::shared_ptr <function> function);
+        std::shared_ptr <function_prototype> findFunctionByName (std::string const & name);
+        void addFunction (std::shared_ptr <function_prototype> function);
+        bool removeFunction (std::shared_ptr <function_prototype> function);
+
+        std::shared_ptr <type> sharedType (type_class typeClass);
 
         const llvm::LLVMContext & llvmContext () const;
         llvm::LLVMContext & llvmContext ();
@@ -59,6 +64,7 @@ namespace take2 {
 
         std::unique_ptr <llvm::LLVMContext> _llvmContext;
         std::shared_ptr <function> _entryPoint;
+        std::map <type_class, std::shared_ptr <type>> _sharedTypes;
         domain_id_to_parts_map _parts;
     };
 

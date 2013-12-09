@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE (createAndFindFunction)
     context c;
     std::shared_ptr <block> emptyBody (new block ());
     const std::string functionName = "test";
-    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (new type (c, type_class::t_signedInt)), emptyBody);
+    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), emptyBody);
     
     BOOST_CHECK (func->getName () == functionName);
     
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE (addAndFindFunction)
     context c;
     std::shared_ptr <block> emptyBody (new block ());
     const std::string functionName = "test";
-    std::shared_ptr <function> func (new function (functionName, static_cast <std::shared_ptr <type>> (new type (c, type_class::t_signedInt)), emptyBody));
+    std::shared_ptr <function> func (new function (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), emptyBody));
 
     BOOST_CHECK (func->getContext () == nullptr);
 
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE (removeFunction)
     context c;
     std::shared_ptr <block> emptyBody (new block ());
     const std::string functionName = "test";
-    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (new type (c, type_class::t_signedInt)), emptyBody);
+    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), emptyBody);
     
     BOOST_CHECK (c.findFunctionByName (func->getName ()) != nullptr);
     BOOST_CHECK (c.findFunctionByName (func->getName ())->getName () == functionName);
@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE (emitAssemblyFile)
     std::shared_ptr <statement> return42 (new return_statement (literal42exp));
     body->appendStatement (return42);
     const std::string functionName = "test";
-    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (new type (c, type_class::t_signedInt)), body);
+    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), body);
     omni::tests::test_file_manager testFileManager;
     std::string assemblyFileName = testFileManager.getTestFileName ("emitAssemblyFile.ll").string ();
     c.emitAssemblyFile (assemblyFileName);
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE (emitObjectFile)
     std::shared_ptr <statement> return42 (new return_statement (literal42exp));
     body->appendStatement (return42);
     const std::string functionName = "test";
-    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (new type (c, type_class::t_signedInt)), body);
+    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), body);
     omni::tests::test_file_manager testFileManager;
     boost::filesystem::path objectFilePath = testFileManager.getTestFileName ("emitObjectFile.obj");
     std::string objectFileName = objectFilePath.string ();
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE (emitSharedLibraryFile)
     std::shared_ptr <statement> return42 (new return_statement (literal42exp));
     body->appendStatement (return42);
     const std::string functionName = "test";
-    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (new type (c, type_class::t_signedInt)), body);
+    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), body);
     omni::tests::test_file_manager testFileManager;
     int functionCallResult = omni::tests::runFunction <int> (func, testFileManager, "emitSharedLibraryFile");
     BOOST_CHECK_EQUAL (functionCallResult, 42);

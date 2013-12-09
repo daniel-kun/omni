@@ -33,6 +33,9 @@
     <ClCompile Include="..\source\omni\tests\test_llvm.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\tests\test_external_function.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />

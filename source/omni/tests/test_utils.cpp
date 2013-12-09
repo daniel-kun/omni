@@ -4,6 +4,7 @@
 #include <omni/take2/function.hpp>
 #include <omni/take2/linkage_type.hpp>
 #include <omni/take2/context.hpp>
+#include <omni/take2/context_emit_options.hpp>
 #include <sstream>
 
 /**
@@ -28,8 +29,7 @@ boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_
     std::stringstream functionNameBuilder;
     functionNameBuilder << "main" << (++ counter);
     functionName = functionNameBuilder.str ();
-    std::shared_ptr <function> caller (new function (functionName, returnType, body));
-    caller->setLinkageType (linkage_type::external);
+    std::shared_ptr <function> caller (new function (functionName, returnType, body, true));
     context & c (* func->getContext ());
     c.addFunction (caller);
     std::string sharedLibraryName = testFileManager.getTestFileName (fileBaseName + ".dll").string ();

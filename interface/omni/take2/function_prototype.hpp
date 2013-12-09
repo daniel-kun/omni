@@ -9,6 +9,7 @@
 #include <string>
 
 namespace llvm {
+    class FunctionType;
     class Function;
     class Module;
 }
@@ -20,28 +21,28 @@ namespace take2 {
     class block;
     class type;
 
+    /**
+    A function_prototype defines the name, return type and parameters of a function and adds basic functionalities to read and modify these values.
+    **/
     class OMNI_TAKE2_API function_prototype : public context_part {
     public:
-        function_prototype (std::string const & name, std::shared_ptr <type> returnType);
+        function_prototype (std::string const & name,
+                            std::shared_ptr <type> returnType,
+                            std::vector <std::shared_ptr <omni::take2::parameter>> parameters = std::vector <std::shared_ptr <omni::take2::parameter>> ());
         virtual ~ function_prototype ();
 
         const std::shared_ptr <type> getReturnType () const;
         std::shared_ptr <type> getReturnType ();
 
-        linkage_type getLinkageType () const;
-        void setLinkageType (linkage_type linkageType);
-
+        llvm::FunctionType * llvmFunctionType ();
         virtual llvm::Function * llvmFunction (llvm::Module & llvmModule) = 0;
 
         void addParameter (std::shared_ptr <parameter> parameter);
         void setParameters (std::vector <std::shared_ptr <omni::take2::parameter>> parameters);
         std::vector <std::shared_ptr <parameter>> getParameters () const;
  
-        const std::shared_ptr <block> getBody () const;
-
     protected:
         llvm::Function * _llvmFunction;
-        linkage_type _linkageType;
         std::shared_ptr <type> _returnType;
         std::vector <std::shared_ptr <omni::take2::parameter>> _parameters;
     };

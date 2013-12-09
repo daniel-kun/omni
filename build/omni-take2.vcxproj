@@ -48,7 +48,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\interface\omni\take2\already_exists_error.hpp" />
+    <ClInclude Include="..\interface\omni\take2\context_emit_options.hpp" />
     <ClInclude Include="..\interface\omni\take2\domain.hpp" />
+    <ClInclude Include="..\interface\omni\take2\external_function.hpp" />
     <ClInclude Include="..\interface\omni\take2\function_call_expression.hpp" />
     <ClInclude Include="..\interface\omni\take2\function_prototype.hpp" />
     <ClInclude Include="..\interface\omni\take2\id_domain.hpp" />
@@ -81,10 +83,12 @@
     <ClCompile Include="..\source\omni\take2\block.cpp" />
     <ClCompile Include="..\source\omni\take2\builtin_literal.cpp" />
     <ClCompile Include="..\source\omni\take2\context.cpp" />
+    <ClCompile Include="..\source\omni\take2\context_emit_options.cpp" />
     <ClCompile Include="..\source\omni\take2\context_part.cpp" />
     <ClCompile Include="..\source\omni\take2\domain.cpp" />
     <ClCompile Include="..\source\omni\take2\expression.cpp" />
     <ClCompile Include="..\source\omni\take2\expression_statement.cpp" />
+    <ClCompile Include="..\source\omni\take2\external_function.cpp" />
     <ClCompile Include="..\source\omni\take2\function.cpp" />
     <ClCompile Include="..\source\omni\take2\function_call_expression.cpp" />
     <ClCompile Include="..\source\omni\take2\function_prototype.cpp" />

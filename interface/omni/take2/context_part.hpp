@@ -5,6 +5,7 @@
 #include <omni/take2/id.hpp>
 #include <string>
 #include <memory>
+#include <set>
 
 namespace omni {
 namespace take2 {
@@ -29,6 +30,8 @@ namespace take2 {
 
         void setId (id newId);
         id getId () const;
+
+        virtual void fillLibraries (std::set <std::string> & libraries);
 
     private:
         context * _context;

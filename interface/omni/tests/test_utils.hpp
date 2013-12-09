@@ -65,7 +65,7 @@ Return omni::tests::runFunction (std::shared_ptr <omni::take2::function> func,
 //        testFunc nullTestFunc = nullptr;
 //        BOOST_CHECK_NE (f, nullTestFunc);
         if (f != nullptr) {
-            int result = (*f)();
+            Return result = (*f)();
             ::FreeLibrary (lib);
             return result;
         } else {

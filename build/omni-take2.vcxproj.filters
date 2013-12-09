@@ -96,6 +96,12 @@
     <ClInclude Include="..\interface\omni\take2\function_prototype.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="..\interface\omni\take2\external_function.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\take2\context_emit_options.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\take2\sandbox.cpp">
@@ -177,6 +183,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="..\source\omni\take2\function_prototype.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\take2\external_function.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\take2\context_emit_options.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

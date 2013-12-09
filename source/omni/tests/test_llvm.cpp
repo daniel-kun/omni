@@ -1,3 +1,8 @@
+//  The Omni Programming Environment
+//
+// This file is distributed under the MIT Open Source License.
+// See LICENSE.MD for details.
+
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Function.h>
@@ -23,17 +28,26 @@
 
 BOOST_AUTO_TEST_SUITE (llvm)
 
+/*
 BOOST_AUTO_TEST_CASE (llvmPlayground)
 {
     llvm::LLVMContext c;
     llvm::Module module("test", c);
-    llvm::Type * functionType = llvm::IntegerType::get(c, 16);
-    llvm::Function * llvmFunction = llvm::cast <llvm::Function>(module.getOrInsertFunction("foo", functionType, nullptr));
+
+    llvm::Type * int32Type = llvm::Type::getInt32Ty (c);
+    std::vector <llvm::Type*> putcharArgs (1, int32Type);
+    llvm::FunctionType * putcharFunctionType = llvm::FunctionType::get (int32Type, putcharArgs, false);
+    llvm::Function * putcharFunction = llvm::cast <llvm::Function> (llvm::Function::Create (putcharFunctionType, llvm::GlobalValue::ExternalLinkage, "putchar", &module));
+
+    llvm::FunctionType * mainFunctionType = llvm::FunctionType::get (int32Type, std::vector <llvm::Type*> (), false);
+    llvm::Function * llvmFunction = llvm::cast <llvm::Function> (llvm::Function::Create (mainFunctionType, llvm::GlobalValue::ExternalLinkage, "main", & module));
     llvmFunction->setCallingConv(llvm::CallingConv::C);
     llvm::BasicBlock * body = llvm::BasicBlock::Create(c, "__entry__", llvmFunction);
     llvm::IRBuilder <true, llvm::NoFolder> builder(body);
-    llvm::Value * result = builder.CreateBinOp(llvm::Instruction::BinaryOps::Add, llvm::ConstantInt::getSigned(functionType, 40), llvm::ConstantInt::getSigned(functionType, 2));
-    builder.CreateRet(result);
+    std::vector <llvm::Value*> callArguments;
+    callArguments.push_back (llvm::ConstantInt::get (int32Type, static_cast <uint64_t> ('O')));
+    builder.CreateCall (putcharFunction, callArguments);
+    builder.CreateRet (llvm::ConstantInt::get (int32Type, 0));
 
     llvm::verifyModule(module, llvm::PrintMessageAction);
 
@@ -44,5 +58,6 @@ BOOST_AUTO_TEST_CASE (llvmPlayground)
     pm.add(llvm::createPrintModulePass(& fileStream));
     pm.run(module);
 }
+*/
 
 BOOST_AUTO_TEST_SUITE_END ()

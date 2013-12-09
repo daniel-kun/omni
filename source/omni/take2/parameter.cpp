@@ -6,12 +6,12 @@ omni::take2::parameter::parameter (std::shared_ptr <type> type, std::string name
 {
 }
 
-const omni::take2::type & omni::take2::parameter::getType () const
+const std::shared_ptr <omni::take2::type>  omni::take2::parameter::getType () const
 {
-    return * _type;
+    return _type;
 }
 
-omni::take2::type & omni::take2::parameter::getType ()
+std::shared_ptr <omni::take2::type> omni::take2::parameter::getType ()
 {
-    return * _type;
+    return _type;
 }
