@@ -1,3 +1,0 @@
-void sandbox_basic ()
-{
-}

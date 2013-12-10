@@ -1,6 +1,0 @@
-omni::core::context::save to save the modules to an .ll file
-
-add parameters and return type to omni::core::type::addFunction
-add means to add instructions to omni::core::function
-define high-level program flow instructions such as loops, if, etc.
-
