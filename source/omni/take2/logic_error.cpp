@@ -1,4 +1,5 @@
 #include <omni/take2/logic_error.hpp>
+
 #include <sstream>
 
 namespace {

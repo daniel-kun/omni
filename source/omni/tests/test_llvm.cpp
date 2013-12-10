@@ -1,8 +1,3 @@
-//  The Omni Programming Environment
-//
-// This file is distributed under the MIT Open Source License.
-// See LICENSE.MD for details.
-
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Function.h>

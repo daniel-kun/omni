@@ -3,6 +3,7 @@
 
 #include <omni/take2/take2.hpp>
 #include <omni/take2/domain.hpp>
+
 #include <stdexcept>
 
 #pragma warning(push)
@@ -11,6 +12,10 @@
 namespace omni {
 namespace take2 {
 
+    /**
+    Is thrown when something was expected to not exist, but it existed.
+    E.g. when adding a function to a class where a function with the same prototype already exists.
+    **/
     class OMNI_TAKE2_API already_exists_error : public std::runtime_error {
     public:
         already_exists_error (domain domain, std::string const & identifier);

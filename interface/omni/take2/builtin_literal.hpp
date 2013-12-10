@@ -4,7 +4,7 @@
 #include <omni/take2/take2.hpp>
 #include <omni/take2/literal.hpp>
 #include <omni/take2/not_implemented_error.hpp>
-#include <llvm/IR/Constants.h>
+
 #include <memory>
 
 namespace omni {

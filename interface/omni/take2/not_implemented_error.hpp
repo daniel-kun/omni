@@ -3,6 +3,7 @@
 
 #include <omni/take2/take2.hpp>
 #include <omni/take2/logic_error.hpp>
+
 #include <string>
 
 #pragma warning(push)

@@ -3,6 +3,7 @@
 
 #include <omni/take2/take2.hpp>
 #include <omni/take2/id.hpp>
+
 #include <string>
 #include <memory>
 #include <set>

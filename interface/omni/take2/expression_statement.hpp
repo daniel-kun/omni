@@ -14,7 +14,7 @@ namespace take2 {
     class expression;
 
     /**
-    An expression is anything that is executed at runtime.
+    An expression_statement is a statement that executes an expression, but discards the result.
     **/
     class OMNI_TAKE2_API expression_statement : public statement {
     public:

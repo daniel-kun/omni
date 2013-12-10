@@ -6,6 +6,7 @@
 #include <omni/take2/type_class.hpp>
 #include <omni/take2/context_emit_options.hpp>
 #include <omni/take2/id.hpp>
+
 #include <memory>
 #include <string>
 #include <map>

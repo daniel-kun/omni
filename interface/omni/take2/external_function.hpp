@@ -9,7 +9,7 @@ namespace take2 {
     class type;
 
     /**
-    An external_function is defined in another module and does not contain a body definition.
+    An external_function is defined in another module and does not contain a body and therefore no definition.
     external_function can be seen similar as a function declaration in C that is not defined in the same module, but imported from another static or shared library.
     **/
     class OMNI_TAKE2_API external_function : public function_prototype {

@@ -3,6 +3,7 @@
 
 #include <omni/take2/take2.hpp>
 #include <omni/take2/context_part.hpp>
+
 #include <vector>
 #include <memory>
 
@@ -10,6 +11,9 @@ namespace omni {
 namespace take2 {
     class statement;
 
+    /**
+    A block is a list of statements that is executed in a specific context. Examples are function bodies and bodies of an 'if', 'else', 'while' or 'for'-statement.
+    **/
     class OMNI_TAKE2_API block : public context_part {
     public:
         const std::vector <std::shared_ptr <statement> > getStatements () const;

@@ -1,5 +1,3 @@
-#include <fstream>
-
 #include <omni/take2/context.hpp>
 #include <omni/take2/function.hpp>
 #include <omni/take2/already_exists_error.hpp>
@@ -28,6 +26,8 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
+
+#include <fstream>
 
 namespace {
     /**
@@ -319,7 +319,7 @@ void omni::take2::context::emitObjectFile (std::string const & fileName, const c
 
 /**
 Emits a shared object file (.so on Linux/Unix, .dll on Windows or .dylib on Mac OS) to the file at the path `fileName'.
-Remember to set the  linkage_type of functions that you want to export frmo your shared object to linkage_type::external.
+Remember to set functions to "external" with function::setExternal(true) when you want to export them from your shared object.
 For every shared object file, an object file with the same base name but the extension .obj (on Windows) or .o (on Linux/Unix)
 is temporarily created and removed before this function returns.
 For example emitSharedLibraryFile /home/foo/shared.so will temporarily create a file /home/foo/shared.o.

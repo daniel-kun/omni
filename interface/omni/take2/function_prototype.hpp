@@ -3,7 +3,7 @@
 
 #include <omni/take2/take2.hpp>
 #include <omni/take2/context_part.hpp>
-#include <omni/take2/linkage_type.hpp>
+
 #include <memory>
 #include <vector>
 #include <string>

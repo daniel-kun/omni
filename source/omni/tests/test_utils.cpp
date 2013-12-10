@@ -2,14 +2,13 @@
 #include <omni/take2/type.hpp>
 #include <omni/take2/block.hpp>
 #include <omni/take2/function.hpp>
-#include <omni/take2/linkage_type.hpp>
 #include <omni/take2/context.hpp>
 #include <omni/take2/context_emit_options.hpp>
 #include <sstream>
 
 /**
 Emits a shared library file with the name fileBaseName.dll. The library exports a function "main" that calls the
-function `func'. That way, it does not matter whether func's linkage_type is external or not.
+function `func'. That way, it does not matter whether func is external or not.
 Main automatically has the same return type as func. func and main may not take parameters.
 @return The path of the created shared library file.
 **/

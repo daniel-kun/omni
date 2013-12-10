@@ -72,9 +72,6 @@
     <ClInclude Include="..\interface\omni\take2\binary_operator_expression.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="..\interface\omni\take2\id_domain.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="..\interface\omni\take2\take2.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -85,9 +82,6 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="..\interface\omni\take2\function_call_expression.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="..\interface\omni\take2\linkage_type.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="..\interface\omni\take2\logic_error.hpp">
@@ -174,9 +168,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="..\source\omni\take2\function_call_expression.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\omni\take2\linkage_type.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="..\source\omni\take2\logic_error.cpp">

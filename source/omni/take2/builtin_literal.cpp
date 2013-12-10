@@ -2,6 +2,8 @@
 #include <omni/take2/type_class.hpp>
 #include <omni/take2/type.hpp>
 
+#include <llvm/IR/Constants.h>
+
 template <>
 omni::take2::builtin_literal <signed char>::builtin_literal (context & context, signed char value) :
     literal (static_cast <std::shared_ptr <type>> (type::sharedType (context, type_class::t_signedByte))),

@@ -2,6 +2,7 @@
 #define OMNI_TAKE2_LOGIC_ERROR_HPP
 
 #include <omni/take2/take2.hpp>
+
 #include <stdexcept>
 #include <string>
 
