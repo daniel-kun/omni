@@ -1,27 +1,27 @@
-#include <omni/take2/context.hpp>
-#include <omni/take2/block.hpp>
-#include <omni/take2/type.hpp>
-#include <omni/take2/function.hpp>
-#include <omni/take2/context_part.hpp>
-#include <omni/take2/return_statement.hpp>
-#include <omni/take2/literal_expression.hpp>
-#include <omni/take2/builtin_literal.hpp>
-#include <omni/take2/function_call_expression.hpp>
-#include <omni/take2/expression_statement.hpp>
+#include <omni/core/context.hpp>
+#include <omni/core/block.hpp>
+#include <omni/core/type.hpp>
+#include <omni/core/function.hpp>
+#include <omni/core/context_part.hpp>
+#include <omni/core/return_statement.hpp>
+#include <omni/core/literal_expression.hpp>
+#include <omni/core/builtin_literal.hpp>
+#include <omni/core/function_call_expression.hpp>
+#include <omni/core/expression_statement.hpp>
 #include <omni/tests/test_file_manager.hpp>
 #include <omni/tests/test_utils.hpp>
 #include <set>
 #include <memory>
 #include <iostream>
 
-#define BOOST_TEST_MODULE OmniTake2
+#define BOOST_TEST_MODULE OmniCore
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(contextTests)
 
 BOOST_AUTO_TEST_CASE(ctor)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     context c;
 }
 
@@ -30,7 +30,7 @@ Creates 20 ids for each domain and checks whether they are unique.
 **/
 BOOST_AUTO_TEST_CASE(createId)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     context c;
     std::set <id> ids;
     for (domain d = domain::first; d < domain::last; d = static_cast <domain> (static_cast <int> (d) + 1)) {
@@ -48,7 +48,7 @@ Tests that a function can be created using createFunction and later be found via
 **/
 BOOST_AUTO_TEST_CASE (createAndFindFunction)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     context c;
     std::shared_ptr <block> emptyBody (new block ());
     const std::string functionName = "test";
@@ -72,7 +72,7 @@ Tests that a manually created function can be added using addFunction and later 
 **/
 BOOST_AUTO_TEST_CASE (addAndFindFunction)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     context c;
     std::shared_ptr <block> emptyBody (new block ());
     const std::string functionName = "test";
@@ -101,7 +101,7 @@ Tests that a previously added function that is verified to exist in a context ca
 **/
 BOOST_AUTO_TEST_CASE (removeFunction)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     context c;
     std::shared_ptr <block> emptyBody (new block ());
     const std::string functionName = "test";
@@ -125,7 +125,7 @@ TODO: Check, whether llvm can interpret the resulting ll file.
 **/
 BOOST_AUTO_TEST_CASE (emitAssemblyFile)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     context c;
     std::shared_ptr <block> body (new block ());
     std::shared_ptr <literal> literal42 (new builtin_literal <signed int> (c, 42));
@@ -145,7 +145,7 @@ Writes an object file (.o on Linux/Unix, .obj on Windows) and checks, whether it
 **/
 BOOST_AUTO_TEST_CASE (emitObjectFile)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     context c;
     std::shared_ptr <block> body (new block ());
     std::shared_ptr <literal> literal42 (new builtin_literal <signed int> (c, 42));
@@ -167,7 +167,7 @@ to call the function exported from it.
 **/
 BOOST_AUTO_TEST_CASE (emitSharedLibraryFile)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     context c;
     std::shared_ptr <block> body (new block ());
     std::shared_ptr <literal> literal42 (new builtin_literal <signed int> (c, 42));

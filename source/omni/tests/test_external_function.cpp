@@ -1,13 +1,13 @@
-#include <omni/take2/external_function.hpp>
-#include <omni/take2/block.hpp>
-#include <omni/take2/context.hpp>
-#include <omni/take2/type.hpp>
-#include <omni/take2/builtin_literal.hpp>
-#include <omni/take2/literal_expression.hpp>
-#include <omni/take2/function.hpp>
-#include <omni/take2/parameter.hpp>
-#include <omni/take2/function_call_expression.hpp>
-#include <omni/take2/expression_statement.hpp>
+#include <omni/core/external_function.hpp>
+#include <omni/core/block.hpp>
+#include <omni/core/context.hpp>
+#include <omni/core/type.hpp>
+#include <omni/core/builtin_literal.hpp>
+#include <omni/core/literal_expression.hpp>
+#include <omni/core/function.hpp>
+#include <omni/core/parameter.hpp>
+#include <omni/core/function_call_expression.hpp>
+#include <omni/core/expression_statement.hpp>
 
 #include <omni/tests/test_utils.hpp>
 
@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE (externalFunctionTests)
 
 BOOST_AUTO_TEST_CASE (ctor)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     context c;
     std::shared_ptr <external_function> function_putchar (new external_function ("LIBCMT.LIB", "putchar", type::sharedType (c, type_class::t_signedInt)));
     std::shared_ptr <parameter> param1 (new parameter (type::sharedType (c, type_class::t_signedInt), std::string ()));

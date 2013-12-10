@@ -1,10 +1,10 @@
-#include <omni/take2/binary_operator_expression.hpp>
-#include <omni/take2/context.hpp>
-#include <omni/take2/function.hpp>
-#include <omni/take2/block.hpp>
-#include <omni/take2/builtin_literal.hpp>
-#include <omni/take2/literal_expression.hpp>
-#include <omni/take2/expression_statement.hpp>
+#include <omni/core/binary_operator_expression.hpp>
+#include <omni/core/context.hpp>
+#include <omni/core/function.hpp>
+#include <omni/core/block.hpp>
+#include <omni/core/builtin_literal.hpp>
+#include <omni/core/literal_expression.hpp>
+#include <omni/core/expression_statement.hpp>
 
 #include <omni/tests/test_utils.hpp>
 #include <omni/tests/test_file_manager.hpp>
@@ -31,17 +31,17 @@ public:
         }
 protected:
     std::size_t _testCounter;
-    omni::take2::context _context;
+    omni::core::context _context;
 };
 
 template <typename T>
 T test (std::size_t & testCounter,
-        omni::take2::context & c,
-        omni::take2::binary_operator_expression::binary_operation operation,
-        omni::take2::builtin_literal <T> * left,
-        omni::take2::builtin_literal <T> * right)
+        omni::core::context & c,
+        omni::core::binary_operator_expression::binary_operation operation,
+        omni::core::builtin_literal <T> * left,
+        omni::core::builtin_literal <T> * right)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     std::shared_ptr <block> body (new block ());
     std::shared_ptr <literal_expression> leftExpression (new literal_expression (std::shared_ptr <literal> (left)));
     std::shared_ptr <literal_expression> rightExpression (new literal_expression (std::shared_ptr <literal> (right)));
@@ -67,8 +67,8 @@ This offers a better orientation when a BOOST_CHECK_EQUAL failes.
     auto result = test (TESTCOUNTER,\
                         CONTEXT,\
                         OPERATION,\
-                        new omni::take2::builtin_literal <decltype(LEFT)> (CONTEXT, LEFT),\
-                        new omni::take2::builtin_literal <decltype(RIGHT)> (CONTEXT, RIGHT));\
+                        new omni::core::builtin_literal <decltype(LEFT)> (CONTEXT, LEFT),\
+                        new omni::core::builtin_literal <decltype(RIGHT)> (CONTEXT, RIGHT));\
     BOOST_CHECK_EQUAL (result, static_cast <decltype (LEFT)> (LEFT OPERATOR RIGHT));\
     if (result != static_cast <decltype (LEFT)> (LEFT OPERATOR RIGHT)) { \
         std::stringstream fileName; \
@@ -80,82 +80,82 @@ This offers a better orientation when a BOOST_CHECK_EQUAL failes.
 
 /////////// PLUS //////////
 
-#define TEST_PLUS(TESTCOUNTER, CONTEXT, LEFT, RIGHT) TEST_BINOP(TESTCOUNTER, CONTEXT, omni::take2::binary_operator_expression::binary_operation::binary_plus_operation, +, LEFT, RIGHT)
+#define TEST_PLUS(TESTCOUNTER, CONTEXT, LEFT, RIGHT) TEST_BINOP(TESTCOUNTER, CONTEXT, omni::core::binary_operator_expression::binary_operation::binary_plus_operation, +, LEFT, RIGHT)
 
 template <typename T>
-void testNumericLimitsPlus (std::size_t & testCounter, omni::take2::context & c)
+void testNumericLimitsPlus (std::size_t & testCounter, omni::core::context & c)
 {
-    TEST_BINOP (testCounter, c, omni::take2::binary_operator_expression::binary_operation::binary_plus_operation, +, 0, 0);
-    TEST_BINOP (testCounter, c, omni::take2::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::min (),     std::numeric_limits <T>::min ());
-    TEST_BINOP (testCounter, c, omni::take2::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::max (),     std::numeric_limits <T>::max ());
-    TEST_BINOP (testCounter, c, omni::take2::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::max () / 2, std::numeric_limits <T>::max () / 2);
+    TEST_BINOP (testCounter, c, omni::core::binary_operator_expression::binary_operation::binary_plus_operation, +, 0, 0);
+    TEST_BINOP (testCounter, c, omni::core::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::min (),     std::numeric_limits <T>::min ());
+    TEST_BINOP (testCounter, c, omni::core::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::max (),     std::numeric_limits <T>::max ());
+    TEST_BINOP (testCounter, c, omni::core::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::max () / 2, std::numeric_limits <T>::max () / 2);
 }
 
 BOOST_FIXTURE_TEST_SUITE (binaryOperatorExpressionTest, test_binary_operator_expression_fixture)
 
 BOOST_AUTO_TEST_CASE (plusSignedShortNumericLimits)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     testNumericLimitsPlus <signed short> (_testCounter, _context);
 }
 
 BOOST_AUTO_TEST_CASE (plusSignedShort1)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_PLUS (_testCounter, _context, 1, 1);
 }
 
 BOOST_AUTO_TEST_CASE (plusSignedShort2)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_PLUS (_testCounter, _context, 256, 256);
 }
 
 BOOST_AUTO_TEST_CASE (plusSignedShort3)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_PLUS (_testCounter, _context, -1, -1);
 }
 
 BOOST_AUTO_TEST_CASE (plusSignedShort4)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_PLUS (_testCounter, _context, -256, -256);
 }
 
 BOOST_AUTO_TEST_CASE (plusUnsignedShortNumericLimits)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     testNumericLimitsPlus <unsigned short> (_testCounter, _context);
 }
 
 BOOST_AUTO_TEST_CASE (plusUnsignedShort1)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_PLUS (_testCounter, _context, 1, 1);
 }
 
 BOOST_AUTO_TEST_CASE (plusUnsignedShort2)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_PLUS (_testCounter, _context, 256, 256);
 }
 
 BOOST_AUTO_TEST_CASE (plusUnsignedShort3)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_PLUS (_testCounter, _context, 0, 1);
 }
 
 BOOST_AUTO_TEST_CASE (plusUnsignedShort4)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_PLUS (_testCounter, _context, 0, -256);
 }
 
 BOOST_AUTO_TEST_CASE (plusSignedInt)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
 
     testNumericLimitsPlus <signed int> (_testCounter, _context);
     TEST_PLUS (_testCounter, _context, 1, 1);
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE (plusSignedInt)
 
 BOOST_AUTO_TEST_CASE (plusUnsignedInt)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     testNumericLimitsPlus <unsigned int> (_testCounter, _context);
     TEST_PLUS (_testCounter, _context, 1u, 1u);
     TEST_PLUS (_testCounter, _context, 256u, 256u);
@@ -176,80 +176,80 @@ BOOST_AUTO_TEST_CASE (plusUnsignedInt)
 
 /////////// MINUS //////////
 
-#define TEST_MINUS(TESTCOUNTER, CONTEXT, LEFT, RIGHT) TEST_BINOP(TESTCOUNTER, CONTEXT, omni::take2::binary_operator_expression::binary_operation::binary_minus_operation, -, LEFT, RIGHT)
+#define TEST_MINUS(TESTCOUNTER, CONTEXT, LEFT, RIGHT) TEST_BINOP(TESTCOUNTER, CONTEXT, omni::core::binary_operator_expression::binary_operation::binary_minus_operation, -, LEFT, RIGHT)
 
 template <typename T>
-void testNumericLimitsMinus (std::size_t & testCounter, omni::take2::context & c)
+void testNumericLimitsMinus (std::size_t & testCounter, omni::core::context & c)
 {
-    TEST_BINOP (testCounter, c, omni::take2::binary_operator_expression::binary_operation::binary_minus_operation, -, 0, 0);
-    TEST_BINOP (testCounter, c, omni::take2::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::min (),     std::numeric_limits <T>::min ());
-    TEST_BINOP (testCounter, c, omni::take2::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::max (),     std::numeric_limits <T>::max ());
-    TEST_BINOP (testCounter, c, omni::take2::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::max () / 2, std::numeric_limits <T>::max () / 2);
+    TEST_BINOP (testCounter, c, omni::core::binary_operator_expression::binary_operation::binary_minus_operation, -, 0, 0);
+    TEST_BINOP (testCounter, c, omni::core::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::min (),     std::numeric_limits <T>::min ());
+    TEST_BINOP (testCounter, c, omni::core::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::max (),     std::numeric_limits <T>::max ());
+    TEST_BINOP (testCounter, c, omni::core::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::max () / 2, std::numeric_limits <T>::max () / 2);
 }
 
 BOOST_AUTO_TEST_CASE (minusSignedShortNumericLimits)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     testNumericLimitsMinus <signed short> (_testCounter, _context);
 }
 
 BOOST_AUTO_TEST_CASE (minusSignedShort1)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_MINUS (_testCounter, _context, 1, 1);
 }
 
 BOOST_AUTO_TEST_CASE (minusSignedShort2)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_MINUS (_testCounter, _context, 256, 256);
 }
 
 BOOST_AUTO_TEST_CASE (minusSignedShort3)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_MINUS (_testCounter, _context, -1, -1);
 }
 
 BOOST_AUTO_TEST_CASE (minusSignedShort4)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_MINUS (_testCounter, _context, -256, -256);
 }
 
 BOOST_AUTO_TEST_CASE (minusUnsignedShortNumericLimits)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     testNumericLimitsMinus <unsigned short> (_testCounter, _context);
 }
 
 BOOST_AUTO_TEST_CASE (minusUnsignedShort1)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_MINUS (_testCounter, _context, 1, 1);
 }
 
 BOOST_AUTO_TEST_CASE (minusUnsignedShort2)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_MINUS (_testCounter, _context, 256, 256);
 }
 
 BOOST_AUTO_TEST_CASE (minusUnsignedShort3)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_MINUS (_testCounter, _context, 0, 1);
 }
 
 BOOST_AUTO_TEST_CASE (minusUnsignedShort4)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     TEST_MINUS (_testCounter, _context, 0, -256);
 }
 
 BOOST_AUTO_TEST_CASE (minusSignedInt)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
 
     testNumericLimitsMinus <signed int> (_testCounter, _context);
     TEST_MINUS (_testCounter, _context, 1, 1);
@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE (minusSignedInt)
 
 BOOST_AUTO_TEST_CASE (minusUnsignedInt)
 {
-    using namespace omni::take2;
+    using namespace omni::core;
     testNumericLimitsMinus <unsigned int> (_testCounter, _context);
     TEST_MINUS (_testCounter, _context, 1u, 1u);
     TEST_MINUS (_testCounter, _context, 256u, 256u);

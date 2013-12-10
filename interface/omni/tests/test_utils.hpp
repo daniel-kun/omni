@@ -2,8 +2,8 @@
 #define OMNI_TESTS_TEST_UTILS_HPP
 
 #include <omni/tests/test_file_manager.hpp>
-#include <omni/take2/function_call_expression.hpp>
-#include <omni/take2/return_statement.hpp>
+#include <omni/core/function_call_expression.hpp>
+#include <omni/core/return_statement.hpp>
 #include <memory>
 #include <string>
 
@@ -13,7 +13,7 @@
 #endif
 
 namespace omni {
-namespace take2 {
+namespace core {
 class function;
 }
 }
@@ -21,13 +21,13 @@ class function;
 namespace omni {
 namespace tests {
 
-boost::filesystem::path emitSharedLibraryWithFunction (std::shared_ptr <omni::take2::function> func,
+boost::filesystem::path emitSharedLibraryWithFunction (std::shared_ptr <omni::core::function> func,
                                                        omni::tests::test_file_manager & testFileManager,
                                                        std::string const & fileBaseName,
                                                        std::string & functionName);
 
 template <typename Return>
-Return runFunction (std::shared_ptr <omni::take2::function> func,
+Return runFunction (std::shared_ptr <omni::core::function> func,
                     omni::tests::test_file_manager & testFileManager,
                     std::string const & fileBaseName);
 
@@ -38,7 +38,7 @@ Return runFunction (std::shared_ptr <omni::take2::function> func,
 Runs the function `function' and returns it's result in a string representation.
 **/
 template <typename Return>
-Return omni::tests::runFunction (std::shared_ptr <omni::take2::function> func,
+Return omni::tests::runFunction (std::shared_ptr <omni::core::function> func,
                                  omni::tests::test_file_manager & testFileManager,
                                  std::string const & fileBaseName)
 {
@@ -70,14 +70,14 @@ Return omni::tests::runFunction (std::shared_ptr <omni::take2::function> func,
             return result;
         } else {
             ::FreeLibrary (lib);
-            throw omni::take2::logic_error (__FILE__, __FUNCTION__, __LINE__,
+            throw omni::core::logic_error (__FILE__, __FUNCTION__, __LINE__,
                                             "Test function could not be found in temporarily created shared object file \"" + sharedLibraryPath.string () + "\".");
         }
     }
-    throw omni::take2::logic_error (__FILE__, __FUNCTION__, __LINE__,
+    throw omni::core::logic_error (__FILE__, __FUNCTION__, __LINE__,
                                     "Test shared object could not be loaded: \"" + sharedLibraryPath.string () + "\".");
 #else
-    throw omni::take2::not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
+    throw omni::core::not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
 #endif
 }
 

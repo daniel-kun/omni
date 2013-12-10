@@ -70,16 +70,16 @@
     <ClCompile Include="..\source\omni\tests\test_utils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="omni-take2.vcxproj">
-      <Project>{c04196c6-45be-4b8f-a1b6-8984594abd17}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\interface\omni\tests\test_file_manager.hpp" />
     <ClInclude Include="..\interface\omni\tests\test_utils.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="omni-core.vcxproj">
+      <Project>{c04196c6-45be-4b8f-a1b6-8984594abd17}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

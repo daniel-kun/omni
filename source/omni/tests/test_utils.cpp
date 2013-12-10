@@ -1,9 +1,9 @@
 #include <omni/tests/test_utils.hpp>
-#include <omni/take2/type.hpp>
-#include <omni/take2/block.hpp>
-#include <omni/take2/function.hpp>
-#include <omni/take2/context.hpp>
-#include <omni/take2/context_emit_options.hpp>
+#include <omni/core/type.hpp>
+#include <omni/core/block.hpp>
+#include <omni/core/function.hpp>
+#include <omni/core/context.hpp>
+#include <omni/core/context_emit_options.hpp>
 #include <sstream>
 
 /**
@@ -12,13 +12,13 @@ function `func'. That way, it does not matter whether func is external or not.
 Main automatically has the same return type as func. func and main may not take parameters.
 @return The path of the created shared library file.
 **/
-boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_ptr <omni::take2::function> func,
+boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_ptr <omni::core::function> func,
                                                                     omni::tests::test_file_manager & testFileManager,
                                                                     std::string const & fileBaseName,
                                                                     std::string & functionName)
 {
     static unsigned int counter = 0;
-    using namespace omni::take2;
+    using namespace omni::core;
     // First, add a function that calls the wanted function.
     std::shared_ptr <type> returnType  (func->getReturnType ());
     std::shared_ptr <block> body (new block ());

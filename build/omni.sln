@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "omni-tests", "omni-tests.vcxproj", "{05F2F7E6-308C-456B-8302-9A20F81B4110}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "omni-take2", "omni-take2.vcxproj", "{C04196C6-45BE-4B8F-A1B6-8984594ABD17}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "omni-core", "omni-core.vcxproj", "{C04196C6-45BE-4B8F-A1B6-8984594ABD17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
