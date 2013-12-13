@@ -1,5 +1,6 @@
 #include <omni/core/function.hpp>
 #include <omni/core/context.hpp>
+#include <omni/core/module.hpp>
 #include <omni/core/type.hpp>
 #include <omni/core/block.hpp>
 #include <omni/core/statement.hpp>
@@ -17,11 +18,13 @@ Initializes a function implementation with the given name, returnType, body and 
 @param body The body (implementation) of this function.
 @param isExported Specifies, whether this function is visible from outside the module it is defined in. @see isExported().
 **/
-omni::core::function::function (std::string const & name,
-                                 std::shared_ptr <type> returnType,
-                                 std::shared_ptr <block> body,
-                                 bool isExported) :
-    function_prototype (name, returnType),
+omni::core::function::function (module & module,
+                                std::string const & name,
+                                std::shared_ptr <type> returnType,
+                                std::shared_ptr <block> body,
+                                bool isExported) :
+    function_prototype (module, name, returnType),
+    _module (module),
     _body (body),
     _isExported (isExported)
 {
@@ -42,7 +45,7 @@ const std::shared_ptr <omni::core::block> omni::core::function::getBody () const
     return _body;
 }
 
-llvm::Function * omni::core::function::llvmFunction (llvm::Module & llvmModule)
+llvm::Function * omni::core::function::llvmFunction ()
 {
     if (_llvmFunction != nullptr) {
         return _llvmFunction;
@@ -56,7 +59,7 @@ llvm::Function * omni::core::function::llvmFunction (llvm::Module & llvmModule)
         } else {
             linkageType = llvm::GlobalValue::InternalLinkage;
         }
-        _llvmFunction = llvm::Function::Create (funcType, linkageType, getName (), & llvmModule);
+        _llvmFunction = llvm::Function::Create (funcType, linkageType, getName (), & getModule ().llvmModule ());
 
         llvm::BasicBlock * body = llvm::BasicBlock::Create (getContext ()->llvmContext (), "__entry__", _llvmFunction);
         for (auto i : _body->getStatements ()) {

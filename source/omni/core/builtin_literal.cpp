@@ -6,42 +6,42 @@
 
 template <>
 omni::core::builtin_literal <signed char>::builtin_literal (context & context, signed char value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedType (context, type_class::t_signedByte))),
+    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_signedByte))),
     _value (value)
 {
 }
 
 template <>
 omni::core::builtin_literal <unsigned char>::builtin_literal (context & context, unsigned char value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedType (context, type_class::t_unsignedByte))),
+    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_unsignedByte))),
     _value (value)
 {
 }
 
 template <>
 omni::core::builtin_literal <signed short>::builtin_literal (context & context, signed short value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedType (context, type_class::t_signedShort))),
+    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_signedShort))),
     _value (value)
 {
 }
 
 template <>
 omni::core::builtin_literal <unsigned short>::builtin_literal (context & context, unsigned short value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedType (context, type_class::t_unsignedShort))),
+    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_unsignedShort))),
     _value (value)
 {
 }
 
 template <>
 omni::core::builtin_literal <signed int>::builtin_literal (context & context, signed int value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedType (context, type_class::t_signedInt))),
+    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_signedInt))),
     _value (value)
 {
 }
 
 template <>
 omni::core::builtin_literal <unsigned int>::builtin_literal (context & context, unsigned int value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedType (context, type_class::t_unsignedInt))),
+    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_unsignedInt))),
     _value (value)
 {
 }

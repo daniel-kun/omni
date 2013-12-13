@@ -17,12 +17,12 @@ omni::core::type::~ type ()
 
 /**
 Returns a shared_ptr for a instance of type for the desired context and type_class.
-Short-hand for creating a type with type::sharedType(context, typeClass); with the additional benefit that types are cached in the context.
-@see context::sharedType(type_class);
+Short-hand for creating a type with type::sharedBasicType(context, typeClass); with the additional benefit that types are cached in the context.
+@see context::sharedBasicType(type_class);
 **/
-std::shared_ptr <omni::core::type> omni::core::type::sharedType (context & context, type_class typeClass)
+std::shared_ptr <omni::core::type> omni::core::type::sharedBasicType (context & context, type_class typeClass)
 {
-    return context.sharedType (typeClass);
+    return context.sharedBasicType (typeClass);
 }
 
 

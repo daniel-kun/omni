@@ -1,6 +1,7 @@
 #include <omni/core/context.hpp>
 #include <omni/core/block.hpp>
 #include <omni/core/type.hpp>
+#include <omni/core/module.hpp>
 #include <omni/core/function.hpp>
 #include <omni/core/context_part.hpp>
 #include <omni/core/return_statement.hpp>
@@ -32,10 +33,11 @@ BOOST_AUTO_TEST_CASE(createId)
 {
     using namespace omni::core;
     context c;
+    module mod (c, "test");
     std::set <id> ids;
     for (domain d = domain::first; d < domain::last; d = static_cast <domain> (static_cast <int> (d) + 1)) {
         for (int i = 0; i < 20; ++ i) {
-            id id = c.createId (d);
+            id id = mod.createId (d);
             BOOST_CHECK (ids.find (id) == ids.end ());
             ids.insert (id);
             BOOST_CHECK (ids.find (id) != ids.end ());
@@ -50,20 +52,21 @@ BOOST_AUTO_TEST_CASE (createAndFindFunction)
 {
     using namespace omni::core;
     context c;
+    module mod (c, "test");
     std::shared_ptr <block> emptyBody (new block ());
     const std::string functionName = "test";
-    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), emptyBody);
+    std::shared_ptr <function> func = mod.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), emptyBody);
     
     BOOST_CHECK (func->getName () == functionName);
     
-    BOOST_CHECK (c.findFunctionByName (func->getName ()) != nullptr);
-    BOOST_CHECK (c.findFunctionByName (func->getName ())->getName () == functionName);
+    BOOST_CHECK (mod.findFunctionByName (func->getName ()) != nullptr);
+    BOOST_CHECK (mod.findFunctionByName (func->getName ())->getName () == functionName);
 
-    BOOST_CHECK (c.findFunctionByName (functionName) != nullptr);
-    BOOST_CHECK (c.findFunctionByName (functionName)->getName () == functionName);
+    BOOST_CHECK (mod.findFunctionByName (functionName) != nullptr);
+    BOOST_CHECK (mod.findFunctionByName (functionName)->getName () == functionName);
 
-    BOOST_CHECK (c.findPartById (func->getId ()) != std::shared_ptr <context_part> ());
-    BOOST_CHECK (std::dynamic_pointer_cast <function> (c.findPartById (func->getId ()))->getName () == functionName);
+    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <context_part> ());
+    BOOST_CHECK (std::dynamic_pointer_cast <function> (mod.findPartById (func->getId ()))->getName () == functionName);
 
 }
 
@@ -74,26 +77,27 @@ BOOST_AUTO_TEST_CASE (addAndFindFunction)
 {
     using namespace omni::core;
     context c;
+    module mod (c, "test");
     std::shared_ptr <block> emptyBody (new block ());
     const std::string functionName = "test";
-    std::shared_ptr <function> func (new function (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), emptyBody));
+    std::shared_ptr <function> func (new function (mod, functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), emptyBody));
 
     BOOST_CHECK (func->getContext () == nullptr);
 
-    c.addFunction (func);
+    mod.addFunction (func);
 
     BOOST_CHECK (func->getName () == functionName);
     
     BOOST_CHECK (func->getContext () == & c);
 
-    BOOST_CHECK (c.findFunctionByName (func->getName ()) != nullptr);
-    BOOST_CHECK (c.findFunctionByName (func->getName ())->getName () == functionName);
+    BOOST_CHECK (mod.findFunctionByName (func->getName ()) != nullptr);
+    BOOST_CHECK (mod.findFunctionByName (func->getName ())->getName () == functionName);
 
-    BOOST_CHECK (c.findFunctionByName (functionName) != nullptr);
-    BOOST_CHECK (c.findFunctionByName (functionName)->getName () == functionName);
+    BOOST_CHECK (mod.findFunctionByName (functionName) != nullptr);
+    BOOST_CHECK (mod.findFunctionByName (functionName)->getName () == functionName);
 
-    BOOST_CHECK (c.findPartById (func->getId ()) != std::shared_ptr <context_part> ());
-    BOOST_CHECK (std::dynamic_pointer_cast <function> (c.findPartById (func->getId ()))->getName () == functionName);
+    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <context_part> ());
+    BOOST_CHECK (std::dynamic_pointer_cast <function> (mod.findPartById (func->getId ()))->getName () == functionName);
 }
 
 /**
@@ -103,20 +107,21 @@ BOOST_AUTO_TEST_CASE (removeFunction)
 {
     using namespace omni::core;
     context c;
+    module mod (c, "test");
     std::shared_ptr <block> emptyBody (new block ());
     const std::string functionName = "test";
-    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), emptyBody);
+    std::shared_ptr <function> func = mod.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), emptyBody);
     
-    BOOST_CHECK (c.findFunctionByName (func->getName ()) != nullptr);
-    BOOST_CHECK (c.findFunctionByName (func->getName ())->getName () == functionName);
+    BOOST_CHECK (mod.findFunctionByName (func->getName ()) != nullptr);
+    BOOST_CHECK (mod.findFunctionByName (func->getName ())->getName () == functionName);
 
     
-    BOOST_CHECK (c.removeFunction (func));
+    BOOST_CHECK (mod.removeFunction (func));
 
     BOOST_CHECK (func->getContext () == nullptr);
 
-    BOOST_CHECK (c.findFunctionByName (func->getName ()) == nullptr);
-    BOOST_CHECK (c.findFunctionByName (functionName) == nullptr);
+    BOOST_CHECK (mod.findFunctionByName (func->getName ()) == nullptr);
+    BOOST_CHECK (mod.findFunctionByName (functionName) == nullptr);
 }
 
 /**
@@ -127,16 +132,17 @@ BOOST_AUTO_TEST_CASE (emitAssemblyFile)
 {
     using namespace omni::core;
     context c;
+    module mod (c, "test");
     std::shared_ptr <block> body (new block ());
     std::shared_ptr <literal> literal42 (new builtin_literal <signed int> (c, 42));
     std::shared_ptr <expression> literal42exp (new literal_expression (literal42));
     std::shared_ptr <statement> return42 (new return_statement (literal42exp));
     body->appendStatement (return42);
     const std::string functionName = "test";
-    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), body);
+    std::shared_ptr <function> func = mod.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), body);
     omni::tests::test_file_manager testFileManager;
     std::string assemblyFileName = testFileManager.getTestFileName ("emitAssemblyFile.ll").string ();
-    c.emitAssemblyFile (assemblyFileName);
+    mod.emitAssemblyFile (assemblyFileName);
     BOOST_CHECK (boost::filesystem::exists(assemblyFileName));
 }
 
@@ -147,17 +153,18 @@ BOOST_AUTO_TEST_CASE (emitObjectFile)
 {
     using namespace omni::core;
     context c;
+    module mod (c, "test");
     std::shared_ptr <block> body (new block ());
     std::shared_ptr <literal> literal42 (new builtin_literal <signed int> (c, 42));
     std::shared_ptr <expression> literal42exp (new literal_expression (literal42));
     std::shared_ptr <statement> return42 (new return_statement (literal42exp));
     body->appendStatement (return42);
     const std::string functionName = "test";
-    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), body);
+    std::shared_ptr <function> func = mod.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), body);
     omni::tests::test_file_manager testFileManager;
     boost::filesystem::path objectFilePath = testFileManager.getTestFileName ("emitObjectFile.obj");
     std::string objectFileName = objectFilePath.string ();
-    c.emitObjectFile (objectFileName);
+    mod.emitObjectFile (objectFileName);
     BOOST_CHECK (boost::filesystem::exists (objectFileName));
 }
 
@@ -169,13 +176,14 @@ BOOST_AUTO_TEST_CASE (emitSharedLibraryFile)
 {
     using namespace omni::core;
     context c;
+    module mod (c, "test");
     std::shared_ptr <block> body (new block ());
     std::shared_ptr <literal> literal42 (new builtin_literal <signed int> (c, 42));
     std::shared_ptr <expression> literal42exp (new literal_expression (literal42));
     std::shared_ptr <statement> return42 (new return_statement (literal42exp));
     body->appendStatement (return42);
     const std::string functionName = "test";
-    std::shared_ptr <function> func = c.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedType (c, type_class::t_signedInt)), body);
+    std::shared_ptr <function> func = mod.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), body);
     omni::tests::test_file_manager testFileManager;
     int functionCallResult = omni::tests::runFunction <int> (func, testFileManager, "emitSharedLibraryFile");
     BOOST_CHECK_EQUAL (functionCallResult, 42);

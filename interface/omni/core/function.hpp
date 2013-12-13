@@ -8,6 +8,7 @@
 
 namespace omni {
 namespace core {
+    class module;
 
     /**
     An object of type 'function' defines a function. In contrast to a function_prototype or an external_function, a 'function' includes the definition of the
@@ -16,15 +17,16 @@ namespace core {
     **/
     class OMNI_CORE_API function : public function_prototype {
     public:
-        function (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body, bool isExported = false);
+        function (module & module, std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body, bool isExported = false);
 
         bool isExported () const;
 
         const std::shared_ptr <block> getBody () const;
 
-        llvm::Function * llvmFunction (llvm::Module & llvmModule) override;
+        llvm::Function * llvmFunction () override;
 
     private:
+        module & _module;
         std::shared_ptr <block> _body;
         bool _isExported;
     };

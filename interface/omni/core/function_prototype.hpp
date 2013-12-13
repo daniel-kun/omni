@@ -20,28 +20,34 @@ namespace core {
     class parameter;
     class block;
     class type;
+    class module;
 
     /**
     A function_prototype defines the name, return type and parameters of a function and adds basic functionalities to read and modify these values.
     **/
     class OMNI_CORE_API function_prototype : public context_part {
     public:
-        function_prototype (std::string const & name,
+        function_prototype (module & module,
+                            std::string const & name,
                             std::shared_ptr <type> returnType,
                             std::vector <std::shared_ptr <omni::core::parameter>> parameters = std::vector <std::shared_ptr <omni::core::parameter>> ());
         virtual ~ function_prototype ();
+
+        module & getModule ();
+        const module & getModule () const;
 
         const std::shared_ptr <type> getReturnType () const;
         std::shared_ptr <type> getReturnType ();
 
         llvm::FunctionType * llvmFunctionType ();
-        virtual llvm::Function * llvmFunction (llvm::Module & llvmModule) = 0;
+        virtual llvm::Function * llvmFunction () = 0;
 
         void addParameter (std::shared_ptr <parameter> parameter);
         void setParameters (std::vector <std::shared_ptr <omni::core::parameter>> parameters);
         std::vector <std::shared_ptr <parameter>> getParameters () const;
  
     protected:
+        module & _module;
         llvm::Function * _llvmFunction;
         std::shared_ptr <type> _returnType;
         std::vector <std::shared_ptr <omni::core::parameter>> _parameters;

@@ -23,50 +23,28 @@ namespace core {
     class type;
     class block;
     class context_part;
+    class module;
 
     /**
-    The "context" is an instance of the omni compiler that store some global information, caches, etc.
+    The "context" is an instance of the omni compiler that store some global information about the architecture of the underlying targets
+    and a list of modules that are to be emitted when the whole context is emitted.
     **/
     class OMNI_CORE_API context {
     public:
         context ();
-        virtual ~ context ();
+        ~ context();
 
-        std::shared_ptr <context_part> findPartById (id id);
+        std::shared_ptr <type> sharedBasicType (type_class typeClass);
 
-        id createId (domain domain);
-        void setEntryPoint (std::shared_ptr <function> function);
-
-        void emitAssemblyFile (std::ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitAssemblyFile (llvm::raw_ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitAssemblyFile (std::string const & fileName, const context_emit_options & options = context_emit_options ());
-        
-        void emitObjectFile (std::ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitObjectFile (llvm::raw_ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitObjectFile (std::string const & fileName, const context_emit_options & options = context_emit_options ());
-
-        void emitSharedLibraryFile (std::ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitSharedLibraryFile (llvm::raw_ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitSharedLibraryFile (std::string const & fileName, const context_emit_options & options = context_emit_options ());
-
-        std::shared_ptr <function> createFunction (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
-        std::shared_ptr <function_prototype> findFunctionByName (std::string const & name);
-        void addFunction (std::shared_ptr <function_prototype> function);
-        bool removeFunction (std::shared_ptr <function_prototype> function);
-
-        std::shared_ptr <type> sharedType (type_class typeClass);
+        void addModule (std::shared_ptr <module> module);
 
         const llvm::LLVMContext & llvmContext () const;
         llvm::LLVMContext & llvmContext ();
 
     private:
-        typedef std::map <std::string, std::shared_ptr <context_part>> id_to_parts_map;
-        typedef std::map <domain, id_to_parts_map> domain_id_to_parts_map;
-
         std::unique_ptr <llvm::LLVMContext> _llvmContext;
-        std::shared_ptr <function> _entryPoint;
-        std::map <type_class, std::shared_ptr <type>> _sharedTypes;
-        domain_id_to_parts_map _parts;
+        std::map <type_class, std::shared_ptr <type>> _sharedBasicTypes;
+        std::vector <std::shared_ptr <module>> _modules;
     };
 
 } // namespace core

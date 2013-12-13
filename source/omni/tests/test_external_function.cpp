@@ -1,6 +1,7 @@
 #include <omni/core/external_function.hpp>
 #include <omni/core/block.hpp>
 #include <omni/core/context.hpp>
+#include <omni/core/module.hpp>
 #include <omni/core/type.hpp>
 #include <omni/core/builtin_literal.hpp>
 #include <omni/core/literal_expression.hpp>
@@ -19,8 +20,9 @@ BOOST_AUTO_TEST_CASE (ctor)
 {
     using namespace omni::core;
     context c;
-    std::shared_ptr <external_function> function_putchar (new external_function ("LIBCMT.LIB", "putchar", type::sharedType (c, type_class::t_signedInt)));
-    std::shared_ptr <parameter> param1 (new parameter (type::sharedType (c, type_class::t_signedInt), std::string ()));
+    module mod (c, "test");
+    std::shared_ptr <external_function> function_putchar (new external_function (mod, "LIBCMT.LIB", "putchar", type::sharedBasicType (c, type_class::t_signedInt)));
+    std::shared_ptr <parameter> param1 (new parameter (type::sharedBasicType (c, type_class::t_signedInt), std::string ()));
     function_putchar->addParameter (param1);
 
     std::shared_ptr <function_call_expression> functionCallExpression (new function_call_expression (function_putchar));
@@ -33,10 +35,10 @@ BOOST_AUTO_TEST_CASE (ctor)
     std::shared_ptr <block> body (new block ());
     std::shared_ptr <return_statement> returnStatement (new return_statement (functionCallExpression));
     body->appendStatement (returnStatement);
-    std::shared_ptr <function> funcCaller (new function ("putcharCaller", type::sharedType (c, type_class::t_signedInt), body));
+    std::shared_ptr <function> funcCaller (new function (mod, "putcharCaller", type::sharedBasicType (c, type_class::t_signedInt), body));
 
-    c.addFunction (function_putchar);
-    c.addFunction (funcCaller);
+    mod.addFunction (function_putchar);
+    mod.addFunction (funcCaller);
 
     omni::tests::test_file_manager testFileManager;
     std::string functionName;

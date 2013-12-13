@@ -1,5 +1,6 @@
 #include <omni/core/function_prototype.hpp>
 #include <omni/core/type.hpp>
+#include <omni/core/module.hpp>
 #include <omni/core/parameter.hpp>
 
 #include <llvm/IR/Type.h>
@@ -13,10 +14,12 @@ in the same module or externally.
 @param returnType The return type of the function for this prototype.
 @param parameters An optional list of parameters that the function for this prototype receives.
 **/
-omni::core::function_prototype::function_prototype (std::string const & name,
-                                                     std::shared_ptr <type> returnType,
-                                                     std::vector <std::shared_ptr <omni::core::parameter>> parameters) :
+omni::core::function_prototype::function_prototype (module & module,
+                                                    std::string const & name,
+                                                    std::shared_ptr <type> returnType,
+                                                    std::vector <std::shared_ptr <omni::core::parameter>> parameters) :
     context_part (name),
+    _module (module),
     _llvmFunction (nullptr),
     _returnType (returnType),
     _parameters (parameters)
@@ -25,6 +28,23 @@ omni::core::function_prototype::function_prototype (std::string const & name,
 
 omni::core::function_prototype::~function_prototype ()
 {
+}
+
+
+/**
+Returns the module that this function is defined in.
+**/
+omni::core::module & omni::core::function_prototype::getModule ()
+{
+    return _module;
+}
+
+/**
+Returns the module that this function is defined in.
+**/
+const omni::core::module & omni::core::function_prototype::getModule () const
+{
+    return _module;
 }
 
 /**

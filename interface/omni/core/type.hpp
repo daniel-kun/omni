@@ -19,7 +19,7 @@ namespace core {
         type (context & context, type_class typeClass);
         virtual ~ type ();
 
-        static std::shared_ptr <type> sharedType (context & context, type_class typeClass);
+        static std::shared_ptr <type> sharedBasicType (context & context, type_class typeClass);
 
         llvm::Type * llvmType ();
 

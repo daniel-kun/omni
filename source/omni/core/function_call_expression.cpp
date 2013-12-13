@@ -88,5 +88,5 @@ llvm::Value * omni::core::function_call_expression::llvmValue (llvm::BasicBlock 
         llvm::Value * val = p->llvmValue (llvmBasicBlock);
         llvmParameters.push_back (val);
     }
-    return builder.CreateCall (_function->llvmFunction (* llvmBasicBlock->getParent ()->getParent ()), llvmParameters);
+    return builder.CreateCall (_function->llvmFunction (), llvmParameters);
 }

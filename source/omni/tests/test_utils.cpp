@@ -1,5 +1,6 @@
 #include <omni/tests/test_utils.hpp>
 #include <omni/core/type.hpp>
+#include <omni/core/module.hpp>
 #include <omni/core/block.hpp>
 #include <omni/core/function.hpp>
 #include <omni/core/context.hpp>
@@ -28,11 +29,11 @@ boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_
     std::stringstream functionNameBuilder;
     functionNameBuilder << "main" << (++ counter);
     functionName = functionNameBuilder.str ();
-    std::shared_ptr <function> caller (new function (functionName, returnType, body, true));
-    context & c (* func->getContext ());
-    c.addFunction (caller);
+    module & mod (func->getModule ());
+    std::shared_ptr <function> caller (new function (mod, functionName, returnType, body, true));
+    mod.addFunction (caller);
     std::string sharedLibraryName = testFileManager.getTestFileName (fileBaseName + ".dll").string ();
-    c.emitSharedLibraryFile (sharedLibraryName);
+    mod.emitSharedLibraryFile (sharedLibraryName);
 
 //    BOOST_CHECK (boost::filesystem::exists(sharedLibraryName));
     return sharedLibraryName;

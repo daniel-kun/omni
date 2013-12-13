@@ -1,5 +1,6 @@
 #include <omni/core/external_function.hpp>
 #include <omni/core/type.hpp>
+#include <omni/core/module.hpp>
 #include <omni/core/parameter.hpp>
 
 #include <llvm/IR/Function.h>
@@ -12,12 +13,13 @@ Initialises an external_function from a C or C++ library.
 @param parameters A list of parameters that this function takes, if any. Can be an empty vector.
 @param isDllImport True, if this function is imported from a DLL. Only for Windows.
 **/
-omni::core::external_function::external_function (std::string libraryName,
-                                                   std::string functionName,
-                                                   std::shared_ptr <omni::core::type> returnType,
-                                                   std::vector <std::shared_ptr <omni::core::parameter>> parameters,
-                                                   bool isDllImport) :
-    function_prototype (functionName, returnType, parameters),
+omni::core::external_function::external_function (module & module,
+                                                  std::string libraryName,
+                                                  std::string functionName,
+                                                  std::shared_ptr <omni::core::type> returnType,
+                                                  std::vector <std::shared_ptr <omni::core::parameter>> parameters,
+                                                  bool isDllImport) :
+    function_prototype (module, functionName, returnType, parameters),
     _libraryName (libraryName),
     _isDllImport (isDllImport)
 {
@@ -40,7 +42,7 @@ bool omni::core::external_function::isDllImport () const
     return _isDllImport;
 }
 
-llvm::Function * omni::core::external_function::llvmFunction (llvm::Module & llvmModule)
+llvm::Function * omni::core::external_function::llvmFunction ()
 {
     if (_llvmFunction == nullptr) {
         llvm::FunctionType * funcType = llvmFunctionType ();
@@ -50,7 +52,7 @@ llvm::Function * omni::core::external_function::llvmFunction (llvm::Module & llv
         } else {
             linkageType = llvm::GlobalValue::ExternalLinkage;
         }
-        _llvmFunction = llvm::Function::Create (funcType, linkageType, getName (), & llvmModule);
+        _llvmFunction = llvm::Function::Create (funcType, linkageType, getName (), & getModule ().llvmModule ());
     }
     assert (_llvmFunction != nullptr);
     return _llvmFunction;

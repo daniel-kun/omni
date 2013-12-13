@@ -1,5 +1,6 @@
 #include <omni/core/function.hpp>
 #include <omni/core/block.hpp>
+#include <omni/core/module.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/type.hpp>
 
@@ -16,16 +17,18 @@ BOOST_AUTO_TEST_CASE (ctor)
 {
     using namespace omni::core;
     context c;
-    std::shared_ptr <type> returnType (type::sharedType (c, type_class::t_signedInt));
-    function func ("hello", returnType, nullptr);
+    module mod (c, "test");
+    std::shared_ptr <type> returnType (type::sharedBasicType (c, type_class::t_signedInt));
+    function func (mod, "hello", returnType, nullptr);
 }
 
 BOOST_AUTO_TEST_CASE (getReturnType)
 {
     using namespace omni::core;
     context c;
-    std::shared_ptr <type> returnType (type::sharedType (c, type_class::t_signedInt));
-    function func ("hello", returnType, nullptr);
+    module mod (c, "test");
+    std::shared_ptr <type> returnType (type::sharedBasicType (c, type_class::t_signedInt));
+    function func (mod, "hello", returnType, nullptr);
     BOOST_CHECK (func.getReturnType ()->getTypeClass () == type_class::t_signedInt);
 }
 
