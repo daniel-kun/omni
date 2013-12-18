@@ -66,13 +66,16 @@
     <ClInclude Include="..\interface\omni\core\logic_error.hpp" />
     <ClInclude Include="..\interface\omni\core\module.hpp" />
     <ClInclude Include="..\interface\omni\core\not_implemented_error.hpp" />
+    <ClInclude Include="..\interface\omni\core\no_context_error.hpp" />
     <ClInclude Include="..\interface\omni\core\parameter.hpp" />
     <ClInclude Include="..\interface\omni\core\return_statement.hpp" />
     <ClInclude Include="..\interface\omni\core\statement.hpp" />
     <ClInclude Include="..\interface\omni\core\core.hpp" />
     <ClInclude Include="..\interface\omni\core\type.hpp" />
     <ClInclude Include="..\interface\omni\core\type_class.hpp" />
-    <ClInclude Include="..\interface\omni\core\variable.hpp" />
+    <ClInclude Include="..\interface\omni\core\type_mismatch_error.hpp" />
+    <ClInclude Include="..\interface\omni\core\use_before_declaration_error.hpp" />
+    <ClInclude Include="..\interface\omni\core\variable_assignment_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\variable_declaration_statement.hpp" />
     <ClInclude Include="..\interface\omni\core\variable_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\context_part.hpp" />
@@ -98,12 +101,15 @@
     <ClCompile Include="..\source\omni\core\logic_error.cpp" />
     <ClCompile Include="..\source\omni\core\module.cpp" />
     <ClCompile Include="..\source\omni\core\not_implemented_error.cpp" />
+    <ClCompile Include="..\source\omni\core\no_context_error.cpp" />
     <ClCompile Include="..\source\omni\core\parameter.cpp" />
     <ClCompile Include="..\source\omni\core\return_statement.cpp" />
     <ClCompile Include="..\source\omni\core\statement.cpp" />
     <ClCompile Include="..\source\omni\core\type.cpp" />
     <ClCompile Include="..\source\omni\core\type_class.cpp" />
-    <ClCompile Include="..\source\omni\core\variable.cpp" />
+    <ClCompile Include="..\source\omni\core\type_mismatch_error.cpp" />
+    <ClCompile Include="..\source\omni\core\use_before_declaration_error.cpp" />
+    <ClCompile Include="..\source\omni\core\variable_assignment_expression.cpp" />
     <ClCompile Include="..\source\omni\core\variable_declaration_statement.cpp" />
     <ClCompile Include="..\source\omni\core\variable_expression.cpp" />
   </ItemGroup>

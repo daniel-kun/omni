@@ -5,6 +5,7 @@
 #include <omni/core/block.hpp>
 #include <omni/core/statement.hpp>
 #include <omni/core/parameter.hpp>
+#include <omni/core/no_context_error.hpp>
 
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/BasicBlock.h>
@@ -47,6 +48,9 @@ const std::shared_ptr <omni::core::block> omni::core::function::getBody () const
 
 llvm::Function * omni::core::function::llvmFunction ()
 {
+    if (getContext () == nullptr) {
+        throw no_context_error (omni::core::domain::function, getName ());
+    }
     if (_llvmFunction != nullptr) {
         return _llvmFunction;
     } else {

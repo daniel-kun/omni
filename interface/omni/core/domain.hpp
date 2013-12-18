@@ -17,8 +17,7 @@ namespace core {
         variable = first,
         function,
         block,
-        variable_declaration,
-        last = variable_declaration,
+        last = block,
     };
 
 } // namespace core

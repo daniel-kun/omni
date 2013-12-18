@@ -1,7 +1,6 @@
 #include <omni/core/context_part.hpp>
 #include <omni/core/context.hpp>
 
-
 /**
 Initializes this context part with an empty name and an invalid id.
 The name can be left empty, as long as the actual kind of context part does not require a name.
@@ -14,8 +13,11 @@ omni::core::context_part::context_part () :
 {
 }
 
+/**
+Initializes this context_part with the given name and no context.
+**/
 omni::core::context_part::context_part (std::string const & name) :
-    _context (nullptr),
+    _context (),
     _name (name),
     _id ()
 {

@@ -71,6 +71,7 @@
     <ClCompile Include="..\source\omni\tests\test_function.cpp" />
     <ClCompile Include="..\source\omni\tests\test_llvm.cpp" />
     <ClCompile Include="..\source\omni\tests\test_utils.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_variable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />

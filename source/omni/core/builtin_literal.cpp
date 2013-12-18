@@ -5,6 +5,13 @@
 #include <llvm/IR/Constants.h>
 
 template <>
+omni::core::builtin_literal <char>::builtin_literal (context & context, char value) :
+    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_signedByte))),
+    _value (value)
+{
+}
+
+template <>
 omni::core::builtin_literal <signed char>::builtin_literal (context & context, signed char value) :
     literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_signedByte))),
     _value (value)
@@ -47,6 +54,18 @@ omni::core::builtin_literal <unsigned int>::builtin_literal (context & context, 
 }
 
 //
+
+template <>
+llvm::Value * omni::core::builtin_literal <char>::llvmValue ()
+{
+    switch (getType ()->getTypeClass ()) {
+    case type_class::t_signedByte:
+        return llvm::ConstantInt::getSigned (getType ()->llvmType (), _value);
+        break;
+    default:
+        throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
+    }
+}
 
 template <>
 llvm::Value * omni::core::builtin_literal <signed char>::llvmValue ()

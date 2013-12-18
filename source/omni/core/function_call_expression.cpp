@@ -31,6 +31,11 @@ omni::core::function_call_expression::function_call_expression (std::shared_ptr 
 
 }
 
+std::shared_ptr <omni::core::type> omni::core::function_call_expression::getType () const
+{
+    return _function->getReturnType ();
+}
+
 /**
 Sets the function that this expression should call to `func'.
 **/

@@ -16,6 +16,7 @@ namespace omni {
 namespace core {
     class function_prototype;
     class expression;
+    class type;
 
     /**
     A void function call is a statement, not an expression, because it does not have a result.
@@ -25,6 +26,8 @@ namespace core {
         function_call_expression ();
         function_call_expression (std::shared_ptr <function_prototype> func);
         function_call_expression (std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters);
+
+        std::shared_ptr <type> getType () const override;
 
         void setFunction (std::shared_ptr <function_prototype> func);
         const std::shared_ptr <function_prototype> getFunction () const;

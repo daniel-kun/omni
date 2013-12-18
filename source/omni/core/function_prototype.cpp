@@ -20,9 +20,9 @@ omni::core::function_prototype::function_prototype (module & module,
                                                     std::vector <std::shared_ptr <omni::core::parameter>> parameters) :
     context_part (name),
     _module (module),
-    _llvmFunction (nullptr),
     _returnType (returnType),
-    _parameters (parameters)
+    _parameters (parameters),
+    _llvmFunction (nullptr)
 {
 }
 

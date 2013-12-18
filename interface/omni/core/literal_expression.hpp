@@ -17,6 +17,8 @@ namespace core {
     public:
         literal_expression (std::shared_ptr <literal> literal);
 
+        std::shared_ptr <type> getType () const override;
+
         llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:

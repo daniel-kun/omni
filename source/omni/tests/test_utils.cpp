@@ -32,8 +32,9 @@ boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_
     module & mod (func->getModule ());
     std::shared_ptr <function> caller (new function (mod, functionName, returnType, body, true));
     mod.addFunction (caller);
-    std::string sharedLibraryName = testFileManager.getTestFileName (fileBaseName + ".dll").string ();
-    mod.emitSharedLibraryFile (sharedLibraryName);
+    boost::filesystem::path sharedLibraryName = testFileManager.getTestFileName (fileBaseName + ".dll");
+    //mod.emitAssemblyFile (sharedLibraryName.replace_extension (".ll").string ());
+    mod.emitSharedLibraryFile (sharedLibraryName.replace_extension (".dll").string ());
 
 //    BOOST_CHECK (boost::filesystem::exists(sharedLibraryName));
     return sharedLibraryName;

@@ -1,14 +1,29 @@
 #include <omni/core/binary_operator_expression.hpp>
 #include <omni/core/not_implemented_error.hpp>
+#include <omni/core/type_mismatch_error.hpp>
 
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/Support/NoFolder.h>
 
-omni::core::binary_operator_expression::binary_operator_expression(binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand) :
+/**
+Initializes this binary_operator_expression with the binary_operation op and the leftOperand and rightOperand.
+@param op The operation that is to be performed with leftOperand and rightOperand. E.g. in "5 - 7", this is "-" or binary_operation::binary_minus_operation.
+@param leftOperand The left operand of this operation. E.g. in "5 + 7", this is "5".
+@param rightOperand The right operand of this operation. E.g. in "5 / 7", this is "7".
+**/
+omni::core::binary_operator_expression::binary_operator_expression (binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand) :
     _operator (op),
     _leftOperand (leftOperand),
     _rightOperand (rightOperand)
 {
+    if (_leftOperand->getType () != _rightOperand->getType ()) {
+        throw type_mismatch_error (* leftOperand->getType (), * rightOperand->getType ());
+    }
+}
+
+std::shared_ptr <omni::core::type> omni::core::binary_operator_expression::getType () const 
+{
+    return _leftOperand->getType ();
 }
 
 llvm::Value * omni::core::binary_operator_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)

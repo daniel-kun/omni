@@ -2,7 +2,7 @@
 #include <sstream>
 
 namespace {
-std::string create_error_message (omni::core::domain domain, std::string const & identifier)
+std::string buildAlreadyExistsErrorMessage (omni::core::domain domain, std::string const & identifier)
 {
     std::stringstream result;
     switch (domain) {
@@ -18,6 +18,6 @@ std::string create_error_message (omni::core::domain domain, std::string const &
 }
 
 omni::core::already_exists_error::already_exists_error (omni::core::domain domain, std::string const & identifier) :
-    std::runtime_error (create_error_message (domain, identifier).c_str ())
+    std::runtime_error (buildAlreadyExistsErrorMessage (domain, identifier).c_str ())
 {
 }

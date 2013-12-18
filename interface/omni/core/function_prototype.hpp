@@ -48,9 +48,9 @@ namespace core {
  
     protected:
         module & _module;
-        llvm::Function * _llvmFunction;
         std::shared_ptr <type> _returnType;
         std::vector <std::shared_ptr <omni::core::parameter>> _parameters;
+        llvm::Function * _llvmFunction;
     };
 
 } // namespace core

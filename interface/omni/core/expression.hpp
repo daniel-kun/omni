@@ -3,6 +3,8 @@
 
 #include <omni/core/core.hpp>
 
+#include <memory>
+
 namespace llvm {
     class BasicBlock;
     class Value;
@@ -10,6 +12,7 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+    class type;
 
     /**
     An expression is something that returns or is a value. An expression can be a statement, when it's wrapped in an expression_statement
@@ -19,6 +22,8 @@ namespace core {
     class OMNI_CORE_API expression {
     public:
         virtual ~ expression () = 0;
+
+        virtual std::shared_ptr <type> getType () const = 0;
 
         virtual llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) = 0;
     };

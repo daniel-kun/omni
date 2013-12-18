@@ -3,6 +3,7 @@
 
 #include <omni/core/core.hpp>
 #include <omni/core/expression.hpp>
+
 #include <memory>
 
 namespace llvm {
@@ -12,6 +13,7 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+    class type;
 
     /**
     A binary_operator_expression is an expression that returns the result of a binary operator that is applied to it's two operands.
@@ -35,6 +37,8 @@ namespace core {
         };
 
         binary_operator_expression (binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand);
+
+        std::shared_ptr <type> getType () const override;
 
         llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) override;
 

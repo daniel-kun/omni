@@ -40,6 +40,7 @@ llvm::Type * omni::core::type::llvmType ()
     case type_class::t_signedShort:
         return llvm::Type::getInt16Ty (getContext ()->llvmContext ());
         break;
+    case type_class::t_char:
     case type_class::t_unsignedByte:
     case type_class::t_signedByte:
         return llvm::Type::getInt8Ty (getContext ()->llvmContext ());
