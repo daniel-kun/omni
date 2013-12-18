@@ -1,7 +1,8 @@
 #include <omni/core/context_emit_options.hpp>
 
 omni::core::context_emit_options::context_emit_options () :
-    _librarySearchPaths ()
+    _librarySearchPaths (),
+    _libraries ()
 {
 }
 
@@ -20,8 +21,29 @@ void omni::core::context_emit_options::addLibrarySearchPath (boost::filesystem::
 
 /**
 Returns a list of library search paths that have been previously added by calling addLibrarySearchPath().
+@see addLibrarySearchPath()
 **/
 std::vector <boost::filesystem::path> omni::core::context_emit_options::getLibrarySearchPaths () const
 {
     return _librarySearchPaths;
+}
+
+/**
+Adds a library that will be linked into the executable or shared object file by passing it to the linker.
+@see getLibraries()
+**/
+void omni::core::context_emit_options::addLibrary (std::string library)
+{
+    if (_libraries.find (library) == _libraries.end ()) {
+        _libraries.insert (library);
+    }
+}
+
+/**
+Returns a set of libraries that have been previously added by calling addLibrary().
+@see addLibrary().
+**/
+std::set <std::string> omni::core::context_emit_options::getLibraries () const
+{
+    return _libraries;
 }

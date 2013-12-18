@@ -7,7 +7,8 @@
 
 /**
 Initialises an external_function from a C or C++ library.
-@param libraryName The name of the library that the function is defined in.
+@param libraryName The name of the library that the function is defined in. Can be an empty string, when the library is somehow linked by other means (e.g. 
+by other functions that use that library or by context_emit_options::addLibrary()).
 @param functionName The name of the function. If it is a C++ function, this is the mangled name.
 @param returnType The returnType of the function.
 @param parameters A list of parameters that this function takes, if any. Can be an empty vector.

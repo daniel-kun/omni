@@ -6,6 +6,7 @@
 #include <boost/filesystem/path.hpp>
 
 #include <vector>
+#include <set>
 
 namespace omni {
 namespace core {
@@ -22,8 +23,12 @@ namespace core {
         void addLibrarySearchPath (boost::filesystem::path searchPath);
         std::vector <boost::filesystem::path> getLibrarySearchPaths () const;
 
+        void addLibrary (std::string library);
+        std::set <std::string> getLibraries () const;
+
     private:
         std::vector <boost::filesystem::path> _librarySearchPaths;
+        std::set <std::string> _libraries;
     };
 } // namespace core
 } // namespace omni

@@ -346,21 +346,35 @@ void omni::core::module::emitSharedLibraryFile (std::string const & fileName, co
         }
     }
     std::string command = "..\\tools\\link_helper.cmd \"" + objectFilePath.string () + "\" \"/OUT:" + sharedLibraryPath.string () + "\"";
+    // Add library search path:
     for (auto librarySearchPath : options.getLibrarySearchPaths ()) {
         command += " /LIB:\"" + librarySearchPath.string () + "\"";
     }
+    // Add libraries to link:
     for (auto library : additionalLibraries) {
-        command += " " + library;
+        if (library.length () > 0) {
+            command += " " + library;
+        }
     }
+    for (auto library : options.getLibraries ()) {
+        if (library.length () > 0) {
+            command += " " + library;
+        }
+    }
+
+    // Now call the linker:
     int errorCode = std::system (command.c_str ());
+
     if (errorCode != 0) {
         throw std::runtime_error ((boost::format ("Linking the object file %1% failed.") % objectFilePath).str ().c_str ());
     }
     boost::system::error_code ignored;
     boost::filesystem::remove (objectFilePath, ignored); // ignores failures on purpose
-//    boost::filesystem::remove (assemblyFilePath, errorCode); // ignores failures on purpose
 }
 
+/**
+Internal
+**/
 llvm::Module & omni::core::module::llvmModule ()
 {
     if (_llvmModule.get () == nullptr) {
