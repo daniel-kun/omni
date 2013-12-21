@@ -61,6 +61,7 @@
     <ClInclude Include="..\interface\omni\core\expression_statement.hpp" />
     <ClInclude Include="..\interface\omni\core\function.hpp" />
     <ClInclude Include="..\interface\omni\core\id.hpp" />
+    <ClInclude Include="..\interface\omni\core\if_statement.hpp" />
     <ClInclude Include="..\interface\omni\core\literal.hpp" />
     <ClInclude Include="..\interface\omni\core\literal_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\logic_error.hpp" />
@@ -99,6 +100,7 @@
     <ClCompile Include="..\source\omni\core\function_call_expression.cpp" />
     <ClCompile Include="..\source\omni\core\function_prototype.cpp" />
     <ClCompile Include="..\source\omni\core\id.cpp" />
+    <ClCompile Include="..\source\omni\core\if_statement.cpp" />
     <ClCompile Include="..\source\omni\core\literal.cpp" />
     <ClCompile Include="..\source\omni\core\literal_expression.cpp" />
     <ClCompile Include="..\source\omni\core\logic_error.cpp" />

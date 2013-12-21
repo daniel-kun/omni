@@ -51,7 +51,8 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>$(OutDir)$(TargetName)$(TargetExt)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -70,6 +71,7 @@
     <ClCompile Include="..\source\omni\tests\test_external_function.cpp" />
     <ClCompile Include="..\source\omni\tests\test_file_manager.cpp" />
     <ClCompile Include="..\source\omni\tests\test_function.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_if_statement.cpp" />
     <ClCompile Include="..\source\omni\tests\test_llvm.cpp" />
     <ClCompile Include="..\source\omni\tests\test_native_type_to_type_class.cpp" />
     <ClCompile Include="..\source\omni\tests\test_utils.cpp" />

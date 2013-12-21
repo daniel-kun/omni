@@ -7,6 +7,12 @@
 #include <vector>
 #include <memory>
 
+namespace llvm {
+    class LLVMContext;
+    class BasicBlock;
+    class Function;
+}
+
 namespace omni {
 namespace core {
     class statement;
@@ -28,6 +34,7 @@ namespace core {
         std::shared_ptr <statement> removeStatement (statement_list::iterator position);
         std::shared_ptr <statement> removeStatement (std::shared_ptr <statement> statement);
 
+        llvm::BasicBlock * llvmEmit (llvm::LLVMContext & context, std::string name, llvm::Function * parent);
     private:
         statement_list _statements;
     };

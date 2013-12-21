@@ -1,4 +1,8 @@
 #include <omni/core/block.hpp>
+#include <omni/core/statement.hpp>
+
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/BasicBlock.h>
 
 /**
 @return Returns the list of statements that this block contains.
@@ -79,4 +83,16 @@ std::shared_ptr <omni::core::statement> omni::core::block::removeStatement (std:
     statement_list::iterator i = std::find (_statements.begin (), _statements.end (), statement);
     _statements.erase (i);
     return statement;
+}
+
+/**
+@internal
+**/
+llvm::BasicBlock * omni::core::block::llvmEmit (llvm::LLVMContext & context, std::string name, llvm::Function * parent)
+{
+    auto result = llvm::BasicBlock::Create (context, name, parent);
+    for (auto i : getStatements ()) {
+        i->llvmEmit (result);
+    }
+    return result;
 }

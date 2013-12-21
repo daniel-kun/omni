@@ -45,6 +45,9 @@
     <ClCompile Include="..\source\omni\tests\test_block.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\tests\test_if_statement.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />
