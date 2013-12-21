@@ -65,6 +65,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\tests\test_binary_operator_expression.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_block.cpp" />
     <ClCompile Include="..\source\omni\tests\test_context.cpp" />
     <ClCompile Include="..\source\omni\tests\test_external_function.cpp" />
     <ClCompile Include="..\source\omni\tests\test_file_manager.cpp" />

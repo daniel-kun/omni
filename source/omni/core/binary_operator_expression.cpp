@@ -21,11 +21,17 @@ omni::core::binary_operator_expression::binary_operator_expression (binary_opera
     }
 }
 
+/**
+Returns the type of this binary_operator_expression. The type is deduced from the left and right operands.
+**/
 std::shared_ptr <omni::core::type> omni::core::binary_operator_expression::getType () const 
 {
     return _leftOperand->getType ();
 }
 
+/**
+@internal
+**/
 llvm::Value * omni::core::binary_operator_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);

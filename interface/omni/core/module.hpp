@@ -57,6 +57,8 @@ namespace core {
         void addFunction (std::shared_ptr <function_prototype> function);
         bool removeFunction (std::shared_ptr <function_prototype> function);
 
+        bool verify (std::string & errorInfo);
+
         llvm::Module & llvmModule ();
 
     private:

@@ -22,6 +22,7 @@ namespace core {
         bool isExported () const;
 
         const std::shared_ptr <block> getBody () const;
+        std::shared_ptr <block> getBody ();
 
         llvm::Function * llvmFunction () override;
 

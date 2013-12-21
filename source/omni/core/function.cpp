@@ -41,10 +41,22 @@ bool omni::core::function::isExported () const
     return _isExported;
 }
 
+/**
+Returns the body of this function in a const form.
+**/
 const std::shared_ptr <omni::core::block> omni::core::function::getBody () const
 {
     return _body;
 }
+
+/**
+Returns the body of this function in a modifyable form.
+**/
+std::shared_ptr <omni::core::block> omni::core::function::getBody ()
+{
+    return _body;
+}
+
 
 llvm::Function * omni::core::function::llvmFunction ()
 {

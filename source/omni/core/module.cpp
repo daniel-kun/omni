@@ -373,7 +373,30 @@ void omni::core::module::emitSharedLibraryFile (std::string const & fileName, co
 }
 
 /**
-Internal
+Verifies this module.
+@param errorInfo When the module contains errors, errorInfo will be filled with the error messages.
+@return True, if the module is valid. false, if there are errors.
+**/
+bool omni::core::module::verify (std::string & errorInfo)
+{
+    llvm::Module & m (llvmModule ());
+
+    try {
+        for (auto f : _parts[domain::function]) {
+            function_prototype & func = *std::dynamic_pointer_cast <function_prototype> (f.second);
+            func.llvmFunction ();
+        }
+    }
+    catch (std::exception const & e) {
+        errorInfo = e.what ();
+        return false;
+    }
+
+    return !llvm::verifyModule(m, llvm::PrintMessageAction, &errorInfo);
+}
+
+/**
+@internal
 **/
 llvm::Module & omni::core::module::llvmModule ()
 {
