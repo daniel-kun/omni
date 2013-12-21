@@ -2,6 +2,7 @@
 #define OMNI_CORE_EXPRESSION_HPP
 
 #include <omni/core/core.hpp>
+#include <omni/core/context_part.hpp>
 
 #include <memory>
 
@@ -19,7 +20,7 @@ namespace core {
     or it can be part of other statements. For example, the binary_operator_expression has one expression as the left hand side operand and
     another expression as the right hand side operand. A function_call_expression receives expressions as it's parameters and is itself an expression.
     **/
-    class OMNI_CORE_API expression {
+    class OMNI_CORE_API expression : public context_part {
     public:
         virtual ~ expression () = 0;
 

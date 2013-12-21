@@ -51,7 +51,7 @@ T test (std::size_t & testCounter,
     body->appendStatement (
         std::shared_ptr <statement> (
             new return_statement (
-                std::shared_ptr <expression> (new binary_operator_expression (operation, leftExpression, rightExpression)))));
+                std::shared_ptr <expression> (new binary_operator_expression (m.getContext (), operation, leftExpression, rightExpression)))));
     std::stringstream funcName;
     funcName << "binaryOperatorExpressionTest" << ++ testCounter;
     std::string testFuncName = funcName.str ();

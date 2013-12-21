@@ -19,7 +19,7 @@ namespace core {
     class OMNI_CORE_API statement : public context_part {
     public:
         virtual ~ statement ();
-        virtual void llvmEmit (llvm::BasicBlock * llvmBasicBlock) = 0;
+        virtual llvm::BasicBlock * llvmEmit (llvm::BasicBlock * llvmBasicBlock) = 0;
     };
 
 } // namespace core

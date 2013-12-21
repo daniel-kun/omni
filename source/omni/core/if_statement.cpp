@@ -74,15 +74,41 @@ const std::shared_ptr <omni::core::block> omni::core::if_statement::getElseBlock
 /**
 @internal
 **/
-void omni::core::if_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+llvm::BasicBlock * omni::core::if_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
-    llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     llvm::BasicBlock * llvmTrueBlock = _trueBlock->llvmEmit (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
     llvm::BasicBlock * llvmFalseBlock = nullptr;
 
+    bool terminatorNeeded = false;
+
     if (_elseBlock != nullptr) {
         llvmFalseBlock = _elseBlock->llvmEmit (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
+        if (llvmFalseBlock->getTerminator () == nullptr) {
+            terminatorNeeded = true;
+        }
     }
 
+    if (llvmTrueBlock->getTerminator () == nullptr) {
+        terminatorNeeded = true;
+    }
+
+    llvm::BasicBlock * result = llvmBasicBlock;
+    if (terminatorNeeded) {
+        result = llvm::BasicBlock::Create (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
+
+        if (llvmTrueBlock->getTerminator () == nullptr) {
+            llvm::IRBuilder <true, llvm::NoFolder> builder (llvmTrueBlock);
+            builder.CreateBr (result);
+        }
+
+        if (llvmFalseBlock != nullptr && llvmFalseBlock->getTerminator () == nullptr) {
+            llvm::IRBuilder <true, llvm::NoFolder> builder (llvmFalseBlock);
+            builder.CreateBr (result);
+        }
+    }
+
+    llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     builder.CreateCondBr (_condition->llvmValue (llvmBasicBlock), llvmTrueBlock, llvmFalseBlock);
+
+    return result;
 }

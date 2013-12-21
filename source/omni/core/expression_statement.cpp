@@ -6,7 +6,8 @@ omni::core::expression_statement::expression_statement (std::shared_ptr <express
 {
 }
 
-void omni::core::expression_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+llvm::BasicBlock * omni::core::expression_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     _expression->llvmValue (llvmBasicBlock);
+    return llvmBasicBlock;
 }

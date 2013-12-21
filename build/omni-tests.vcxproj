@@ -76,6 +76,7 @@
     <ClCompile Include="..\source\omni\tests\test_native_type_to_type_class.cpp" />
     <ClCompile Include="..\source\omni\tests\test_utils.cpp" />
     <ClCompile Include="..\source\omni\tests\test_variable.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_while_statement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />

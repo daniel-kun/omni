@@ -32,11 +32,12 @@ namespace core {
     class OMNI_CORE_API binary_operator_expression : public pure_expression {
     public:
         enum class binary_operation {
+            binary_lessthan_operation,
             binary_plus_operation, // +
             binary_minus_operation // -
         };
 
-        binary_operator_expression (binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand);
+        binary_operator_expression (context & context, binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand);
 
         std::shared_ptr <type> getType () const override;
 
@@ -46,6 +47,7 @@ namespace core {
         std::shared_ptr <expression> getRightOperand ();
 
     private:
+        std::shared_ptr <type> _type;
         binary_operation _operator;
         std::shared_ptr <expression> _leftOperand;
         std::shared_ptr <expression> _rightOperand;

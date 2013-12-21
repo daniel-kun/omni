@@ -55,11 +55,12 @@ llvm::Value * omni::core::variable_declaration_statement::llvmPointerValue ()
     return _llvmPointerValue;
 }
 
-void omni::core::variable_declaration_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+llvm::BasicBlock * omni::core::variable_declaration_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     _llvmPointerValue = builder.CreateAlloca (_variableType->llvmType ());
     if (_initializationExpression != nullptr) {
         variable_assignment_expression::llvmEmitImpl (llvmBasicBlock, * this, * _initializationExpression);
     }
+    return llvmBasicBlock;
 }

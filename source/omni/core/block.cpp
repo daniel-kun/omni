@@ -92,7 +92,7 @@ llvm::BasicBlock * omni::core::block::llvmEmit (llvm::LLVMContext & context, std
 {
     auto result = llvm::BasicBlock::Create (context, name, parent);
     for (auto i : getStatements ()) {
-        i->llvmEmit (result);
+        result = i->llvmEmit (result);
     }
     return result;
 }

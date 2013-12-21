@@ -20,7 +20,7 @@ namespace core {
     public:
         expression_statement (std::shared_ptr <expression> expression);
         
-        void llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
+        llvm::BasicBlock * llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
         const std::shared_ptr <expression> & getExpression () const;
 
     private:

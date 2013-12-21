@@ -102,6 +102,7 @@ BOOST_AUTO_TEST_CASE (mixedTests)
     body->appendStatement (variableA);
     // Declare a second variable "B" that holds the value of variableA, incremented by 1. Hence, the value should be 'B'
     auto AplusBexpression = std::make_shared <binary_operator_expression> (
+        c,
         binary_operator_expression::binary_operation::binary_plus_operation,
         std::make_shared <variable_expression> (variableA),
         std::make_shared <literal_expression> (std::make_shared <builtin_literal<char>> (c, static_cast <char> (1))));
@@ -114,6 +115,7 @@ BOOST_AUTO_TEST_CASE (mixedTests)
     auto variableCassignment = std::make_shared <variable_assignment_expression> (
         variableC,
         std::make_shared <binary_operator_expression> (
+            c,
             binary_operator_expression::binary_operation::binary_plus_operation,
             std::make_shared <variable_expression> (variableB),
             std::make_shared <literal_expression> (std::make_shared <builtin_literal<char>> (c, static_cast <char> (1)))));

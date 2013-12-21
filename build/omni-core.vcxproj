@@ -83,6 +83,7 @@
     <ClInclude Include="..\interface\omni\core\variable_declaration_statement.hpp" />
     <ClInclude Include="..\interface\omni\core\variable_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\context_part.hpp" />
+    <ClInclude Include="..\interface\omni\core\while_statement.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\core\already_exists_error.cpp" />
@@ -120,6 +121,7 @@
     <ClCompile Include="..\source\omni\core\variable_assignment_expression.cpp" />
     <ClCompile Include="..\source\omni\core\variable_declaration_statement.cpp" />
     <ClCompile Include="..\source\omni\core\variable_expression.cpp" />
+    <ClCompile Include="..\source\omni\core\while_statement.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
