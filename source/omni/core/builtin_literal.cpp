@@ -1,140 +1,87 @@
 #include <omni/core/builtin_literal.hpp>
+#include <omni/core/context.hpp>
 #include <omni/core/type_class.hpp>
 #include <omni/core/type.hpp>
+#include <omni/core/type_mismatch_error.hpp>
 
 #include <llvm/IR/Constants.h>
 
-template <>
-omni::core::builtin_literal <char>::builtin_literal (context & context, char value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_signedByte))),
+namespace {
+
+/*
+Helper base-class to provide signed values.
+See the template specialisations of value_provider below, each picking the correct helper base-class.
+*/
+class signed_provider {
+public:
+    template <typename T>
+    static llvm::Value * provideValue (llvm::Type * type, T value)
+    {
+        return llvm::ConstantInt::getSigned (type, value);
+    }
+};
+
+/*
+Helper base-class to provide unsigned values.
+See the template specialisations of value_provider below, each picking the correct helper base-class.
+*/
+class unsigned_provider {
+public:
+    template <typename T>
+    static llvm::Value * provideValue (llvm::Type * type, T value)
+    {
+        return llvm::ConstantInt::get (type, value);
+    }
+};
+
+template <typename T> class value_provider {};
+
+template <> class value_provider <bool> : public signed_provider { };
+template <> class value_provider <char> : public signed_provider { };
+template <> class value_provider <signed char> : public signed_provider { };
+template <> class value_provider <unsigned char> : public unsigned_provider { };
+template <> class value_provider <signed short> : public signed_provider { };
+template <> class value_provider <unsigned short> : public unsigned_provider { };
+template <> class value_provider <signed int> : public signed_provider { };
+template <> class value_provider <unsigned int> : public unsigned_provider { };
+template <> class value_provider <signed long> : public signed_provider { };
+template <> class value_provider <unsigned long> : public unsigned_provider { };
+template <> class value_provider <signed long long> : public signed_provider { };
+template <> class value_provider <unsigned long long> : public unsigned_provider { };
+
+}
+
+/**
+Initializes this builtin_literal in the given context with the provided value.
+**/
+template <typename T>
+omni::core::builtin_literal <T>::builtin_literal (context & context, T value) :
+    literal (type::sharedBasicType (context, omni::core::native_type_to_type_class <T>::typeClass)),
     _value (value)
 {
 }
 
-template <>
-omni::core::builtin_literal <signed char>::builtin_literal (context & context, signed char value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_signedByte))),
-    _value (value)
+/**
+Internal
+**/
+template <typename T>
+llvm::Value * omni::core::builtin_literal <T>::llvmValue ()
 {
-}
-
-template <>
-omni::core::builtin_literal <unsigned char>::builtin_literal (context & context, unsigned char value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_unsignedByte))),
-    _value (value)
-{
-}
-
-template <>
-omni::core::builtin_literal <signed short>::builtin_literal (context & context, signed short value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_signedShort))),
-    _value (value)
-{
-}
-
-template <>
-omni::core::builtin_literal <unsigned short>::builtin_literal (context & context, unsigned short value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_unsignedShort))),
-    _value (value)
-{
-}
-
-template <>
-omni::core::builtin_literal <signed int>::builtin_literal (context & context, signed int value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_signedInt))),
-    _value (value)
-{
-}
-
-template <>
-omni::core::builtin_literal <unsigned int>::builtin_literal (context & context, unsigned int value) :
-    literal (static_cast <std::shared_ptr <type>> (type::sharedBasicType (context, type_class::t_unsignedInt))),
-    _value (value)
-{
-}
-
-//
-
-template <>
-llvm::Value * omni::core::builtin_literal <char>::llvmValue ()
-{
-    switch (getType ()->getTypeClass ()) {
-    case type_class::t_signedByte:
-        return llvm::ConstantInt::getSigned (getType ()->llvmType (), _value);
-        break;
-    default:
-        throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
+    if (native_type_to_type_class<T>::typeClass != getType ()->getTypeClass ()) {
+        throw type_mismatch_error (* getType ()->getContext ()->sharedBasicType (native_type_to_type_class<T>::typeClass), * getType ());
     }
+    return value_provider <T>::provideValue (getType ()->llvmType (), _value);
 }
 
-template <>
-llvm::Value * omni::core::builtin_literal <signed char>::llvmValue ()
-{
-    switch (getType ()->getTypeClass ()) {
-    case type_class::t_signedByte:
-        return llvm::ConstantInt::getSigned (getType ()->llvmType (), _value);
-        break;
-    default:
-        throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
-    }
-}
-
-template <>
-llvm::Value * omni::core::builtin_literal <unsigned char>::llvmValue ()
-{
-    switch (getType ()->getTypeClass ()) {
-    case type_class::t_unsignedByte:
-        return llvm::ConstantInt::getSigned (getType ()->llvmType (), _value);
-        break;
-    default:
-        throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
-    }
-}
-
-template <>
-llvm::Value * omni::core::builtin_literal <signed short>::llvmValue ()
-{
-    switch (getType ()->getTypeClass ()) {
-    case type_class::t_signedShort:
-        return llvm::ConstantInt::getSigned (getType ()->llvmType (), _value);
-        break;
-    default:
-        throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
-    }
-}
-
-template <>
-llvm::Value * omni::core::builtin_literal <unsigned short>::llvmValue ()
-{
-    switch (getType ()->getTypeClass ()) {
-    case type_class::t_unsignedShort:
-        return llvm::ConstantInt::get (getType ()->llvmType (), _value, false);
-        break;
-    default:
-        throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
-    }
-}
-
-template <>
-llvm::Value * omni::core::builtin_literal <signed int>::llvmValue ()
-{
-    switch (getType ()->getTypeClass ()) {
-    case type_class::t_signedInt:
-        return llvm::ConstantInt::getSigned (getType ()->llvmType (), _value);
-        break;
-    default:
-        throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
-    }
-}
-
-template <>
-llvm::Value * omni::core::builtin_literal <unsigned int>::llvmValue ()
-{
-    switch (getType ()->getTypeClass ()) {
-    case type_class::t_unsignedInt:
-        return llvm::ConstantInt::get (getType ()->llvmType (), _value, true);
-        break;
-    default:
-        throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
-    }
-}
+template omni::core::builtin_literal <bool>;
+template omni::core::builtin_literal <char>;
+template omni::core::builtin_literal <signed char>;
+template omni::core::builtin_literal <unsigned char>;
+template omni::core::builtin_literal <signed short>;
+template omni::core::builtin_literal <unsigned short>;
+template omni::core::builtin_literal <signed int>;
+template omni::core::builtin_literal <unsigned int>;
+template omni::core::builtin_literal <signed long>;
+template omni::core::builtin_literal <unsigned long>;
+template omni::core::builtin_literal <signed long long>;
+template omni::core::builtin_literal <unsigned long long>;

@@ -70,6 +70,7 @@
     <ClCompile Include="..\source\omni\tests\test_file_manager.cpp" />
     <ClCompile Include="..\source\omni\tests\test_function.cpp" />
     <ClCompile Include="..\source\omni\tests\test_llvm.cpp" />
+    <ClCompile Include="..\source\omni\tests\test_native_type_to_type_class.cpp" />
     <ClCompile Include="..\source\omni\tests\test_utils.cpp" />
     <ClCompile Include="..\source\omni\tests\test_variable.cpp" />
   </ItemGroup>

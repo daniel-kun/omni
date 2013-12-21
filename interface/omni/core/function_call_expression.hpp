@@ -2,7 +2,7 @@
 #define OMNI_CORE_FUNCTION_CALL_EXPRESSION_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/expression.hpp>
+#include <omni/core/modifying_expression.hpp>
 
 #include <memory>
 #include <vector>
@@ -21,7 +21,7 @@ namespace core {
     /**
     A void function call is a statement, not an expression, because it does not have a result.
     **/
-    class OMNI_CORE_API function_call_expression : public expression {
+    class OMNI_CORE_API function_call_expression : public modifying_expression {
     public:
         function_call_expression ();
         function_call_expression (std::shared_ptr <function_prototype> func);

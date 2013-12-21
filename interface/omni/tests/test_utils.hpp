@@ -57,7 +57,7 @@ Return omni::tests::runFunction (std::shared_ptr <omni::core::function> func,
 //    HMODULE nullModule = nullptr;
 //    BOOST_CHECK_NE (lib, nullModule);
     if (lib != nullptr) {
-        typedef int (* testFunc) ();
+        typedef Return (* testFunc) ();
 #pragma warning(push)
 #pragma warning(disable:4191)
         testFunc f = reinterpret_cast <testFunc> (::GetProcAddress(lib, functionName.c_str ()));

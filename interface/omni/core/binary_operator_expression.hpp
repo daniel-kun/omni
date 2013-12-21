@@ -2,7 +2,7 @@
 #define OMNI_CORE_BINARY_OPERATOR_EXPRESSION_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/expression.hpp>
+#include <omni/core/pure_expression.hpp>
 
 #include <memory>
 
@@ -29,7 +29,7 @@ namespace core {
     3 bit-or 5
     9 bit-xor 2
     **/
-    class OMNI_CORE_API binary_operator_expression : public expression {
+    class OMNI_CORE_API binary_operator_expression : public pure_expression {
     public:
         enum class binary_operation {
             binary_plus_operation, // +

@@ -2,6 +2,7 @@
 #define OMNI_CORE_TYPE_CLASS_HPP
 
 #include <omni/core/core.hpp>
+#include <ostream>
 
 namespace omni {
 namespace core {
@@ -27,5 +28,7 @@ namespace core {
 
 } // namespace core
 } // namespace omni
+
+std::ostream & operator << (std::ostream & lhs, const omni::core::type_class rhs);
 
 #endif // include guard

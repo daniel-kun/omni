@@ -7,6 +7,7 @@
 #include <omni/core/module.hpp>
 #include <omni/core/function.hpp>
 #include <omni/core/type.hpp>
+#include <omni/core/type_class.hpp>
 #include <omni/core/block.hpp>
 #include <omni/core/literal_expression.hpp>
 #include <omni/core/builtin_literal.hpp>
@@ -15,6 +16,61 @@
 #include <omni/tests/test_utils.hpp>
 
 #include <boost/test/unit_test.hpp>
+
+#include <numeric>
+
+#ifdef min
+#undef min
+#endif
+
+#ifdef max
+#undef max
+#endif
+
+namespace {
+template <typename T>
+void testVariables (T initializationValue, T assignmentValue)
+{
+    BOOST_CHECK_NE (initializationValue, assignmentValue);
+    using namespace omni::core;
+    context c;
+    module m (c, "test");
+    
+    // Declare a variable with the initial value of `initializationValue':
+    auto variableInitializationLiteral = std::make_shared <builtin_literal<T>> (c, initializationValue);
+    auto variableInitializationExpression = std::make_shared <literal_expression> (variableInitializationLiteral);
+    auto variableDeclarationStatement = std::make_shared <variable_declaration_statement> (variableInitializationExpression);
+    BOOST_CHECK (variableDeclarationStatement->getVariableType ()->getTypeClass () == native_type_to_type_class <T>::typeClass);
+
+    // Assign `assignmentValue' to the variable:
+    auto variableValueLiteral = std::make_shared <builtin_literal<T>> (c, assignmentValue);
+    auto variableValueExpression = std::make_shared <literal_expression> (variableValueLiteral);
+    auto variableAssignmentExpression = std::make_shared <variable_assignment_expression> (variableDeclarationStatement, variableValueExpression);
+
+    // Add the statements to a function body:
+    auto body = std::make_shared <block> ();
+    body->appendStatement (variableDeclarationStatement);
+    body->appendStatement (std::make_shared <expression_statement> (variableAssignmentExpression));
+
+    // Return the variable's value:
+    body->appendStatement (
+        std::make_shared <return_statement> (
+            std::make_shared <variable_expression> (variableDeclarationStatement)));
+    
+    auto func = m.createFunction ("test", variableDeclarationStatement->getVariableType (), body);
+
+    omni::tests::test_file_manager testFileManager;
+    T result = omni::tests::runFunction <T> (func, testFileManager, "variableTest");
+    BOOST_CHECK_EQUAL (result, assignmentValue);
+}
+
+template <typename T>
+void testVariablesNumericLimits ()
+{
+    testVariables <T> (std::numeric_limits <T>::max (), std::numeric_limits <T>::min ());
+    testVariables <T> (std::numeric_limits <T>::min (), std::numeric_limits <T>::max ());
+}
+} // anonymous namespace
 
 /**
 Tests the classes variable_declaration_statement, variable_expressiond and variable_assignment_expression.
@@ -74,5 +130,98 @@ BOOST_AUTO_TEST_CASE (mixedTests)
     BOOST_CHECK_EQUAL (result, 'C');
 }
 
+BOOST_AUTO_TEST_CASE (variableBoolean)
+{
+    testVariables <bool> (true, false);
+    testVariables <bool> (false, true);
+    testVariablesNumericLimits <bool> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableChar)
+{
+    testVariables <char> ('A', 'B');
+    testVariables <char> ('A', '\0');
+    testVariablesNumericLimits <char> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableUnsignedByte)
+{
+    testVariables <unsigned char> ('A', 'B');
+    testVariables <unsigned char> ('A', '\0');
+    testVariablesNumericLimits <unsigned char> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableSignedByte)
+{
+    testVariables <signed char> (-1, 0);
+    testVariables <signed char> (+1, 0);
+    testVariables <signed char> (0, -1);
+    testVariables <signed char> (0, +1);
+    testVariablesNumericLimits <signed char> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableUnsignedShort)
+{
+    testVariables <unsigned short> (1, 0);
+    testVariables <unsigned short> (0, 1);
+    testVariablesNumericLimits <unsigned short> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableSignedShort)
+{
+    testVariables <signed short> (-1, 0);
+    testVariables <signed short> (+1, 0);
+    testVariables <signed short> (0, -1);
+    testVariables <signed short> (0, +1);
+    testVariablesNumericLimits <signed short> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableUnsignedInt)
+{
+    testVariables <unsigned int> (1, 0);
+    testVariables <unsigned int> (0, 1);
+    testVariablesNumericLimits <unsigned int> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableSignedInt)
+{
+    testVariables <signed int> (-1, 0);
+    testVariables <signed int> (+1, 0);
+    testVariables <signed int> (0, -1);
+    testVariables <signed int> (0, +1);
+    testVariablesNumericLimits <signed int> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableUnsignedLong)
+{
+    testVariables <unsigned long> (1, 0);
+    testVariables <unsigned long> (0, 1);
+    testVariablesNumericLimits <unsigned long> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableSignedLong)
+{
+    testVariables <signed long> (-1, 0);
+    testVariables <signed long> (+1, 0);
+    testVariables <signed long> (0, -1);
+    testVariables <signed long> (0, +1);
+    testVariablesNumericLimits <signed long> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableUnsignedLongLong)
+{
+    testVariables <unsigned long long> (1, 0);
+    testVariables <unsigned long long> (0, 1);
+    testVariablesNumericLimits <unsigned long long> ();
+}
+
+BOOST_AUTO_TEST_CASE (variableSignedLongLong)
+{
+    testVariables <signed long long> (-1, 0);
+    testVariables <signed long long> (+1, 0);
+    testVariables <signed long long> (0, -1);
+    testVariables <signed long long> (0, +1);
+    testVariablesNumericLimits <signed long long> ();
+}
 
 BOOST_AUTO_TEST_SUITE_END ();

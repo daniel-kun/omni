@@ -2,7 +2,7 @@
 #define OMNI_CORE_VARIABLE_ASSIGNMENT_EXPRESSION_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/expression.hpp>
+#include <omni/core/modifying_expression.hpp>
 
 #include <memory>
 
@@ -16,7 +16,7 @@ namespace core {
     It can be embedded into an expression_statement if the assignment of the variable should be the only affect.
     Otherwise, it can be used as a parameter to a function call, as a left or right hand side operand of a binary_operator_expression, etc.
     **/
-    class OMNI_CORE_API variable_assignment_expression : public expression {
+    class OMNI_CORE_API variable_assignment_expression : public modifying_expression {
     public:
         variable_assignment_expression (std::shared_ptr <variable_declaration_statement> variable, std::shared_ptr <expression> value);
 

@@ -2,7 +2,7 @@
 #define OMNI_CORE_LITERAL_EXPRESSION_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/expression.hpp>
+#include <omni/core/pure_expression.hpp>
 
 #include <memory>
 
@@ -13,7 +13,7 @@ namespace core {
     /**
     A literal expression is an expression that simply returns a value that was already defined at compile time.
     **/
-    class OMNI_CORE_API literal_expression : public expression {
+    class OMNI_CORE_API literal_expression : public pure_expression {
     public:
         literal_expression (std::shared_ptr <literal> literal);
 

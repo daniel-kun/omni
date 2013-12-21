@@ -2,7 +2,7 @@
 #define OMNI_CORE_VARIABLE_EXPRESSION_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/expression.hpp>
+#include <omni/core/pure_expression.hpp>
 
 #include <memory>
 
@@ -15,7 +15,7 @@ namespace core {
     E.g. in "int foo = x;", the "x" is a variable_expression.
     To assign values to a variable, use the variable_assignment_expression.
     **/
-    class OMNI_CORE_API variable_expression : public expression {
+    class OMNI_CORE_API variable_expression : public pure_expression {
     public:
         variable_expression (std::shared_ptr <variable_declaration_statement> variable);
 

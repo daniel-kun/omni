@@ -39,6 +39,9 @@
     <ClCompile Include="..\source\omni\tests\test_variable.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\tests\test_native_type_to_type_class.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />
