@@ -4,6 +4,7 @@
 #include <omni/core/block.hpp>
 #include <omni/core/logic_error.hpp>
 #include <omni/core/already_exists_error.hpp>
+#include <omni/core/verification_failed_error.hpp>
 
 #include <llvm/IR/Module.h>
 #include <llvm/IR/LLVMContext.h>
@@ -285,7 +286,10 @@ void omni::core::module::emitObjectFile (llvm::raw_ostream & stream, const conte
     }
 
     std::string errorInfo;
-    llvm::verifyModule (m, llvm::PrintMessageAction, & errorInfo);
+    if (llvm::verifyModule (m, llvm::PrintMessageAction, & errorInfo)) {
+        // TODO: Create a special error class for this:
+        throw verification_failed_error (_name, errorInfo);
+    }
 
     std::string errors;
     std::string targetTriple = "i686-pc-win32";

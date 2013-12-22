@@ -7,7 +7,7 @@ omni::tests::test_file_manager::~test_file_manager ()
 {
     for (auto f : _files) {
         if (boost::filesystem::exists (f)) {
-            boost::filesystem::remove (f);
+            //boost::filesystem::remove (f);
         }
     }
 }

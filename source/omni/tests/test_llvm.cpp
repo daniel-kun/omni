@@ -18,8 +18,27 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
 #include <llvm/Support/NoFolder.h>
+#include <llvm/Support/raw_ostream.h>
+#include <llvm/Support/FormattedStream.h>
 
 #include <boost/test/unit_test.hpp>
+
+namespace {
+    void addDllMain (llvm::LLVMContext & c, llvm::Module & module)
+    {
+        llvm::Type * i32ptr = llvm::Type::getInt32PtrTy (c);
+        llvm::Type * i32 = llvm::Type::getInt32Ty (c);
+        llvm::Type * i8 = llvm::Type::getInt8Ty (c);
+
+        std::vector <llvm::Type *> params = { i32ptr, i32, i32ptr };
+        llvm::FunctionType * ft = llvm::FunctionType::get (i8, params, false);
+        llvm::Function * func = llvm::Function::Create (ft, llvm::GlobalValue::DLLExportLinkage, "DllMain", & module);
+        func->setCallingConv(llvm::CallingConv::X86_StdCall);
+        llvm::BasicBlock * body = llvm::BasicBlock::Create (c, "__entry__", func);
+        llvm::IRBuilder <> builder (body);
+        builder.CreateRet (llvm::ConstantInt::get (i8, 1));
+    }
+}
 
 BOOST_AUTO_TEST_SUITE (llvmTests)
 
@@ -93,5 +112,78 @@ BOOST_AUTO_TEST_CASE (llvmPlaygroundExternalVariableDeclaration)
     pm.add(llvm::createPrintModulePass(& fileStream));
     pm.run(module);
 }
+
+// TODO: This test creates a broken COFF obj file:
+// See the test whileStatementTests/doWhileStatement
+// See http://llvm.org/bugs/show_bug.cgi?id=18308
+
+BOOST_AUTO_TEST_CASE (llvmPlaygroundDoWhile)
+{
+    using namespace llvm;
+    LLVMContext c;
+    Module module("test", c);
+
+    Type * int32Type = Type::getInt32Ty (c);
+
+    FunctionType * mainFunctionType = FunctionType::get (int32Type, std::vector <Type*> (), false);
+    Function * llvmFunction = cast <Function> (Function::Create (mainFunctionType, GlobalValue::ExternalLinkage, "doWhileStatementTest", & module));
+    llvmFunction->setCallingConv(CallingConv::C);
+    llvmFunction->setLinkage (GlobalValue::InternalLinkage);
+    
+
+    BasicBlock * body = BasicBlock::Create(c, "__entry__", llvmFunction);
+    IRBuilder <true, NoFolder> builder(body);
+    AllocaInst * variableAddress = builder.CreateAlloca (int32Type);
+    builder.CreateStore (ConstantInt::get (int32Type, 1), variableAddress);
+
+    BasicBlock * whileBlock = BasicBlock::Create (c, "", llvmFunction);
+    builder.CreateBr (whileBlock);
+    BasicBlock * continueBlock = BasicBlock::Create (c, "", llvmFunction);
+    IRBuilder <true, NoFolder> continueBuilder (continueBlock);
+    continueBuilder.CreateRet (continueBuilder.CreateLoad (variableAddress));
+    {
+        IRBuilder <true, NoFolder> whileBuilder (whileBlock);
+        Value * variableValue = whileBuilder.CreateLoad (variableAddress);
+        Value * whileCondition = whileBuilder.CreateICmp (CmpInst::ICMP_SLT, variableValue, ConstantInt::get (int32Type, 10));
+
+        whileBuilder.CreateCondBr (whileCondition, whileBlock, continueBlock);
+    }
+
+    Function * mainFunction = cast <Function> (Function::Create (mainFunctionType, GlobalValue::ExternalLinkage, "main", & module));
+    mainFunction->setCallingConv(CallingConv::C);
+    mainFunction->setLinkage (GlobalValue::DLLExportLinkage);
+    BasicBlock * mainBody = BasicBlock::Create (c, "__entry__", mainFunction);
+    IRBuilder <true, NoFolder> mainBuilder (mainBody);
+    Value * callTestFunction = mainBuilder.CreateCall (llvmFunction);
+    mainBuilder.CreateRet (callTestFunction);
+
+    if (verifyModule(module, PrintMessageAction)) {
+        throw std::runtime_error ("Verification of module failed");
+    }
+
+    std::string errorInfo;
+
+    std::string errors;
+    std::string targetTriple = "i686-pc-win32";
+    Triple triple = llvm::Triple (targetTriple);
+    InitializeAllTargets ();
+    InitializeAllTargetMCs();
+    InitializeAllAsmPrinters();
+    InitializeAllAsmParsers();
+
+    const Target * target = TargetRegistry::lookupTarget ("", triple, errors);
+    TargetOptions targetOptions;
+    TargetMachine * targetMachine = target->createTargetMachine (targetTriple, std::string (), std::string (), targetOptions);
+
+    PassManager pm;
+    raw_fd_ostream stream ("llvmPlaygroundDoWhile.obj", errorInfo);
+    formatted_raw_ostream formattedStream (stream);
+    if (targetMachine->addPassesToEmitFile (pm, formattedStream, TargetMachine::CGFT_ObjectFile)) {
+        throw std::runtime_error ("Failed to emit object file");
+    }
+    pm.run (module);
+    formattedStream.flush ();
+}
 */
+
 BOOST_AUTO_TEST_SUITE_END ()

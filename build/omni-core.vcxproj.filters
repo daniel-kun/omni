@@ -126,6 +126,12 @@
     <ClInclude Include="..\interface\omni\core\while_statement.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="..\interface\omni\core\do_while_statement.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\verification_failed_error.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\core\already_exists_error.cpp">
@@ -234,6 +240,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="..\source\omni\core\while_statement.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\do_while_statement.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\verification_failed_eror.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

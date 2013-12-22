@@ -50,6 +50,7 @@
     <ClInclude Include="..\interface\omni\core\already_exists_error.hpp" />
     <ClInclude Include="..\interface\omni\core\context_emit_options.hpp" />
     <ClInclude Include="..\interface\omni\core\domain.hpp" />
+    <ClInclude Include="..\interface\omni\core\do_while_statement.hpp" />
     <ClInclude Include="..\interface\omni\core\external_function.hpp" />
     <ClInclude Include="..\interface\omni\core\function_call_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\function_prototype.hpp" />
@@ -83,6 +84,7 @@
     <ClInclude Include="..\interface\omni\core\variable_declaration_statement.hpp" />
     <ClInclude Include="..\interface\omni\core\variable_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\context_part.hpp" />
+    <ClInclude Include="..\interface\omni\core\verification_failed_error.hpp" />
     <ClInclude Include="..\interface\omni\core\while_statement.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +96,7 @@
     <ClCompile Include="..\source\omni\core\context_emit_options.cpp" />
     <ClCompile Include="..\source\omni\core\context_part.cpp" />
     <ClCompile Include="..\source\omni\core\domain.cpp" />
+    <ClCompile Include="..\source\omni\core\do_while_statement.cpp" />
     <ClCompile Include="..\source\omni\core\expression.cpp" />
     <ClCompile Include="..\source\omni\core\expression_statement.cpp" />
     <ClCompile Include="..\source\omni\core\external_function.cpp" />
@@ -121,6 +124,7 @@
     <ClCompile Include="..\source\omni\core\variable_assignment_expression.cpp" />
     <ClCompile Include="..\source\omni\core\variable_declaration_statement.cpp" />
     <ClCompile Include="..\source\omni\core\variable_expression.cpp" />
+    <ClCompile Include="..\source\omni\core\verification_failed_eror.cpp" />
     <ClCompile Include="..\source\omni\core\while_statement.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
