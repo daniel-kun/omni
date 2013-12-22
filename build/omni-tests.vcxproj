@@ -65,18 +65,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\source\omni\tests\test_binary_operator_expression.cpp" />
-    <ClCompile Include="..\source\omni\tests\test_block.cpp" />
-    <ClCompile Include="..\source\omni\tests\test_context.cpp" />
-    <ClCompile Include="..\source\omni\tests\test_external_function.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_binary_operator_expression.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_block.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_context.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_external_function.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_function.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_if_statement.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_native_type_to_type_class.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_variable.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_while_statement.cpp" />
+    <ClCompile Include="..\source\omni\tests\runtime\test_memory.cpp" />
     <ClCompile Include="..\source\omni\tests\test_file_manager.cpp" />
-    <ClCompile Include="..\source\omni\tests\test_function.cpp" />
-    <ClCompile Include="..\source\omni\tests\test_if_statement.cpp" />
     <ClCompile Include="..\source\omni\tests\test_llvm.cpp" />
-    <ClCompile Include="..\source\omni\tests\test_native_type_to_type_class.cpp" />
     <ClCompile Include="..\source\omni\tests\test_utils.cpp" />
-    <ClCompile Include="..\source\omni\tests\test_variable.cpp" />
-    <ClCompile Include="..\source\omni\tests\test_while_statement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />
@@ -88,6 +89,9 @@
   <ItemGroup>
     <ProjectReference Include="omni-core.vcxproj">
       <Project>{c04196c6-45be-4b8f-a1b6-8984594abd17}</Project>
+    </ProjectReference>
+    <ProjectReference Include="omni-runtime.vcxproj">
+      <Project>{0b6f9c79-d18f-4902-a980-785841aeb324}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -15,6 +15,8 @@
       <DisableSpecificWarnings>4239;4265;4224;4996;4251;4514;4820;4548;4668;4625;4710;4365;4512;4310;4626;4061;4244;4100;4640;4180;4800;4242;4127</DisableSpecificWarnings>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link />
   </ItemDefinitionGroup>

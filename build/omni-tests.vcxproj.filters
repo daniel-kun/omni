@@ -13,17 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Quelldateien\core">
+      <UniqueIdentifier>{11402c1d-9edf-4a59-b8f0-2d452920aea4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\runtime">
+      <UniqueIdentifier>{2fcb7046-0146-46b8-8c29-342f79998c9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\source\omni\tests\test_context.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\omni\tests\test_function.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\omni\tests\test_binary_operator_expression.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="..\source\omni\tests\test_file_manager.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -33,23 +30,35 @@
     <ClCompile Include="..\source\omni\tests\test_llvm.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\omni\tests\test_external_function.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="..\source\omni\tests\core\test_binary_operator_expression.cpp">
+      <Filter>Quelldateien\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\omni\tests\test_variable.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="..\source\omni\tests\core\test_block.cpp">
+      <Filter>Quelldateien\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\omni\tests\test_native_type_to_type_class.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="..\source\omni\tests\core\test_context.cpp">
+      <Filter>Quelldateien\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\omni\tests\test_block.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="..\source\omni\tests\core\test_external_function.cpp">
+      <Filter>Quelldateien\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\omni\tests\test_if_statement.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="..\source\omni\tests\core\test_function.cpp">
+      <Filter>Quelldateien\core</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\omni\tests\test_while_statement.cpp">
-      <Filter>Quelldateien</Filter>
+    <ClCompile Include="..\source\omni\tests\core\test_if_statement.cpp">
+      <Filter>Quelldateien\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\test_native_type_to_type_class.cpp">
+      <Filter>Quelldateien\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\test_variable.cpp">
+      <Filter>Quelldateien\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\test_while_statement.cpp">
+      <Filter>Quelldateien\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\runtime\test_memory.cpp">
+      <Filter>Quelldateien\runtime</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
