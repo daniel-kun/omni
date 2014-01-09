@@ -352,7 +352,7 @@ void omni::core::module::emitSharedLibraryFile (std::string const & fileName, co
     std::string command = "..\\tools\\link_helper.cmd \"" + objectFilePath.string () + "\" \"/OUT:" + sharedLibraryPath.string () + "\"";
     // Add library search path:
     for (auto librarySearchPath : options.getLibrarySearchPaths ()) {
-        command += " /LIB:\"" + librarySearchPath.string () + "\"";
+        command += " /LIBPATH:\"" + librarySearchPath.string () + "\"";
     }
     // Add libraries to link:
     for (auto library : additionalLibraries) {

@@ -7,8 +7,30 @@
 
 #include <sstream>
 
-omni::core::type::type (context & context, omni::core::type_class typeClass) :
-    _typeClass (typeClass)
+namespace {
+/**
+Returns the type that points to baseType with the given indirectionLevel. For example, if baseType is int32 and indirectionLevel is 1,
+the result is int32*. If indirection is 2, the result is int32** and if indirection is 0, the result is int32.
+**/
+llvm::Type * addIndirection (llvm::Type * baseType, unsigned int indirectionLevel)
+{
+    llvm::Type * result = baseType;
+    for (unsigned i = 0; i < indirectionLevel; ++ i) {
+        result = result->getPointerTo ();
+    }
+    return result;
+}
+}
+
+/**
+Initializes this type with the given type_class and indirectionLevel.
+@param typeClass The type class of the desired type. @see type_class
+@param indirectionLevel The level of pointer-indirection. This is only for internal usage and for representing types imported from external C code. 
+The Omni Language itself does not use types with an indiretionLevel > 0. Instead, "optionals" and "references" are used.
+**/
+omni::core::type::type (context & context, omni::core::type_class typeClass, unsigned int indirectionLevel) :
+    _typeClass (typeClass),
+    _indirectionLevel (indirectionLevel)
 {
     std::stringstream typeName;
     typeName << typeClass;
@@ -22,12 +44,12 @@ omni::core::type::~ type ()
 
 /**
 Returns a shared_ptr for a instance of type for the desired context and type_class.
-Short-hand for creating a type with type::sharedBasicType(context, typeClass); with the additional benefit that types are cached in the context.
+Short-hand for creating a type with new type(context, typeClass, indirectionLevel); with the additional benefit that types are cached in the context.
 @see context::sharedBasicType(type_class);
 **/
-std::shared_ptr <omni::core::type> omni::core::type::sharedBasicType (context & context, type_class typeClass)
+std::shared_ptr <omni::core::type> omni::core::type::sharedBasicType (context & context, type_class typeClass, unsigned int indirectionLevel)
 {
-    return context.sharedBasicType (typeClass);
+    return context.sharedBasicType (typeClass, indirectionLevel);
 }
 
 
@@ -35,42 +57,48 @@ llvm::Type * omni::core::type::llvmType ()
 {
     switch (_typeClass) {
     case type_class::t_void:
-        return llvm::Type::getVoidTy (getContext ()->llvmContext ());
+        return addIndirection (llvm::Type::getVoidTy (getContext ()->llvmContext ()), getIndirectionLevel ());
         break;
     case type_class::t_boolean:
-        return llvm::Type::getInt1Ty (getContext ()->llvmContext ());
+        return addIndirection (llvm::Type::getInt1Ty (getContext ()->llvmContext ()), getIndirectionLevel ());
         break;
     case type_class::t_char:
     case type_class::t_unsignedByte:
     case type_class::t_signedByte:
-        return llvm::Type::getInt8Ty (getContext ()->llvmContext ());
+        return addIndirection (llvm::Type::getInt8Ty (getContext ()->llvmContext ()), getIndirectionLevel ());
         break;
     case type_class::t_unsignedShort:
     case type_class::t_signedShort:
-        return llvm::Type::getInt16Ty (getContext ()->llvmContext ());
+        return addIndirection (llvm::Type::getInt16Ty (getContext ()->llvmContext ()), getIndirectionLevel ());
         break;
     case type_class::t_unsignedLong:
     case type_class::t_signedLong:
     case type_class::t_unsignedInt:
     case type_class::t_signedInt:
-        return llvm::Type::getInt32Ty (getContext ()->llvmContext ());
+        return addIndirection (llvm::Type::getInt32Ty (getContext ()->llvmContext ()), getIndirectionLevel ());
         break;
     case type_class::t_unsignedLongLong:
     case type_class::t_signedLongLong:
-        return llvm::Type::getInt64Ty (getContext ()->llvmContext ());
+        return addIndirection (llvm::Type::getInt64Ty (getContext ()->llvmContext ()), getIndirectionLevel ());
         break;
     default:
         throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
     }
 }
 
-omni::core::type_class omni::core::type::getTypeClass ()
+/**
+Returns the type_class of this type.
+**/
+omni::core::type_class omni::core::type::getTypeClass () const
 {
     return _typeClass;
 }
 
-omni::core::type_class const omni::core::type::getTypeClass () const
+/**
+Returns the pointer indirection-level of this type.
+E.g. when the type_class is t_signedInt and the indirectionLevel is 2, the underlying C-type would be "int**".
+**/
+unsigned int omni::core::type::getIndirectionLevel () const
 {
-    return _typeClass;
+    return _indirectionLevel;
 }
-

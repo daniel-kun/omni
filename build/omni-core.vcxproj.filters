@@ -132,6 +132,15 @@
     <ClInclude Include="..\interface\omni\core\verification_failed_error.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="..\interface\omni\core\runtime.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\cast_expression.hpp">
+      <Filter>Quelldateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\bitcast_expression.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\core\already_exists_error.cpp">
@@ -246,6 +255,15 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="..\source\omni\core\verification_failed_eror.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\runtime.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\cast_expression.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\bitcast_expression.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

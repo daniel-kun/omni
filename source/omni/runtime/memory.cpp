@@ -7,7 +7,7 @@ Allocates new memory and returns a pointer to it. The returned memory's referenc
 @param sizeInBytes Specifies the size of the memory to allocate.
 @return Returns a pointer to a newly allocated memory structure of the given size.
 **/
-void * omni_runtime_memory_alloc (std::size_t sizeInBytes)
+void * omni_runtime_memory_allocate (std::size_t sizeInBytes)
 {
     reference_count_t * result = reinterpret_cast <reference_count_t *> (std::malloc (sizeInBytes + sizeof (reference_count_t)));
     *result = 1u;

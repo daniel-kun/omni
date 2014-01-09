@@ -6,3 +6,4 @@
 *.user
 /test
 /build/Release
+/docs

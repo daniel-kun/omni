@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE (runtimeMemoryTests)
 BOOST_AUTO_TEST_CASE (referenceCounting)
 {
     const std::size_t memorySize = 100u;
-    void * memory = omni_runtime_memory_alloc (memorySize);
+    void * memory = omni_runtime_memory_allocate (memorySize);
     char * buffer = reinterpret_cast <char *> (memory);
     // Check whether we can write all memory slots that should have been allocated:
     for (char * p = buffer; p < buffer + memorySize; ++ p) {

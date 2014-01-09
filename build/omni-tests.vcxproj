@@ -72,6 +72,7 @@
     <ClCompile Include="..\source\omni\tests\core\test_function.cpp" />
     <ClCompile Include="..\source\omni\tests\core\test_if_statement.cpp" />
     <ClCompile Include="..\source\omni\tests\core\test_native_type_to_type_class.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_runtime_memory.cpp" />
     <ClCompile Include="..\source\omni\tests\core\test_variable.cpp" />
     <ClCompile Include="..\source\omni\tests\core\test_while_statement.cpp" />
     <ClCompile Include="..\source\omni\tests\runtime\test_memory.cpp" />

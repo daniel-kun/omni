@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 #include <map>
+#include <utility>
 
 namespace llvm {
     class raw_ostream;
@@ -34,7 +35,7 @@ namespace core {
         context ();
         ~ context();
 
-        std::shared_ptr <type> sharedBasicType (type_class typeClass);
+        std::shared_ptr <type> sharedBasicType (type_class typeClass, int indirectionLevel = 0);
 
         void addModule (std::shared_ptr <module> module);
 
@@ -43,7 +44,7 @@ namespace core {
 
     private:
         std::unique_ptr <llvm::LLVMContext> _llvmContext;
-        std::map <type_class, std::shared_ptr <type>> _sharedBasicTypes;
+        std::map <std::pair <type_class, int>, std::shared_ptr <type>> _sharedBasicTypes;
         std::vector <std::shared_ptr <module>> _modules;
     };
 
