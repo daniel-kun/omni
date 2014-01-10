@@ -61,7 +61,6 @@
     <ClInclude Include="..\interface\omni\core\builtin_literal.hpp" />
     <ClInclude Include="..\interface\omni\core\context.hpp" />
     <ClInclude Include="..\interface\omni\core\expression.hpp" />
-    <ClInclude Include="..\interface\omni\core\expression_statement.hpp" />
     <ClInclude Include="..\interface\omni\core\function.hpp" />
     <ClInclude Include="..\interface\omni\core\id.hpp" />
     <ClInclude Include="..\interface\omni\core\if_statement.hpp" />
@@ -79,6 +78,7 @@
     <ClInclude Include="..\interface\omni\core\runtime.hpp" />
     <ClInclude Include="..\interface\omni\core\statement.hpp" />
     <ClInclude Include="..\interface\omni\core\core.hpp" />
+    <ClInclude Include="..\interface\omni\core\statement_emit_result.hpp" />
     <ClInclude Include="..\interface\omni\core\type.hpp" />
     <ClInclude Include="..\interface\omni\core\type_class.hpp" />
     <ClInclude Include="..\interface\omni\core\type_mismatch_error.hpp" />
@@ -103,7 +103,6 @@
     <ClCompile Include="..\source\omni\core\domain.cpp" />
     <ClCompile Include="..\source\omni\core\do_while_statement.cpp" />
     <ClCompile Include="..\source\omni\core\expression.cpp" />
-    <ClCompile Include="..\source\omni\core\expression_statement.cpp" />
     <ClCompile Include="..\source\omni\core\external_function.cpp" />
     <ClCompile Include="..\source\omni\core\function.cpp" />
     <ClCompile Include="..\source\omni\core\function_call_expression.cpp" />
@@ -123,6 +122,7 @@
     <ClCompile Include="..\source\omni\core\return_statement.cpp" />
     <ClCompile Include="..\source\omni\core\runtime.cpp" />
     <ClCompile Include="..\source\omni\core\statement.cpp" />
+    <ClCompile Include="..\source\omni\core\statement_emit_result.cpp" />
     <ClCompile Include="..\source\omni\core\type.cpp" />
     <ClCompile Include="..\source\omni\core\type_class.cpp" />
     <ClCompile Include="..\source\omni\core\type_mismatch_error.cpp" />

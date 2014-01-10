@@ -19,7 +19,7 @@ namespace core {
 
         std::shared_ptr <type> getType () const override;
 
-        llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) override;
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
         std::shared_ptr <literal> _literal;

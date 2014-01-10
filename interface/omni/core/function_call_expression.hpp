@@ -36,7 +36,7 @@ namespace core {
         void addParameter (std::shared_ptr <expression> parameter);
         void setParameters (std::vector <std::shared_ptr <expression>> parameters);
 
-        virtual llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) override;
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
         std::shared_ptr <function_prototype> _function;

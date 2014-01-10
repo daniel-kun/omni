@@ -84,14 +84,14 @@ void omni::core::function_call_expression::setParameters (std::vector <std::shar
 @return Returns a llvm::CallInst that has been constructed by a call to llvm::IRBuilder<>::CreateCall.
 You can safely dynamic_cast the result to a llvm::CallInst.
 **/
-llvm::Value * omni::core::function_call_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::function_call_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
 
     std::vector <llvm::Value*> llvmParameters;
     for (auto p : _parameters) {
-        llvm::Value * val = p->llvmValue (llvmBasicBlock);
+        llvm::Value * val = p->llvmEmit (llvmBasicBlock).getValue ();
         llvmParameters.push_back (val);
     }
-    return builder.CreateCall (_function->llvmFunction (), llvmParameters);
+    return statement_emit_result (llvmBasicBlock, builder.CreateCall (_function->llvmFunction (), llvmParameters));
 }

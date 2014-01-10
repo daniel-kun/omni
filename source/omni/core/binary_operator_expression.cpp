@@ -49,23 +49,23 @@ std::shared_ptr <omni::core::type> omni::core::binary_operator_expression::getTy
 /**
 @internal
 **/
-llvm::Value * omni::core::binary_operator_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::binary_operator_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
-    llvm::Value * lhs = _leftOperand->llvmValue (llvmBasicBlock);
-    llvm::Value * rhs = _rightOperand->llvmValue (llvmBasicBlock);
+    llvm::Value * lhs = _leftOperand->llvmEmit (llvmBasicBlock).getValue ();
+    llvm::Value * rhs = _rightOperand->llvmEmit (llvmBasicBlock).getValue ();
     switch (_operator) {
     case binary_operation::binary_lessthan_operation:
         switch (_leftOperand->getType ()->getTypeClass ()) {
         case type_class::t_signedInt:
-            return builder.CreateICmp (llvm::CmpInst::ICMP_SLT, lhs, rhs);
+            return statement_emit_result (llvmBasicBlock, builder.CreateICmp (llvm::CmpInst::ICMP_SLT, lhs, rhs));
         default:
             throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
         }
     case binary_operation::binary_plus_operation:
-        return builder.CreateBinOp (llvm::Instruction::BinaryOps::Add, lhs, rhs);
+        return statement_emit_result (llvmBasicBlock, builder.CreateBinOp (llvm::Instruction::BinaryOps::Add, lhs, rhs));
     case binary_operation::binary_minus_operation:
-        return builder.CreateBinOp (llvm::Instruction::BinaryOps::Sub, lhs, rhs);
+        return statement_emit_result (llvmBasicBlock, builder.CreateBinOp (llvm::Instruction::BinaryOps::Sub, lhs, rhs));
     default:
         throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
     }

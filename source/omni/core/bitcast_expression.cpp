@@ -20,8 +20,8 @@ std::shared_ptr <omni::core::type> omni::core::bitcast_expression::getType () co
     return _targetType;
 }
 
-llvm::Value * omni::core::bitcast_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::bitcast_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
-    return builder.CreateBitCast (_sourceExpression->llvmValue (llvmBasicBlock), _targetType->llvmType ());
+    return statement_emit_result (llvmBasicBlock, builder.CreateBitCast (_sourceExpression->llvmEmit (llvmBasicBlock).getValue (), _targetType->llvmType ()));
 }

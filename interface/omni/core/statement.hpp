@@ -3,23 +3,27 @@
 
 #include <omni/core/core.hpp>
 #include <omni/core/context_part.hpp>
+#include <omni/core/statement_emit_result.hpp>
 
 namespace llvm {
     class BasicBlock;
+    class Value;
 }
 
 namespace omni {
 namespace core {
 
     /**
-    A statement can be anything that is being executed in a block. Statements do not have results. In contrast,
-    expressions have results, that's why an expression can be a statement. In that case, the result is discarded.
-    @see expression_statement.
+    A statement can be anything that is being executed in a block.
+    There is a distinction between statements that return a result ("expressions") and all other statements that do not
+    return a result. Everything that returns a result derives from omni::core::expression, while anything else does directly
+    derive from omni::core::statement.
     **/
     class OMNI_CORE_API statement : public context_part {
     public:
         virtual ~ statement ();
-        virtual llvm::BasicBlock * llvmEmit (llvm::BasicBlock * llvmBasicBlock) = 0;
+
+        virtual statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) = 0;
     };
 
 } // namespace core

@@ -44,7 +44,7 @@ std::shared_ptr <omni::core::type> omni::core::variable_assignment_expression::g
 /**
 Internal
 **/
-llvm::Value * omni::core::variable_assignment_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::variable_assignment_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     return omni::core::variable_assignment_expression::llvmEmitImpl (llvmBasicBlock, * _variable, * _value);
 }
@@ -52,10 +52,10 @@ llvm::Value * omni::core::variable_assignment_expression::llvmValue (llvm::Basic
 /**
 Internal
 **/
-llvm::Value * omni::core::variable_assignment_expression::llvmEmitImpl (llvm::BasicBlock * llvmBasicBlock, variable_declaration_statement & variable, expression & value)
+omni::core::statement_emit_result omni::core::variable_assignment_expression::llvmEmitImpl (llvm::BasicBlock * llvmBasicBlock, variable_declaration_statement & variable, expression & value)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
-    llvm::Value * result = value.llvmValue (llvmBasicBlock);
-    builder.CreateStore (result, variable.llvmPointerValue ());
+    statement_emit_result result = value.llvmEmit (llvmBasicBlock);
+    builder.CreateStore (result.getValue (), variable.llvmPointerValue ());
     return result;
 }

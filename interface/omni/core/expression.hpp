@@ -2,7 +2,7 @@
 #define OMNI_CORE_EXPRESSION_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/context_part.hpp>
+#include <omni/core/statement.hpp>
 
 #include <memory>
 
@@ -16,17 +16,13 @@ namespace core {
     class type;
 
     /**
-    An expression is something that returns or is a value. An expression can be a statement, when it's wrapped in an expression_statement
-    or it can be part of other statements. For example, the binary_operator_expression has one expression as the left hand side operand and
+    An expression is a statement that returns or is a value. An expression can stand alone as a statement, or it can be part of other statements or expressions.
+    For example, the binary_operator_expression has one expression as the left hand side operand and
     another expression as the right hand side operand. A function_call_expression receives expressions as it's parameters and is itself an expression.
     **/
-    class OMNI_CORE_API expression : public context_part {
+    class OMNI_CORE_API expression : public statement {
     public:
-        virtual ~ expression () = 0;
-
         virtual std::shared_ptr <type> getType () const = 0;
-
-        virtual llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) = 0;
     };
 
 } // namespace core

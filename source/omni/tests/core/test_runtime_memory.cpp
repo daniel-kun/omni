@@ -7,7 +7,6 @@
 #include <omni/core/block.hpp>
 #include <omni/core/function_call_expression.hpp>
 #include <omni/core/external_function.hpp>
-#include <omni/core/expression_statement.hpp>
 #include <omni/core/return_statement.hpp>
 #include <omni/core/literal_expression.hpp>
 #include <omni/core/builtin_literal.hpp>
@@ -47,24 +46,22 @@ BOOST_AUTO_TEST_CASE (referenceCounting)
     funcBody->appendStatement (ptrVariable);
     // Increment the reference counter to 2:
     funcBody->appendStatement (
-        std::make_shared <expression_statement> (
-            std::make_shared <function_call_expression> (
-                r.getMemoryAddReference (),
-                std::vector <std::shared_ptr <expression>> {
-                    std::make_shared <bitcast_expression> (
-                        std::make_shared <variable_expression> (ptrVariable),
-                        rawPtr)
-                })));
+        std::make_shared <function_call_expression> (
+            r.getMemoryAddReference (),
+            std::vector <std::shared_ptr <expression>> {
+                std::make_shared <bitcast_expression> (
+                    std::make_shared <variable_expression> (ptrVariable),
+                    rawPtr)
+            }));
     // Decrement the reference counter to 1:
     funcBody->appendStatement (
-        std::make_shared <expression_statement> (
-            std::make_shared <function_call_expression> (
-                r.getMemoryRemoveReference (),
-                std::vector <std::shared_ptr <expression>> {
-                    std::make_shared <bitcast_expression> (
-                        std::make_shared <variable_expression> (ptrVariable),
-                        rawPtr)
-                })));
+        std::make_shared <function_call_expression> (
+            r.getMemoryRemoveReference (),
+            std::vector <std::shared_ptr <expression>> {
+                std::make_shared <bitcast_expression> (
+                    std::make_shared <variable_expression> (ptrVariable),
+                    rawPtr)
+            }));
     // Decrement the reference counter to 0 (memory will be freed):
     funcBody->appendStatement (
         std::make_shared <return_statement> (

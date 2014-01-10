@@ -24,7 +24,7 @@ namespace core {
         std::shared_ptr <block> getBody ();
         const std::shared_ptr <block> getBody () const;
 
-        llvm::BasicBlock * llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
         std::shared_ptr <expression> _condition;

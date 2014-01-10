@@ -19,7 +19,7 @@ namespace core {
         return_statement ();
         return_statement (std::shared_ptr <expression> expression);
 
-        llvm::BasicBlock * llvmEmit (llvm::BasicBlock * llvmBasicBlock);
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock);
     private:
         std::shared_ptr <expression> _expression;
     };

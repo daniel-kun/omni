@@ -11,7 +11,7 @@ std::shared_ptr <omni::core::type> omni::core::literal_expression::getType () co
     return _literal->getType ();
 }
 
-llvm::Value * omni::core::literal_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::literal_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
-    return _literal->llvmValue ();
+    return statement_emit_result (llvmBasicBlock, _literal->llvmValue ());
 }

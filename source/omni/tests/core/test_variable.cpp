@@ -2,7 +2,6 @@
 #include <omni/core/variable_expression.hpp>
 #include <omni/core/variable_assignment_expression.hpp>
 #include <omni/core/binary_operator_expression.hpp>
-#include <omni/core/expression_statement.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/module.hpp>
 #include <omni/core/function.hpp>
@@ -50,7 +49,7 @@ void testVariables (T initializationValue, T assignmentValue)
     // Add the statements to a function body:
     auto body = std::make_shared <block> ();
     body->appendStatement (variableDeclarationStatement);
-    body->appendStatement (std::make_shared <expression_statement> (variableAssignmentExpression));
+    body->appendStatement (variableAssignmentExpression);
 
     // Return the variable's value:
     body->appendStatement (
@@ -119,7 +118,7 @@ BOOST_AUTO_TEST_CASE (mixedTests)
             binary_operator_expression::binary_operation::binary_plus_operation,
             std::make_shared <variable_expression> (variableB),
             std::make_shared <literal_expression> (std::make_shared <builtin_literal<char>> (c, static_cast <char> (1)))));
-    body->appendStatement (std::make_shared <expression_statement> (variableCassignment));
+    body->appendStatement (variableCassignment);
 
     // Now, return the value of variable "C", which should be 'C':
     body->appendStatement (std::make_shared <return_statement> (std::make_shared <variable_expression> (variableC)));

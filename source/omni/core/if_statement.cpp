@@ -74,7 +74,7 @@ const std::shared_ptr <omni::core::block> omni::core::if_statement::getElseBlock
 /**
 @internal
 **/
-llvm::BasicBlock * omni::core::if_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::if_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::BasicBlock * llvmTrueBlock = _trueBlock->llvmEmit (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
     llvm::BasicBlock * llvmFalseBlock = nullptr;
@@ -108,7 +108,7 @@ llvm::BasicBlock * omni::core::if_statement::llvmEmit (llvm::BasicBlock * llvmBa
     }
 
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
-    builder.CreateCondBr (_condition->llvmValue (llvmBasicBlock), llvmTrueBlock, llvmFalseBlock);
+    builder.CreateCondBr (_condition->llvmEmit (llvmBasicBlock).getValue (), llvmTrueBlock, llvmFalseBlock);
 
-    return result;
+    return statement_emit_result (result, nullptr);
 }

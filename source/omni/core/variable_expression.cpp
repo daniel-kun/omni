@@ -28,12 +28,12 @@ const std::shared_ptr <omni::core::variable_declaration_statement> omni::core::v
     return _variable;
 }
 
-llvm::Value * omni::core::variable_expression::llvmValue (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::variable_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::Value * pointerValue = _variable->llvmPointerValue ();
     if (pointerValue == nullptr) {
         throw use_before_declaration_error (omni::core::domain::variable, _variable->getName ());
     }
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
-    return builder.CreateLoad (pointerValue);
+    return statement_emit_result (llvmBasicBlock, builder.CreateLoad (pointerValue));
 }

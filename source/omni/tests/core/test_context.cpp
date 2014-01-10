@@ -8,7 +8,6 @@
 #include <omni/core/literal_expression.hpp>
 #include <omni/core/builtin_literal.hpp>
 #include <omni/core/function_call_expression.hpp>
-#include <omni/core/expression_statement.hpp>
 #include <omni/tests/test_file_manager.hpp>
 #include <omni/tests/test_utils.hpp>
 #include <set>

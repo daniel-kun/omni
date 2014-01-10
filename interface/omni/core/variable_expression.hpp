@@ -23,7 +23,7 @@ namespace core {
 
         const std::shared_ptr <variable_declaration_statement> getVariable () const ;
 
-        llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) override;
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
         std::shared_ptr <variable_declaration_statement> _variable;

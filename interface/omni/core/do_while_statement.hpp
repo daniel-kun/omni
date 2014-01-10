@@ -18,7 +18,7 @@ namespace core {
     public:
         do_while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body);
 
-        llvm::BasicBlock * llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
     };

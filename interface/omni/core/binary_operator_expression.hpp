@@ -41,7 +41,7 @@ namespace core {
 
         std::shared_ptr <type> getType () const override;
 
-        llvm::Value * llvmValue (llvm::BasicBlock * llvmBasicBlock) override;
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
         std::shared_ptr <expression> getLeftOperand ();
         std::shared_ptr <expression> getRightOperand ();

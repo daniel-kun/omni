@@ -28,7 +28,7 @@ namespace core {
         std::shared_ptr <block> getElseBlock ();
         const std::shared_ptr <block> getElseBlock () const;
 
-        llvm::BasicBlock * llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
         std::shared_ptr <expression> _condition;

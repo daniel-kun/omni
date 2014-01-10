@@ -14,13 +14,13 @@ omni::core::return_statement::return_statement (std::shared_ptr <expression> exp
 {
 }
 
-llvm::BasicBlock * omni::core::return_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::return_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     if (_expression.get () == nullptr) {
         builder.CreateRetVoid ();
     } else {
-        builder.CreateRet (_expression->llvmValue (llvmBasicBlock));
+        builder.CreateRet (_expression->llvmEmit (llvmBasicBlock).getValue ());
     }
-    return llvmBasicBlock;
+    return statement_emit_result (llvmBasicBlock, nullptr);
 }

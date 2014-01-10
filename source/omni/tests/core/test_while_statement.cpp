@@ -5,7 +5,6 @@
 #include <omni/core/function.hpp>
 #include <omni/core/block.hpp>
 #include <omni/core/literal_expression.hpp>
-#include <omni/core/expression_statement.hpp>
 #include <omni/core/builtin_literal.hpp>
 #include <omni/core/return_statement.hpp>
 #include <omni/core/variable_declaration_statement.hpp>
@@ -43,15 +42,14 @@ int buildAndRunWhileTest (std::string testFileName)
 
     auto whileBody = std::make_shared <block> ();
     whileBody->appendStatement (
-        std::make_shared <expression_statement> (
-            std::make_shared <variable_assignment_expression> (
-                variableDeclaration,
-                std::make_shared <binary_operator_expression> (
-                    c,
-                    binary_operator_expression::binary_operation::binary_plus_operation,
-                    std::make_shared <variable_expression> (variableDeclaration),
-                    std::make_shared <literal_expression> (
-                        std::make_shared <builtin_literal <int>> (c, 1))))));
+        std::make_shared <variable_assignment_expression> (
+            variableDeclaration,
+            std::make_shared <binary_operator_expression> (
+                c,
+                binary_operator_expression::binary_operation::binary_plus_operation,
+                std::make_shared <variable_expression> (variableDeclaration),
+                std::make_shared <literal_expression> (
+                    std::make_shared <builtin_literal <int>> (c, 1)))));
     auto whileStatement = std::make_shared <WhileStatement> (whileCondition, whileBody);
     body->appendStatement (whileStatement);
     body->appendStatement (std::make_shared <return_statement> (std::make_shared <variable_expression> (variableDeclaration)));

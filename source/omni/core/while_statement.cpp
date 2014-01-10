@@ -47,7 +47,7 @@ const std::shared_ptr <omni::core::block> omni::core::while_statement::getBody (
     return _body;
 }
 
-llvm::BasicBlock * omni::core::while_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::while_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     auto whileBlock = llvm::BasicBlock::Create (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
     auto whileBodyBlock = _body->llvmEmit (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
@@ -58,10 +58,10 @@ llvm::BasicBlock * omni::core::while_statement::llvmEmit (llvm::BasicBlock * llv
     builder.CreateBr (whileBlock);
 
     llvm::IRBuilder <true, llvm::NoFolder> whileBuilder (whileBlock);
-    whileBuilder.CreateCondBr (_condition->llvmValue (whileBlock), whileBodyBlock, continueBlock);
+    whileBuilder.CreateCondBr (_condition->llvmEmit (whileBlock).getValue (), whileBodyBlock, continueBlock);
 
     llvm::IRBuilder <true, llvm::NoFolder> whileBodyBuilder (whileBodyBlock);
     whileBodyBuilder.CreateBr (whileBlock);
 
-    return continueBlock;
+    return statement_emit_result (continueBlock, nullptr);
 }

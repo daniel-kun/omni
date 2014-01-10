@@ -25,7 +25,7 @@ namespace core {
         std::shared_ptr <expression> getInitializationExpression () const;
 
         llvm::Value * llvmPointerValue ();
-        llvm::BasicBlock * llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
         std::shared_ptr <type> _variableType;
@@ -36,4 +36,4 @@ namespace core {
 } // namespace core
 } // namespace omni
 
-#endif // include guard
+#endif // include guard                                             

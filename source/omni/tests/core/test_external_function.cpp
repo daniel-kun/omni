@@ -8,7 +8,6 @@
 #include <omni/core/function.hpp>
 #include <omni/core/parameter.hpp>
 #include <omni/core/function_call_expression.hpp>
-#include <omni/core/expression_statement.hpp>
 
 #include <omni/tests/test_utils.hpp>
 
