@@ -2,7 +2,7 @@
 #define OMNI_CORE_STATEMENT_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/context_part.hpp>
+#include <omni/core/entity.hpp>
 #include <omni/core/statement_emit_result.hpp>
 
 namespace llvm {
@@ -19,7 +19,7 @@ namespace core {
     return a result. Everything that returns a result derives from omni::core::expression, while anything else does directly
     derive from omni::core::statement.
     **/
-    class OMNI_CORE_API statement : public context_part {
+    class OMNI_CORE_API statement : public entity {
     public:
         virtual ~ statement ();
 

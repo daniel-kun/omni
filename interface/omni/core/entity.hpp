@@ -1,5 +1,5 @@
-#ifndef OMNI_CORE_CONTEXT_PART_HPP
-#define OMNI_CORE_CONTEXT_PART_HPP
+#ifndef OMNI_CORE_ENTITY_HPP
+#define OMNI_CORE_ENTITY_HPP
 
 #include <omni/core/core.hpp>
 #include <omni/core/id.hpp>
@@ -16,11 +16,11 @@ namespace core {
     Base class for all information that is part of a context, such as variable declarations.
     (later: function declarations, etc.).
     **/
-    class OMNI_CORE_API context_part {
+    class OMNI_CORE_API entity {
     public:
-        context_part ();
-        context_part (std::string const & name);
-        virtual ~ context_part () = 0;
+        entity ();
+        entity (std::string const & name);
+        virtual ~ entity () = 0;
 
         void setContext (context * context);
         context * getContext ();

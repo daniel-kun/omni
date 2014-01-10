@@ -2,7 +2,7 @@
 #define OMNI_CORE_PARAMETER_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/context_part.hpp>
+#include <omni/core/entity.hpp>
 
 namespace omni {
 namespace core {
@@ -11,7 +11,7 @@ namespace core {
     /**
     Function parameter, @see function::getParameters ().
     **/
-    class OMNI_CORE_API parameter : public context_part {
+    class OMNI_CORE_API parameter : public entity {
     public:
         parameter (std::shared_ptr <type> type, std::string name);
 

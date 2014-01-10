@@ -2,7 +2,7 @@
 #define OMNI_CORE_TYPE_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/context_part.hpp>
+#include <omni/core/entity.hpp>
 #include <omni/core/type_class.hpp>
 
 #include <boost/noncopyable.hpp>
@@ -14,7 +14,7 @@ namespace llvm {
 namespace omni {
 namespace core {
 
-    class OMNI_CORE_API type : public context_part, public boost::noncopyable {
+    class OMNI_CORE_API type : public entity, public boost::noncopyable {
     public:
         type (context & context, type_class typeClass, unsigned int indirectionLevel = 0);
         virtual ~ type ();

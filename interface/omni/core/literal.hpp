@@ -2,7 +2,7 @@
 #define OMNI_CORE_LITERAL_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/context_part.hpp>
+#include <omni/core/entity.hpp>
 
 #include <memory>
 
@@ -21,7 +21,7 @@ namespace core {
     The most simple type is the builtin_literal<>, which is used to access literals of built-in types.
     (It is not sure whether other kinds of literals will be supported.)
     **/
-    class OMNI_CORE_API literal : public context_part {
+    class OMNI_CORE_API literal : public entity {
     public:
         literal (std::shared_ptr <type> type);
         virtual ~ literal ();

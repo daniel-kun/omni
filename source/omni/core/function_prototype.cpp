@@ -18,7 +18,7 @@ omni::core::function_prototype::function_prototype (module & module,
                                                     std::string const & name,
                                                     std::shared_ptr <type> returnType,
                                                     std::vector <std::shared_ptr <omni::core::parameter>> parameters) :
-    context_part (name),
+    entity (name),
     _module (module),
     _returnType (returnType),
     _parameters (parameters),

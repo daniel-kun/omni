@@ -3,7 +3,7 @@
 #include <omni/core/type.hpp>
 #include <omni/core/module.hpp>
 #include <omni/core/function.hpp>
-#include <omni/core/context_part.hpp>
+#include <omni/core/entity.hpp>
 #include <omni/core/return_statement.hpp>
 #include <omni/core/literal_expression.hpp>
 #include <omni/core/builtin_literal.hpp>
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE (createAndFindFunction)
     BOOST_CHECK (mod.findFunctionByName (functionName) != nullptr);
     BOOST_CHECK (mod.findFunctionByName (functionName)->getName () == functionName);
 
-    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <context_part> ());
+    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <entity> ());
     BOOST_CHECK (std::dynamic_pointer_cast <function> (mod.findPartById (func->getId ()))->getName () == functionName);
 
 }
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE (addAndFindFunction)
     BOOST_CHECK (mod.findFunctionByName (functionName) != nullptr);
     BOOST_CHECK (mod.findFunctionByName (functionName)->getName () == functionName);
 
-    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <context_part> ());
+    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <entity> ());
     BOOST_CHECK (std::dynamic_pointer_cast <function> (mod.findPartById (func->getId ()))->getName () == functionName);
 }
 

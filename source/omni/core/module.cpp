@@ -94,14 +94,14 @@ This happens when the part is created using one of the create...-functions or th
 @param id The id of the part that should be returned. This should not be an invalid id.
 @return The part with the id, if such has been added to the context. A null-shared_ptr is returned, if no such part exists in this context.
 **/
-std::shared_ptr <omni::core::context_part> omni::core::module::findPartById (omni::core::id id)
+std::shared_ptr <omni::core::entity> omni::core::module::findPartById (omni::core::id id)
 {
     id_to_parts_map & m (_parts [id.getDomain ()]);
     id_to_parts_map::iterator i = m.find (id.getId ());
     if (i != m.end ()) {
         return i->second;
     } else {
-        return std::shared_ptr <context_part> ();
+        return std::shared_ptr <entity> ();
     }
 }
 
@@ -169,7 +169,7 @@ Only functions that were created using createFunction or were added via addFunct
 std::shared_ptr <omni::core::function_prototype> omni::core::module::findFunctionByName (std::string const & name)
 {
     id_to_parts_map & functionMap (_parts [domain::function]);
-    auto found = std::find_if (functionMap.begin (), functionMap.end (), [name] (std::pair <std::string, std::shared_ptr <context_part>> f) -> bool {
+    auto found = std::find_if (functionMap.begin (), functionMap.end (), [name] (std::pair <std::string, std::shared_ptr <entity>> f) -> bool {
         return f.second->getName () == name;
     });
     if (found != functionMap.end ()) {
@@ -188,7 +188,7 @@ createFunction or adding it via addFunction.
 bool omni::core::module::removeFunction (std::shared_ptr <omni::core::function_prototype> function)
 {
     id_to_parts_map & functionMap (_parts [domain::function]);
-    auto found = std::find_if (functionMap.begin (), functionMap.end (), [function] (std::pair <std::string, std::shared_ptr <context_part>> f) -> bool {
+    auto found = std::find_if (functionMap.begin (), functionMap.end (), [function] (std::pair <std::string, std::shared_ptr <entity>> f) -> bool {
         return f.second == function;
     });
     if (found != functionMap.end ()) {

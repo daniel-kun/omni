@@ -2,7 +2,7 @@
 #define OMNI_CORE_FUNCTION_PROTOTYPE_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/context_part.hpp>
+#include <omni/core/entity.hpp>
 
 #include <memory>
 #include <vector>
@@ -25,7 +25,7 @@ namespace core {
     /**
     A function_prototype defines the name, return type and parameters of a function and adds basic functionalities to read and modify these values.
     **/
-    class OMNI_CORE_API function_prototype : public context_part {
+    class OMNI_CORE_API function_prototype : public entity {
     public:
         function_prototype (module & module,
                             std::string const & name,

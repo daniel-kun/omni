@@ -18,7 +18,7 @@ namespace omni {
 namespace core {
     class context;
     class type;
-    class context_part;
+    class entity;
     class function_prototype;
     class function;
     class block;
@@ -35,7 +35,7 @@ namespace core {
         context & getContext ();
         const context & getContext () const;
 
-        std::shared_ptr <context_part> findPartById (id id);
+        std::shared_ptr <entity> findPartById (id id);
 
         id createId (domain domain);
         void setEntryPoint (std::shared_ptr <function> function);
@@ -62,7 +62,7 @@ namespace core {
         llvm::Module & llvmModule ();
 
     private:
-        typedef std::map <std::string, std::shared_ptr <context_part>> id_to_parts_map;
+        typedef std::map <std::string, std::shared_ptr <entity>> id_to_parts_map;
         typedef std::map <domain, id_to_parts_map> domain_id_to_parts_map;
 
         std::shared_ptr <llvm::Module> _llvmModule;

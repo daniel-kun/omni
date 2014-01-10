@@ -23,7 +23,7 @@ namespace core {
     class function_prototype;
     class type;
     class block;
-    class context_part;
+    class entity;
     class module;
 
     /**

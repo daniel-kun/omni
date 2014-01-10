@@ -86,7 +86,7 @@
     <ClInclude Include="..\interface\omni\core\variable_assignment_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\variable_declaration_statement.hpp" />
     <ClInclude Include="..\interface\omni\core\variable_expression.hpp" />
-    <ClInclude Include="..\interface\omni\core\context_part.hpp" />
+    <ClInclude Include="..\interface\omni\core\entity.hpp" />
     <ClInclude Include="..\interface\omni\core\verification_failed_error.hpp" />
     <ClInclude Include="..\interface\omni\core\while_statement.hpp" />
   </ItemGroup>
@@ -99,7 +99,7 @@
     <ClCompile Include="..\source\omni\core\cast_expression.cpp" />
     <ClCompile Include="..\source\omni\core\context.cpp" />
     <ClCompile Include="..\source\omni\core\context_emit_options.cpp" />
-    <ClCompile Include="..\source\omni\core\context_part.cpp" />
+    <ClCompile Include="..\source\omni\core\entity.cpp" />
     <ClCompile Include="..\source\omni\core\domain.cpp" />
     <ClCompile Include="..\source\omni\core\do_while_statement.cpp" />
     <ClCompile Include="..\source\omni\core\expression.cpp" />
