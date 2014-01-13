@@ -1,7 +1,7 @@
 #include <omni/core/module.hpp>
 #include <omni/core/context.hpp>
-#include <omni/core/function.hpp>
-#include <omni/core/block.hpp>
+#include <omni/core/model/function.hpp>
+#include <omni/core/model/block.hpp>
 #include <omni/core/logic_error.hpp>
 #include <omni/core/already_exists_error.hpp>
 #include <omni/core/verification_failed_error.hpp>

@@ -1,13 +1,13 @@
-#include <omni/core/external_function.hpp>
-#include <omni/core/block.hpp>
+#include <omni/core/model/external_function.hpp>
+#include <omni/core/model/block.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/module.hpp>
-#include <omni/core/type.hpp>
-#include <omni/core/builtin_literal.hpp>
-#include <omni/core/literal_expression.hpp>
-#include <omni/core/function.hpp>
-#include <omni/core/parameter.hpp>
-#include <omni/core/function_call_expression.hpp>
+#include <omni/core/model/type.hpp>
+#include <omni/core/model/builtin_literal.hpp>
+#include <omni/core/model/literal_expression.hpp>
+#include <omni/core/model/function.hpp>
+#include <omni/core/model/parameter.hpp>
+#include <omni/core/model/function_call_expression.hpp>
 
 #include <omni/tests/test_utils.hpp>
 

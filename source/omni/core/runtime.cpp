@@ -1,10 +1,10 @@
 #include <omni/core/runtime.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/module.hpp>
-#include <omni/core/type.hpp>
-#include <omni/core/type_class.hpp>
-#include <omni/core/parameter.hpp>
-#include <omni/core/external_function.hpp>
+#include <omni/core/model/type.hpp>
+#include <omni/core/model/type_class.hpp>
+#include <omni/core/model/parameter.hpp>
+#include <omni/core/model/external_function.hpp>
 
 /**
 Initializes this runtime for the given module.

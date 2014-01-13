@@ -1,10 +1,10 @@
-#include <omni/core/block.hpp>
+#include <omni/core/model/block.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/module.hpp>
-#include <omni/core/variable_declaration_expression.hpp>
-#include <omni/core/variable_expression.hpp>
-#include <omni/core/function.hpp>
-#include <omni/core/return_statement.hpp>
+#include <omni/core/model/variable_declaration_expression.hpp>
+#include <omni/core/model/variable_expression.hpp>
+#include <omni/core/model/function.hpp>
+#include <omni/core/model/return_statement.hpp>
 
 #include <boost/test/auto_unit_test.hpp>
 

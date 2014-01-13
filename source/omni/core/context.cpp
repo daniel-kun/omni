@@ -1,5 +1,5 @@
 #include <omni/core/context.hpp>
-#include <omni/core/type.hpp>
+#include <omni/core/model/type.hpp>
 
 #include <llvm/IR/LLVMContext.h>
 

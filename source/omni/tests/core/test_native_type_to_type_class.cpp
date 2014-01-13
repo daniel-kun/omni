@@ -1,5 +1,5 @@
-#include <omni/core/native_type_to_type_class.hpp>
-#include <omni/core/type_class.hpp>
+#include <omni/core/model/native_type_to_type_class.hpp>
+#include <omni/core/model/type_class.hpp>
 
 #include <boost/test/unit_test.hpp>
 

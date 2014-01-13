@@ -1,8 +1,8 @@
 #include <omni/tests/test_utils.hpp>
-#include <omni/core/type.hpp>
+#include <omni/core/model/type.hpp>
 #include <omni/core/module.hpp>
-#include <omni/core/block.hpp>
-#include <omni/core/function.hpp>
+#include <omni/core/model/block.hpp>
+#include <omni/core/model/function.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/module_emit_options.hpp>
 #include <sstream>

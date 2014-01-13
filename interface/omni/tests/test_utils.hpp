@@ -2,8 +2,8 @@
 #define OMNI_TESTS_TEST_UTILS_HPP
 
 #include <omni/tests/test_file_manager.hpp>
-#include <omni/core/function_call_expression.hpp>
-#include <omni/core/return_statement.hpp>
+#include <omni/core/model/function_call_expression.hpp>
+#include <omni/core/model/return_statement.hpp>
 #include <memory>
 #include <string>
 
