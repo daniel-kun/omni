@@ -22,6 +22,9 @@
 #undef max
 #endif
 
+namespace omni {
+namespace tests {
+
 class test_binary_operator_expression_fixture {
 public:
         test_binary_operator_expression_fixture () :
@@ -271,3 +274,6 @@ BOOST_AUTO_TEST_CASE (minusUnsignedInt)
 }
 
 BOOST_AUTO_TEST_SUITE_END ();
+
+}
+}

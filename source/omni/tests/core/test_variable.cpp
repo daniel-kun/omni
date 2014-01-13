@@ -1,4 +1,4 @@
-#include <omni/core/variable_declaration_statement.hpp>
+#include <omni/core/variable_declaration_expression.hpp>
 #include <omni/core/variable_expression.hpp>
 #include <omni/core/variable_assignment_expression.hpp>
 #include <omni/core/binary_operator_expression.hpp>
@@ -38,8 +38,8 @@ void testVariables (T initializationValue, T assignmentValue)
     // Declare a variable with the initial value of `initializationValue':
     auto variableInitializationLiteral = std::make_shared <builtin_literal<T>> (c, initializationValue);
     auto variableInitializationExpression = std::make_shared <literal_expression> (variableInitializationLiteral);
-    auto variableDeclarationStatement = std::make_shared <variable_declaration_statement> (variableInitializationExpression);
-    BOOST_CHECK (variableDeclarationStatement->getVariableType ()->getTypeClass () == native_type_to_type_class <T>::typeClass);
+    auto variableDeclarationStatement = std::make_shared <variable_declaration_expression> (variableInitializationExpression);
+    BOOST_CHECK (variableDeclarationStatement->getType ()->getTypeClass () == native_type_to_type_class <T>::typeClass);
 
     // Assign `assignmentValue' to the variable:
     auto variableValueLiteral = std::make_shared <builtin_literal<T>> (c, assignmentValue);
@@ -56,7 +56,7 @@ void testVariables (T initializationValue, T assignmentValue)
         std::make_shared <return_statement> (
             std::make_shared <variable_expression> (variableDeclarationStatement)));
     
-    auto func = m.createFunction ("test", variableDeclarationStatement->getVariableType (), body);
+    auto func = m.createFunction ("test", variableDeclarationStatement->getType (), body);
 
     omni::tests::test_file_manager testFileManager;
     T result = omni::tests::runFunction <T> (func, testFileManager, "variableTest");
@@ -72,7 +72,7 @@ void testVariablesNumericLimits ()
 } // anonymous namespace
 
 /**
-Tests the classes variable_declaration_statement, variable_expressiond and variable_assignment_expression.
+Tests the classes variable_declaration_expression, variable_expression and variable_assignment_expression.
 **/
 BOOST_AUTO_TEST_SUITE (variableTests)
 
@@ -80,12 +80,12 @@ BOOST_AUTO_TEST_CASE (ctor)
 {
     using namespace omni::core;
     context c;
-    auto variable = std::make_shared <variable_declaration_statement> (c.sharedBasicType (type_class::t_char));
+    auto variable = std::make_shared <variable_declaration_expression> (c.sharedBasicType (type_class::t_char));
     variable_expression variableExpression (variable);
 }
 
 /**
-Does some fiddling with variable_declaration_statement, variable_expression and variable_assignment_expression.
+Does some fiddling with variable_declaration_expression, variable_expression and variable_assignment_expression.
 **/
 BOOST_AUTO_TEST_CASE (mixedTests)
 {
@@ -95,7 +95,7 @@ BOOST_AUTO_TEST_CASE (mixedTests)
     auto t = c.sharedBasicType (type_class::t_char);
     auto body = std::make_shared <block> ();
     // Declare a variable "A" that holds the letter 'A':
-    auto variableA = std::make_shared <variable_declaration_statement> (
+    auto variableA = std::make_shared <variable_declaration_expression> (
         std::make_shared <literal_expression> (
             std::make_shared <builtin_literal <char>> (c, 'A')));
     body->appendStatement (variableA);
@@ -105,11 +105,11 @@ BOOST_AUTO_TEST_CASE (mixedTests)
         binary_operator_expression::binary_operation::binary_plus_operation,
         std::make_shared <variable_expression> (variableA),
         std::make_shared <literal_expression> (std::make_shared <builtin_literal<char>> (c, static_cast <char> (1))));
-    auto variableB = std::make_shared <variable_declaration_statement> (AplusBexpression);
+    auto variableB = std::make_shared <variable_declaration_expression> (AplusBexpression);
     body->appendStatement (variableB);
     // Declare a third variable C that will be initialized with the letter 'A', but then (without usage of the letter 'A') it will be assigned
     // the result of variableB plus 1. Hence, the value should be 'C'.
-    auto variableC = std::make_shared <variable_declaration_statement> (std::make_shared <literal_expression> (std::make_shared <builtin_literal<char>> (c, 'A')));
+    auto variableC = std::make_shared <variable_declaration_expression> (std::make_shared <literal_expression> (std::make_shared <builtin_literal<char>> (c, 'A')));
     body->appendStatement (variableC);
     auto variableCassignment = std::make_shared <variable_assignment_expression> (
         variableC,

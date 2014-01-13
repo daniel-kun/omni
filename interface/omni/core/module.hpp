@@ -3,7 +3,7 @@
 
 #include <omni/core/core.hpp>
 #include <omni/core/id.hpp>
-#include <omni/core/context_emit_options.hpp>
+#include <omni/core/module_emit_options.hpp>
 
 #include <ostream>
 #include <memory>
@@ -40,17 +40,17 @@ namespace core {
         id createId (domain domain);
         void setEntryPoint (std::shared_ptr <function> function);
 
-        void emitAssemblyFile (std::ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitAssemblyFile (llvm::raw_ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitAssemblyFile (std::string const & fileName, const context_emit_options & options = context_emit_options ());
+        void emitAssemblyFile (std::ostream & stream, const module_emit_options & options = module_emit_options ());
+        void emitAssemblyFile (llvm::raw_ostream & stream, const module_emit_options & options = module_emit_options ());
+        void emitAssemblyFile (std::string const & fileName, const module_emit_options & options = module_emit_options ());
         
-        void emitObjectFile (std::ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitObjectFile (llvm::raw_ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitObjectFile (std::string const & fileName, const context_emit_options & options = context_emit_options ());
+        void emitObjectFile (std::ostream & stream, const module_emit_options & options = module_emit_options ());
+        void emitObjectFile (llvm::raw_ostream & stream, const module_emit_options & options = module_emit_options ());
+        void emitObjectFile (std::string const & fileName, const module_emit_options & options = module_emit_options ());
 
-        void emitSharedLibraryFile (std::ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitSharedLibraryFile (llvm::raw_ostream & stream, const context_emit_options & options = context_emit_options ());
-        void emitSharedLibraryFile (std::string const & fileName, const context_emit_options & options = context_emit_options ());
+        void emitSharedLibraryFile (std::ostream & stream, const module_emit_options & options = module_emit_options ());
+        void emitSharedLibraryFile (llvm::raw_ostream & stream, const module_emit_options & options = module_emit_options ());
+        void emitSharedLibraryFile (std::string const & fileName, const module_emit_options & options = module_emit_options ());
 
         std::shared_ptr <function> createFunction (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
         std::shared_ptr <function_prototype> findFunctionByName (std::string const & name);

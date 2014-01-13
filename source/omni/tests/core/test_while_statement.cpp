@@ -7,7 +7,7 @@
 #include <omni/core/literal_expression.hpp>
 #include <omni/core/builtin_literal.hpp>
 #include <omni/core/return_statement.hpp>
-#include <omni/core/variable_declaration_statement.hpp>
+#include <omni/core/variable_declaration_expression.hpp>
 #include <omni/core/variable_assignment_expression.hpp>
 #include <omni/core/variable_expression.hpp>
 #include <omni/core/binary_operator_expression.hpp>
@@ -30,7 +30,7 @@ int buildAndRunWhileTest (std::string testFileName)
     module m (c, "test");
 
     auto body = std::make_shared <block> ();
-    auto variableDeclaration = std::make_shared <variable_declaration_statement> (std::make_shared <literal_expression> (std::make_shared <builtin_literal <int>> (c, 1)));
+    auto variableDeclaration = std::make_shared <variable_declaration_expression> (std::make_shared <literal_expression> (std::make_shared <builtin_literal <int>> (c, 1)));
     body->appendStatement (variableDeclaration);
 
     auto whileCondition = std::make_shared <binary_operator_expression> (
@@ -54,7 +54,7 @@ int buildAndRunWhileTest (std::string testFileName)
     body->appendStatement (whileStatement);
     body->appendStatement (std::make_shared <return_statement> (std::make_shared <variable_expression> (variableDeclaration)));
 
-    auto func = m.createFunction (testFileName, variableDeclaration->getVariableType (), body);
+    auto func = m.createFunction (testFileName, variableDeclaration->getType (), body);
 
     omni::tests::test_file_manager testFileManager;
     return omni::tests::runFunction <int> (func, testFileManager, testFileName);

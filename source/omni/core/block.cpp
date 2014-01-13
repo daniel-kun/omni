@@ -88,11 +88,23 @@ std::shared_ptr <omni::core::statement> omni::core::block::removeStatement (std:
 /**
 @internal
 **/
-llvm::BasicBlock * omni::core::block::llvmEmit (llvm::LLVMContext & context, std::string name, llvm::Function * parent)
+llvm::BasicBlock * omni::core::block::llvmEmitIntoExistingBlock (llvm::BasicBlock * llvmBasicBlock)
 {
-    auto result = llvm::BasicBlock::Create (context, name, parent);
+    llvm::BasicBlock * block = llvmBasicBlock;
+    for (auto i : getStatements ()) {
+        block = i->llvmEmit (block).getContinueBlock ();
+    }
+    return block;
+}
+
+/**
+@internal
+**/
+omni::core::statement_emit_result omni::core::block::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+{
+    auto result = llvm::BasicBlock::Create (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
     for (auto i : getStatements ()) {
         result = i->llvmEmit (result).getContinueBlock ();
     }
-    return result;
+    return statement_emit_result (result, nullptr);
 }

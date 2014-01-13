@@ -77,7 +77,8 @@ llvm::Function * omni::core::function::llvmFunction ()
         }
         _llvmFunction = llvm::Function::Create (funcType, linkageType, getName (), & getModule ().llvmModule ());
 
-        _body->llvmEmit (getContext ()->llvmContext (), "__entry__", _llvmFunction);
+        auto mainBlock = llvm::BasicBlock::Create (getContext ()->llvmContext (), "__entry__", _llvmFunction);
+        _body->llvmEmitIntoExistingBlock (mainBlock);
 
         return _llvmFunction;
     }

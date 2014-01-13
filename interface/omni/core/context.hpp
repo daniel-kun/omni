@@ -4,7 +4,7 @@
 #include <omni/core/core.hpp>
 #include <omni/core/domain.hpp>
 #include <omni/core/type_class.hpp>
-#include <omni/core/context_emit_options.hpp>
+#include <omni/core/module_emit_options.hpp>
 #include <omni/core/id.hpp>
 
 #include <memory>

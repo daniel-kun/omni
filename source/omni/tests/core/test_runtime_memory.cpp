@@ -10,7 +10,7 @@
 #include <omni/core/return_statement.hpp>
 #include <omni/core/literal_expression.hpp>
 #include <omni/core/builtin_literal.hpp>
-#include <omni/core/variable_declaration_statement.hpp>
+#include <omni/core/variable_declaration_expression.hpp>
 #include <omni/core/variable_expression.hpp>
 #include <omni/core/bitcast_expression.hpp>
 
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE (referenceCounting)
     auto ptrInt32 = c.sharedBasicType (type_class::t_unsignedInt, 1);
     auto typeInt32 = c.sharedBasicType (type_class::t_unsignedInt);
     auto funcBody = std::make_shared <block> ();
-    auto ptrVariable = std::make_shared <variable_declaration_statement> (
+    auto ptrVariable = std::make_shared <variable_declaration_expression> (
         std::make_shared <bitcast_expression> (
             std::make_shared <function_call_expression> (
                 r.getMemoryAllocate (),

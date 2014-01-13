@@ -2,7 +2,7 @@
 #define OMNI_CORE_BLOCK_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/entity.hpp>
+#include <omni/core/statement.hpp>
 
 #include <vector>
 #include <memory>
@@ -20,7 +20,7 @@ namespace core {
     /**
     A block is a list of statements that is executed in a specific context. Examples are function bodies and bodies of an 'if', 'else', 'while' or 'for'-statement.
     **/
-    class OMNI_CORE_API block : public entity {
+    class OMNI_CORE_API block : public statement {
     public:
         typedef std::vector <std::shared_ptr <statement>> statement_list;
 
@@ -34,7 +34,8 @@ namespace core {
         std::shared_ptr <statement> removeStatement (statement_list::iterator position);
         std::shared_ptr <statement> removeStatement (std::shared_ptr <statement> statement);
 
-        llvm::BasicBlock * llvmEmit (llvm::LLVMContext & context, std::string name, llvm::Function * parent);
+        llvm::BasicBlock * llvmEmitIntoExistingBlock (llvm::BasicBlock * llvmBasicBlock);
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
     private:
         statement_list _statements;
     };

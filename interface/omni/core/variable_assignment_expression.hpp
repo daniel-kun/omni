@@ -8,7 +8,7 @@
 
 namespace omni {
 namespace core {
-    class variable_declaration_statement;
+    class variable_declaration_expression;
 
     /**
     A variable_assignment_expression changes the value of a variable to the return value of any expression.
@@ -18,17 +18,17 @@ namespace core {
     **/
     class OMNI_CORE_API variable_assignment_expression : public modifying_expression {
     public:
-        variable_assignment_expression (std::shared_ptr <variable_declaration_statement> variable, std::shared_ptr <expression> value);
+        variable_assignment_expression (std::shared_ptr <variable_declaration_expression> variable, std::shared_ptr <expression> value);
 
-        std::shared_ptr <variable_declaration_statement> getVariable () const;
+        std::shared_ptr <variable_declaration_expression> getVariable () const;
         std::shared_ptr <expression> getValue () const;
 
         std::shared_ptr <type> getType () const override;
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
-        static statement_emit_result llvmEmitImpl (llvm::BasicBlock * llvmBasicBlock, variable_declaration_statement & variable, expression & value);
+        static statement_emit_result llvmEmitImpl (llvm::BasicBlock * llvmBasicBlock, variable_declaration_expression & variable, expression & value);
     private:
-        std::shared_ptr <variable_declaration_statement> _variable;
+        std::shared_ptr <variable_declaration_expression> _variable;
         std::shared_ptr <expression> _value;
         llvm::Value * _llvmValue;
     };

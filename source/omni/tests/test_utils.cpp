@@ -4,7 +4,7 @@
 #include <omni/core/block.hpp>
 #include <omni/core/function.hpp>
 #include <omni/core/context.hpp>
-#include <omni/core/context_emit_options.hpp>
+#include <omni/core/module_emit_options.hpp>
 #include <sstream>
 
 /**
@@ -35,7 +35,7 @@ boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_
     boost::filesystem::path sharedLibraryName = testFileManager.getTestFileName (fileBaseName + ".dll");
     boost::filesystem::path assemblyFileName = testFileManager.getTestFileName (fileBaseName + ".ll");
     mod.emitAssemblyFile (assemblyFileName.string ());
-    context_emit_options options;
+    module_emit_options options;
     options.addLibrarySearchPath (boost::filesystem::initial_path () /= "bin");
     mod.emitSharedLibraryFile (sharedLibraryName.string (), options);
 

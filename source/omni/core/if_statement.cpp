@@ -76,13 +76,13 @@ const std::shared_ptr <omni::core::block> omni::core::if_statement::getElseBlock
 **/
 omni::core::statement_emit_result omni::core::if_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
-    llvm::BasicBlock * llvmTrueBlock = _trueBlock->llvmEmit (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
+    llvm::BasicBlock * llvmTrueBlock = _trueBlock->llvmEmit (llvmBasicBlock).getContinueBlock ();
     llvm::BasicBlock * llvmFalseBlock = nullptr;
 
     bool terminatorNeeded = false;
 
     if (_elseBlock != nullptr) {
-        llvmFalseBlock = _elseBlock->llvmEmit (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
+        llvmFalseBlock = _elseBlock->llvmEmit (llvmBasicBlock).getContinueBlock ();
         if (llvmFalseBlock->getTerminator () == nullptr) {
             terminatorNeeded = true;
         }

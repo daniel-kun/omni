@@ -8,7 +8,7 @@
 
 namespace omni {
 namespace core {
-    class variable_declaration_statement;
+    class variable_declaration_expression;
 
     /**
     A `variable expression' is any mention of a variable that is used to take that variable's value.
@@ -17,16 +17,16 @@ namespace core {
     **/
     class OMNI_CORE_API variable_expression : public pure_expression {
     public:
-        variable_expression (std::shared_ptr <variable_declaration_statement> variable);
+        variable_expression (std::shared_ptr <variable_declaration_expression> variable);
 
         std::shared_ptr <type> getType () const override;
 
-        const std::shared_ptr <variable_declaration_statement> getVariable () const ;
+        const std::shared_ptr <variable_declaration_expression> getVariable () const ;
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
-        std::shared_ptr <variable_declaration_statement> _variable;
+        std::shared_ptr <variable_declaration_expression> _variable;
     };
 
 } // namespace core

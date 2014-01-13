@@ -1,7 +1,7 @@
 #include <omni/core/block.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/module.hpp>
-#include <omni/core/variable_declaration_statement.hpp>
+#include <omni/core/variable_declaration_expression.hpp>
 #include <omni/core/variable_expression.hpp>
 #include <omni/core/function.hpp>
 #include <omni/core/return_statement.hpp>
@@ -14,7 +14,7 @@
 namespace {
 
 typedef std::function <void (omni::core::block &,
-                             std::shared_ptr <omni::core::variable_declaration_statement>,
+                             std::shared_ptr <omni::core::variable_declaration_expression>,
                              std::shared_ptr <omni::core::expression>)> buildModuleBody;
 
 /**
@@ -28,7 +28,7 @@ void buildModule (bool shouldBeValid, buildModuleBody builder)
     module m (c, "test");
 
     auto t = c.sharedBasicType (type_class::t_signedInt);
-    auto variableDeclaration = std::make_shared <variable_declaration_statement> (t);
+    auto variableDeclaration = std::make_shared <variable_declaration_expression> (t);
     auto variableExpression = std::make_shared <variable_expression> (variableDeclaration);
 
     auto body = std::make_shared <block> ();
@@ -53,14 +53,14 @@ BOOST_AUTO_TEST_CASE (appendStatement)
 {
     buildModule (true,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.appendStatement (decl);
         b.appendStatement (expr);
     });
     buildModule (false,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.appendStatement (expr);
         b.appendStatement (decl);
@@ -71,14 +71,14 @@ BOOST_AUTO_TEST_CASE (prependStatement)
 {
     buildModule (true,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.appendStatement (expr);
         b.prependStatement (decl);
     });
     buildModule (false,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.appendStatement (decl);
         b.prependStatement (expr);
@@ -89,14 +89,14 @@ BOOST_AUTO_TEST_CASE (insertStatementAfter)
 {
     buildModule (true,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.prependStatement (decl);
         b.insertStatementAfter (b.findStatement (decl), expr);
     });
     buildModule (false,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.prependStatement (expr);
         b.insertStatementAfter (b.findStatement (expr), decl);
@@ -107,14 +107,14 @@ BOOST_AUTO_TEST_CASE (insertStatementBefore)
 {
     buildModule (true,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.prependStatement (expr);
         b.insertStatementBefore (b.findStatement (expr), decl);
     });
     buildModule (false,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.prependStatement (decl);
         b.insertStatementBefore (b.findStatement (decl), expr);
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE (removeStatementFromPosition)
 {
     buildModule (true,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.appendStatement (expr);
         b.appendStatement (decl);
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_CASE (removeStatementFromPosition)
     });
     buildModule (false,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.appendStatement (expr);
         b.appendStatement (decl);
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE (removeStatement)
 {
     buildModule (true,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.appendStatement (expr);
         b.appendStatement (decl);
@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_CASE (removeStatement)
     });
     buildModule (false,
                  [] (omni::core::block & b,
-                     std::shared_ptr <omni::core::variable_declaration_statement> decl,
+                     std::shared_ptr <omni::core::variable_declaration_expression> decl,
                      std::shared_ptr <omni::core::expression> expr) -> void {
         b.appendStatement (expr);
         b.appendStatement (decl);

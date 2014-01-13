@@ -14,7 +14,7 @@ namespace core {
 
     /**
     Is thrown when something was used, before it was declared.
-    E.g. when trying to take a value from a variable_declaration_statement, when that variable_declaration_statement was not executed (aka emitted) before.
+    E.g. when trying to take a value from a variable_declaration_expression, when that variable_declaration_statement was not executed (aka emitted) before.
     **/
     class OMNI_CORE_API use_before_declaration_error : public std::runtime_error {
     public:

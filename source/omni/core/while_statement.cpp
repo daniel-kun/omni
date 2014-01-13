@@ -50,7 +50,7 @@ const std::shared_ptr <omni::core::block> omni::core::while_statement::getBody (
 omni::core::statement_emit_result omni::core::while_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     auto whileBlock = llvm::BasicBlock::Create (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
-    auto whileBodyBlock = _body->llvmEmit (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
+    auto whileBodyBlock = _body->llvmEmit (llvmBasicBlock);
     auto continueBlock = llvm::BasicBlock::Create (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());
 
     // First, jump to the while block
@@ -58,9 +58,9 @@ omni::core::statement_emit_result omni::core::while_statement::llvmEmit (llvm::B
     builder.CreateBr (whileBlock);
 
     llvm::IRBuilder <true, llvm::NoFolder> whileBuilder (whileBlock);
-    whileBuilder.CreateCondBr (_condition->llvmEmit (whileBlock).getValue (), whileBodyBlock, continueBlock);
+    whileBuilder.CreateCondBr (_condition->llvmEmit (whileBlock).getValue (), whileBodyBlock.getContinueBlock (), continueBlock);
 
-    llvm::IRBuilder <true, llvm::NoFolder> whileBodyBuilder (whileBodyBlock);
+    llvm::IRBuilder <true, llvm::NoFolder> whileBodyBuilder (whileBodyBlock.getContinueBlock ());
     whileBodyBuilder.CreateBr (whileBlock);
 
     return statement_emit_result (continueBlock, nullptr);

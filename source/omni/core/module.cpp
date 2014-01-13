@@ -215,7 +215,7 @@ Emits llvm IR language code to the file at path fileName.
 @param fileName Path to the file where the code should be written to.
 // TODO error reporting
 **/
-void omni::core::module::emitAssemblyFile (std::string const & fileName, const context_emit_options & options)
+void omni::core::module::emitAssemblyFile (std::string const & fileName, const module_emit_options & options)
 {
     std::string errorInfo;
     llvm::raw_fd_ostream fileStream (fileName.c_str (), errorInfo);
@@ -228,7 +228,7 @@ This function is not very fast since it first writes the whole code to a tempora
 writes the whole buffer to `stream'. If you need a more efficient way, use emitAssemblyFile(llvm::raw_ostream).
 @param stream The ostream where the code should be written to.
 **/
-void omni::core::module::emitAssemblyFile (std::ostream & stream, const context_emit_options & options)
+void omni::core::module::emitAssemblyFile (std::ostream & stream, const module_emit_options & options)
 {
     std::string tmp;
     llvm::raw_string_ostream rawStream (tmp);
@@ -240,7 +240,7 @@ void omni::core::module::emitAssemblyFile (std::ostream & stream, const context_
 Emits llvm IR language code to the llvm stream `stream'.
 @param stream The llvm stream wher the code should be written to.
 **/
-void omni::core::module::emitAssemblyFile (llvm::raw_ostream & stream, const context_emit_options & options)
+void omni::core::module::emitAssemblyFile (llvm::raw_ostream & stream, const module_emit_options & options)
 {
     llvm::Module & m (llvmModule ());
     
@@ -262,7 +262,7 @@ This function is not very fast since it first writes the whole object file to a 
 writes the whole buffer to `stream'. If you need a more efficient way, use emitObjectFile (llvm::raw_ostream).
 @param stream Any ostream that should receive the content of the objectFile.
 **/
-void omni::core::module::emitObjectFile (std::ostream & stream, const context_emit_options & options)
+void omni::core::module::emitObjectFile (std::ostream & stream, const module_emit_options & options)
 {
     std::string tmp;
     llvm::raw_string_ostream rawStream (tmp);
@@ -274,7 +274,7 @@ void omni::core::module::emitObjectFile (std::ostream & stream, const context_em
 Emits a native object file (e.g. .obj on win32) to stream.
 @param stream Any llvm::raw_ostream that should receive the content of the objectFile.
 **/
-void omni::core::module::emitObjectFile (llvm::raw_ostream & stream, const context_emit_options & options)
+void omni::core::module::emitObjectFile (llvm::raw_ostream & stream, const module_emit_options & options)
 {
     llvm::Module & m (llvmModule ());
     
@@ -314,7 +314,7 @@ void omni::core::module::emitObjectFile (llvm::raw_ostream & stream, const conte
 Emits a native object file (e.g. .obj on win32) to the file `fileName'.
 @param fileName The path of the file where the object file should be written to.
 **/
-void omni::core::module::emitObjectFile (std::string const & fileName, const context_emit_options & options)
+void omni::core::module::emitObjectFile (std::string const & fileName, const module_emit_options & options)
 {
     std::string errorInfo;
     llvm::raw_fd_ostream rawStream (fileName.c_str (), errorInfo);
@@ -328,7 +328,7 @@ For every shared object file, an object file with the same base name but the ext
 is temporarily created and removed before this function returns.
 For example emitSharedLibraryFile /home/foo/shared.so will temporarily create a file /home/foo/shared.o.
 **/
-void omni::core::module::emitSharedLibraryFile (std::string const & fileName, const context_emit_options & options)
+void omni::core::module::emitSharedLibraryFile (std::string const & fileName, const module_emit_options & options)
 {
     boost::filesystem::path sharedLibraryPath (fileName);
     boost::filesystem::path objectFilePath = sharedLibraryPath;

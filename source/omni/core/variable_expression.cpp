@@ -1,5 +1,5 @@
 #include <omni/core/variable_expression.hpp>
-#include <omni/core/variable_declaration_statement.hpp>
+#include <omni/core/variable_declaration_expression.hpp>
 #include <omni/core/use_before_declaration_error.hpp>
 #include <omni/core/type.hpp>
 #include <omni/core/domain.hpp>
@@ -10,20 +10,20 @@
 /**
 Initializes this expression to return variable's at the time this expression is executed.
 **/
-omni::core::variable_expression::variable_expression (std::shared_ptr <omni::core::variable_declaration_statement> variable) :
+omni::core::variable_expression::variable_expression (std::shared_ptr <omni::core::variable_declaration_expression> variable) :
     _variable (variable)
 {
 }
 
 std::shared_ptr <omni::core::type> omni::core::variable_expression::getType () const
 {
-    return _variable->getVariableType ();
+    return _variable->getType ();
 }
 
 /**
 Returns the variable which value this expression returns.
 **/
-const std::shared_ptr <omni::core::variable_declaration_statement> omni::core::variable_expression::getVariable () const
+const std::shared_ptr <omni::core::variable_declaration_expression> omni::core::variable_expression::getVariable () const
 {
     return _variable;
 }

@@ -1,8 +1,8 @@
-#ifndef OMNI_CORE_VARIABLE_DECLARATION_STATEMENT_HPP
-#define OMNI_CORE_VARIABLE_DECLARATION_STATEMENT_HPP
+#ifndef OMNI_CORE_VARIABLE_DECLARATION_EXPRESSION_HPP
+#define OMNI_CORE_VARIABLE_DECLARATION_EXPRESSION_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/statement.hpp>
+#include <omni/core/pure_expression.hpp>
 
 namespace llvm {
     class Value;
@@ -16,19 +16,19 @@ namespace core {
     /**
 
     **/
-    class OMNI_CORE_API variable_declaration_statement : public statement {
+    class OMNI_CORE_API variable_declaration_expression : public pure_expression {
     public:
-        variable_declaration_statement (std::shared_ptr <type> variableType);
-        variable_declaration_statement (std::shared_ptr <expression> initializationExpression);
+        variable_declaration_expression (std::shared_ptr <type> variableType);
+        variable_declaration_expression (std::shared_ptr <expression> initializationExpression);
 
-        std::shared_ptr <type> getVariableType () const;
+        std::shared_ptr <type> getType () const override;
         std::shared_ptr <expression> getInitializationExpression () const;
 
         llvm::Value * llvmPointerValue ();
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
     private:
-        std::shared_ptr <type> _variableType;
+        std::shared_ptr <type> _type;
         std::shared_ptr <expression> _initializationExpression; // Can be nullptr
         llvm::Value * _llvmPointerValue; // Internal
     };

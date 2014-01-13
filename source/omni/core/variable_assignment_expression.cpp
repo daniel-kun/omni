@@ -1,5 +1,5 @@
 #include <omni/core/variable_assignment_expression.hpp>
-#include <omni/core/variable_declaration_statement.hpp>
+#include <omni/core/variable_declaration_expression.hpp>
 #include <omni/core/type_mismatch_error.hpp>
 
 #include <llvm/IR/IRBuilder.h>
@@ -10,20 +10,20 @@
 Initializes this variabe_assignment_expresion to assign `value' to `variable'.
 variable and value need to be of exactly the same type.
 **/
-omni::core::variable_assignment_expression::variable_assignment_expression (std::shared_ptr <variable_declaration_statement> variable, std::shared_ptr <expression> value) :
+omni::core::variable_assignment_expression::variable_assignment_expression (std::shared_ptr <variable_declaration_expression> variable, std::shared_ptr <expression> value) :
     _variable (variable),
     _value (value),
     _llvmValue (nullptr)
 {
-    if (_variable->getVariableType () != _value->getType ()) {
-        throw type_mismatch_error (* _variable->getVariableType (), * _value->getType ());
+    if (_variable->getType () != _value->getType ()) {
+        throw type_mismatch_error (* _variable->getType (), * _value->getType ());
     }
 }
 
 /**
 Returns the variable that is being assigned to by this expression.
 **/
-std::shared_ptr <omni::core::variable_declaration_statement> omni::core::variable_assignment_expression::getVariable () const
+std::shared_ptr <omni::core::variable_declaration_expression> omni::core::variable_assignment_expression::getVariable () const
 {
     return _variable;
 }
@@ -38,7 +38,7 @@ std::shared_ptr <omni::core::expression> omni::core::variable_assignment_express
 
 std::shared_ptr <omni::core::type> omni::core::variable_assignment_expression::getType () const
 {
-    return _variable->getVariableType ();
+    return _variable->getType ();
 }
 
 /**
@@ -52,7 +52,7 @@ omni::core::statement_emit_result omni::core::variable_assignment_expression::ll
 /**
 Internal
 **/
-omni::core::statement_emit_result omni::core::variable_assignment_expression::llvmEmitImpl (llvm::BasicBlock * llvmBasicBlock, variable_declaration_statement & variable, expression & value)
+omni::core::statement_emit_result omni::core::variable_assignment_expression::llvmEmitImpl (llvm::BasicBlock * llvmBasicBlock, variable_declaration_expression & variable, expression & value)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     statement_emit_result result = value.llvmEmit (llvmBasicBlock);
