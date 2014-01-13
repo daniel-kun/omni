@@ -11,7 +11,16 @@
 namespace omni {
 namespace core {
     class context;
+}
+}
 
+namespace omni {
+namespace core {
+namespace model {
+
+    /**
+    builtin_literal can be used to define literals of builtin numeric types (char, short, int, double, float).
+    **/
     template <typename T>
     class OMNI_CORE_API builtin_literal : public literal {
     public:
@@ -24,7 +33,8 @@ namespace core {
     private:
         T _value;
     };
-}
-}
+} // namespace model
+} // namespace core
+} // namespace omni
 
 #endif

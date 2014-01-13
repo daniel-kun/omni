@@ -6,6 +6,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
     class type;
 
     /**
@@ -23,6 +24,7 @@ namespace core {
         std::string _name;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

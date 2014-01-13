@@ -13,6 +13,7 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+namespace model {
     class type;
 
     /**
@@ -52,6 +53,8 @@ namespace core {
         std::shared_ptr <expression> _leftOperand;
         std::shared_ptr <expression> _rightOperand;
     };
+
+} // namespace model
 } // namespace core
 } // namespace omni
 

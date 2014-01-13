@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE(nativeTypeToTypeClassTests)
 
 BOOST_AUTO_TEST_CASE (all)
 {
-    using namespace omni::core;
+    using namespace omni::core::model;
 
     static_assert (native_type_to_type_class <void>::typeClass == type_class::t_void, "void != t_void");
     static_assert (native_type_to_type_class <bool>::typeClass == type_class::t_boolean, "bool != t_boolean");

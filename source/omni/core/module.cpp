@@ -94,14 +94,14 @@ This happens when the part is created using one of the create...-functions or th
 @param id The id of the part that should be returned. This should not be an invalid id.
 @return The part with the id, if such has been added to the context. A null-shared_ptr is returned, if no such part exists in this context.
 **/
-std::shared_ptr <omni::core::entity> omni::core::module::findPartById (omni::core::id id)
+std::shared_ptr <omni::core::model::entity> omni::core::module::findPartById (omni::core::id id)
 {
     id_to_parts_map & m (_parts [id.getDomain ()]);
     id_to_parts_map::iterator i = m.find (id.getId ());
     if (i != m.end ()) {
         return i->second;
     } else {
-        return std::shared_ptr <entity> ();
+        return std::shared_ptr <model::entity> ();
     }
 }
 
@@ -134,9 +134,9 @@ That's why this function will automatically be assigned a new id.
 @param body The body of the function.
 @exception already_exists_error Is thrown when a function with the name `name' already exists in this context.
 **/
-std::shared_ptr <omni::core::function> omni::core::module::createFunction (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body)
+std::shared_ptr <omni::core::model::function> omni::core::module::createFunction (std::string const & name, std::shared_ptr <model::type> returnType, std::shared_ptr <model::block> body)
 {
-    std::shared_ptr <function> result (new function (* this, name, returnType, body));
+    std::shared_ptr <model::function> result (new model::function (* this, name, returnType, body));
     addFunction (result);
     return result;
 }
@@ -147,9 +147,9 @@ Adds the function `function' to this context, if there is not already another fu
 @param function The function that should be added to this context.
 @exception already_exists_error Is thrown when a function with the same name as `function's name already exists in this context.
 **/
-void omni::core::module::addFunction (std::shared_ptr <omni::core::function_prototype> function)
+void omni::core::module::addFunction (std::shared_ptr <model::function_prototype> function)
 {
-    std::shared_ptr <omni::core::function_prototype> func = findFunctionByName (function->getName ());
+    std::shared_ptr <model::function_prototype> func = findFunctionByName (function->getName ());
     if (func.get () != nullptr) {
         throw already_exists_error (domain::function, function->getName ());
     }
@@ -166,16 +166,16 @@ Only functions that were created using createFunction or were added via addFunct
 @param The name of the function that should be returned. Should not be empty.
 @return The function with the name `name' that has previously been added to this context.
 **/
-std::shared_ptr <omni::core::function_prototype> omni::core::module::findFunctionByName (std::string const & name)
+std::shared_ptr <omni::core::model::function_prototype> omni::core::module::findFunctionByName (std::string const & name)
 {
     id_to_parts_map & functionMap (_parts [domain::function]);
-    auto found = std::find_if (functionMap.begin (), functionMap.end (), [name] (std::pair <std::string, std::shared_ptr <entity>> f) -> bool {
+    auto found = std::find_if (functionMap.begin (), functionMap.end (), [name] (std::pair <std::string, std::shared_ptr <model::entity>> f) -> bool {
         return f.second->getName () == name;
     });
     if (found != functionMap.end ()) {
-        return std::dynamic_pointer_cast <function_prototype> (found->second);
+        return std::dynamic_pointer_cast <model::function_prototype> (found->second);
     } else {
-        return std::shared_ptr <omni::core::function_prototype> ();
+        return std::shared_ptr <model::function_prototype> ();
     }
 }
 
@@ -185,10 +185,10 @@ createFunction or adding it via addFunction.
 @param function The function to be removed from this context.
 @return true, if `function' was part of this context and has been removed. false, if `function' was not found.
 **/
-bool omni::core::module::removeFunction (std::shared_ptr <omni::core::function_prototype> function)
+bool omni::core::module::removeFunction (std::shared_ptr <model::function_prototype> function)
 {
     id_to_parts_map & functionMap (_parts [domain::function]);
-    auto found = std::find_if (functionMap.begin (), functionMap.end (), [function] (std::pair <std::string, std::shared_ptr <entity>> f) -> bool {
+    auto found = std::find_if (functionMap.begin (), functionMap.end (), [function] (std::pair <std::string, std::shared_ptr <model::entity>> f) -> bool {
         return f.second == function;
     });
     if (found != functionMap.end ()) {
@@ -205,7 +205,7 @@ Sets the entry point for this context.
 Not implemented yet.
 TODO - this should be part of a module, not the whole context.
 **/
-void omni::core::module::setEntryPoint (std::shared_ptr <function> function)
+void omni::core::module::setEntryPoint (std::shared_ptr <model::function> function)
 {
     _entryPoint = function;
 }
@@ -245,7 +245,7 @@ void omni::core::module::emitAssemblyFile (llvm::raw_ostream & stream, const mod
     llvm::Module & m (llvmModule ());
     
     for (auto f : _parts [domain::function]) {
-        function_prototype & func = * std::dynamic_pointer_cast <function_prototype> (f.second);
+        model::function_prototype & func = * std::dynamic_pointer_cast <model::function_prototype> (f.second);
         func.llvmFunction ();
     }
 
@@ -281,7 +281,7 @@ void omni::core::module::emitObjectFile (llvm::raw_ostream & stream, const modul
     addDllMainIfMissing (_context, m);
     
     for (auto f : _parts [domain::function]) {
-        function_prototype & func = * std::dynamic_pointer_cast <function_prototype> (f.second);
+        model::function_prototype & func = * std::dynamic_pointer_cast <model::function_prototype> (f.second);
         func.llvmFunction ();
     }
 
@@ -387,7 +387,7 @@ bool omni::core::module::verify (std::string & errorInfo)
 
     try {
         for (auto f : _parts[domain::function]) {
-            function_prototype & func = *std::dynamic_pointer_cast <function_prototype> (f.second);
+            model::function_prototype & func = *std::dynamic_pointer_cast <model::function_prototype> (f.second);
             func.llvmFunction ();
         }
     }

@@ -10,6 +10,7 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+namespace model {
     class type;
     class expression;
 
@@ -33,6 +34,7 @@ namespace core {
         llvm::Value * _llvmPointerValue; // Internal
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

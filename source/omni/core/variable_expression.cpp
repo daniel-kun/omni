@@ -10,12 +10,12 @@
 /**
 Initializes this expression to return variable's at the time this expression is executed.
 **/
-omni::core::variable_expression::variable_expression (std::shared_ptr <omni::core::variable_declaration_expression> variable) :
+omni::core::model::variable_expression::variable_expression (std::shared_ptr <variable_declaration_expression> variable) :
     _variable (variable)
 {
 }
 
-std::shared_ptr <omni::core::type> omni::core::variable_expression::getType () const
+std::shared_ptr <omni::core::model::type> omni::core::model::variable_expression::getType () const
 {
     return _variable->getType ();
 }
@@ -23,12 +23,12 @@ std::shared_ptr <omni::core::type> omni::core::variable_expression::getType () c
 /**
 Returns the variable which value this expression returns.
 **/
-const std::shared_ptr <omni::core::variable_declaration_expression> omni::core::variable_expression::getVariable () const
+const std::shared_ptr <omni::core::model::variable_declaration_expression> omni::core::model::variable_expression::getVariable () const
 {
     return _variable;
 }
 
-omni::core::statement_emit_result omni::core::variable_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::model::variable_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::Value * pointerValue = _variable->llvmPointerValue ();
     if (pointerValue == nullptr) {

@@ -52,9 +52,12 @@ BOOST_AUTO_TEST_CASE (createAndFindFunction)
     using namespace omni::core;
     context c;
     module mod (c, "test");
-    std::shared_ptr <block> emptyBody (new block ());
+    std::shared_ptr <model::block> emptyBody (new model::block ());
     const std::string functionName = "test";
-    std::shared_ptr <function> func = mod.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), emptyBody);
+    std::shared_ptr <model::function> func = mod.createFunction (
+        functionName,
+        static_cast <std::shared_ptr <model::type>> (model::type::sharedBasicType (c, model::type_class::t_signedInt)),
+        emptyBody);
     
     BOOST_CHECK (func->getName () == functionName);
     
@@ -64,8 +67,8 @@ BOOST_AUTO_TEST_CASE (createAndFindFunction)
     BOOST_CHECK (mod.findFunctionByName (functionName) != nullptr);
     BOOST_CHECK (mod.findFunctionByName (functionName)->getName () == functionName);
 
-    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <entity> ());
-    BOOST_CHECK (std::dynamic_pointer_cast <function> (mod.findPartById (func->getId ()))->getName () == functionName);
+    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <model::entity> ());
+    BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.findPartById (func->getId ()))->getName () == functionName);
 
 }
 
@@ -77,9 +80,13 @@ BOOST_AUTO_TEST_CASE (addAndFindFunction)
     using namespace omni::core;
     context c;
     module mod (c, "test");
-    std::shared_ptr <block> emptyBody (new block ());
+    std::shared_ptr <model::block> emptyBody (new model::block ());
     const std::string functionName = "test";
-    std::shared_ptr <function> func (new function (mod, functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), emptyBody));
+    std::shared_ptr <model::function> func (new model::function (
+        mod,
+        functionName,
+        model::type::sharedBasicType (c, model::type_class::t_signedInt),
+        emptyBody));
 
     BOOST_CHECK (func->getContext () == nullptr);
 
@@ -95,8 +102,8 @@ BOOST_AUTO_TEST_CASE (addAndFindFunction)
     BOOST_CHECK (mod.findFunctionByName (functionName) != nullptr);
     BOOST_CHECK (mod.findFunctionByName (functionName)->getName () == functionName);
 
-    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <entity> ());
-    BOOST_CHECK (std::dynamic_pointer_cast <function> (mod.findPartById (func->getId ()))->getName () == functionName);
+    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <model::entity> ());
+    BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.findPartById (func->getId ()))->getName () == functionName);
 }
 
 /**
@@ -107,9 +114,12 @@ BOOST_AUTO_TEST_CASE (removeFunction)
     using namespace omni::core;
     context c;
     module mod (c, "test");
-    std::shared_ptr <block> emptyBody (new block ());
+    std::shared_ptr <model::block> emptyBody (new model::block ());
     const std::string functionName = "test";
-    std::shared_ptr <function> func = mod.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), emptyBody);
+    std::shared_ptr <model::function> func = mod.createFunction (
+        functionName,
+        static_cast <std::shared_ptr <model::type>> (model::type::sharedBasicType (c, model::type_class::t_signedInt)),
+        emptyBody);
     
     BOOST_CHECK (mod.findFunctionByName (func->getName ()) != nullptr);
     BOOST_CHECK (mod.findFunctionByName (func->getName ())->getName () == functionName);
@@ -132,13 +142,16 @@ BOOST_AUTO_TEST_CASE (emitAssemblyFile)
     using namespace omni::core;
     context c;
     module mod (c, "test");
-    std::shared_ptr <block> body (new block ());
-    std::shared_ptr <literal> literal42 (new builtin_literal <signed int> (c, 42));
-    std::shared_ptr <expression> literal42exp (new literal_expression (literal42));
-    std::shared_ptr <statement> return42 (new return_statement (literal42exp));
+    std::shared_ptr <model::block> body (new model::block ());
+    std::shared_ptr <model::literal> literal42 (new model::builtin_literal <signed int> (c, 42));
+    std::shared_ptr <model::expression> literal42exp (new model::literal_expression (literal42));
+    std::shared_ptr <model::statement> return42 (new model::return_statement (literal42exp));
     body->appendStatement (return42);
     const std::string functionName = "test";
-    std::shared_ptr <function> func = mod.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), body);
+    std::shared_ptr <model::function> func = mod.createFunction (
+        functionName,
+        static_cast <std::shared_ptr <model::type>> (model::type::sharedBasicType (c, model::type_class::t_signedInt)),
+        body);
     omni::tests::test_file_manager testFileManager;
     std::string assemblyFileName = testFileManager.getTestFileName ("emitAssemblyFile.ll").string ();
     mod.emitAssemblyFile (assemblyFileName);
@@ -153,13 +166,16 @@ BOOST_AUTO_TEST_CASE (emitObjectFile)
     using namespace omni::core;
     context c;
     module mod (c, "test");
-    std::shared_ptr <block> body (new block ());
-    std::shared_ptr <literal> literal42 (new builtin_literal <signed int> (c, 42));
-    std::shared_ptr <expression> literal42exp (new literal_expression (literal42));
-    std::shared_ptr <statement> return42 (new return_statement (literal42exp));
+    std::shared_ptr <model::block> body (new model::block ());
+    std::shared_ptr <model::literal> literal42 (new model::builtin_literal <signed int> (c, 42));
+    std::shared_ptr <model::expression> literal42exp (new model::literal_expression (literal42));
+    std::shared_ptr <model::statement> return42 (new model::return_statement (literal42exp));
     body->appendStatement (return42);
     const std::string functionName = "test";
-    std::shared_ptr <function> func = mod.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), body);
+    std::shared_ptr <model::function> func = mod.createFunction (
+        functionName,
+        static_cast <std::shared_ptr <model::type>> (model::type::sharedBasicType (c, model::type_class::t_signedInt)),
+        body);
     omni::tests::test_file_manager testFileManager;
     boost::filesystem::path objectFilePath = testFileManager.getTestFileName ("emitObjectFile.obj");
     std::string objectFileName = objectFilePath.string ();
@@ -176,13 +192,13 @@ BOOST_AUTO_TEST_CASE (emitSharedLibraryFile)
     using namespace omni::core;
     context c;
     module mod (c, "test");
-    std::shared_ptr <block> body (new block ());
-    std::shared_ptr <literal> literal42 (new builtin_literal <signed int> (c, 42));
-    std::shared_ptr <expression> literal42exp (new literal_expression (literal42));
-    std::shared_ptr <statement> return42 (new return_statement (literal42exp));
+    std::shared_ptr <model::block> body (new model::block ());
+    std::shared_ptr <model::literal> literal42 (new model::builtin_literal <signed int> (c, 42));
+    std::shared_ptr <model::expression> literal42exp (new model::literal_expression (literal42));
+    std::shared_ptr <model::statement> return42 (new model::return_statement (literal42exp));
     body->appendStatement (return42);
     const std::string functionName = "test";
-    std::shared_ptr <function> func = mod.createFunction (functionName, static_cast <std::shared_ptr <type>> (type::sharedBasicType (c, type_class::t_signedInt)), body);
+    std::shared_ptr <model::function> func = mod.createFunction (functionName, model::type::sharedBasicType (c, model::type_class::t_signedInt), body);
     omni::tests::test_file_manager testFileManager;
     int functionCallResult = omni::tests::runFunction <int> (func, testFileManager, "emitSharedLibraryFile");
     BOOST_CHECK_EQUAL (functionCallResult, 42);

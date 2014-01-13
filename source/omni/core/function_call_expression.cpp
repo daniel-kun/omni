@@ -9,7 +9,7 @@
 /**
 Initializes this function call expression without any function to call.
 **/
-omni::core::function_call_expression::function_call_expression () :
+omni::core::model::function_call_expression::function_call_expression () :
     _function (),
     _parameters ()
 {
@@ -18,20 +18,20 @@ omni::core::function_call_expression::function_call_expression () :
 /**
 Initializes this function call expression to call the function `func'.
 **/
-omni::core::function_call_expression::function_call_expression (std::shared_ptr <function_prototype> func) :
+omni::core::model::function_call_expression::function_call_expression (std::shared_ptr <function_prototype> func) :
     _function (func),
     _parameters ()
 {
 }
 
-omni::core::function_call_expression::function_call_expression (std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters) :
+omni::core::model::function_call_expression::function_call_expression (std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters) :
     _function  (func),
     _parameters (parameters)
 {
 
 }
 
-std::shared_ptr <omni::core::type> omni::core::function_call_expression::getType () const
+std::shared_ptr <omni::core::model::type> omni::core::model::function_call_expression::getType () const
 {
     return _function->getReturnType ();
 }
@@ -39,7 +39,7 @@ std::shared_ptr <omni::core::type> omni::core::function_call_expression::getType
 /**
 Sets the function that this expression should call to `func'.
 **/
-void omni::core::function_call_expression::setFunction (std::shared_ptr <function_prototype> func)
+void omni::core::model::function_call_expression::setFunction (std::shared_ptr <function_prototype> func)
 {
     _function = func;
 }
@@ -47,7 +47,7 @@ void omni::core::function_call_expression::setFunction (std::shared_ptr <functio
 /**
 Returns the function that this expression should call. Can be null if no function has been set.
 **/
-const std::shared_ptr <omni::core::function_prototype> omni::core::function_call_expression::getFunction () const
+const std::shared_ptr <omni::core::model::function_prototype> omni::core::model::function_call_expression::getFunction () const
 {
     return _function;
 }
@@ -55,7 +55,7 @@ const std::shared_ptr <omni::core::function_prototype> omni::core::function_call
 /**
 Returns the function that this expression should call. Can be null if no function has been set.
 **/
-std::shared_ptr <omni::core::function_prototype> omni::core::function_call_expression::getFunction ()
+std::shared_ptr <omni::core::model::function_prototype> omni::core::model::function_call_expression::getFunction ()
 {
     return _function;
 }
@@ -65,7 +65,7 @@ Adds the parameter to the list of parameters that will be fed to the function-ca
 must match those of the function that has been passed to the ctor or was set using setFunction().
 @param parameter The parameter that will be fed to the function that will be called by this expression.
 **/
-void omni::core::function_call_expression::addParameter (std::shared_ptr <expression> parameter)
+void omni::core::model::function_call_expression::addParameter (std::shared_ptr <expression> parameter)
 {
     _parameters.push_back (parameter);
 }
@@ -75,7 +75,7 @@ Sets a list of parameter that will be fed to the function-call. Note that the nu
 must match those of the function that has been passed to the ctor or was set using setFunction().
 @param parameters The list of parameters that will be fed to thefunction that will be called by this expression.
 **/
-void omni::core::function_call_expression::setParameters (std::vector <std::shared_ptr <expression>> parameters)
+void omni::core::model::function_call_expression::setParameters (std::vector <std::shared_ptr <expression>> parameters)
 {
     _parameters = parameters;
 }
@@ -84,7 +84,7 @@ void omni::core::function_call_expression::setParameters (std::vector <std::shar
 @return Returns a llvm::CallInst that has been constructed by a call to llvm::IRBuilder<>::CreateCall.
 You can safely dynamic_cast the result to a llvm::CallInst.
 **/
-omni::core::statement_emit_result omni::core::function_call_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::model::function_call_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
 

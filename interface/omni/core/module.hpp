@@ -16,12 +16,19 @@ namespace llvm {
 
 namespace omni {
 namespace core {
-    class context;
+namespace model {
     class type;
     class entity;
     class function_prototype;
     class function;
     class block;
+}
+}
+}
+
+namespace omni {
+namespace core {
+    class context;
 
     /**
     A module contains code for a static library, a shared library or an executable.
@@ -35,10 +42,10 @@ namespace core {
         context & getContext ();
         const context & getContext () const;
 
-        std::shared_ptr <entity> findPartById (id id);
+        std::shared_ptr <model::entity> findPartById (id id);
 
         id createId (domain domain);
-        void setEntryPoint (std::shared_ptr <function> function);
+        void setEntryPoint (std::shared_ptr <model::function> function);
 
         void emitAssemblyFile (std::ostream & stream, const module_emit_options & options = module_emit_options ());
         void emitAssemblyFile (llvm::raw_ostream & stream, const module_emit_options & options = module_emit_options ());
@@ -52,24 +59,24 @@ namespace core {
         void emitSharedLibraryFile (llvm::raw_ostream & stream, const module_emit_options & options = module_emit_options ());
         void emitSharedLibraryFile (std::string const & fileName, const module_emit_options & options = module_emit_options ());
 
-        std::shared_ptr <function> createFunction (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body);
-        std::shared_ptr <function_prototype> findFunctionByName (std::string const & name);
-        void addFunction (std::shared_ptr <function_prototype> function);
-        bool removeFunction (std::shared_ptr <function_prototype> function);
+        std::shared_ptr <model::function> createFunction (std::string const & name, std::shared_ptr <model::type> returnType, std::shared_ptr <model::block> body);
+        std::shared_ptr <model::function_prototype> findFunctionByName (std::string const & name);
+        void addFunction (std::shared_ptr <model::function_prototype> function);
+        bool removeFunction (std::shared_ptr <model::function_prototype> function);
 
         bool verify (std::string & errorInfo);
 
         llvm::Module & llvmModule ();
 
     private:
-        typedef std::map <std::string, std::shared_ptr <entity>> id_to_parts_map;
+        typedef std::map <std::string, std::shared_ptr <model::entity>> id_to_parts_map;
         typedef std::map <domain, id_to_parts_map> domain_id_to_parts_map;
 
         std::shared_ptr <llvm::Module> _llvmModule;
         context & _context;
         id _id;
         std::string _name;
-        std::shared_ptr <function> _entryPoint;
+        std::shared_ptr <model::function> _entryPoint;
         domain_id_to_parts_map _parts;
     };
 }

@@ -1,22 +1,22 @@
 #include <omni/core/literal.hpp>
 #include <omni/core/type.hpp>
 
-omni::core::literal::literal (std::shared_ptr <type> type) :
+omni::core::model::literal::literal (std::shared_ptr <type> type) :
     _type (type)
 {
     setContext (_type->getContext ());
 }
 
-omni::core::literal::~ literal ()
+omni::core::model::literal::~ literal ()
 {
 }
 
-std::shared_ptr <omni::core::type> omni::core::literal::getType ()
+std::shared_ptr <omni::core::model::type> omni::core::model::literal::getType ()
 {
     return _type;
 }
 
-const std::shared_ptr <omni::core::type> omni::core::literal::getType () const
+const std::shared_ptr <omni::core::model::type> omni::core::model::literal::getType () const
 {
     return _type;
 }

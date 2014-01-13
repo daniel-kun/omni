@@ -14,6 +14,7 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+namespace model {
     class function_prototype;
     class expression;
     class type;
@@ -43,6 +44,7 @@ namespace core {
         std::vector <std::shared_ptr <expression>> _parameters;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

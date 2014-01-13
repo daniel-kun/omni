@@ -11,6 +11,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
 
     /**
     Is thrown when something was used, before it was declared.
@@ -21,6 +22,7 @@ namespace core {
         use_before_declaration_error (domain domain, std::string const & identifier);
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

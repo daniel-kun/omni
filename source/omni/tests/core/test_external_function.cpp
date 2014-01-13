@@ -20,21 +20,21 @@ BOOST_AUTO_TEST_CASE (ctor)
     using namespace omni::core;
     context c;
     module mod (c, "test");
-    std::shared_ptr <external_function> function_putchar (new external_function (mod, "LIBCMT.LIB", "putchar", type::sharedBasicType (c, type_class::t_signedInt)));
-    std::shared_ptr <parameter> param1 (new parameter (type::sharedBasicType (c, type_class::t_signedInt), std::string ()));
+    std::shared_ptr <model::external_function> function_putchar (new model::external_function (mod, "LIBCMT.LIB", "putchar", model::type::sharedBasicType (c, model::type_class::t_signedInt)));
+    std::shared_ptr <model::parameter> param1 (new model::parameter (model::type::sharedBasicType (c, model::type_class::t_signedInt), std::string ()));
     function_putchar->addParameter (param1);
 
-    std::shared_ptr <function_call_expression> functionCallExpression (new function_call_expression (function_putchar));
-    std::shared_ptr <builtin_literal <signed int>> param1Value (new builtin_literal <signed int> (c, 'O'));
+    std::shared_ptr <model::function_call_expression> functionCallExpression (new model::function_call_expression (function_putchar));
+    std::shared_ptr <model::builtin_literal <signed int>> param1Value (new model::builtin_literal <signed int> (c, 'O'));
     auto param1Type = param1Value->getType ();
     auto putcharParam1Type = function_putchar->getParameters () [0]->getType ();
-    std::shared_ptr <literal_expression> param1Expression (new literal_expression (param1Value));
+    std::shared_ptr <model::literal_expression> param1Expression (new model::literal_expression (param1Value));
     functionCallExpression->addParameter (param1Expression);
 
-    std::shared_ptr <block> body (new block ());
-    std::shared_ptr <return_statement> returnStatement (new return_statement (functionCallExpression));
+    std::shared_ptr <model::block> body (new model::block ());
+    std::shared_ptr <model::return_statement> returnStatement (new model::return_statement (functionCallExpression));
     body->appendStatement (returnStatement);
-    std::shared_ptr <function> funcCaller (new function (mod, "putcharCaller", type::sharedBasicType (c, type_class::t_signedInt), body));
+    std::shared_ptr <model::function> funcCaller (new model::function (mod, "putcharCaller", model::type::sharedBasicType (c, model::type_class::t_signedInt), body));
 
     mod.addFunction (function_putchar);
     mod.addFunction (funcCaller);

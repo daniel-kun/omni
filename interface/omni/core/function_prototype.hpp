@@ -17,10 +17,16 @@ namespace llvm {
 namespace omni {
 namespace core {
     class context;
+    class module;
+}
+}
+
+namespace omni {
+namespace core {
+namespace model {
     class parameter;
     class block;
     class type;
-    class module;
 
     /**
     A function_prototype defines the name, return type and parameters of a function and adds basic functionalities to read and modify these values.
@@ -30,7 +36,7 @@ namespace core {
         function_prototype (module & module,
                             std::string const & name,
                             std::shared_ptr <type> returnType,
-                            std::vector <std::shared_ptr <omni::core::parameter>> parameters = std::vector <std::shared_ptr <omni::core::parameter>> ());
+                            std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> ());
         virtual ~ function_prototype ();
 
         module & getModule ();
@@ -43,16 +49,17 @@ namespace core {
         virtual llvm::Function * llvmFunction () = 0;
 
         void addParameter (std::shared_ptr <parameter> parameter);
-        void setParameters (std::vector <std::shared_ptr <omni::core::parameter>> parameters);
+        void setParameters (std::vector <std::shared_ptr <parameter>> parameters);
         std::vector <std::shared_ptr <parameter>> getParameters () const;
  
     protected:
         module & _module;
         std::shared_ptr <type> _returnType;
-        std::vector <std::shared_ptr <omni::core::parameter>> _parameters;
+        std::vector <std::shared_ptr <parameter>> _parameters;
         llvm::Function * _llvmFunction;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

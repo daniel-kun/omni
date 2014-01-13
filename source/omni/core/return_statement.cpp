@@ -4,17 +4,17 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/Support/NoFolder.h>
 
-omni::core::return_statement::return_statement () :
+omni::core::model::return_statement::return_statement () :
     _expression ()
 {
 }
 
-omni::core::return_statement::return_statement (std::shared_ptr <expression> expression) :
+omni::core::model::return_statement::return_statement (std::shared_ptr <expression> expression) :
     _expression (expression)
 {
 }
 
-omni::core::statement_emit_result omni::core::return_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::model::return_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     if (_expression.get () == nullptr) {

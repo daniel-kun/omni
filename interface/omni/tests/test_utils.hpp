@@ -14,20 +14,22 @@
 
 namespace omni {
 namespace core {
+namespace model {
 class function;
+}
 }
 }
 
 namespace omni {
 namespace tests {
 
-boost::filesystem::path emitSharedLibraryWithFunction (std::shared_ptr <omni::core::function> func,
+boost::filesystem::path emitSharedLibraryWithFunction (std::shared_ptr <omni::core::model::function> func,
                                                        omni::tests::test_file_manager & testFileManager,
                                                        std::string const & fileBaseName,
                                                        std::string & functionName);
 
 template <typename Return>
-Return runFunction (std::shared_ptr <omni::core::function> func,
+Return runFunction (std::shared_ptr <omni::core::model::function> func,
                     omni::tests::test_file_manager & testFileManager,
                     std::string const & fileBaseName);
 
@@ -38,7 +40,7 @@ Return runFunction (std::shared_ptr <omni::core::function> func,
 Runs the function `function' and returns it's result in a string representation.
 **/
 template <typename Return>
-Return omni::tests::runFunction (std::shared_ptr <omni::core::function> func,
+Return omni::tests::runFunction (std::shared_ptr <omni::core::model::function> func,
                                  omni::tests::test_file_manager & testFileManager,
                                  std::string const & fileBaseName)
 {

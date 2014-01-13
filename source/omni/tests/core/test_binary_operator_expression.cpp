@@ -42,22 +42,22 @@ protected:
 template <typename T>
 T test (std::size_t & testCounter,
         omni::core::module & m,
-        omni::core::binary_operator_expression::binary_operation operation,
-        omni::core::builtin_literal <T> * left,
-        omni::core::builtin_literal <T> * right)
+        omni::core::model::binary_operator_expression::binary_operation operation,
+        omni::core::model::builtin_literal <T> * left,
+        omni::core::model::builtin_literal <T> * right)
 {
     using namespace omni::core;
-    std::shared_ptr <block> body (new block ());
-    std::shared_ptr <literal_expression> leftExpression (new literal_expression (std::shared_ptr <literal> (left)));
-    std::shared_ptr <literal_expression> rightExpression (new literal_expression (std::shared_ptr <literal> (right)));
+    std::shared_ptr <model::block> body (new model::block ());
+    std::shared_ptr <model::literal_expression> leftExpression (new model::literal_expression (std::shared_ptr <model::literal> (left)));
+    std::shared_ptr <model::literal_expression> rightExpression (new model::literal_expression (std::shared_ptr <model::literal> (right)));
     body->appendStatement (
-        std::shared_ptr <statement> (
-            new return_statement (
-                std::shared_ptr <expression> (new binary_operator_expression (m.getContext (), operation, leftExpression, rightExpression)))));
+        std::shared_ptr <model::statement> (
+            new model::return_statement (
+                std::shared_ptr <model::expression> (new model::binary_operator_expression (m.getContext (), operation, leftExpression, rightExpression)))));
     std::stringstream funcName;
     funcName << "binaryOperatorExpressionTest" << ++ testCounter;
     std::string testFuncName = funcName.str ();
-    std::shared_ptr <function> func (new function (m, testFuncName, left->getType (), body));
+    std::shared_ptr <model::function> func (new model::function (m, testFuncName, left->getType (), body));
     m.addFunction (func);
     omni::tests::test_file_manager testFileManager;
     T result = omni::tests::runFunction <T> (func, testFileManager, testFuncName);
@@ -72,8 +72,8 @@ This offers a better orientation when a BOOST_CHECK_EQUAL failes.
     auto result = test (TESTCOUNTER,\
                         MODULE,\
                         OPERATION,\
-                        new omni::core::builtin_literal <decltype(LEFT)> (MODULE.getContext (), LEFT),\
-                        new omni::core::builtin_literal <decltype(RIGHT)> (MODULE.getContext (), RIGHT));\
+                        new omni::core::model::builtin_literal <decltype(LEFT)> (MODULE.getContext (), LEFT),\
+                        new omni::core::model::builtin_literal <decltype(RIGHT)> (MODULE.getContext (), RIGHT));\
     BOOST_CHECK_EQUAL (result, static_cast <decltype (LEFT)> (LEFT OPERATOR RIGHT));\
     if (result != static_cast <decltype (LEFT)> (LEFT OPERATOR RIGHT)) { \
         std::stringstream fileName; \
@@ -85,15 +85,15 @@ This offers a better orientation when a BOOST_CHECK_EQUAL failes.
 
 /////////// PLUS //////////
 
-#define TEST_PLUS(TESTCOUNTER, MODULE, LEFT, RIGHT) TEST_BINOP(TESTCOUNTER, MODULE, omni::core::binary_operator_expression::binary_operation::binary_plus_operation, +, LEFT, RIGHT)
+#define TEST_PLUS(TESTCOUNTER, MODULE, LEFT, RIGHT) TEST_BINOP(TESTCOUNTER, MODULE, omni::core::model::binary_operator_expression::binary_operation::binary_plus_operation, +, LEFT, RIGHT)
 
 template <typename T>
 void testNumericLimitsPlus (std::size_t & testCounter, omni::core::module & mod)
 {
-    TEST_BINOP (testCounter, mod, omni::core::binary_operator_expression::binary_operation::binary_plus_operation, +, 0, 0);
-    TEST_BINOP (testCounter, mod, omni::core::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::min (),     std::numeric_limits <T>::min ());
-    TEST_BINOP (testCounter, mod, omni::core::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::max (),     std::numeric_limits <T>::max ());
-    TEST_BINOP (testCounter, mod, omni::core::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::max () / 2, std::numeric_limits <T>::max () / 2);
+    TEST_BINOP (testCounter, mod, omni::core::model::binary_operator_expression::binary_operation::binary_plus_operation, +, 0, 0);
+    TEST_BINOP (testCounter, mod, omni::core::model::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::min (),     std::numeric_limits <T>::min ());
+    TEST_BINOP (testCounter, mod, omni::core::model::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::max (),     std::numeric_limits <T>::max ());
+    TEST_BINOP (testCounter, mod, omni::core::model::binary_operator_expression::binary_operation::binary_plus_operation, +, std::numeric_limits <T>::max () / 2, std::numeric_limits <T>::max () / 2);
 }
 
 BOOST_FIXTURE_TEST_SUITE (binaryOperatorExpressionTest, test_binary_operator_expression_fixture)
@@ -181,15 +181,15 @@ BOOST_AUTO_TEST_CASE (plusUnsignedInt)
 
 /////////// MINUS //////////
 
-#define TEST_MINUS(TESTCOUNTER, MODULE, LEFT, RIGHT) TEST_BINOP(TESTCOUNTER, MODULE, omni::core::binary_operator_expression::binary_operation::binary_minus_operation, -, LEFT, RIGHT)
+#define TEST_MINUS(TESTCOUNTER, MODULE, LEFT, RIGHT) TEST_BINOP(TESTCOUNTER, MODULE, omni::core::model::binary_operator_expression::binary_operation::binary_minus_operation, -, LEFT, RIGHT)
 
 template <typename T>
 void testNumericLimitsMinus (std::size_t & testCounter, omni::core::module & m)
 {
-    TEST_BINOP (testCounter, m, omni::core::binary_operator_expression::binary_operation::binary_minus_operation, -, 0, 0);
-    TEST_BINOP (testCounter, m, omni::core::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::min (),     std::numeric_limits <T>::min ());
-    TEST_BINOP (testCounter, m, omni::core::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::max (),     std::numeric_limits <T>::max ());
-    TEST_BINOP (testCounter, m, omni::core::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::max () / 2, std::numeric_limits <T>::max () / 2);
+    TEST_BINOP (testCounter, m, omni::core::model::binary_operator_expression::binary_operation::binary_minus_operation, -, 0, 0);
+    TEST_BINOP (testCounter, m, omni::core::model::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::min (),     std::numeric_limits <T>::min ());
+    TEST_BINOP (testCounter, m, omni::core::model::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::max (),     std::numeric_limits <T>::max ());
+    TEST_BINOP (testCounter, m, omni::core::model::binary_operator_expression::binary_operation::binary_minus_operation, -, std::numeric_limits <T>::max () / 2, std::numeric_limits <T>::max () / 2);
 }
 
 BOOST_AUTO_TEST_CASE (minusSignedShortNumericLimits)

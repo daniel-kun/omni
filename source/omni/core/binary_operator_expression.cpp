@@ -13,10 +13,10 @@ Initializes this binary_operator_expression with the binary_operation op and the
 @param leftOperand The left operand of this operation. E.g. in "5 + 7", this is "5".
 @param rightOperand The right operand of this operation. E.g. in "5 / 7", this is "7".
 **/
-omni::core::binary_operator_expression::binary_operator_expression (context & context,
-                                                                    binary_operation op,
-                                                                    std::shared_ptr <expression> leftOperand,
-                                                                    std::shared_ptr <expression> rightOperand) :
+omni::core::model::binary_operator_expression::binary_operator_expression (context & context,
+                                                                           binary_operation op,
+                                                                           std::shared_ptr <expression> leftOperand,
+                                                                           std::shared_ptr <expression> rightOperand) :
     _type (),
     _operator (op),
     _leftOperand (leftOperand),
@@ -41,7 +41,7 @@ omni::core::binary_operator_expression::binary_operator_expression (context & co
 /**
 Returns the type of this binary_operator_expression. The type is deduced from the left and right operands.
 **/
-std::shared_ptr <omni::core::type> omni::core::binary_operator_expression::getType () const 
+std::shared_ptr <omni::core::model::type> omni::core::model::binary_operator_expression::getType () const 
 {
     return _type;
 }
@@ -49,7 +49,7 @@ std::shared_ptr <omni::core::type> omni::core::binary_operator_expression::getTy
 /**
 @internal
 **/
-omni::core::statement_emit_result omni::core::binary_operator_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::model::binary_operator_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     llvm::Value * lhs = _leftOperand->llvmEmit (llvmBasicBlock).getValue ();

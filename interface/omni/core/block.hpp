@@ -15,6 +15,7 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+namespace model {
     class statement;
 
     /**
@@ -39,7 +40,8 @@ namespace core {
     private:
         statement_list _statements;
     };
-    
+
+} // namespace model
 } // namespace core
 } // namespace omni
 

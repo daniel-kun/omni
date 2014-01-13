@@ -8,6 +8,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
     class variable_declaration_expression;
 
     /**
@@ -33,7 +34,8 @@ namespace core {
         llvm::Value * _llvmValue;
     };
 
-}
-}
+} // namespace model
+} // namespace core
+} // namespace omni
 
 #endif // include guard

@@ -36,25 +36,25 @@ void testVariables (T initializationValue, T assignmentValue)
     module m (c, "test");
     
     // Declare a variable with the initial value of `initializationValue':
-    auto variableInitializationLiteral = std::make_shared <builtin_literal<T>> (c, initializationValue);
-    auto variableInitializationExpression = std::make_shared <literal_expression> (variableInitializationLiteral);
-    auto variableDeclarationStatement = std::make_shared <variable_declaration_expression> (variableInitializationExpression);
-    BOOST_CHECK (variableDeclarationStatement->getType ()->getTypeClass () == native_type_to_type_class <T>::typeClass);
+    auto variableInitializationLiteral = std::make_shared <model::builtin_literal<T>> (c, initializationValue);
+    auto variableInitializationExpression = std::make_shared <model::literal_expression> (variableInitializationLiteral);
+    auto variableDeclarationStatement = std::make_shared <model::variable_declaration_expression> (variableInitializationExpression);
+    BOOST_CHECK (variableDeclarationStatement->getType ()->getTypeClass () == model::native_type_to_type_class <T>::typeClass);
 
     // Assign `assignmentValue' to the variable:
-    auto variableValueLiteral = std::make_shared <builtin_literal<T>> (c, assignmentValue);
-    auto variableValueExpression = std::make_shared <literal_expression> (variableValueLiteral);
-    auto variableAssignmentExpression = std::make_shared <variable_assignment_expression> (variableDeclarationStatement, variableValueExpression);
+    auto variableValueLiteral = std::make_shared <model::builtin_literal<T>> (c, assignmentValue);
+    auto variableValueExpression = std::make_shared <model::literal_expression> (variableValueLiteral);
+    auto variableAssignmentExpression = std::make_shared <model::variable_assignment_expression> (variableDeclarationStatement, variableValueExpression);
 
     // Add the statements to a function body:
-    auto body = std::make_shared <block> ();
+    auto body = std::make_shared <model::block> ();
     body->appendStatement (variableDeclarationStatement);
     body->appendStatement (variableAssignmentExpression);
 
     // Return the variable's value:
     body->appendStatement (
-        std::make_shared <return_statement> (
-            std::make_shared <variable_expression> (variableDeclarationStatement)));
+        std::make_shared <model::return_statement> (
+            std::make_shared <model::variable_expression> (variableDeclarationStatement)));
     
     auto func = m.createFunction ("test", variableDeclarationStatement->getType (), body);
 
@@ -80,8 +80,8 @@ BOOST_AUTO_TEST_CASE (ctor)
 {
     using namespace omni::core;
     context c;
-    auto variable = std::make_shared <variable_declaration_expression> (c.sharedBasicType (type_class::t_char));
-    variable_expression variableExpression (variable);
+    auto variable = std::make_shared <model::variable_declaration_expression> (c.sharedBasicType (model::type_class::t_char));
+    model::variable_expression variableExpression (variable);
 }
 
 /**
@@ -92,38 +92,38 @@ BOOST_AUTO_TEST_CASE (mixedTests)
     using namespace omni::core;
     context c;
     module m (c, "test");
-    auto t = c.sharedBasicType (type_class::t_char);
-    auto body = std::make_shared <block> ();
+    auto t = c.sharedBasicType (model::type_class::t_char);
+    auto body = std::make_shared <model::block> ();
     // Declare a variable "A" that holds the letter 'A':
-    auto variableA = std::make_shared <variable_declaration_expression> (
-        std::make_shared <literal_expression> (
-            std::make_shared <builtin_literal <char>> (c, 'A')));
+    auto variableA = std::make_shared <model::variable_declaration_expression> (
+        std::make_shared <model::literal_expression> (
+            std::make_shared <model::builtin_literal <char>> (c, 'A')));
     body->appendStatement (variableA);
     // Declare a second variable "B" that holds the value of variableA, incremented by 1. Hence, the value should be 'B'
-    auto AplusBexpression = std::make_shared <binary_operator_expression> (
+    auto AplusBexpression = std::make_shared <model::binary_operator_expression> (
         c,
-        binary_operator_expression::binary_operation::binary_plus_operation,
-        std::make_shared <variable_expression> (variableA),
-        std::make_shared <literal_expression> (std::make_shared <builtin_literal<char>> (c, static_cast <char> (1))));
-    auto variableB = std::make_shared <variable_declaration_expression> (AplusBexpression);
+        model::binary_operator_expression::binary_operation::binary_plus_operation,
+        std::make_shared <model::variable_expression> (variableA),
+        std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal<char>> (c, static_cast <char> (1))));
+    auto variableB = std::make_shared <model::variable_declaration_expression> (AplusBexpression);
     body->appendStatement (variableB);
     // Declare a third variable C that will be initialized with the letter 'A', but then (without usage of the letter 'A') it will be assigned
     // the result of variableB plus 1. Hence, the value should be 'C'.
-    auto variableC = std::make_shared <variable_declaration_expression> (std::make_shared <literal_expression> (std::make_shared <builtin_literal<char>> (c, 'A')));
+    auto variableC = std::make_shared <model::variable_declaration_expression> (std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal<char>> (c, 'A')));
     body->appendStatement (variableC);
-    auto variableCassignment = std::make_shared <variable_assignment_expression> (
+    auto variableCassignment = std::make_shared <model::variable_assignment_expression> (
         variableC,
-        std::make_shared <binary_operator_expression> (
+        std::make_shared <model::binary_operator_expression> (
             c,
-            binary_operator_expression::binary_operation::binary_plus_operation,
-            std::make_shared <variable_expression> (variableB),
-            std::make_shared <literal_expression> (std::make_shared <builtin_literal<char>> (c, static_cast <char> (1)))));
+            model::binary_operator_expression::binary_operation::binary_plus_operation,
+            std::make_shared <model::variable_expression> (variableB),
+            std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal<char>> (c, static_cast <char> (1)))));
     body->appendStatement (variableCassignment);
 
     // Now, return the value of variable "C", which should be 'C':
-    body->appendStatement (std::make_shared <return_statement> (std::make_shared <variable_expression> (variableC)));
+    body->appendStatement (std::make_shared <model::return_statement> (std::make_shared <model::variable_expression> (variableC)));
 
-    auto func = std::make_shared <function> (m, "test", c.sharedBasicType (type_class::t_char), body);
+    auto func = std::make_shared <model::function> (m, "test", c.sharedBasicType (model::type_class::t_char), body);
     m.addFunction (func);
 
     omni::tests::test_file_manager testFileManager;

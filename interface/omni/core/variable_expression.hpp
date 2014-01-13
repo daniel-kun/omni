@@ -8,6 +8,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
     class variable_declaration_expression;
 
     /**
@@ -29,6 +30,7 @@ namespace core {
         std::shared_ptr <variable_declaration_expression> _variable;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

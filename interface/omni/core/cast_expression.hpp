@@ -6,6 +6,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
 
 /**
 cast_expression is an abstract base class for different other, concrete casts.
@@ -14,7 +15,8 @@ Casts never change the item that is being casted, hence they are "pure".
 class OMNI_CORE_API cast_expression : public pure_expression {
 };
 
-}
-}
+} // namespace model
+} // namespace core
+} // namespace omni
 
 #endif // include guard

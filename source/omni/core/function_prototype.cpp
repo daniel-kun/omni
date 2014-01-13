@@ -14,10 +14,10 @@ in the same module or externally.
 @param returnType The return type of the function for this prototype.
 @param parameters An optional list of parameters that the function for this prototype receives.
 **/
-omni::core::function_prototype::function_prototype (module & module,
-                                                    std::string const & name,
-                                                    std::shared_ptr <type> returnType,
-                                                    std::vector <std::shared_ptr <omni::core::parameter>> parameters) :
+omni::core::model::function_prototype::function_prototype (module & module,
+                                                           std::string const & name,
+                                                           std::shared_ptr <type> returnType,
+                                                           std::vector <std::shared_ptr <omni::core::model::parameter>> parameters) :
     entity (name),
     _module (module),
     _returnType (returnType),
@@ -26,7 +26,7 @@ omni::core::function_prototype::function_prototype (module & module,
 {
 }
 
-omni::core::function_prototype::~function_prototype ()
+omni::core::model::function_prototype::~function_prototype ()
 {
 }
 
@@ -34,7 +34,7 @@ omni::core::function_prototype::~function_prototype ()
 /**
 Returns the module that this function is defined in.
 **/
-omni::core::module & omni::core::function_prototype::getModule ()
+omni::core::module & omni::core::model::function_prototype::getModule ()
 {
     return _module;
 }
@@ -42,7 +42,7 @@ omni::core::module & omni::core::function_prototype::getModule ()
 /**
 Returns the module that this function is defined in.
 **/
-const omni::core::module & omni::core::function_prototype::getModule () const
+const omni::core::module & omni::core::model::function_prototype::getModule () const
 {
     return _module;
 }
@@ -50,7 +50,7 @@ const omni::core::module & omni::core::function_prototype::getModule () const
 /**
 Returns the type that this function returns when it is called at runtime.
 **/
-const std::shared_ptr <omni::core::type> omni::core::function_prototype::getReturnType () const
+const std::shared_ptr <omni::core::model::type> omni::core::model::function_prototype::getReturnType () const
 {
     return _returnType;
 }
@@ -58,7 +58,7 @@ const std::shared_ptr <omni::core::type> omni::core::function_prototype::getRetu
 /**
 Returns the type that this function returns when it is called at runtime.
 **/
-std::shared_ptr <omni::core::type> omni::core::function_prototype::getReturnType ()
+std::shared_ptr <omni::core::model::type> omni::core::model::function_prototype::getReturnType ()
 {
     return _returnType;
 }
@@ -67,7 +67,7 @@ std::shared_ptr <omni::core::type> omni::core::function_prototype::getReturnType
 Adds a parameter at the end of the list of parameters that this function should take.
 @param parameters The parameter that should be added to the list of parameters for this function.
 **/
-void omni::core::function_prototype::addParameter (std::shared_ptr <omni::core::parameter> parameter)
+void omni::core::model::function_prototype::addParameter (std::shared_ptr <omni::core::model::parameter> parameter)
 {
     _parameters.push_back (parameter);
 }
@@ -76,7 +76,7 @@ void omni::core::function_prototype::addParameter (std::shared_ptr <omni::core::
 Sets the list of parameters that this function takes to the given parameters;
 @param parameters The list of parameters that this function should take.
 **/
-void omni::core::function_prototype::setParameters (std::vector <std::shared_ptr <omni::core::parameter>> parameters)
+void omni::core::model::function_prototype::setParameters (std::vector <std::shared_ptr <omni::core::model::parameter>> parameters)
 {
     _parameters = parameters;
 }
@@ -84,7 +84,7 @@ void omni::core::function_prototype::setParameters (std::vector <std::shared_ptr
 /**
 @return Returns the list of parameters that this function takes.
 **/
-std::vector <std::shared_ptr <omni::core::parameter>> omni::core::function_prototype::getParameters () const
+std::vector <std::shared_ptr <omni::core::model::parameter>> omni::core::model::function_prototype::getParameters () const
 {
     return _parameters;
 }
@@ -92,7 +92,7 @@ std::vector <std::shared_ptr <omni::core::parameter>> omni::core::function_proto
 /**
 Returns a FunctionType for a function with this function_prototype.
 **/
-llvm::FunctionType * omni::core::function_prototype::llvmFunctionType ()
+llvm::FunctionType * omni::core::model::function_prototype::llvmFunctionType ()
 {
     std::vector <llvm::Type *> params;
     for (auto p : _parameters) {

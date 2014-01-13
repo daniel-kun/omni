@@ -6,6 +6,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
 
     enum class type_class {
         t_void,
@@ -26,9 +27,10 @@ namespace core {
         t_enum
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 
-std::ostream & operator << (std::ostream & lhs, const omni::core::type_class rhs);
+std::ostream & operator << (std::ostream & lhs, const omni::core::model::type_class rhs);
 
 #endif // include guard

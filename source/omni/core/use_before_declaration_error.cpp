@@ -17,7 +17,7 @@ std::string buildUseBeforeDeclarationErrorMessage (omni::core::domain domain, st
 }
 }
 
-omni::core::use_before_declaration_error::use_before_declaration_error (domain domain, std::string const & identifier) :
+omni::core::model::use_before_declaration_error::use_before_declaration_error (domain domain, std::string const & identifier) :
     std::runtime_error (buildUseBeforeDeclarationErrorMessage (domain, identifier))
 {
 

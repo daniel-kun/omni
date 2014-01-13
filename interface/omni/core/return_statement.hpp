@@ -12,6 +12,7 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+namespace model {
     class expression;
 
     class OMNI_CORE_API return_statement : public statement {
@@ -24,6 +25,7 @@ namespace core {
         std::shared_ptr <expression> _expression;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

@@ -19,11 +19,18 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+namespace model {
     class function;
     class function_prototype;
     class type;
     class block;
     class entity;
+}
+}
+}
+
+namespace omni {
+namespace core {
     class module;
 
     /**
@@ -35,7 +42,7 @@ namespace core {
         context ();
         ~ context();
 
-        std::shared_ptr <type> sharedBasicType (type_class typeClass, int indirectionLevel = 0);
+        std::shared_ptr <model::type> sharedBasicType (model::type_class typeClass, int indirectionLevel = 0);
 
         void addModule (std::shared_ptr <module> module);
 
@@ -44,7 +51,7 @@ namespace core {
 
     private:
         std::unique_ptr <llvm::LLVMContext> _llvmContext;
-        std::map <std::pair <type_class, int>, std::shared_ptr <type>> _sharedBasicTypes;
+        std::map <std::pair <model::type_class, int>, std::shared_ptr <model::type>> _sharedBasicTypes;
         std::vector <std::shared_ptr <module>> _modules;
     };
 

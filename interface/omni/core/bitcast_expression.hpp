@@ -6,6 +6,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
 
 /**
 A bitcast_expression casts one type to another, where both types have the same bit width.
@@ -24,7 +25,9 @@ private:
     std::shared_ptr <expression> _sourceExpression;
     std::shared_ptr <type>       _targetType;
 };
-}
-}
+
+} // namespace model
+} // namespace core
+} // namespace omni
 
 #endif // include guard

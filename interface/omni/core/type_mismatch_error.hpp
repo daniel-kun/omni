@@ -11,6 +11,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
     class type;
 
     /**
@@ -23,6 +24,7 @@ namespace core {
         type_mismatch_error (type & leftType, type & rightType);
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

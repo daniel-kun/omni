@@ -13,9 +13,9 @@ Initializes this if_statement with the given condition and the given true- and e
 @param trueBlock The block that will be executed when the condition is true. The trueBlock must be provided.
 @param elseBlock The block that will be executed when the condition is false. The elseBlock is optional and can be nullptr.
 **/
-omni::core::if_statement::if_statement (std::shared_ptr <expression> condition,
-                                        std::shared_ptr <block> trueBlock,
-                                        std::shared_ptr <block> elseBlock) :
+omni::core::model::if_statement::if_statement (std::shared_ptr <expression> condition,
+                                               std::shared_ptr <block> trueBlock,
+                                               std::shared_ptr <block> elseBlock) :
     statement (),
     _condition (condition),
     _trueBlock (trueBlock),
@@ -26,7 +26,7 @@ omni::core::if_statement::if_statement (std::shared_ptr <expression> condition,
 /**
 @return Returns the condition depending on which either the trueBlock or the elseBlock will be excuted.
 **/
-std::shared_ptr <omni::core::expression> omni::core::if_statement::getCondition ()
+std::shared_ptr <omni::core::model::expression> omni::core::model::if_statement::getCondition ()
 {
     return _condition;
 }
@@ -34,7 +34,7 @@ std::shared_ptr <omni::core::expression> omni::core::if_statement::getCondition 
 /**
 @return Returns the condition depending on which either the trueBlock or the elseBlock will be excuted.
 **/
-const std::shared_ptr <omni::core::expression> omni::core::if_statement::getCondition () const
+const std::shared_ptr <omni::core::model::expression> omni::core::model::if_statement::getCondition () const
 {
     return _condition;
 }
@@ -42,7 +42,7 @@ const std::shared_ptr <omni::core::expression> omni::core::if_statement::getCond
 /**
 @return Returns the block that will be execute when the condition is true. Is never nullptr.
 **/
-std::shared_ptr <omni::core::block> omni::core::if_statement::getTrueBlock ()
+std::shared_ptr <omni::core::model::block> omni::core::model::if_statement::getTrueBlock ()
 {
     return _trueBlock;
 }
@@ -50,7 +50,7 @@ std::shared_ptr <omni::core::block> omni::core::if_statement::getTrueBlock ()
 /**
 @return Returns the block that will be execute when the condition is true. Is never nullptr.
 **/
-const std::shared_ptr <omni::core::block> omni::core::if_statement::getTrueBlock () const
+const std::shared_ptr <omni::core::model::block> omni::core::model::if_statement::getTrueBlock () const
 {
     return _trueBlock;
 }
@@ -58,7 +58,7 @@ const std::shared_ptr <omni::core::block> omni::core::if_statement::getTrueBlock
 /**
 @return Returns the block that will be execute when the condition is false. Can be nullptr.
 **/
-std::shared_ptr <omni::core::block> omni::core::if_statement::getElseBlock ()
+std::shared_ptr <omni::core::model::block> omni::core::model::if_statement::getElseBlock ()
 {
     return _elseBlock;
 }
@@ -66,7 +66,7 @@ std::shared_ptr <omni::core::block> omni::core::if_statement::getElseBlock ()
 /**
 @return Returns the block that will be execute when the condition is false. Can be nullptr.
 **/
-const std::shared_ptr <omni::core::block> omni::core::if_statement::getElseBlock () const
+const std::shared_ptr <omni::core::model::block> omni::core::model::if_statement::getElseBlock () const
 {
     return _elseBlock;
 }
@@ -74,7 +74,7 @@ const std::shared_ptr <omni::core::block> omni::core::if_statement::getElseBlock
 /**
 @internal
 **/
-omni::core::statement_emit_result omni::core::if_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::model::if_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::BasicBlock * llvmTrueBlock = _trueBlock->llvmEmit (llvmBasicBlock).getContinueBlock ();
     llvm::BasicBlock * llvmFalseBlock = nullptr;

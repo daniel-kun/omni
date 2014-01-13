@@ -8,6 +8,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
     class literal;
 
     /**
@@ -25,6 +26,7 @@ namespace core {
         std::shared_ptr <literal> _literal;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

@@ -13,6 +13,7 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+namespace model {
 
     class OMNI_CORE_API type : public entity, public boost::noncopyable {
     public:
@@ -32,6 +33,7 @@ namespace core {
         unsigned int _indirectionLevel;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

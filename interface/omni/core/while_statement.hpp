@@ -8,6 +8,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
     class block;
     class expression;
 
@@ -30,7 +31,8 @@ namespace core {
         std::shared_ptr <expression> _condition;
         std::shared_ptr <block> _body;
     };
-    
+
+} // namespace model
 } // namespace core
 } // namespace omni
 

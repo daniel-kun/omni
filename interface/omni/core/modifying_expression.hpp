@@ -6,6 +6,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
 
     /**
     An modifying_expression is an expression that does modify at least one of it's operands or has side-effects.
@@ -16,6 +17,7 @@ namespace core {
     public:
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

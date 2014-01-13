@@ -6,8 +6,14 @@
 
 namespace omni {
 namespace core {
-    class type;
     class module;
+}
+}
+
+namespace omni {
+namespace core {
+namespace model {
+    class type;
 
     /**
     An external_function is defined in another module and does not contain a body and therefore no definition.
@@ -18,8 +24,8 @@ namespace core {
         external_function (module & module,
                            std::string libraryName,
                            std::string functionName,
-                           std::shared_ptr <omni::core::type> returnType,
-                           std::vector <std::shared_ptr <omni::core::parameter>> parameters = std::vector <std::shared_ptr <omni::core::parameter>> (),
+                           std::shared_ptr <type> returnType,
+                           std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> (),
                            bool isDllImport = false);
 
         std::string getLibraryName () const;
@@ -33,6 +39,7 @@ namespace core {
         bool        _isDllImport;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

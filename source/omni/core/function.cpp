@@ -19,11 +19,11 @@ Initializes a function implementation with the given name, returnType, body and 
 @param body The body (implementation) of this function.
 @param isExported Specifies, whether this function is visible from outside the module it is defined in. @see isExported().
 **/
-omni::core::function::function (module & module,
-                                std::string const & name,
-                                std::shared_ptr <type> returnType,
-                                std::shared_ptr <block> body,
-                                bool isExported) :
+omni::core::model::function::function (module & module,
+                                       std::string const & name,
+                                       std::shared_ptr <type> returnType,
+                                       std::shared_ptr <block> body,
+                                       bool isExported) :
     function_prototype (module, name, returnType),
     _module (module),
     _body (body),
@@ -36,7 +36,7 @@ Returns true, if this function is exported from the module it is defined in. Dep
 has different meanings.
 If isExported () returns false, the function is only locally visible in the module it is defined in.
 **/
-bool omni::core::function::isExported () const
+bool omni::core::model::function::isExported () const
 {
     return _isExported;
 }
@@ -44,7 +44,7 @@ bool omni::core::function::isExported () const
 /**
 Returns the body of this function in a const form.
 **/
-const std::shared_ptr <omni::core::block> omni::core::function::getBody () const
+const std::shared_ptr <omni::core::model::block> omni::core::model::function::getBody () const
 {
     return _body;
 }
@@ -52,16 +52,16 @@ const std::shared_ptr <omni::core::block> omni::core::function::getBody () const
 /**
 Returns the body of this function in a modifyable form.
 **/
-std::shared_ptr <omni::core::block> omni::core::function::getBody ()
+std::shared_ptr <omni::core::model::block> omni::core::model::function::getBody ()
 {
     return _body;
 }
 
 
-llvm::Function * omni::core::function::llvmFunction ()
+llvm::Function * omni::core::model::function::llvmFunction ()
 {
     if (getContext () == nullptr) {
-        throw no_context_error (omni::core::domain::function, getName ());
+        throw no_context_error (domain::function, getName ());
     }
     if (_llvmFunction != nullptr) {
         return _llvmFunction;

@@ -28,7 +28,7 @@ Initializes this type with the given type_class and indirectionLevel.
 @param indirectionLevel The level of pointer-indirection. This is only for internal usage and for representing types imported from external C code. 
 The Omni Language itself does not use types with an indiretionLevel > 0. Instead, "optionals" and "references" are used.
 **/
-omni::core::type::type (context & context, omni::core::type_class typeClass, unsigned int indirectionLevel) :
+omni::core::model::type::type (context & context, omni::core::model::type_class typeClass, unsigned int indirectionLevel) :
     _typeClass (typeClass),
     _indirectionLevel (indirectionLevel)
 {
@@ -38,7 +38,7 @@ omni::core::type::type (context & context, omni::core::type_class typeClass, uns
     setContext (& context);
 }
 
-omni::core::type::~ type ()
+omni::core::model::type::~ type ()
 {
 }
 
@@ -47,13 +47,13 @@ Returns a shared_ptr for a instance of type for the desired context and type_cla
 Short-hand for creating a type with new type(context, typeClass, indirectionLevel); with the additional benefit that types are cached in the context.
 @see context::sharedBasicType(type_class);
 **/
-std::shared_ptr <omni::core::type> omni::core::type::sharedBasicType (context & context, type_class typeClass, unsigned int indirectionLevel)
+std::shared_ptr <omni::core::model::type> omni::core::model::type::sharedBasicType (context & context, type_class typeClass, unsigned int indirectionLevel)
 {
     return context.sharedBasicType (typeClass, indirectionLevel);
 }
 
 
-llvm::Type * omni::core::type::llvmType ()
+llvm::Type * omni::core::model::type::llvmType ()
 {
     switch (_typeClass) {
     case type_class::t_void:
@@ -89,7 +89,7 @@ llvm::Type * omni::core::type::llvmType ()
 /**
 Returns the type_class of this type.
 **/
-omni::core::type_class omni::core::type::getTypeClass () const
+omni::core::model::type_class omni::core::model::type::getTypeClass () const
 {
     return _typeClass;
 }
@@ -98,7 +98,7 @@ omni::core::type_class omni::core::type::getTypeClass () const
 Returns the pointer indirection-level of this type.
 E.g. when the type_class is t_signedInt and the indirectionLevel is 2, the underlying C-type would be "int**".
 **/
-unsigned int omni::core::type::getIndirectionLevel () const
+unsigned int omni::core::model::type::getIndirectionLevel () const
 {
     return _indirectionLevel;
 }

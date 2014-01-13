@@ -11,6 +11,12 @@
 namespace omni {
 namespace core {
     class context;
+}
+}
+
+namespace omni {
+namespace core {
+namespace model {
 
     /**
     Base class for all information that is part of a context, such as variable declarations.
@@ -40,6 +46,7 @@ namespace core {
         id _id;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

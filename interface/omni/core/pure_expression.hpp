@@ -6,6 +6,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
 
     /**
     An pure_expression is an expression that does not modify it's operands and does not have side-effects.
@@ -16,6 +17,7 @@ namespace core {
     public:
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

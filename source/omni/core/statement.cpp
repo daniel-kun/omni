@@ -1,5 +1,5 @@
 #include <omni/core/statement.hpp>
 
-omni::core::statement::~statement ()
+omni::core::model::statement::~statement ()
 {
 }

@@ -13,6 +13,7 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+namespace model {
     class type;
 
     /**
@@ -25,6 +26,7 @@ namespace core {
         virtual std::shared_ptr <type> getType () const = 0;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

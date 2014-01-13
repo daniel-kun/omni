@@ -8,6 +8,7 @@
 
 namespace omni {
 namespace core {
+namespace model {
     class block;
     class expression;
 
@@ -23,6 +24,7 @@ namespace core {
     private:
     };
     
+} // namespace model
 } // namespace core
 } // namespace omni
 

@@ -12,7 +12,7 @@
 Initializes this variable_declaration_expression with the type variableType. The variable will be initialized with the default value of that type.
 @param variableType The type of the variable.
 **/
-omni::core::variable_declaration_expression::variable_declaration_expression (std::shared_ptr <omni::core::type> variableType) :
+omni::core::model::variable_declaration_expression::variable_declaration_expression (std::shared_ptr <type> variableType) :
     _type (variableType),
     _initializationExpression (),
     _llvmPointerValue (nullptr)
@@ -22,9 +22,9 @@ omni::core::variable_declaration_expression::variable_declaration_expression (st
 /**
 Initializes this variable_declaration_expression with the type of initializationExpression. The variable will be initialized with the result of initializationExpression.
 @param initializationExpression The expression that this variable's type will be deduced from and with which result this variable will be initialized with.
-May not be nullptr. Use the ctor that takes a omni::core::type when you want to create a variable_declaration_expression that is initialized with the default value of the corresponding type.
+May not be nullptr. Use the ctor that takes a omni::core::model::type when you want to create a variable_declaration_expression that is initialized with the default value of the corresponding type.
 **/
-omni::core::variable_declaration_expression::variable_declaration_expression (std::shared_ptr <omni::core::expression> initializationExpression) :
+omni::core::model::variable_declaration_expression::variable_declaration_expression (std::shared_ptr <expression> initializationExpression) :
     _type (initializationExpression->getType ()),
     _initializationExpression (initializationExpression),
     _llvmPointerValue (nullptr)
@@ -34,7 +34,7 @@ omni::core::variable_declaration_expression::variable_declaration_expression (st
 /**
 Returns the type of this variable_declaration_expression.
 **/
-std::shared_ptr <omni::core::type> omni::core::variable_declaration_expression::getType () const
+std::shared_ptr <omni::core::model::type> omni::core::model::variable_declaration_expression::getType () const
 {
     return _type;
 }
@@ -42,7 +42,7 @@ std::shared_ptr <omni::core::type> omni::core::variable_declaration_expression::
 /**
 Returns the expression that this variable will be initialized with. Can be nullptr.
 **/
-std::shared_ptr <omni::core::expression> omni::core::variable_declaration_expression::getInitializationExpression () const
+std::shared_ptr <omni::core::model::expression> omni::core::model::variable_declaration_expression::getInitializationExpression () const
 {
     return _initializationExpression;
 }
@@ -50,12 +50,12 @@ std::shared_ptr <omni::core::expression> omni::core::variable_declaration_expres
 /**
 Internal
 **/
-llvm::Value * omni::core::variable_declaration_expression::llvmPointerValue ()
+llvm::Value * omni::core::model::variable_declaration_expression::llvmPointerValue ()
 {
     return _llvmPointerValue;
 }
 
-omni::core::statement_emit_result omni::core::variable_declaration_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::model::variable_declaration_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     _llvmPointerValue = builder.CreateAlloca (_type->llvmType ());

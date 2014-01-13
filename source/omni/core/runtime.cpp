@@ -20,18 +20,18 @@ omni::core::runtime::runtime (module & module) :
 /**
 Returns an external_function describing the Omni Runtime function void * omni_runtime_memory_allocate(std::size_t sizeInBytes).
 **/
-std::shared_ptr <omni::core::external_function> omni::core::runtime::getMemoryAllocate ()
+std::shared_ptr <omni::core::model::external_function> omni::core::runtime::getMemoryAllocate ()
 {
     if (_memoryAllocate == nullptr) {
         context & c (_module.getContext ());
         _memoryAllocate.reset (
-            new external_function (
+            new model::external_function (
                 _module,
                 "omni-runtime.lib",
                 "omni_runtime_memory_allocate",
-                c.sharedBasicType (type_class::t_unsignedByte, 1),
-                std::vector <std::shared_ptr <parameter>> {
-                    static_cast <std::shared_ptr <parameter>> (new parameter (c.sharedBasicType (type_class::t_unsignedInt), "sizeInBytes"))
+                c.sharedBasicType (model::type_class::t_unsignedByte, 1),
+                std::vector <std::shared_ptr <model::parameter>> {
+                    static_cast <std::shared_ptr <model::parameter>> (new model::parameter (c.sharedBasicType (model::type_class::t_unsignedInt), "sizeInBytes"))
                 }));
         _module.addFunction (_memoryAllocate);
     }
@@ -41,18 +41,18 @@ std::shared_ptr <omni::core::external_function> omni::core::runtime::getMemoryAl
 /**
 Returns an external_function describing the Omni Runtime function void * omni_runtime_add_allocate(void * memory).
 **/
-std::shared_ptr <omni::core::external_function> omni::core::runtime::getMemoryAddReference ()
+std::shared_ptr <omni::core::model::external_function> omni::core::runtime::getMemoryAddReference ()
 {
     if (_memoryAddReference == nullptr) {
         context & c (_module.getContext ());
         _memoryAddReference.reset (
-            new external_function (
+            new model::external_function (
                 _module,
                 "omni-runtime.lib",
                 "omni_runtime_memory_add_reference",
-                c.sharedBasicType (type_class::t_unsignedByte, 1),
-                std::vector <std::shared_ptr <parameter>> {
-                    static_cast <std::shared_ptr <parameter>> (new parameter (c.sharedBasicType (type_class::t_unsignedByte, 1), "memory"))
+                c.sharedBasicType (model::type_class::t_unsignedByte, 1),
+                std::vector <std::shared_ptr <model::parameter>> {
+                    static_cast <std::shared_ptr <model::parameter>> (new model::parameter (c.sharedBasicType (model::type_class::t_unsignedByte, 1), "memory"))
                 }));
         _module.addFunction (_memoryAddReference);
     }
@@ -62,18 +62,18 @@ std::shared_ptr <omni::core::external_function> omni::core::runtime::getMemoryAd
 /**
 Returns an external_function describing the Omni Runtime function void * omni_runtime_add_allocate(void * memory).
 **/
-std::shared_ptr <omni::core::external_function> omni::core::runtime::getMemoryRemoveReference ()
+std::shared_ptr <omni::core::model::external_function> omni::core::runtime::getMemoryRemoveReference ()
 {
     if (_memoryRemoveReference == nullptr) {
         context & c (_module.getContext ());
         _memoryRemoveReference.reset (
-            new external_function (
+            new model::external_function (
                 _module,
                 "omni-runtime.lib",
                 "omni_runtime_memory_remove_reference",
-                c.sharedBasicType (type_class::t_unsignedByte, 1),
-                std::vector <std::shared_ptr <parameter>> {
-                    static_cast <std::shared_ptr <parameter>> (new parameter (c.sharedBasicType (type_class::t_unsignedByte, 1), "memory"))
+                c.sharedBasicType (model::type_class::t_unsignedByte, 1),
+                std::vector <std::shared_ptr <model::parameter>> {
+                    static_cast <std::shared_ptr <model::parameter>> (new model::parameter (c.sharedBasicType (model::type_class::t_unsignedByte, 1), "memory"))
                 }));
         _module.addFunction (_memoryRemoveReference);
     }

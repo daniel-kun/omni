@@ -9,6 +9,12 @@
 namespace omni {
 namespace core {
     class module;
+}
+}
+
+namespace omni {
+namespace core {
+namespace model {
 
     /**
     An object of type 'function' defines a function. In contrast to a function_prototype or an external_function, a 'function' includes the definition of the
@@ -32,6 +38,7 @@ namespace core {
         bool _isExported;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

@@ -12,6 +12,7 @@ namespace llvm {
 
 namespace omni {
 namespace core {
+namespace model {
 
     /**
     A statement can be anything that is being executed in a block.
@@ -26,6 +27,7 @@ namespace core {
         virtual statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) = 0;
     };
 
+} // namespace model
 } // namespace core
 } // namespace omni
 

@@ -6,12 +6,12 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/Support/NoFolder.h>
 
-omni::core::do_while_statement::do_while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body) :
+omni::core::model::do_while_statement::do_while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body) :
     while_statement (condition, body)
 {
 }
 
-omni::core::statement_emit_result omni::core::do_while_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
+omni::core::statement_emit_result omni::core::model::do_while_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::BasicBlock * whileBlock = getBody ()->llvmEmit (llvmBasicBlock).getContinueBlock ();
     llvm::BasicBlock * continueBlock = llvm::BasicBlock::Create (llvmBasicBlock->getContext (), "", llvmBasicBlock->getParent ());

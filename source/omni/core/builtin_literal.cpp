@@ -55,8 +55,8 @@ template <> class value_provider <unsigned long long> : public unsigned_provider
 Initializes this builtin_literal in the given context with the provided value.
 **/
 template <typename T>
-omni::core::builtin_literal <T>::builtin_literal (context & context, T value) :
-    literal (type::sharedBasicType (context, omni::core::native_type_to_type_class <T>::typeClass)),
+omni::core::model::builtin_literal <T>::builtin_literal (context & context, T value) :
+    literal (type::sharedBasicType (context, native_type_to_type_class <T>::typeClass)),
     _value (value)
 {
 }
@@ -65,7 +65,7 @@ omni::core::builtin_literal <T>::builtin_literal (context & context, T value) :
 Internal
 **/
 template <typename T>
-llvm::Value * omni::core::builtin_literal <T>::llvmValue ()
+llvm::Value * omni::core::model::builtin_literal <T>::llvmValue ()
 {
     if (native_type_to_type_class<T>::typeClass != getType ()->getTypeClass ()) {
         throw type_mismatch_error (* getType ()->getContext ()->sharedBasicType (native_type_to_type_class<T>::typeClass), * getType ());
@@ -73,15 +73,15 @@ llvm::Value * omni::core::builtin_literal <T>::llvmValue ()
     return value_provider <T>::provideValue (getType ()->llvmType (), _value);
 }
 
-template omni::core::builtin_literal <bool>;
-template omni::core::builtin_literal <char>;
-template omni::core::builtin_literal <signed char>;
-template omni::core::builtin_literal <unsigned char>;
-template omni::core::builtin_literal <signed short>;
-template omni::core::builtin_literal <unsigned short>;
-template omni::core::builtin_literal <signed int>;
-template omni::core::builtin_literal <unsigned int>;
-template omni::core::builtin_literal <signed long>;
-template omni::core::builtin_literal <unsigned long>;
-template omni::core::builtin_literal <signed long long>;
-template omni::core::builtin_literal <unsigned long long>;
+template omni::core::model::builtin_literal <bool>;
+template omni::core::model::builtin_literal <char>;
+template omni::core::model::builtin_literal <signed char>;
+template omni::core::model::builtin_literal <unsigned char>;
+template omni::core::model::builtin_literal <signed short>;
+template omni::core::model::builtin_literal <unsigned short>;
+template omni::core::model::builtin_literal <signed int>;
+template omni::core::model::builtin_literal <unsigned int>;
+template omni::core::model::builtin_literal <signed long>;
+template omni::core::model::builtin_literal <unsigned long>;
+template omni::core::model::builtin_literal <signed long long>;
+template omni::core::model::builtin_literal <unsigned long long>;

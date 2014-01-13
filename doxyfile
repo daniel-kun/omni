@@ -806,7 +806,20 @@ EXCLUDE_PATTERNS       =
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories use the pattern */test/*
 
-EXCLUDE_SYMBOLS        = 
+EXCLUDE_SYMBOLS        = "native_type_to_type_class< void >" \
+                         "native_type_to_type_class< bool >" \
+                         "native_type_to_type_class< unsigned char >" \
+                         "native_type_to_type_class< signed char >" \
+                         "native_type_to_type_class< unsigned short >" \
+                         "native_type_to_type_class< signed short >" \
+                         "native_type_to_type_class< unsigned int >" \
+                         "native_type_to_type_class< signed int >" \
+                         "native_type_to_type_class< unsigned long >	" \
+                         "native_type_to_type_class< signed long >" \
+                         "native_type_to_type_class< unsigned long long >" \
+                         "native_type_to_type_class< signed long long >" \
+                         "native_type_to_type_class< char >" \
+                         "native_type_to_type_class< std::string >"
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include

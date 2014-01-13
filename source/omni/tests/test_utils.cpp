@@ -13,7 +13,7 @@ function `func'. That way, it does not matter whether func is external or not.
 Main automatically has the same return type as func. func and main may not take parameters.
 @return The path of the created shared library file.
 **/
-boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_ptr <omni::core::function> func,
+boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_ptr <omni::core::model::function> func,
                                                                     omni::tests::test_file_manager & testFileManager,
                                                                     std::string const & fileBaseName,
                                                                     std::string & functionName)
@@ -21,16 +21,16 @@ boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_
     static unsigned int counter = 0;
     using namespace omni::core;
     // First, add a function that calls the wanted function.
-    std::shared_ptr <type> returnType  (func->getReturnType ());
-    std::shared_ptr <block> body (new block ());
-    std::shared_ptr <expression> callExpression (new function_call_expression (func));
-    std::shared_ptr <statement> returnStatement (new return_statement (callExpression));
+    std::shared_ptr <model::type> returnType  (func->getReturnType ());
+    std::shared_ptr <model::block> body (new model::block ());
+    std::shared_ptr <model::expression> callExpression (new model::function_call_expression (func));
+    std::shared_ptr <model::statement> returnStatement (new model::return_statement (callExpression));
     body->appendStatement (returnStatement);
     std::stringstream functionNameBuilder;
     functionNameBuilder << "main" << (++ counter);
     functionName = functionNameBuilder.str ();
     module & mod (func->getModule ());
-    std::shared_ptr <function> caller (new function (mod, functionName, returnType, body, true));
+    std::shared_ptr <model::function> caller (new model::function (mod, functionName, returnType, body, true));
     mod.addFunction (caller);
     boost::filesystem::path sharedLibraryName = testFileManager.getTestFileName (fileBaseName + ".dll");
     boost::filesystem::path assemblyFileName = testFileManager.getTestFileName (fileBaseName + ".ll");
