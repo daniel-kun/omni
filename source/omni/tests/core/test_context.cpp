@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(createId)
 }
 
 /**
-Tests that a function can be created using createFunction and later be found via findFunctionByName and findPartById.
+Tests that a function can be created using createFunction and later be found via findFunctionByName and findEntityById.
 **/
 BOOST_AUTO_TEST_CASE (createAndFindFunction)
 {
@@ -67,13 +67,13 @@ BOOST_AUTO_TEST_CASE (createAndFindFunction)
     BOOST_CHECK (mod.findFunctionByName (functionName) != nullptr);
     BOOST_CHECK (mod.findFunctionByName (functionName)->getName () == functionName);
 
-    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <model::entity> ());
-    BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.findPartById (func->getId ()))->getName () == functionName);
+    BOOST_CHECK (mod.findEntityById (func->getId ()) != std::shared_ptr <model::entity> ());
+    BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.findEntityById (func->getId ()))->getName () == functionName);
 
 }
 
 /**
-Tests that a manually created function can be added using addFunction and later be found via findFunctionByName and findPartById.
+Tests that a manually created function can be added using addFunction and later be found via findFunctionByName and findEntityById.
 **/
 BOOST_AUTO_TEST_CASE (addAndFindFunction)
 {
@@ -102,8 +102,8 @@ BOOST_AUTO_TEST_CASE (addAndFindFunction)
     BOOST_CHECK (mod.findFunctionByName (functionName) != nullptr);
     BOOST_CHECK (mod.findFunctionByName (functionName)->getName () == functionName);
 
-    BOOST_CHECK (mod.findPartById (func->getId ()) != std::shared_ptr <model::entity> ());
-    BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.findPartById (func->getId ()))->getName () == functionName);
+    BOOST_CHECK (mod.findEntityById (func->getId ()) != std::shared_ptr <model::entity> ());
+    BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.findEntityById (func->getId ()))->getName () == functionName);
 }
 
 /**

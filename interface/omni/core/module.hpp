@@ -42,7 +42,7 @@ namespace core {
         context & getContext ();
         const context & getContext () const;
 
-        std::shared_ptr <model::entity> findPartById (id id);
+        std::shared_ptr <model::entity> findEntityById (id id);
 
         id createId (domain domain);
         void setEntryPoint (std::shared_ptr <model::function> function);
@@ -69,15 +69,15 @@ namespace core {
         llvm::Module & llvmModule ();
 
     private:
-        typedef std::map <std::string, std::shared_ptr <model::entity>> id_to_parts_map;
-        typedef std::map <domain, id_to_parts_map> domain_id_to_parts_map;
+        typedef std::map <std::string, std::shared_ptr <model::entity>> id_to_entities_map;
+        typedef std::map <domain, id_to_entities_map> domain_id_to_entities_map;
 
         std::shared_ptr <llvm::Module> _llvmModule;
         context & _context;
         id _id;
         std::string _name;
         std::shared_ptr <model::function> _entryPoint;
-        domain_id_to_parts_map _parts;
+        domain_id_to_entities_map _entities;
     };
 }
 }

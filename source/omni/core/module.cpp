@@ -55,7 +55,7 @@ omni::core::module::module (omni::core::context & context, std::string name) :
     _id (),
     _name (name),
     _entryPoint (),
-    _parts ()
+    _entities ()
 {
 }
 
@@ -68,7 +68,7 @@ omni::core::module::module (context & context, id moduleId, std::string name) :
     _id (moduleId),
     _name (name),
     _entryPoint (),
-    _parts ()
+    _entities ()
 {
 }
 
@@ -89,15 +89,15 @@ const omni::core::context & omni::core::module::getContext () const
 }
 
 /**
-Finds any part of this context by it's unique id. The part has to be added to this context before it can be found.
-This happens when the part is created using one of the create...-functions or the part has been added via one of the add...-functions.
-@param id The id of the part that should be returned. This should not be an invalid id.
-@return The part with the id, if such has been added to the context. A null-shared_ptr is returned, if no such part exists in this context.
+Finds any entity of this scope by it's unique id. The entity has to be added to this context before it can be found.
+This happens when the entity is created using one of the create...-functions or the entity has been added via one of the add...-functions.
+@param id The id of the entity that should be returned. This should not be an invalid id.
+@return The entity with the id, if such has been added to the context. A null-shared_ptr is returned, if no such entity exists in this scope.
 **/
-std::shared_ptr <omni::core::model::entity> omni::core::module::findPartById (omni::core::id id)
+std::shared_ptr <omni::core::model::entity> omni::core::module::findEntityById (omni::core::id id)
 {
-    id_to_parts_map & m (_parts [id.getDomain ()]);
-    id_to_parts_map::iterator i = m.find (id.getId ());
+    id_to_entities_map & m (_entities [id.getDomain ()]);
+    id_to_entities_map::iterator i = m.find (id.getId ());
     if (i != m.end ()) {
         return i->second;
     } else {
@@ -108,7 +108,7 @@ std::shared_ptr <omni::core::model::entity> omni::core::module::findPartById (om
 /**
 Create a new, unique id for the domain `domain'.
 @param domain The domain that the id should be valid for.
-@return A new, unique id that can be used to identify newly created parts for this context.
+@return A new, unique id that can be used to identify newly created entities for this context.
 **/
 omni::core::id omni::core::module::createId (omni::core::domain domain)
 {         
@@ -121,7 +121,7 @@ omni::core::id omni::core::module::createId (omni::core::domain domain)
         str << ++ counter;
         //strId = boost::lexical_cast <std::string> (uuid);
         strId = str.str ();
-    } while (findPartById (id (domain, strId)).get () != nullptr);
+    } while (findEntityById (id (domain, strId)).get () != nullptr);
     return id (domain, strId);
 }
 
@@ -156,19 +156,19 @@ void omni::core::module::addFunction (std::shared_ptr <model::function_prototype
     function->setContext (& _context);
     id newFunctionId = createId (domain::function);
     function->setId (newFunctionId);
-    id_to_parts_map & functionMap (_parts [domain::function]);
+    id_to_entities_map & functionMap (_entities [domain::function]);
     functionMap [newFunctionId.getId ()] = function;
 }
 
 /**
-Returns the function with the name `name', if such a function is part of this context.
-Only functions that were created using createFunction or were added via addFunction are part of this context.
+Returns the function with the name `name', if such a function exists in this scope.
+Only functions that were created using createFunction or were added via addFunction are part of this scope.
 @param The name of the function that should be returned. Should not be empty.
 @return The function with the name `name' that has previously been added to this context.
 **/
 std::shared_ptr <omni::core::model::function_prototype> omni::core::module::findFunctionByName (std::string const & name)
 {
-    id_to_parts_map & functionMap (_parts [domain::function]);
+    id_to_entities_map & functionMap (_entities [domain::function]);
     auto found = std::find_if (functionMap.begin (), functionMap.end (), [name] (std::pair <std::string, std::shared_ptr <model::entity>> f) -> bool {
         return f.second->getName () == name;
     });
@@ -183,11 +183,11 @@ std::shared_ptr <omni::core::model::function_prototype> omni::core::module::find
 Removes the function `function' from this context. This only has an effect if `function' was previously added to this context by creating it using
 createFunction or adding it via addFunction.
 @param function The function to be removed from this context.
-@return true, if `function' was part of this context and has been removed. false, if `function' was not found.
+@return true, if `function' was part of this scope and has been removed. false, if `function' was not found.
 **/
 bool omni::core::module::removeFunction (std::shared_ptr <model::function_prototype> function)
 {
-    id_to_parts_map & functionMap (_parts [domain::function]);
+    id_to_entities_map & functionMap (_entities [domain::function]);
     auto found = std::find_if (functionMap.begin (), functionMap.end (), [function] (std::pair <std::string, std::shared_ptr <model::entity>> f) -> bool {
         return f.second == function;
     });
@@ -201,9 +201,8 @@ bool omni::core::module::removeFunction (std::shared_ptr <model::function_protot
 }
 
 /**
-Sets the entry point for this context.
+Sets the entry point for this module.
 Not implemented yet.
-TODO - this should be part of a module, not the whole context.
 **/
 void omni::core::module::setEntryPoint (std::shared_ptr <model::function> function)
 {
@@ -244,7 +243,7 @@ void omni::core::module::emitAssemblyFile (llvm::raw_ostream & stream, const mod
 {
     llvm::Module & m (llvmModule ());
     
-    for (auto f : _parts [domain::function]) {
+    for (auto f : _entities [domain::function]) {
         model::function_prototype & func = * std::dynamic_pointer_cast <model::function_prototype> (f.second);
         func.llvmFunction ();
     }
@@ -280,7 +279,7 @@ void omni::core::module::emitObjectFile (llvm::raw_ostream & stream, const modul
     
     addDllMainIfMissing (_context, m);
     
-    for (auto f : _parts [domain::function]) {
+    for (auto f : _entities [domain::function]) {
         model::function_prototype & func = * std::dynamic_pointer_cast <model::function_prototype> (f.second);
         func.llvmFunction ();
     }
@@ -344,7 +343,7 @@ void omni::core::module::emitSharedLibraryFile (std::string const & fileName, co
     }
     std::set <std::string> additionalLibraries;
     additionalLibraries.insert ("LIBCMT.LIB");
-    for (auto i : _parts) {
+    for (auto i : _entities) {
         for (auto p : i.second) {
             p.second->fillLibraries (additionalLibraries);
         }
@@ -386,7 +385,7 @@ bool omni::core::module::verify (std::string & errorInfo)
     llvm::Module & m (llvmModule ());
 
     try {
-        for (auto f : _parts[domain::function]) {
+        for (auto f : _entities[domain::function]) {
             model::function_prototype & func = *std::dynamic_pointer_cast <model::function_prototype> (f.second);
             func.llvmFunction ();
         }
