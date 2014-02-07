@@ -51,9 +51,6 @@
     <ClInclude Include="..\interface\omni\core\module.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="..\interface\omni\core\use_before_declaration_error.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="..\interface\omni\core\no_context_error.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -155,6 +152,48 @@
     </ClInclude>
     <ClInclude Include="..\interface\omni\core\model\while_statement.hpp">
       <Filter>Headerdateien\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\syntax_element.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\abstract_syntax_element.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\concrete_syntax_element.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\template_element.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\fixed_template_element.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\variable_template_element.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\regex_template_element.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\repeater_template_element.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\template_variables.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\input_state.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\syntax_template_element.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\syntax_suggestion.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\model\scope.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\variable_template_provider.hpp">
+      <Filter>Headerdateien\input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +319,42 @@
     </ClCompile>
     <ClCompile Include="..\source\omni\core\model\use_before_declaration_error.cpp">
       <Filter>Quelldateien\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\abstract_syntax_element.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\concrete_syntax_element.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\fixed_template_element.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\regex_template_element.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\repeater_template_element.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\syntax_element.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\template_element.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\variable_template_element.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\input_state.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\syntax_suggestion.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\syntax_template_element.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\model\scope.cpp">
+      <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

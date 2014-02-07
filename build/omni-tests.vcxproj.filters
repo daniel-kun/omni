@@ -22,6 +22,9 @@
     <Filter Include="Quelldateien\core\model">
       <UniqueIdentifier>{c42e624b-505f-4f46-8ffe-2426ef8e112b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\core\input">
+      <UniqueIdentifier>{11542258-1660-4342-afac-4ced090a7343}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\tests\test_file_manager.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="..\source\omni\tests\core\model\test_while_statement.cpp">
       <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\input\test_input_state.cpp">
+      <Filter>Quelldateien\core\input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

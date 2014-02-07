@@ -51,6 +51,19 @@
     <ClInclude Include="..\interface\omni\core\domain.hpp" />
     <ClInclude Include="..\interface\omni\core\context.hpp" />
     <ClInclude Include="..\interface\omni\core\id.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\abstract_syntax_element.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\concrete_syntax_element.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\fixed_template_element.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\input_state.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\syntax_suggestion.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\regex_template_element.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\repeater_template_element.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\syntax_element.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\syntax_template_element.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\template_element.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\template_variables.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\variable_template_element.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\variable_template_provider.hpp" />
     <ClInclude Include="..\interface\omni\core\logic_error.hpp" />
     <ClInclude Include="..\interface\omni\core\model\binary_operator_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\model\bitcast_expression.hpp" />
@@ -72,6 +85,7 @@
     <ClInclude Include="..\interface\omni\core\model\parameter.hpp" />
     <ClInclude Include="..\interface\omni\core\model\pure_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\model\return_statement.hpp" />
+    <ClInclude Include="..\interface\omni\core\model\scope.hpp" />
     <ClInclude Include="..\interface\omni\core\model\statement.hpp" />
     <ClInclude Include="..\interface\omni\core\model\type.hpp" />
     <ClInclude Include="..\interface\omni\core\model\type_class.hpp" />
@@ -88,7 +102,6 @@
     <ClInclude Include="..\interface\omni\core\runtime.hpp" />
     <ClInclude Include="..\interface\omni\core\core.hpp" />
     <ClInclude Include="..\interface\omni\core\statement_emit_result.hpp" />
-    <ClInclude Include="..\interface\omni\core\use_before_declaration_error.hpp" />
     <ClInclude Include="..\interface\omni\core\verification_failed_error.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +109,17 @@
     <ClCompile Include="..\source\omni\core\context.cpp" />
     <ClCompile Include="..\source\omni\core\domain.cpp" />
     <ClCompile Include="..\source\omni\core\id.cpp" />
+    <ClCompile Include="..\source\omni\core\input\abstract_syntax_element.cpp" />
+    <ClCompile Include="..\source\omni\core\input\concrete_syntax_element.cpp" />
+    <ClCompile Include="..\source\omni\core\input\fixed_template_element.cpp" />
+    <ClCompile Include="..\source\omni\core\input\input_state.cpp" />
+    <ClCompile Include="..\source\omni\core\input\syntax_suggestion.cpp" />
+    <ClCompile Include="..\source\omni\core\input\regex_template_element.cpp" />
+    <ClCompile Include="..\source\omni\core\input\repeater_template_element.cpp" />
+    <ClCompile Include="..\source\omni\core\input\syntax_element.cpp" />
+    <ClCompile Include="..\source\omni\core\input\syntax_template_element.cpp" />
+    <ClCompile Include="..\source\omni\core\input\template_element.cpp" />
+    <ClCompile Include="..\source\omni\core\input\variable_template_element.cpp" />
     <ClCompile Include="..\source\omni\core\logic_error.cpp" />
     <ClCompile Include="..\source\omni\core\model\binary_operator_expression.cpp" />
     <ClCompile Include="..\source\omni\core\model\bitcast_expression.cpp" />
@@ -117,6 +141,7 @@
     <ClCompile Include="..\source\omni\core\model\parameter.cpp" />
     <ClCompile Include="..\source\omni\core\model\pure_expression.cpp" />
     <ClCompile Include="..\source\omni\core\model\return_statement.cpp" />
+    <ClCompile Include="..\source\omni\core\model\scope.cpp" />
     <ClCompile Include="..\source\omni\core\model\statement.cpp" />
     <ClCompile Include="..\source\omni\core\model\type.cpp" />
     <ClCompile Include="..\source\omni\core\model\type_class.cpp" />
