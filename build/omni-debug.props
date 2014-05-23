@@ -4,7 +4,7 @@
     <Import Project="boost.props" />
     <Import Project="omni-base.props" />
     <Import Project="omni-lib.props" />
-    <Import Project="clang.props" />
+    <Import Project="llvm.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
@@ -23,9 +23,9 @@
       <AssemblyDebug>true</AssemblyDebug>
     </Link>
     <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <DisableSpecificWarnings>4350;4571;4623;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />

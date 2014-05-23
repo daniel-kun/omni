@@ -66,6 +66,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\tests\core\input\test_input_state.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\input\test_syntax_tree_parser_xml.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_binary_operator_expression.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_block.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_external_function.cpp" />

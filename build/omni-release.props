@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets">
     <Import Project="omni-base.props" />
     <Import Project="boost.props" />
-    <Import Project="clang.props" />
     <Import Project="omni-lib.props" />
+    <Import Project="llvm.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />

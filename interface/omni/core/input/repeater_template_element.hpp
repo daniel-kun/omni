@@ -15,6 +15,8 @@ namespace input {
 class OMNI_CORE_API repeater_template_element : public template_element {
 public:
     repeater_template_element (std::shared_ptr <template_element> elementToBeRepeated);
+
+    void visit (template_visitor & visitor) override;
 };
 
 } // namespace input

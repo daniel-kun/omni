@@ -17,6 +17,8 @@
 
 #include <boost/test/unit_test.hpp>
 
+
+#if 0
 BOOST_AUTO_TEST_SUITE (inputStateTests)
 
 BOOST_AUTO_TEST_CASE (basic)
@@ -130,7 +132,7 @@ BOOST_AUTO_TEST_CASE (basic)
             input::syntax_element * elem = suggestion.syntaxElement;
             std::size_t templateIndex = suggestion.templateIndex;
             suggestionStack.push (std::make_pair (elem, templateIndex));
-            if (std::shared_ptr <input::template_element> templateElement = elem->templatElementAt (suggestion.templateIndex)) {
+            if (std::shared_ptr <input::template_element> templateElement = elem->templateElementAt (suggestion.templateIndex)) {
                 if (std::shared_ptr <input::syntax_element> syntaxElement = templateElement->dive ()) {
                     // We can do .get () here, because templateElement will live long enough for elem to stay:
                     suggestionStack.push (std::make_pair (syntaxElement.get (), 0u));
@@ -144,3 +146,5 @@ BOOST_AUTO_TEST_CASE (basic)
 }
 
 BOOST_AUTO_TEST_SUITE_END ()
+
+#endif

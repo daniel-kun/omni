@@ -72,6 +72,9 @@
     <ClCompile Include="..\source\omni\tests\core\input\test_input_state.cpp">
       <Filter>Quelldateien\core\input</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\input\test_syntax_tree_parser_xml.cpp">
+      <Filter>Quelldateien\core\input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />

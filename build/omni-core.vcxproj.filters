@@ -25,6 +25,9 @@
     <Filter Include="Quelldateien\input">
       <UniqueIdentifier>{5b87f2de-3b47-4242-945e-b2cfe51d421d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{bb903489-f6c8-4ea9-8f17-8881c0b548b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\interface\omni\core\already_exists_error.hpp">
@@ -195,6 +198,12 @@
     <ClInclude Include="..\interface\omni\core\input\variable_template_provider.hpp">
       <Filter>Headerdateien\input</Filter>
     </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\template_visitor.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\input\syntax_tree_parser_xml.hpp">
+      <Filter>Headerdateien\input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\core\already_exists_error.cpp">
@@ -356,5 +365,16 @@
     <ClCompile Include="..\source\omni\core\model\scope.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\template_visitor.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\input\syntax_tree_parser_xml.cpp">
+      <Filter>Quelldateien\input</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\resources\syntax.xml">
+      <Filter>resources</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

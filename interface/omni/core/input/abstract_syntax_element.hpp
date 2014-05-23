@@ -16,7 +16,8 @@ namespace input {
 **/
 class OMNI_CORE_API abstract_syntax_element : public syntax_element {
 public:
-    abstract_syntax_element (std::vector <std::shared_ptr <syntax_element>> possibleSubstitutions = std::vector <std::shared_ptr <syntax_element>> ());
+    abstract_syntax_element ();
+    abstract_syntax_element (std::vector <std::shared_ptr <syntax_element>> possibleSubstitutions);
 
     std::vector <syntax_suggestion> suggest (std::string input, std::size_t templatePosition) override;
 

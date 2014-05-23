@@ -68,14 +68,17 @@ llvm::Function * omni::core::model::function::llvmFunction ()
     } else {
         llvm::FunctionType * funcType = llvmFunctionType ();
 
-        llvm::GlobalValue::LinkageTypes linkageType;
+        llvm::Function::LinkageTypes linkageType;
         if (isExported ()) {
             // TODO: Handle static and dynamic libraries differently - if omni will have static libraries, that is.
-            linkageType = llvm::GlobalValue::DLLExportLinkage;
+            linkageType = llvm::Function::ExternalLinkage;
         } else {
-            linkageType = llvm::GlobalValue::InternalLinkage;
+            linkageType = llvm::Function::InternalLinkage;
         }
         _llvmFunction = llvm::Function::Create (funcType, linkageType, getName (), & getModule ().llvmModule ());
+        if (isExported ()) {
+            _llvmFunction->setDLLStorageClass (llvm::GlobalValue::DLLExportStorageClass);
+        }
 
         auto mainBlock = llvm::BasicBlock::Create (getContext ()->llvmContext (), "__entry__", _llvmFunction);
         _body->llvmEmitIntoExistingBlock (mainBlock);

@@ -36,7 +36,7 @@ boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_
     boost::filesystem::path assemblyFileName = testFileManager.getTestFileName (fileBaseName + ".ll");
     mod.emitAssemblyFile (assemblyFileName.string ());
     module_emit_options options;
-    options.addLibrarySearchPath (boost::filesystem::initial_path () /= "bin");
+    options.addLibrarySearchPath ((boost::filesystem::initial_path ().parent_path () /= "build") /= "bin");
     mod.emitSharedLibraryFile (sharedLibraryName.string (), options);
 
 //    BOOST_CHECK (boost::filesystem::exists(sharedLibraryName));

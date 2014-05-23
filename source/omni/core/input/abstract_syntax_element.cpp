@@ -1,5 +1,10 @@
 #include <omni/core/input/abstract_syntax_element.hpp>
 
+omni::core::input::abstract_syntax_element::abstract_syntax_element () :
+    _possibleSubstitutions ()
+{
+}
+
 omni::core::input::abstract_syntax_element::abstract_syntax_element (std::vector <std::shared_ptr <omni::core::input::syntax_element>> possibleSubstitutions) :
     _possibleSubstitutions (possibleSubstitutions)
 {

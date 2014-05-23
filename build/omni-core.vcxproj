@@ -41,6 +41,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile />
     <Link />
+    <ClCompile />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile />
@@ -60,8 +61,10 @@
     <ClInclude Include="..\interface\omni\core\input\repeater_template_element.hpp" />
     <ClInclude Include="..\interface\omni\core\input\syntax_element.hpp" />
     <ClInclude Include="..\interface\omni\core\input\syntax_template_element.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\syntax_tree_parser_xml.hpp" />
     <ClInclude Include="..\interface\omni\core\input\template_element.hpp" />
     <ClInclude Include="..\interface\omni\core\input\template_variables.hpp" />
+    <ClInclude Include="..\interface\omni\core\input\template_visitor.hpp" />
     <ClInclude Include="..\interface\omni\core\input\variable_template_element.hpp" />
     <ClInclude Include="..\interface\omni\core\input\variable_template_provider.hpp" />
     <ClInclude Include="..\interface\omni\core\logic_error.hpp" />
@@ -118,7 +121,9 @@
     <ClCompile Include="..\source\omni\core\input\repeater_template_element.cpp" />
     <ClCompile Include="..\source\omni\core\input\syntax_element.cpp" />
     <ClCompile Include="..\source\omni\core\input\syntax_template_element.cpp" />
+    <ClCompile Include="..\source\omni\core\input\syntax_tree_parser_xml.cpp" />
     <ClCompile Include="..\source\omni\core\input\template_element.cpp" />
+    <ClCompile Include="..\source\omni\core\input\template_visitor.cpp" />
     <ClCompile Include="..\source\omni\core\input\variable_template_element.cpp" />
     <ClCompile Include="..\source\omni\core\logic_error.cpp" />
     <ClCompile Include="..\source\omni\core\model\binary_operator_expression.cpp" />
@@ -158,6 +163,9 @@
     <ClCompile Include="..\source\omni\core\runtime.cpp" />
     <ClCompile Include="..\source\omni\core\statement_emit_result.cpp" />
     <ClCompile Include="..\source\omni\core\verification_failed_eror.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\resources\syntax.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

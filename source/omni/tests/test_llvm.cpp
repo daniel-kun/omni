@@ -2,8 +2,6 @@
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Function.h>
 #include <llvm/PassManager.h>
-#include <llvm/Assembly/PrintModulePass.h>
-#include <llvm/Analysis/Verifier.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/FormattedStream.h>
 #include <llvm/Support/TargetRegistry.h>
@@ -17,28 +15,11 @@
 #include <llvm/IR/CallingConv.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Module.h>
-#include <llvm/Support/NoFolder.h>
+#include <llvm/IR/NoFolder.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/FormattedStream.h>
 
 #include <boost/test/unit_test.hpp>
-
-namespace {
-    void addDllMain (llvm::LLVMContext & c, llvm::Module & module)
-    {
-        llvm::Type * i32ptr = llvm::Type::getInt32PtrTy (c);
-        llvm::Type * i32 = llvm::Type::getInt32Ty (c);
-        llvm::Type * i8 = llvm::Type::getInt8Ty (c);
-
-        std::vector <llvm::Type *> params = { i32ptr, i32, i32ptr };
-        llvm::FunctionType * ft = llvm::FunctionType::get (i8, params, false);
-        llvm::Function * func = llvm::Function::Create (ft, llvm::GlobalValue::DLLExportLinkage, "DllMain", & module);
-        func->setCallingConv(llvm::CallingConv::X86_StdCall);
-        llvm::BasicBlock * body = llvm::BasicBlock::Create (c, "__entry__", func);
-        llvm::IRBuilder <> builder (body);
-        builder.CreateRet (llvm::ConstantInt::get (i8, 1));
-    }
-}
 
 BOOST_AUTO_TEST_SUITE (llvmTests)
 

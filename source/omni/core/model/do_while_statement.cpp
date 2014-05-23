@@ -4,7 +4,7 @@
 
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/IRBuilder.h>
-#include <llvm/Support/NoFolder.h>
+#include <llvm/IR/NoFolder.h>
 
 omni::core::model::do_while_statement::do_while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body) :
     while_statement (condition, body)

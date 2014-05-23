@@ -23,6 +23,8 @@ public:
 
     std::shared_ptr <syntax_element> getSyntaxElement () const;
 
+    void visit (template_visitor & visitor) override;
+
 private:
     std::shared_ptr <syntax_element> _target;
 };

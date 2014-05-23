@@ -5,7 +5,7 @@
 
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/IRBuilder.h>
-#include <llvm/Support/NoFolder.h>
+#include <llvm/IR/NoFolder.h>
 
 /**
 Initializes this if_statement with the given condition and the given true- and elseBlocks.

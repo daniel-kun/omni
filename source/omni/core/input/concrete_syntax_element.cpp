@@ -7,7 +7,7 @@ omni::core::input::concrete_syntax_element::concrete_syntax_element (int indenta
 {
 }
 
-std::shared_ptr <omni::core::input::template_element> omni::core::input::concrete_syntax_element::templatElementAt (std::size_t templatePosition)
+std::shared_ptr <omni::core::input::template_element> omni::core::input::concrete_syntax_element::templateElementAt (std::size_t templatePosition)
 {
     return _templates [templatePosition];
 }

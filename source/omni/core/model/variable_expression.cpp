@@ -5,7 +5,7 @@
 #include <omni/core/domain.hpp>
 
 #include <llvm/IR/IRBuilder.h>
-#include <llvm/Support/NoFolder.h>
+#include <llvm/IR/NoFolder.h>
 
 /**
 Initializes this expression to return variable's at the time this expression is executed.

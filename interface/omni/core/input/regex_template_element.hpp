@@ -15,6 +15,8 @@ namespace input {
 class OMNI_CORE_API regex_template_element : public template_element {
 public:
     regex_template_element (std::string regex);
+
+    void visit (template_visitor & visitor) override;
 };
 
 } // namespace input

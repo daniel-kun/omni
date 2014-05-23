@@ -46,14 +46,14 @@ bool omni::core::model::external_function::isDllImport () const
 llvm::Function * omni::core::model::external_function::llvmFunction ()
 {
     if (_llvmFunction == nullptr) {
-        llvm::FunctionType * funcType = llvmFunctionType ();
-        llvm::GlobalValue::LinkageTypes linkageType;
+        _llvmFunction = llvm::Function::Create (
+            llvmFunctionType (),
+            llvm::Function::ExternalLinkage,
+            getName (),
+            & getModule ().llvmModule ());
         if (_isDllImport) {
-            linkageType = llvm::GlobalValue::DLLImportLinkage;
-        } else {
-            linkageType = llvm::GlobalValue::ExternalLinkage;
+            _llvmFunction->setDLLStorageClass (llvm::GlobalValue::DLLImportStorageClass);
         }
-        _llvmFunction = llvm::Function::Create (funcType, linkageType, getName (), & getModule ().llvmModule ());
     }
     assert (_llvmFunction != nullptr);
     return _llvmFunction;

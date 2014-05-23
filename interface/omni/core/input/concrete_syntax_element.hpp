@@ -18,7 +18,7 @@ class OMNI_CORE_API concrete_syntax_element : public syntax_element {
 public:
     concrete_syntax_element (int indentationModifier = 0);
 
-    std::shared_ptr <template_element> templatElementAt (std::size_t templatePosition) override;
+    std::shared_ptr <template_element> templateElementAt (std::size_t templatePosition) override;
     std::size_t templateElementCount () const override;
 
     void setTemplates (std::vector <std::shared_ptr <template_element>> templates);

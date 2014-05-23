@@ -21,6 +21,8 @@ public:
 
     std::vector <std::string> suggest (std::string input) override;
 
+    void visit (template_visitor & visitor) override;
+
 private:
     variable_template_provider & _provider;
 };

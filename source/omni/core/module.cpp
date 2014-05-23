@@ -12,10 +12,11 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/Support/TargetRegistry.h>
 #include <llvm/PassManager.h>
-#include <llvm/Assembly/PrintModulePass.h>
-#include <llvm/Analysis/Verifier.h>
+#include <llvm/IR/IRPrintingPasses.h>
+#include <llvm/IR/Verifier.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Support/FormattedStream.h>
+#include <llvm/Support/FileSystem.h>
 #include <llvm/Support/TargetSelect.h>
 #include <llvm/Target/TargetMachine.h>
 #include <llvm/Target/TargetOptions.h>
@@ -38,7 +39,8 @@ namespace {
 
         std::vector <llvm::Type *> params = { i32ptr, i32, i32ptr };
         llvm::FunctionType * ft = llvm::FunctionType::get (i8, params, false);
-        llvm::Function * func = llvm::Function::Create (ft, llvm::GlobalValue::DLLExportLinkage, "DllMain", & module);
+        llvm::Function * func = llvm::Function::Create (ft, llvm::Function::ExternalLinkage, "DllMain", & module);
+        func->setDLLStorageClass (llvm::GlobalValue::DLLExportStorageClass);
         func->setCallingConv(llvm::CallingConv::X86_StdCall);
         llvm::BasicBlock * body = llvm::BasicBlock::Create (c.llvmContext (), "__entry__", func);
         llvm::IRBuilder <> builder (body);
@@ -217,7 +219,7 @@ Emits llvm IR language code to the file at path fileName.
 void omni::core::module::emitAssemblyFile (std::string const & fileName, const module_emit_options & options)
 {
     std::string errorInfo;
-    llvm::raw_fd_ostream fileStream (fileName.c_str (), errorInfo);
+    llvm::raw_fd_ostream fileStream (fileName.c_str (), errorInfo, llvm::sys::fs::F_None);
     emitAssemblyFile (fileStream, options);
 }
 
@@ -248,10 +250,10 @@ void omni::core::module::emitAssemblyFile (llvm::raw_ostream & stream, const mod
         func.llvmFunction ();
     }
 
-    llvm::verifyModule (m, llvm::PrintMessageAction);
+    llvm::verifyModule(m, & llvm::outs ());
 
     llvm::PassManager pm;
-    pm.add (llvm::createPrintModulePass (& stream));
+    pm.add (llvm::createPrintModulePass (stream));
     pm.run (m);
 }
 
@@ -285,7 +287,7 @@ void omni::core::module::emitObjectFile (llvm::raw_ostream & stream, const modul
     }
 
     std::string errorInfo;
-    if (llvm::verifyModule (m, llvm::PrintMessageAction, & errorInfo)) {
+    if (llvm::verifyModule(m, & llvm::outs ())) {
         // TODO: Create a special error class for this:
         throw verification_failed_error (_name, errorInfo);
     }
@@ -316,7 +318,7 @@ Emits a native object file (e.g. .obj on win32) to the file `fileName'.
 void omni::core::module::emitObjectFile (std::string const & fileName, const module_emit_options & options)
 {
     std::string errorInfo;
-    llvm::raw_fd_ostream rawStream (fileName.c_str (), errorInfo);
+    llvm::raw_fd_ostream rawStream (fileName.c_str (), errorInfo, llvm::sys::fs::F_None);
     emitObjectFile (rawStream, options);
 }
 
@@ -369,7 +371,7 @@ void omni::core::module::emitSharedLibraryFile (std::string const & fileName, co
     int errorCode = std::system (command.c_str ());
 
     if (errorCode != 0) {
-        throw std::runtime_error ((boost::format ("Linking the object file %1% failed.") % objectFilePath).str ().c_str ());
+        throw std::runtime_error ((boost::format ("Linking the object file %1% failed with command %2%.") % objectFilePath % command).str ().c_str ());
     }
     boost::system::error_code ignored;
     boost::filesystem::remove (objectFilePath, ignored); // ignores failures on purpose
@@ -395,7 +397,7 @@ bool omni::core::module::verify (std::string & errorInfo)
         return false;
     }
 
-    return !llvm::verifyModule(m, llvm::PrintMessageAction, &errorInfo);
+    return !llvm::verifyModule(m, & llvm::outs ());
 }
 
 /**

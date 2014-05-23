@@ -16,7 +16,11 @@ class OMNI_CORE_API fixed_template_element : public template_element {
 public:
     fixed_template_element (syntax_element & parent, std::size_t templateIndex, std::string text);
 
+    std::string getText () const;
+
     std::vector <std::string> suggest (std::string input) override;
+
+    void visit (template_visitor & visitor) override;
     
 private:
     std::string _text;

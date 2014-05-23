@@ -10,6 +10,7 @@
 namespace omni {
 namespace core {
 namespace input {
+class template_visitor;
 
 /**
 **/
@@ -22,6 +23,8 @@ public:
     virtual std::vector <std::string> suggest (std::string input) = 0;
 
     virtual std::shared_ptr <syntax_element> dive ();
+
+    virtual void visit (template_visitor & visitor) = 0;
 
 protected:
     syntax_element & _parent;
