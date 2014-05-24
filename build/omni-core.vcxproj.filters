@@ -192,9 +192,6 @@
     <ClInclude Include="..\interface\omni\core\input\syntax_suggestion.hpp">
       <Filter>Headerdateien\input</Filter>
     </ClInclude>
-    <ClInclude Include="..\interface\omni\core\model\scope.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="..\interface\omni\core\input\variable_template_provider.hpp">
       <Filter>Headerdateien\input</Filter>
     </ClInclude>
@@ -361,9 +358,6 @@
     </ClCompile>
     <ClCompile Include="..\source\omni\core\input\syntax_template_element.cpp">
       <Filter>Quelldateien\input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\source\omni\core\model\scope.cpp">
-      <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="..\source\omni\core\input\template_visitor.cpp">
       <Filter>Quelldateien\input</Filter>
