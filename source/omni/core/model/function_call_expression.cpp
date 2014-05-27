@@ -9,7 +9,8 @@
 /**
 Initializes this function call expression without any function to call.
 **/
-omni::core::model::function_call_expression::function_call_expression () :
+omni::core::model::function_call_expression::function_call_expression (omni::core::model::scope & parent) :
+    modifying_expression (parent),
     _function (),
     _parameters ()
 {
@@ -18,13 +19,15 @@ omni::core::model::function_call_expression::function_call_expression () :
 /**
 Initializes this function call expression to call the function `func'.
 **/
-omni::core::model::function_call_expression::function_call_expression (std::shared_ptr <function_prototype> func) :
+omni::core::model::function_call_expression::function_call_expression (omni::core::model::scope & parent, std::shared_ptr <function_prototype> func) :
+    modifying_expression (parent),
     _function (func),
     _parameters ()
 {
 }
 
-omni::core::model::function_call_expression::function_call_expression (std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters) :
+omni::core::model::function_call_expression::function_call_expression (omni::core::model::scope & parent, std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters) :
+    modifying_expression (parent),
     _function  (func),
     _parameters (parameters)
 {

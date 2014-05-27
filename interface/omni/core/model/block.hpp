@@ -25,6 +25,8 @@ namespace model {
     public:
         typedef std::vector <std::shared_ptr <statement>> statement_list;
 
+        block (scope & parent);
+
         const statement_list getStatements () const;
         statement_list::iterator findStatement (std::shared_ptr <statement> statement);
 

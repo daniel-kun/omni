@@ -8,7 +8,8 @@
 Initializes this bitcast_expression to convert the result of sourceExpression to the targetType. sourceExpression->getType ()'s bidwidth
 must be of the same bit-width as targetType.
 **/
-omni::core::model::bitcast_expression::bitcast_expression (std::shared_ptr <expression> sourceExpression, std::shared_ptr <type> targetType) :
+omni::core::model::bitcast_expression::bitcast_expression (omni::core::model::scope & parent, std::shared_ptr <expression> sourceExpression, std::shared_ptr <type> targetType) :
+    cast_expression (parent),
     _sourceExpression (sourceExpression),
     _targetType (targetType)
 {

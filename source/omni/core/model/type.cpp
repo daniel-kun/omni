@@ -28,18 +28,40 @@ Initializes this type with the given type_class and indirectionLevel.
 @param indirectionLevel The level of pointer-indirection. This is only for internal usage and for representing types imported from external C code. 
 The Omni Language itself does not use types with an indiretionLevel > 0. Instead, "optionals" and "references" are used.
 **/
-omni::core::model::type::type (context & context, omni::core::model::type_class typeClass, unsigned int indirectionLevel) :
+omni::core::model::type::type (omni::core::context & context, omni::core::model::type_class typeClass, unsigned int indirectionLevel) :
+    entity (nullptr),
+    _context (context),
     _typeClass (typeClass),
     _indirectionLevel (indirectionLevel)
 {
     std::stringstream typeName;
     typeName << typeClass;
     setName (typeName.str ());
-    setContext (& context);
 }
 
 omni::core::model::type::~ type ()
 {
+}
+
+
+omni::core::context * omni::core::model::type::getContext ()
+{
+    return & _context;
+}
+
+const omni::core::context * omni::core::model::type::getContext () const
+{
+    return & _context;
+}
+
+omni::core::model::module * omni::core::model::type::getModule ()
+{
+    return nullptr;
+}
+
+const omni::core::model::module * omni::core::model::type::getModule () const
+{
+    return nullptr;
 }
 
 /**

@@ -17,13 +17,15 @@ namespace model {
     **/
     class OMNI_CORE_API while_statement : public statement {
     public:
-        while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body);
+        while_statement (scope & parent);
 
         std::shared_ptr <expression> getCondition ();
         const std::shared_ptr <expression> getCondition () const;
+        void setCondition (std::shared_ptr <expression> condition);
 
         std::shared_ptr <block> getBody ();
         const std::shared_ptr <block> getBody () const;
+        void setBody (std::shared_ptr <block> body);
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 

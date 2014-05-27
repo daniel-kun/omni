@@ -1,6 +1,6 @@
 #include <omni/core/model/if_statement.hpp>
 #include <omni/core/context.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/literal_expression.hpp>
 #include <omni/core/model/builtin_literal.hpp>
 #include <omni/core/model/return_statement.hpp>

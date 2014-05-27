@@ -9,24 +9,12 @@
 #include <llvm/IR/NoFolder.h>
 
 /**
-Initializes this variable_declaration_expression with the type variableType. The variable will be initialized with the default value of that type.
 @param variableType The type of the variable.
 **/
-omni::core::model::variable_declaration_expression::variable_declaration_expression (std::shared_ptr <type> variableType) :
-    _type (variableType),
+omni::core::model::variable_declaration_expression::variable_declaration_expression (omni::core::model::scope & parent) :
+    pure_expression (parent),
+    _type (),
     _initializationExpression (),
-    _llvmPointerValue (nullptr)
-{
-}
-
-/**
-Initializes this variable_declaration_expression with the type of initializationExpression. The variable will be initialized with the result of initializationExpression.
-@param initializationExpression The expression that this variable's type will be deduced from and with which result this variable will be initialized with.
-May not be nullptr. Use the ctor that takes a omni::core::model::type when you want to create a variable_declaration_expression that is initialized with the default value of the corresponding type.
-**/
-omni::core::model::variable_declaration_expression::variable_declaration_expression (std::shared_ptr <expression> initializationExpression) :
-    _type (initializationExpression->getType ()),
-    _initializationExpression (initializationExpression),
     _llvmPointerValue (nullptr)
 {
 }
@@ -40,11 +28,29 @@ std::shared_ptr <omni::core::model::type> omni::core::model::variable_declaratio
 }
 
 /**
+Changes the type of this variable to `type' and sets the initializer to nullptr.
+**/
+void omni::core::model::variable_declaration_expression::setType (std::shared_ptr <omni::core::model::type> type)
+{
+    _type = type;
+    _initializationExpression.reset ();
+}
+
+/**
 Returns the expression that this variable will be initialized with. Can be nullptr.
 **/
 std::shared_ptr <omni::core::model::expression> omni::core::model::variable_declaration_expression::getInitializationExpression () const
 {
     return _initializationExpression;
+}
+
+/**
+Sets the initialization-expression of this varibale to `initializer' and changes this variable's type to the type of the expression.
+**/
+void omni::core::model::variable_declaration_expression::setInitializationExpression (std::shared_ptr <omni::core::model::expression> initializer)
+{
+    _initializationExpression = initializer;
+    _type = initializer->getType ();
 }
 
 /**

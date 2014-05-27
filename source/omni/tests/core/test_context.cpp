@@ -1,5 +1,5 @@
 #include <omni/core/context.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/model/type.hpp>
 #include <omni/core/model/function.hpp>
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(createId)
 {
     using namespace omni::core;
     context c;
-    module mod (c, "test");
+    model::module mod (c, "test");
     std::set <id> ids;
     for (domain d = domain::first; d < domain::last; d = static_cast <domain> (static_cast <int> (d) + 1)) {
         for (int i = 0; i < 20; ++ i) {

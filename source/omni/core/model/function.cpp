@@ -1,6 +1,6 @@
 #include <omni/core/model/function.hpp>
 #include <omni/core/context.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/type.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/model/statement.hpp>
@@ -19,13 +19,12 @@ Initializes a function implementation with the given name, returnType, body and 
 @param body The body (implementation) of this function.
 @param isExported Specifies, whether this function is visible from outside the module it is defined in. @see isExported().
 **/
-omni::core::model::function::function (module & module,
+omni::core::model::function::function (omni::core::model::scope & parent,
                                        std::string const & name,
                                        std::shared_ptr <type> returnType,
                                        std::shared_ptr <block> body,
                                        bool isExported) :
-    function_prototype (module, name, returnType),
-    _module (module),
+    function_prototype (parent, name, returnType),
     _body (body),
     _isExported (isExported)
 {
@@ -75,7 +74,7 @@ llvm::Function * omni::core::model::function::llvmFunction ()
         } else {
             linkageType = llvm::Function::InternalLinkage;
         }
-        _llvmFunction = llvm::Function::Create (funcType, linkageType, getName (), & getModule ().llvmModule ());
+        _llvmFunction = llvm::Function::Create (funcType, linkageType, getName (), & getModule ()->llvmModule ());
         if (isExported ()) {
             _llvmFunction->setDLLStorageClass (llvm::GlobalValue::DLLExportStorageClass);
         }

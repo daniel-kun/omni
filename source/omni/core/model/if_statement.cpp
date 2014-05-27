@@ -13,10 +13,11 @@ Initializes this if_statement with the given condition and the given true- and e
 @param trueBlock The block that will be executed when the condition is true. The trueBlock must be provided.
 @param elseBlock The block that will be executed when the condition is false. The elseBlock is optional and can be nullptr.
 **/
-omni::core::model::if_statement::if_statement (std::shared_ptr <expression> condition,
+omni::core::model::if_statement::if_statement (omni::core::model::scope & parent,
+                                               std::shared_ptr <expression> condition,
                                                std::shared_ptr <block> trueBlock,
                                                std::shared_ptr <block> elseBlock) :
-    statement (),
+    statement (parent),
     _condition (condition),
     _trueBlock (trueBlock),
     _elseBlock (elseBlock)

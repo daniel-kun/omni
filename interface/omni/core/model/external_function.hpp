@@ -6,13 +6,8 @@
 
 namespace omni {
 namespace core {
-    class module;
-}
-}
-
-namespace omni {
-namespace core {
 namespace model {
+    class module;
     class type;
 
     /**
@@ -21,7 +16,7 @@ namespace model {
     **/
     class OMNI_CORE_API external_function : public function_prototype {
     public:
-        external_function (module & module,
+        external_function (scope & parent,
                            std::string libraryName,
                            std::string functionName,
                            std::shared_ptr <type> returnType,

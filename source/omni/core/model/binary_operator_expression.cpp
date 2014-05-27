@@ -13,10 +13,11 @@ Initializes this binary_operator_expression with the binary_operation op and the
 @param leftOperand The left operand of this operation. E.g. in "5 + 7", this is "5".
 @param rightOperand The right operand of this operation. E.g. in "5 / 7", this is "7".
 **/
-omni::core::model::binary_operator_expression::binary_operator_expression (context & context,
+omni::core::model::binary_operator_expression::binary_operator_expression (omni::core::model::scope & parent,
                                                                            binary_operation op,
                                                                            std::shared_ptr <expression> leftOperand,
                                                                            std::shared_ptr <expression> rightOperand) :
+    pure_expression (parent),
     _type (),
     _operator (op),
     _leftOperand (leftOperand),
@@ -27,7 +28,7 @@ omni::core::model::binary_operator_expression::binary_operator_expression (conte
     }
     switch (_operator) {
     case binary_operation::binary_lessthan_operation:
-        _type = context.sharedBasicType (type_class::t_boolean);
+        _type = getContext ()->sharedBasicType (type_class::t_boolean);
         break;
     case binary_operation::binary_minus_operation:
     case binary_operation::binary_plus_operation:

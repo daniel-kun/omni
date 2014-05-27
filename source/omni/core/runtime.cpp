@@ -1,6 +1,6 @@
 #include <omni/core/runtime.hpp>
 #include <omni/core/context.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/type.hpp>
 #include <omni/core/model/type_class.hpp>
 #include <omni/core/model/parameter.hpp>
@@ -9,7 +9,7 @@
 /**
 Initializes this runtime for the given module.
 **/
-omni::core::runtime::runtime (module & module) :
+omni::core::runtime::runtime (omni::core::model::module & module) :
     _module (module),
     _memoryAllocate (),
     _memoryAddReference (),
@@ -23,16 +23,17 @@ Returns an external_function describing the Omni Runtime function void * omni_ru
 std::shared_ptr <omni::core::model::external_function> omni::core::runtime::getMemoryAllocate ()
 {
     if (_memoryAllocate == nullptr) {
-        context & c (_module.getContext ());
+        context & c (* _module.getContext ());
         _memoryAllocate.reset (
             new model::external_function (
                 _module,
                 "omni-runtime.lib",
                 "omni_runtime_memory_allocate",
-                c.sharedBasicType (model::type_class::t_unsignedByte, 1),
-                std::vector <std::shared_ptr <model::parameter>> {
-                    static_cast <std::shared_ptr <model::parameter>> (new model::parameter (c.sharedBasicType (model::type_class::t_unsignedInt), "sizeInBytes"))
-                }));
+                c.sharedBasicType (model::type_class::t_unsignedByte, 1)));
+        _memoryAllocate->setParameters (
+            std::vector <std::shared_ptr <model::parameter>> {
+                static_cast <std::shared_ptr <model::parameter>> (new model::parameter (* _memoryAllocate, c.sharedBasicType (model::type_class::t_unsignedInt), "sizeInBytes"))
+            });
         _module.addFunction (_memoryAllocate);
     }
     return _memoryAllocate;
@@ -44,16 +45,17 @@ Returns an external_function describing the Omni Runtime function void * omni_ru
 std::shared_ptr <omni::core::model::external_function> omni::core::runtime::getMemoryAddReference ()
 {
     if (_memoryAddReference == nullptr) {
-        context & c (_module.getContext ());
+        context & c (* _module.getContext ());
         _memoryAddReference.reset (
             new model::external_function (
                 _module,
                 "omni-runtime.lib",
                 "omni_runtime_memory_add_reference",
-                c.sharedBasicType (model::type_class::t_unsignedByte, 1),
-                std::vector <std::shared_ptr <model::parameter>> {
-                    static_cast <std::shared_ptr <model::parameter>> (new model::parameter (c.sharedBasicType (model::type_class::t_unsignedByte, 1), "memory"))
-                }));
+                c.sharedBasicType (model::type_class::t_unsignedByte, 1)));
+        _memoryAddReference->setParameters (
+            std::vector <std::shared_ptr <model::parameter>> {
+                static_cast <std::shared_ptr <model::parameter>> (new model::parameter (* _memoryAddReference, c.sharedBasicType (model::type_class::t_unsignedByte, 1), "memory"))
+            });
         _module.addFunction (_memoryAddReference);
     }
     return _memoryAddReference;
@@ -65,16 +67,17 @@ Returns an external_function describing the Omni Runtime function void * omni_ru
 std::shared_ptr <omni::core::model::external_function> omni::core::runtime::getMemoryRemoveReference ()
 {
     if (_memoryRemoveReference == nullptr) {
-        context & c (_module.getContext ());
+        context & c (* _module.getContext ());
         _memoryRemoveReference.reset (
             new model::external_function (
                 _module,
                 "omni-runtime.lib",
                 "omni_runtime_memory_remove_reference",
-                c.sharedBasicType (model::type_class::t_unsignedByte, 1),
-                std::vector <std::shared_ptr <model::parameter>> {
-                    static_cast <std::shared_ptr <model::parameter>> (new model::parameter (c.sharedBasicType (model::type_class::t_unsignedByte, 1), "memory"))
-                }));
+                c.sharedBasicType (model::type_class::t_unsignedByte, 1)));
+        _memoryRemoveReference->setParameters (
+            std::vector <std::shared_ptr <model::parameter>> {
+                static_cast <std::shared_ptr <model::parameter>> (new model::parameter (* _memoryRemoveReference, c.sharedBasicType (model::type_class::t_unsignedByte, 1), "memory"))
+            });
         _module.addFunction (_memoryRemoveReference);
     }
     return _memoryRemoveReference;

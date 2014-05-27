@@ -38,7 +38,7 @@ namespace model {
             binary_minus_operation // -
         };
 
-        binary_operator_expression (context & context, binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand);
+        binary_operator_expression (scope & parent, binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand);
 
         std::shared_ptr <type> getType () const override;
 

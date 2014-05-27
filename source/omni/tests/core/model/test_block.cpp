@@ -1,6 +1,6 @@
 #include <omni/core/model/block.hpp>
 #include <omni/core/context.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/variable_declaration_expression.hpp>
 #include <omni/core/model/variable_expression.hpp>
 #include <omni/core/model/function.hpp>
@@ -25,7 +25,7 @@ void buildModule (bool shouldBeValid, buildModuleBody builder)
 {
     using namespace omni::core;
     context c;
-    module m (c, "test");
+    model::module m (c, "test");
 
     auto t = c.sharedBasicType (model::type_class::t_signedInt);
     auto variableDeclaration = std::make_shared <model::variable_declaration_expression> (t);

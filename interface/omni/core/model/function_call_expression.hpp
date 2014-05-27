@@ -24,9 +24,9 @@ namespace model {
     **/
     class OMNI_CORE_API function_call_expression : public modifying_expression {
     public:
-        function_call_expression ();
-        function_call_expression (std::shared_ptr <function_prototype> func);
-        function_call_expression (std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters);
+        function_call_expression (scope & parent);
+        function_call_expression (scope & parent, std::shared_ptr <function_prototype> func);
+        function_call_expression (scope & parent, std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters);
 
         std::shared_ptr <type> getType () const override;
 

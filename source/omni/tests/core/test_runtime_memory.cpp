@@ -1,6 +1,6 @@
 #include <omni/core/runtime.hpp>
 #include <omni/core/context.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/type.hpp>
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/parameter.hpp>

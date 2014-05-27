@@ -17,6 +17,8 @@ namespace core {
 namespace omni {
 namespace core {
 namespace model {
+    class scope;
+    class module;
 
     /**
     Base class for all information that is part of a context, such as variable declarations.
@@ -24,13 +26,19 @@ namespace model {
     **/
     class OMNI_CORE_API entity {
     public:
-        entity ();
-        entity (std::string const & name);
+        entity (scope * parent);
+        entity (scope * parent, std::string const & name);
+        entity (scope * parent, id entityId, std::string const & name);
         virtual ~ entity () = 0;
 
-        void setContext (context * context);
-        context * getContext ();
-        const context * getContext () const;
+        virtual context * getContext ();
+        virtual const context * getContext () const;
+
+        virtual module * getModule ();
+        virtual const module * getModule () const;
+
+        scope * getParent ();
+        const scope * getParent () const;
 
         std::string getName () const;
         void setName (const std::string & name);
@@ -41,7 +49,7 @@ namespace model {
         virtual void fillLibraries (std::set <std::string> & libraries);
 
     private:
-        context * _context;
+        scope * _parent;
         std::string _name;
         id _id;
     };

@@ -2,7 +2,7 @@
 #define OMNI_CORE_LITERAL_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/model/entity.hpp>
+#include <omni/core/model/scope.hpp>
 
 #include <memory>
 
@@ -22,9 +22,9 @@ namespace model {
     The most simple type is the builtin_literal<>, which is used to access literals of built-in types.
     (It is not sure whether other kinds of literals will be supported.)
     **/
-    class OMNI_CORE_API literal : public entity {
+    class OMNI_CORE_API literal : public scope {
     public:
-        literal (std::shared_ptr <type> type);
+        literal (scope & parent, std::shared_ptr <type> type);
         virtual ~ literal ();
         
         std::shared_ptr <type> getType ();

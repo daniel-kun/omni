@@ -1,5 +1,5 @@
 #include <omni/core/context.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/variable_declaration_expression.hpp>
 #include <omni/core/model/variable_expression.hpp>
 #include <omni/core/model/variable_assignment_expression.hpp>

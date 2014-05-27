@@ -19,11 +19,13 @@ namespace model {
     **/
     class OMNI_CORE_API variable_declaration_expression : public pure_expression {
     public:
-        variable_declaration_expression (std::shared_ptr <type> variableType);
-        variable_declaration_expression (std::shared_ptr <expression> initializationExpression);
+        variable_declaration_expression (scope & parent);
 
         std::shared_ptr <type> getType () const override;
+        void setType (std::shared_ptr <type> type);
+
         std::shared_ptr <expression> getInitializationExpression () const;
+        void setInitializationExpression (std::shared_ptr <expression> initializer);
 
         llvm::Value * llvmPointerValue ();
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;

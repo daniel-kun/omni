@@ -18,7 +18,7 @@ namespace model {
     **/
     class OMNI_CORE_API if_statement : public statement {
     public:
-        if_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> trueBlock, std::shared_ptr <block> elseBlock);
+        if_statement (scope & parent, std::shared_ptr <expression> condition, std::shared_ptr <block> trueBlock, std::shared_ptr <block> elseBlock);
 
         std::shared_ptr <expression> getCondition ();
         const std::shared_ptr <expression> getCondition () const;

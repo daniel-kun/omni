@@ -1,5 +1,5 @@
 #include <omni/core/context.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/binary_operator_expression.hpp>
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/block.hpp>
@@ -36,7 +36,7 @@ public:
 protected:
     std::size_t _testCounter;
     omni::core::context _context;
-    omni::core::module _module;
+    omni::core::model::module _module;
 };
 
 template <typename T>

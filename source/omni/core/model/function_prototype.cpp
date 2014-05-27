@@ -1,5 +1,5 @@
 #include <omni/core/model/function_prototype.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/type.hpp>
 #include <omni/core/model/parameter.hpp>
 
@@ -14,12 +14,11 @@ in the same module or externally.
 @param returnType The return type of the function for this prototype.
 @param parameters An optional list of parameters that the function for this prototype receives.
 **/
-omni::core::model::function_prototype::function_prototype (module & module,
+omni::core::model::function_prototype::function_prototype (omni::core::model::scope & parent,
                                                            std::string const & name,
                                                            std::shared_ptr <type> returnType,
                                                            std::vector <std::shared_ptr <omni::core::model::parameter>> parameters) :
-    entity (name),
-    _module (module),
+    scope (& parent, name),
     _returnType (returnType),
     _parameters (parameters),
     _llvmFunction (nullptr)
@@ -28,23 +27,6 @@ omni::core::model::function_prototype::function_prototype (module & module,
 
 omni::core::model::function_prototype::~function_prototype ()
 {
-}
-
-
-/**
-Returns the module that this function is defined in.
-**/
-omni::core::module & omni::core::model::function_prototype::getModule ()
-{
-    return _module;
-}
-
-/**
-Returns the module that this function is defined in.
-**/
-const omni::core::module & omni::core::model::function_prototype::getModule () const
-{
-    return _module;
 }
 
 /**

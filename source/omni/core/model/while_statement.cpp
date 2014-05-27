@@ -9,9 +9,10 @@
 Initializes this while_statement with the given condition and the given body.
 This while_statement will repeatedly execute the given body while the given condition is true.
 **/
-omni::core::model::while_statement::while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body) :
-    _condition (condition),
-    _body (body)
+omni::core::model::while_statement::while_statement (omni::core::model::scope & parent) :
+    statement (parent),
+    _condition (),
+    _body ()
 {
 }
 
@@ -31,6 +32,12 @@ const std::shared_ptr <omni::core::model::expression> omni::core::model::while_s
     return _condition;
 }
 
+void omni::core::model::while_statement::setCondition (std::shared_ptr <omni::core::model::expression> condition)
+{
+    _condition = condition;
+}
+
+
 /**
 Returns the body that is being repeated by this whil_statement while the condition is true.
 **/
@@ -45,6 +52,11 @@ Returns the body that is being repeated by this whil_statement while the conditi
 const std::shared_ptr <omni::core::model::block> omni::core::model::while_statement::getBody () const
 {
     return _body;
+}
+
+void omni::core::model::while_statement::setBody (std::shared_ptr <omni::core::model::block> body)
+{
+    _body = body;
 }
 
 omni::core::statement_emit_result omni::core::model::while_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)

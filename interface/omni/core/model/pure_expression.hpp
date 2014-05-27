@@ -15,6 +15,7 @@ namespace model {
     **/
     class OMNI_CORE_API pure_expression : public expression {
     public:
+        pure_expression (scope & parent);
     };
 
 } // namespace model

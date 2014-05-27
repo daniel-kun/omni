@@ -19,7 +19,7 @@ namespace model {
     **/
     class OMNI_CORE_API variable_assignment_expression : public modifying_expression {
     public:
-        variable_assignment_expression (std::shared_ptr <variable_declaration_expression> variable, std::shared_ptr <expression> value);
+        variable_assignment_expression (scope & parent, std::shared_ptr <variable_declaration_expression> variable, std::shared_ptr <expression> value);
 
         std::shared_ptr <variable_declaration_expression> getVariable () const;
         std::shared_ptr <expression> getValue () const;

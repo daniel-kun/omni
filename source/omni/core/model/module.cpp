@@ -1,4 +1,4 @@
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/block.hpp>
@@ -51,60 +51,49 @@ namespace {
 /**
 Initializes this module in the context `context' with the name `name'. A new, random id will be assigned to this module.
 **/
-omni::core::module::module (omni::core::context & context, std::string name) :
+omni::core::model::module::module (omni::core::context & context, std::string name) :
+    scope (nullptr, name),
     _llvmModule (),
     _context (context),
-    _id (),
-    _name (name),
-    _entryPoint (),
-    _entities ()
+    _entryPoint ()
 {
 }
 
 /**
 Initializes this existing module in the given context and the given name and moduleId.
 **/
-omni::core::module::module (context & context, id moduleId, std::string name) :
+omni::core::model::module::module (context & context, id moduleId, std::string name) :
+    scope (nullptr, moduleId, name),
     _llvmModule (),
     _context (context),
-    _id (moduleId),
-    _name (name),
-    _entryPoint (),
-    _entities ()
+    _entryPoint ()
 {
 }
 
 /**
 Returns the context that this module is defined in.
 **/
-omni::core::context & omni::core::module::getContext ()
+omni::core::context * omni::core::model::module::getContext ()
 {
-    return _context;
+    return & _context;
 }
 
 /**
 Returns the context that this module is defined in.
 **/
-const omni::core::context & omni::core::module::getContext () const
+const omni::core::context * omni::core::model::module::getContext () const
 {
-    return _context;
+    return & _context;
 }
 
-/**
-Finds any entity of this scope by it's unique id. The entity has to be added to this context before it can be found.
-This happens when the entity is created using one of the create...-functions or the entity has been added via one of the add...-functions.
-@param id The id of the entity that should be returned. This should not be an invalid id.
-@return The entity with the id, if such has been added to the context. A null-shared_ptr is returned, if no such entity exists in this scope.
-**/
-std::shared_ptr <omni::core::model::entity> omni::core::module::findEntityById (omni::core::id id)
+omni::core::model::module * omni::core::model::module::getModule ()
 {
-    id_to_entities_map & m (_entities [id.getDomain ()]);
-    id_to_entities_map::iterator i = m.find (id.getId ());
-    if (i != m.end ()) {
-        return i->second;
-    } else {
-        return std::shared_ptr <model::entity> ();
-    }
+    return this;
+}
+
+const omni::core::model::module * omni::core::model::module::getModule () const
+{
+    return this;
 }
 
 /**
@@ -112,7 +101,7 @@ Create a new, unique id for the domain `domain'.
 @param domain The domain that the id should be valid for.
 @return A new, unique id that can be used to identify newly created entities for this context.
 **/
-omni::core::id omni::core::module::createId (omni::core::domain domain)
+omni::core::id omni::core::model::module::createId (omni::core::domain domain)
 {         
     static unsigned int counter = 0;
     //static boost::uuids::random_generator generator;
@@ -128,85 +117,10 @@ omni::core::id omni::core::module::createId (omni::core::domain domain)
 }
 
 /**
-Creates a new function object for the function with the name `name', adds it to this module and returns it.
-Calling createFunction is the same as creating a new function with this module as the first paramter and then calling addFunction().
-That's why this function will automatically be assigned a new id.
-@param name The name of the function. There may not be a function with the same name in the context, otherwise an already_exits_error exception will be thrown.
-@param returnType The type that the function returns.
-@param body The body of the function.
-@exception already_exists_error Is thrown when a function with the name `name' already exists in this context.
-**/
-std::shared_ptr <omni::core::model::function> omni::core::module::createFunction (std::string const & name, std::shared_ptr <model::type> returnType, std::shared_ptr <model::block> body)
-{
-    std::shared_ptr <model::function> result (new model::function (* this, name, returnType, body));
-    addFunction (result);
-    return result;
-}
-
-/**
-Adds the function `function' to this context, if there is not already another function with the same name.
-`function' will automatically be assigned a new id before it is added to this context.
-@param function The function that should be added to this context.
-@exception already_exists_error Is thrown when a function with the same name as `function's name already exists in this context.
-**/
-void omni::core::module::addFunction (std::shared_ptr <model::function_prototype> function)
-{
-    std::shared_ptr <model::function_prototype> func = findFunctionByName (function->getName ());
-    if (func.get () != nullptr) {
-        throw already_exists_error (domain::function, function->getName ());
-    }
-    function->setContext (& _context);
-    id newFunctionId = createId (domain::function);
-    function->setId (newFunctionId);
-    id_to_entities_map & functionMap (_entities [domain::function]);
-    functionMap [newFunctionId.getId ()] = function;
-}
-
-/**
-Returns the function with the name `name', if such a function exists in this scope.
-Only functions that were created using createFunction or were added via addFunction are part of this scope.
-@param The name of the function that should be returned. Should not be empty.
-@return The function with the name `name' that has previously been added to this context.
-**/
-std::shared_ptr <omni::core::model::function_prototype> omni::core::module::findFunctionByName (std::string const & name)
-{
-    id_to_entities_map & functionMap (_entities [domain::function]);
-    auto found = std::find_if (functionMap.begin (), functionMap.end (), [name] (std::pair <std::string, std::shared_ptr <model::entity>> f) -> bool {
-        return f.second->getName () == name;
-    });
-    if (found != functionMap.end ()) {
-        return std::dynamic_pointer_cast <model::function_prototype> (found->second);
-    } else {
-        return std::shared_ptr <model::function_prototype> ();
-    }
-}
-
-/**
-Removes the function `function' from this context. This only has an effect if `function' was previously added to this context by creating it using
-createFunction or adding it via addFunction.
-@param function The function to be removed from this context.
-@return true, if `function' was part of this scope and has been removed. false, if `function' was not found.
-**/
-bool omni::core::module::removeFunction (std::shared_ptr <model::function_prototype> function)
-{
-    id_to_entities_map & functionMap (_entities [domain::function]);
-    auto found = std::find_if (functionMap.begin (), functionMap.end (), [function] (std::pair <std::string, std::shared_ptr <model::entity>> f) -> bool {
-        return f.second == function;
-    });
-    if (found != functionMap.end ()) {
-        found->second->setContext (nullptr);
-        functionMap.erase (found);
-        return true;
-    } else {
-        return false;
-    }
-}
-
-/**
 Sets the entry point for this module.
 Not implemented yet.
 **/
-void omni::core::module::setEntryPoint (std::shared_ptr <model::function> function)
+void omni::core::model::module::setEntryPoint (std::shared_ptr <model::function> function)
 {
     _entryPoint = function;
 }
@@ -216,7 +130,7 @@ Emits llvm IR language code to the file at path fileName.
 @param fileName Path to the file where the code should be written to.
 // TODO error reporting
 **/
-void omni::core::module::emitAssemblyFile (std::string const & fileName, const module_emit_options & options)
+void omni::core::model::module::emitAssemblyFile (std::string const & fileName, const module_emit_options & options)
 {
     std::string errorInfo;
     llvm::raw_fd_ostream fileStream (fileName.c_str (), errorInfo, llvm::sys::fs::F_None);
@@ -229,7 +143,7 @@ This function is not very fast since it first writes the whole code to a tempora
 writes the whole buffer to `stream'. If you need a more efficient way, use emitAssemblyFile(llvm::raw_ostream).
 @param stream The ostream where the code should be written to.
 **/
-void omni::core::module::emitAssemblyFile (std::ostream & stream, const module_emit_options & options)
+void omni::core::model::module::emitAssemblyFile (std::ostream & stream, const module_emit_options & options)
 {
     std::string tmp;
     llvm::raw_string_ostream rawStream (tmp);
@@ -241,11 +155,11 @@ void omni::core::module::emitAssemblyFile (std::ostream & stream, const module_e
 Emits llvm IR language code to the llvm stream `stream'.
 @param stream The llvm stream wher the code should be written to.
 **/
-void omni::core::module::emitAssemblyFile (llvm::raw_ostream & stream, const module_emit_options & options)
+void omni::core::model::module::emitAssemblyFile (llvm::raw_ostream & stream, const module_emit_options & options)
 {
     llvm::Module & m (llvmModule ());
     
-    for (auto f : _entities [domain::function]) {
+    for (auto f : getEntities () [domain::function]) {
         model::function_prototype & func = * std::dynamic_pointer_cast <model::function_prototype> (f.second);
         func.llvmFunction ();
     }
@@ -263,7 +177,7 @@ This function is not very fast since it first writes the whole object file to a 
 writes the whole buffer to `stream'. If you need a more efficient way, use emitObjectFile (llvm::raw_ostream).
 @param stream Any ostream that should receive the content of the objectFile.
 **/
-void omni::core::module::emitObjectFile (std::ostream & stream, const module_emit_options & options)
+void omni::core::model::module::emitObjectFile (std::ostream & stream, const module_emit_options & options)
 {
     std::string tmp;
     llvm::raw_string_ostream rawStream (tmp);
@@ -275,13 +189,13 @@ void omni::core::module::emitObjectFile (std::ostream & stream, const module_emi
 Emits a native object file (e.g. .obj on win32) to stream.
 @param stream Any llvm::raw_ostream that should receive the content of the objectFile.
 **/
-void omni::core::module::emitObjectFile (llvm::raw_ostream & stream, const module_emit_options & options)
+void omni::core::model::module::emitObjectFile (llvm::raw_ostream & stream, const module_emit_options & options)
 {
     llvm::Module & m (llvmModule ());
     
     addDllMainIfMissing (_context, m);
     
-    for (auto f : _entities [domain::function]) {
+    for (auto f : getEntities () [domain::function]) {
         model::function_prototype & func = * std::dynamic_pointer_cast <model::function_prototype> (f.second);
         func.llvmFunction ();
     }
@@ -289,7 +203,7 @@ void omni::core::module::emitObjectFile (llvm::raw_ostream & stream, const modul
     std::string errorInfo;
     if (llvm::verifyModule(m, & llvm::outs ())) {
         // TODO: Create a special error class for this:
-        throw verification_failed_error (_name, errorInfo);
+        throw verification_failed_error (getName (), errorInfo);
     }
 
     std::string errors;
@@ -315,7 +229,7 @@ void omni::core::module::emitObjectFile (llvm::raw_ostream & stream, const modul
 Emits a native object file (e.g. .obj on win32) to the file `fileName'.
 @param fileName The path of the file where the object file should be written to.
 **/
-void omni::core::module::emitObjectFile (std::string const & fileName, const module_emit_options & options)
+void omni::core::model::module::emitObjectFile (std::string const & fileName, const module_emit_options & options)
 {
     std::string errorInfo;
     llvm::raw_fd_ostream rawStream (fileName.c_str (), errorInfo, llvm::sys::fs::F_None);
@@ -329,7 +243,7 @@ For every shared object file, an object file with the same base name but the ext
 is temporarily created and removed before this function returns.
 For example emitSharedLibraryFile /home/foo/shared.so will temporarily create a file /home/foo/shared.o.
 **/
-void omni::core::module::emitSharedLibraryFile (std::string const & fileName, const module_emit_options & options)
+void omni::core::model::module::emitSharedLibraryFile (std::string const & fileName, const module_emit_options & options)
 {
     boost::filesystem::path sharedLibraryPath (fileName);
     boost::filesystem::path objectFilePath = sharedLibraryPath;
@@ -345,7 +259,7 @@ void omni::core::module::emitSharedLibraryFile (std::string const & fileName, co
     }
     std::set <std::string> additionalLibraries;
     additionalLibraries.insert ("LIBCMT.LIB");
-    for (auto i : _entities) {
+    for (auto i : getEntities ()) {
         for (auto p : i.second) {
             p.second->fillLibraries (additionalLibraries);
         }
@@ -382,12 +296,12 @@ Verifies this module.
 @param errorInfo When the module contains errors, errorInfo will be filled with the error messages.
 @return True, if the module is valid. false, if there are errors.
 **/
-bool omni::core::module::verify (std::string & errorInfo)
+bool omni::core::model::module::verify (std::string & errorInfo)
 {
     llvm::Module & m (llvmModule ());
 
     try {
-        for (auto f : _entities[domain::function]) {
+        for (auto f : getEntities ()[domain::function]) {
             model::function_prototype & func = *std::dynamic_pointer_cast <model::function_prototype> (f.second);
             func.llvmFunction ();
         }
@@ -403,10 +317,10 @@ bool omni::core::module::verify (std::string & errorInfo)
 /**
 @internal
 **/
-llvm::Module & omni::core::module::llvmModule ()
+llvm::Module & omni::core::model::module::llvmModule ()
 {
     if (_llvmModule.get () == nullptr) {
-        _llvmModule.reset (new llvm::Module (_name, _context.llvmContext ()));
+        _llvmModule.reset (new llvm::Module (getName (), _context.llvmContext ()));
     }
     return * _llvmModule;
 }

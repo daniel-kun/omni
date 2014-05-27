@@ -1,7 +1,7 @@
 #include <omni/core/model/external_function.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/context.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/type.hpp>
 #include <omni/core/model/builtin_literal.hpp>
 #include <omni/core/model/literal_expression.hpp>
@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE (ctor)
 {
     using namespace omni::core;
     context c;
-    module mod (c, "test");
+    model::module mod (c, "test");
     std::shared_ptr <model::external_function> function_putchar (new model::external_function (mod, "LIBCMT.LIB", "putchar", model::type::sharedBasicType (c, model::type_class::t_signedInt)));
     std::shared_ptr <model::parameter> param1 (new model::parameter (model::type::sharedBasicType (c, model::type_class::t_signedInt), std::string ()));
     function_putchar->addParameter (param1);

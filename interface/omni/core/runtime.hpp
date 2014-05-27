@@ -9,13 +9,13 @@ namespace omni {
 namespace core {
 namespace model {
     class external_function;
+    class module;
 }
 }
 }
 
 namespace omni {
 namespace core {
-    class module;
 
     /**
     Manages the functions and structures provided by the omni runtime.
@@ -24,14 +24,14 @@ namespace core {
     **/
     class OMNI_CORE_API runtime {
     public:
-        runtime (module & module);
+        runtime (model::module & module);
 
         std::shared_ptr <model::external_function> getMemoryAllocate ();
         std::shared_ptr <model::external_function> getMemoryAddReference ();
         std::shared_ptr <model::external_function> getMemoryRemoveReference ();
 
     private:
-        module & _module;
+        model::module & _module;
         std::shared_ptr <model::external_function> _memoryAllocate;
         std::shared_ptr <model::external_function> _memoryAddReference;
         std::shared_ptr <model::external_function> _memoryRemoveReference;

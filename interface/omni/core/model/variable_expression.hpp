@@ -18,7 +18,7 @@ namespace model {
     **/
     class OMNI_CORE_API variable_expression : public pure_expression {
     public:
-        variable_expression (std::shared_ptr <variable_declaration_expression> variable);
+        variable_expression (scope & parent, std::shared_ptr <variable_declaration_expression> variable);
 
         std::shared_ptr <type> getType () const override;
 

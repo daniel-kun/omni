@@ -10,7 +10,11 @@
 Initializes this variabe_assignment_expresion to assign `value' to `variable'.
 variable and value need to be of exactly the same type.
 **/
-omni::core::model::variable_assignment_expression::variable_assignment_expression (std::shared_ptr <variable_declaration_expression> variable, std::shared_ptr <expression> value) :
+omni::core::model::variable_assignment_expression::variable_assignment_expression (
+    omni::core::model::scope & parent,
+    std::shared_ptr <variable_declaration_expression> variable,
+    std::shared_ptr <expression> value) :
+    modifying_expression (parent),
     _variable (variable),
     _value (value),
     _llvmValue (nullptr)

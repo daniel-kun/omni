@@ -15,7 +15,7 @@ bitcasts are dangerous and are usually only used internal in the compiler. Most 
 **/
 class OMNI_CORE_API bitcast_expression : public cast_expression {
 public:
-    bitcast_expression (std::shared_ptr <expression> sourceExpression, std::shared_ptr <type> targetType);
+    bitcast_expression (scope & parent, std::shared_ptr <expression> sourceExpression, std::shared_ptr <type> targetType);
 
     std::shared_ptr <type> getType () const override;
 

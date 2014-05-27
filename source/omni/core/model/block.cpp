@@ -4,6 +4,11 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/BasicBlock.h>
 
+omni::core::model::block::block (omni::core::model::scope & parent) :
+    statement (parent)
+{
+}
+
 /**
 @return Returns the list of statements that this block contains.
 **/

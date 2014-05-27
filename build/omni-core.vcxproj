@@ -84,10 +84,12 @@
     <ClInclude Include="..\interface\omni\core\model\literal.hpp" />
     <ClInclude Include="..\interface\omni\core\model\literal_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\model\modifying_expression.hpp" />
+    <ClInclude Include="..\interface\omni\core\model\module.hpp" />
     <ClInclude Include="..\interface\omni\core\model\native_type_to_type_class.hpp" />
     <ClInclude Include="..\interface\omni\core\model\parameter.hpp" />
     <ClInclude Include="..\interface\omni\core\model\pure_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\model\return_statement.hpp" />
+    <ClInclude Include="..\interface\omni\core\model\scope.hpp" />
     <ClInclude Include="..\interface\omni\core\model\statement.hpp" />
     <ClInclude Include="..\interface\omni\core\model\type.hpp" />
     <ClInclude Include="..\interface\omni\core\model\type_class.hpp" />
@@ -97,7 +99,6 @@
     <ClInclude Include="..\interface\omni\core\model\variable_declaration_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\model\variable_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\model\while_statement.hpp" />
-    <ClInclude Include="..\interface\omni\core\module.hpp" />
     <ClInclude Include="..\interface\omni\core\module_emit_options.hpp" />
     <ClInclude Include="..\interface\omni\core\not_implemented_error.hpp" />
     <ClInclude Include="..\interface\omni\core\no_context_error.hpp" />
@@ -141,10 +142,12 @@
     <ClCompile Include="..\source\omni\core\model\literal.cpp" />
     <ClCompile Include="..\source\omni\core\model\literal_expression.cpp" />
     <ClCompile Include="..\source\omni\core\model\modifying_expression.cpp" />
+    <ClCompile Include="..\source\omni\core\model\module.cpp" />
     <ClCompile Include="..\source\omni\core\model\native_type_to_type_class.cpp" />
     <ClCompile Include="..\source\omni\core\model\parameter.cpp" />
     <ClCompile Include="..\source\omni\core\model\pure_expression.cpp" />
     <ClCompile Include="..\source\omni\core\model\return_statement.cpp" />
+    <ClCompile Include="..\source\omni\core\model\scope.cpp" />
     <ClCompile Include="..\source\omni\core\model\statement.cpp" />
     <ClCompile Include="..\source\omni\core\model\type.cpp" />
     <ClCompile Include="..\source\omni\core\model\type_class.cpp" />
@@ -154,7 +157,6 @@
     <ClCompile Include="..\source\omni\core\model\variable_declaration_expression.cpp" />
     <ClCompile Include="..\source\omni\core\model\variable_expression.cpp" />
     <ClCompile Include="..\source\omni\core\model\while_statement.cpp" />
-    <ClCompile Include="..\source\omni\core\module.cpp" />
     <ClCompile Include="..\source\omni\core\module_emit_options.cpp" />
     <ClCompile Include="..\source\omni\core\not_implemented_error.cpp" />
     <ClCompile Include="..\source\omni\core\no_context_error.cpp" />

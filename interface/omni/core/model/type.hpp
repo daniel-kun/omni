@@ -20,6 +20,12 @@ namespace model {
         type (context & context, type_class typeClass, unsigned int indirectionLevel = 0);
         virtual ~ type ();
 
+        virtual context * getContext ();
+        virtual const context * getContext () const;
+
+        virtual module * getModule ();
+        virtual const module * getModule () const;
+
         static std::shared_ptr <type> sharedBasicType (context & context, type_class typeClass, unsigned int indirectionLevel = 0);
 
         llvm::Type * llvmType ();
@@ -29,6 +35,7 @@ namespace model {
         unsigned int getIndirectionLevel () const;
 
     private:
+        context & _context;
         type_class _typeClass;
         unsigned int _indirectionLevel;
     };

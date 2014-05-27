@@ -2,7 +2,7 @@
 #define OMNI_CORE_FUNCTION_PROTOTYPE_HPP
 
 #include <omni/core/core.hpp>
-#include <omni/core/model/entity.hpp>
+#include <omni/core/model/scope.hpp>
 
 #include <memory>
 #include <vector>
@@ -17,13 +17,13 @@ namespace llvm {
 namespace omni {
 namespace core {
     class context;
-    class module;
 }
 }
 
 namespace omni {
 namespace core {
 namespace model {
+    class module;
     class parameter;
     class block;
     class type;
@@ -31,16 +31,13 @@ namespace model {
     /**
     A function_prototype defines the name, return type and parameters of a function and adds basic functionalities to read and modify these values.
     **/
-    class OMNI_CORE_API function_prototype : public entity {
+    class OMNI_CORE_API function_prototype : public scope {
     public:
-        function_prototype (module & module,
+        function_prototype (scope & parent,
                             std::string const & name,
                             std::shared_ptr <type> returnType,
                             std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> ());
         virtual ~ function_prototype ();
-
-        module & getModule ();
-        const module & getModule () const;
 
         const std::shared_ptr <type> getReturnType () const;
         std::shared_ptr <type> getReturnType ();
@@ -53,7 +50,6 @@ namespace model {
         std::vector <std::shared_ptr <parameter>> getParameters () const;
  
     protected:
-        module & _module;
         std::shared_ptr <type> _returnType;
         std::vector <std::shared_ptr <parameter>> _parameters;
         llvm::Function * _llvmFunction;

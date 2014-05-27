@@ -17,7 +17,7 @@ namespace model {
     **/
     class OMNI_CORE_API do_while_statement : public while_statement {
     public:
-        do_while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body);
+        do_while_statement (scope & parent);
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 

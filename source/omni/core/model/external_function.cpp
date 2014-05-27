@@ -1,5 +1,5 @@
 #include <omni/core/model/external_function.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/type.hpp>
 #include <omni/core/model/parameter.hpp>
 
@@ -14,13 +14,13 @@ by other functions that use that library or by module_emit_options::addLibrary()
 @param parameters A list of parameters that this function takes, if any. Can be an empty vector.
 @param isDllImport True, if this function is imported from a DLL. Only for Windows.
 **/
-omni::core::model::external_function::external_function (module & module,
+omni::core::model::external_function::external_function (omni::core::model::scope & parent,
                                                          std::string libraryName,
                                                          std::string functionName,
                                                          std::shared_ptr <model::type> returnType,
                                                          std::vector <std::shared_ptr <parameter>> parameters,
                                                          bool isDllImport) :
-    function_prototype (module, functionName, returnType, parameters),
+    function_prototype (parent, functionName, returnType, parameters),
     _libraryName (libraryName),
     _isDllImport (isDllImport)
 {
@@ -50,7 +50,7 @@ llvm::Function * omni::core::model::external_function::llvmFunction ()
             llvmFunctionType (),
             llvm::Function::ExternalLinkage,
             getName (),
-            & getModule ().llvmModule ());
+            & getModule ()->llvmModule ());
         if (_isDllImport) {
             _llvmFunction->setDLLStorageClass (llvm::GlobalValue::DLLImportStorageClass);
         }

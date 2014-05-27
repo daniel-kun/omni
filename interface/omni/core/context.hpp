@@ -25,13 +25,13 @@ namespace model {
     class type;
     class block;
     class entity;
+    class module;
 }
 }
 }
 
 namespace omni {
 namespace core {
-    class module;
 
     /**
     The "context" is an instance of the omni compiler that store some global information about the architecture of the underlying targets
@@ -44,7 +44,7 @@ namespace core {
 
         std::shared_ptr <model::type> sharedBasicType (model::type_class typeClass, int indirectionLevel = 0);
 
-        void addModule (std::shared_ptr <module> module);
+        void addModule (std::shared_ptr <model::module> module);
 
         const llvm::LLVMContext & llvmContext () const;
         llvm::LLVMContext & llvmContext ();
@@ -52,7 +52,7 @@ namespace core {
     private:
         std::unique_ptr <llvm::LLVMContext> _llvmContext;
         std::map <std::pair <model::type_class, int>, std::shared_ptr <model::type>> _sharedBasicTypes;
-        std::vector <std::shared_ptr <module>> _modules;
+        std::vector <std::shared_ptr <model::module>> _modules;
     };
 
 } // namespace core

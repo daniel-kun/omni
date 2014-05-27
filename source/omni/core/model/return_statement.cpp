@@ -4,12 +4,14 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/NoFolder.h>
 
-omni::core::model::return_statement::return_statement () :
+omni::core::model::return_statement::return_statement (omni::core::model::scope & parent) :
+    statement (parent),
     _expression ()
 {
 }
 
-omni::core::model::return_statement::return_statement (std::shared_ptr <expression> expression) :
+omni::core::model::return_statement::return_statement (omni::core::model::scope & parent, std::shared_ptr <expression> expression) :
+    statement (parent),
     _expression (expression)
 {
 }

@@ -10,7 +10,8 @@
 /**
 Initializes this expression to return variable's at the time this expression is executed.
 **/
-omni::core::model::variable_expression::variable_expression (std::shared_ptr <variable_declaration_expression> variable) :
+omni::core::model::variable_expression::variable_expression (omni::core::model::scope & parent, std::shared_ptr <variable_declaration_expression> variable) :
+    pure_expression (parent),
     _variable (variable)
 {
 }
