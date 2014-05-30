@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE (ctor)
     using namespace omni::core;
     context c;
     model::module mod (c, "test");
-    std::shared_ptr <model::external_function> function_putchar (new model::external_function (mod, "LIBCMT.LIB", "putchar", model::type::sharedBasicType (c, model::type_class::t_signedInt)));
+    std::shared_ptr <model::external_function> function_putchar (new model::external_function ("LIBCMT.LIB", "putchar", model::type::sharedBasicType (c, model::type_class::t_signedInt)));
     std::shared_ptr <model::parameter> param1 (new model::parameter (model::type::sharedBasicType (c, model::type_class::t_signedInt), std::string ()));
     function_putchar->addParameter (param1);
 
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE (ctor)
     std::shared_ptr <model::block> body (new model::block ());
     std::shared_ptr <model::return_statement> returnStatement (new model::return_statement (functionCallExpression));
     body->appendStatement (returnStatement);
-    std::shared_ptr <model::function> funcCaller (new model::function (mod, "putcharCaller", model::type::sharedBasicType (c, model::type_class::t_signedInt), body));
+    std::shared_ptr <model::function> funcCaller (new model::function ("putcharCaller", model::type::sharedBasicType (c, model::type_class::t_signedInt), body));
 
     mod.addFunction (function_putchar);
     mod.addFunction (funcCaller);

@@ -10,19 +10,22 @@
 Initializes this variabe_assignment_expresion to assign `value' to `variable'.
 variable and value need to be of exactly the same type.
 **/
-omni::core::model::variable_assignment_expression::variable_assignment_expression (
-    omni::core::model::scope & parent,
-    std::shared_ptr <variable_declaration_expression> variable,
-    std::shared_ptr <expression> value) :
-    modifying_expression (parent),
+omni::core::model::variable_assignment_expression::variable_assignment_expression (std::shared_ptr <variable_declaration_expression> variable, std::shared_ptr <expression> value) :
+    modifying_expression (),
     _variable (variable),
-    _value (value),
     _llvmValue (nullptr)
 {
-    if (_variable->getType () != _value->getType ()) {
-        throw type_mismatch_error (* _variable->getType (), * _value->getType ());
+    setValue (value);
+    if (_variable->getType () != value->getType ()) {
+        throw type_mismatch_error (* _variable->getType (), * value->getType ());
     }
 }
+
+void omni::core::model::variable_assignment_expression::setVariable (std::shared_ptr <omni::core::model::variable_declaration_expression> variable)
+{
+    _variable = variable;
+}
+
 
 /**
 Returns the variable that is being assigned to by this expression.
@@ -32,12 +35,18 @@ std::shared_ptr <omni::core::model::variable_declaration_expression> omni::core:
     return _variable;
 }
 
+void omni::core::model::variable_assignment_expression::setValue (std::shared_ptr <omni::core::model::expression> value)
+{
+    setComponent (domain::expression, "value", value);
+}
+
+
 /**
 Returns the value that is being assigned to a variable by this expression.
 **/
 std::shared_ptr <omni::core::model::expression> omni::core::model::variable_assignment_expression::getValue () const
 {
-    return _value;
+    return getComponentAs <expression> (domain::expression, "value");
 }
 
 std::shared_ptr <omni::core::model::type> omni::core::model::variable_assignment_expression::getType () const
@@ -50,7 +59,7 @@ Internal
 **/
 omni::core::statement_emit_result omni::core::model::variable_assignment_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
-    return variable_assignment_expression::llvmEmitImpl (llvmBasicBlock, * _variable, * _value);
+    return variable_assignment_expression::llvmEmitImpl (llvmBasicBlock, * _variable, * getValue ());
 }
 
 /**

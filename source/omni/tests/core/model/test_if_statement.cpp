@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE (mixedTests)
 {
     using namespace omni::core;
     context c;
-    module m (c, "test");
+    model::module m (c, "test");
 
     auto runDemo = [& c, & m] (bool cond) -> int 
     {

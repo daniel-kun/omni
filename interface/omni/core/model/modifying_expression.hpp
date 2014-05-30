@@ -15,7 +15,7 @@ namespace model {
     **/
     class OMNI_CORE_API modifying_expression : public expression {
     public:
-        modifying_expression (scope & parent);
+        modifying_expression ();
     };
 
 } // namespace model

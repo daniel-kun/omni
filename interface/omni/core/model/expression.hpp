@@ -23,7 +23,7 @@ namespace model {
     **/
     class OMNI_CORE_API expression : public statement {
     public:
-        expression (scope & parent);
+        expression ();
 
         virtual std::shared_ptr <type> getType () const = 0;
     };

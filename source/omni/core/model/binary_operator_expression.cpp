@@ -13,30 +13,52 @@ Initializes this binary_operator_expression with the binary_operation op and the
 @param leftOperand The left operand of this operation. E.g. in "5 + 7", this is "5".
 @param rightOperand The right operand of this operation. E.g. in "5 / 7", this is "7".
 **/
-omni::core::model::binary_operator_expression::binary_operator_expression (omni::core::model::scope & parent,
-                                                                           binary_operation op,
-                                                                           std::shared_ptr <expression> leftOperand,
-                                                                           std::shared_ptr <expression> rightOperand) :
-    pure_expression (parent),
+omni::core::model::binary_operator_expression::binary_operator_expression (
+    omni::core::context & context,
+    binary_operation op,
+    std::shared_ptr <expression> leftOperand,
+    std::shared_ptr <expression> rightOperand) :
+    pure_expression (),
     _type (),
-    _operator (op),
-    _leftOperand (leftOperand),
-    _rightOperand (rightOperand)
+    _operator (op)
 {
-    if (_leftOperand->getType () != _rightOperand->getType ()) {
+    setLeftOperand (leftOperand);
+    setRightOperand (rightOperand);
+
+    if (leftOperand->getType () != rightOperand->getType ()) {
         throw type_mismatch_error (* leftOperand->getType (), * rightOperand->getType ());
     }
     switch (_operator) {
     case binary_operation::binary_lessthan_operation:
-        _type = getContext ()->sharedBasicType (type_class::t_boolean);
+        _type = context.sharedBasicType (type_class::t_boolean);
         break;
     case binary_operation::binary_minus_operation:
     case binary_operation::binary_plus_operation:
-        _type = _leftOperand->getType ();
+        _type = leftOperand->getType ();
         break;
     default:
         throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
     }
+}
+
+void omni::core::model::binary_operator_expression::setLeftOperand (std::shared_ptr <omni::core::model::expression> leftOperand)
+{
+    setComponent (domain::expression, "leftOperand", leftOperand);
+}
+
+std::shared_ptr <omni::core::model::expression> omni::core::model::binary_operator_expression::getLeftOperand () const
+{
+    return getComponentAs <expression> (domain::expression, "leftOperand");
+}
+
+void omni::core::model::binary_operator_expression::setRightOperand (std::shared_ptr <omni::core::model::expression> rightOperand)
+{
+    setComponent (domain::expression, "rightOperand", rightOperand);
+}
+
+std::shared_ptr <omni::core::model::expression> omni::core::model::binary_operator_expression::getRightOperand () const
+{
+    return getComponentAs <expression> (domain::expression, "rightOperand");
 }
 
 /**
@@ -53,11 +75,12 @@ std::shared_ptr <omni::core::model::type> omni::core::model::binary_operator_exp
 omni::core::statement_emit_result omni::core::model::binary_operator_expression::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
-    llvm::Value * lhs = _leftOperand->llvmEmit (llvmBasicBlock).getValue ();
-    llvm::Value * rhs = _rightOperand->llvmEmit (llvmBasicBlock).getValue ();
+    std::shared_ptr <expression> leftOperand = getLeftOperand ();
+    llvm::Value * lhs = leftOperand->llvmEmit (llvmBasicBlock).getValue ();
+    llvm::Value * rhs = getRightOperand ()->llvmEmit (llvmBasicBlock).getValue ();
     switch (_operator) {
     case binary_operation::binary_lessthan_operation:
-        switch (_leftOperand->getType ()->getTypeClass ()) {
+        switch (leftOperand->getType ()->getTypeClass ()) {
         case type_class::t_signedInt:
             return statement_emit_result (llvmBasicBlock, builder.CreateICmp (llvm::CmpInst::ICMP_SLT, lhs, rhs));
         default:

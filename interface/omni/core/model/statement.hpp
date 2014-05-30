@@ -22,7 +22,7 @@ namespace model {
     **/
     class OMNI_CORE_API statement : public scope {
     public:
-        statement (scope & parent);
+        statement ();
         virtual ~ statement ();
 
         virtual statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) = 0;

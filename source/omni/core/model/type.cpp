@@ -29,7 +29,7 @@ Initializes this type with the given type_class and indirectionLevel.
 The Omni Language itself does not use types with an indiretionLevel > 0. Instead, "optionals" and "references" are used.
 **/
 omni::core::model::type::type (omni::core::context & context, omni::core::model::type_class typeClass, unsigned int indirectionLevel) :
-    entity (nullptr),
+    entity (),
     _context (context),
     _typeClass (typeClass),
     _indirectionLevel (indirectionLevel)
@@ -62,6 +62,11 @@ omni::core::model::module * omni::core::model::type::getModule ()
 const omni::core::model::module * omni::core::model::type::getModule () const
 {
     return nullptr;
+}
+
+void omni::core::model::type::setComponent (omni::core::domain domain, std::string name, std::shared_ptr <omni::core::model::entity> entity)
+{
+    // At this time, a type does not contain components.
 }
 
 /**

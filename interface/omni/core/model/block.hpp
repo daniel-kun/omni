@@ -25,10 +25,11 @@ namespace model {
     public:
         typedef std::vector <std::shared_ptr <statement>> statement_list;
 
-        block (scope & parent);
+        block ();
 
         const statement_list getStatements () const;
         statement_list::iterator findStatement (std::shared_ptr <statement> statement);
+        statement_list::iterator statementsEnd ();
 
         std::shared_ptr <statement> prependStatement (std::shared_ptr <statement> statement);
         std::shared_ptr <statement> appendStatement (std::shared_ptr <statement> statement);
@@ -40,6 +41,7 @@ namespace model {
         llvm::BasicBlock * llvmEmitIntoExistingBlock (llvm::BasicBlock * llvmBasicBlock);
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
     private:
+        std::size_t _statementCount;
         statement_list _statements;
     };
 

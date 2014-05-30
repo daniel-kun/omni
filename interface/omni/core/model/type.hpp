@@ -26,6 +26,8 @@ namespace model {
         virtual module * getModule ();
         virtual const module * getModule () const;
 
+        void setComponent (domain domain, std::string name, std::shared_ptr <entity> entity) override;
+
         static std::shared_ptr <type> sharedBasicType (context & context, type_class typeClass, unsigned int indirectionLevel = 0);
 
         llvm::Type * llvmType ();

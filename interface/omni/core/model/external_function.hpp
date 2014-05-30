@@ -16,8 +16,7 @@ namespace model {
     **/
     class OMNI_CORE_API external_function : public function_prototype {
     public:
-        external_function (scope & parent,
-                           std::string libraryName,
+        external_function (std::string libraryName,
                            std::string functionName,
                            std::shared_ptr <type> returnType,
                            std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> (),

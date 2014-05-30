@@ -19,7 +19,9 @@ namespace model {
     **/
     class OMNI_CORE_API variable_declaration_expression : public pure_expression {
     public:
-        variable_declaration_expression (scope & parent);
+        variable_declaration_expression ();
+        variable_declaration_expression (std::shared_ptr <type> type);
+        variable_declaration_expression (std::shared_ptr <expression> initializer);
 
         std::shared_ptr <type> getType () const override;
         void setType (std::shared_ptr <type> type);
@@ -32,7 +34,6 @@ namespace model {
 
     private:
         std::shared_ptr <type> _type;
-        std::shared_ptr <expression> _initializationExpression; // Can be nullptr
         llvm::Value * _llvmPointerValue; // Internal
     };
 

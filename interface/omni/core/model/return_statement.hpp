@@ -17,12 +17,14 @@ namespace model {
 
     class OMNI_CORE_API return_statement : public statement {
     public:
-        return_statement (scope & parent);
-        return_statement (scope & parent, std::shared_ptr <expression> expression);
+        return_statement ();
+        return_statement (std::shared_ptr <expression> expression);
+
+        std::shared_ptr <expression> getExpression ();
+        const std::shared_ptr <expression> getExpression () const;
+        void setExpression (std::shared_ptr <expression> expression);
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock);
-    private:
-        std::shared_ptr <expression> _expression;
     };
 
 } // namespace model

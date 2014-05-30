@@ -24,7 +24,7 @@ namespace model {
     **/
     class OMNI_CORE_API literal : public scope {
     public:
-        literal (scope & parent, std::shared_ptr <type> type);
+        literal (std::shared_ptr <type> type);
         virtual ~ literal ();
         
         std::shared_ptr <type> getType ();

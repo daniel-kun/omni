@@ -14,7 +14,7 @@ Casts never change the item that is being casted, hence they are "pure".
 **/
 class OMNI_CORE_API cast_expression : public pure_expression {
 public:
-    cast_expression (scope & parent);
+    cast_expression ();
 };
 
 } // namespace model

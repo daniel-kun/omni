@@ -33,8 +33,7 @@ namespace model {
     **/
     class OMNI_CORE_API function_prototype : public scope {
     public:
-        function_prototype (scope & parent,
-                            std::string const & name,
+        function_prototype (std::string const & name,
                             std::shared_ptr <type> returnType,
                             std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> ());
         virtual ~ function_prototype ();
@@ -51,7 +50,7 @@ namespace model {
  
     protected:
         std::shared_ptr <type> _returnType;
-        std::vector <std::shared_ptr <parameter>> _parameters;
+        std::size_t _paramCount;
         llvm::Function * _llvmFunction;
     };
 

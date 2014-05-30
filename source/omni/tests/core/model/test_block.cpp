@@ -131,7 +131,9 @@ BOOST_AUTO_TEST_CASE (removeStatementFromPosition)
         b.appendStatement (decl);
         b.appendStatement (std::make_shared <omni::core::model::variable_expression> (decl));
         // Remove the first expression that uses the variable before it's declaration:
-        b.removeStatement (b.findStatement (expr));
+        auto it = b.findStatement (expr);
+        BOOST_CHECK (it != b.statementsEnd ());
+        b.removeStatement (it);
     });
     buildModule (false,
                  [] (omni::core::model::block & b,
@@ -142,7 +144,9 @@ BOOST_AUTO_TEST_CASE (removeStatementFromPosition)
         auto expression = std::make_shared <omni::core::model::variable_expression> (decl);
         b.appendStatement (expression);
         // Remove the last expression, so that the expression that uses the variable before it's declaration stays:
-        b.removeStatement (b.findStatement (expression));
+        auto it = b.findStatement (expression);
+        BOOST_CHECK (it != b.statementsEnd ());
+        b.removeStatement (it);
     });
 }
 

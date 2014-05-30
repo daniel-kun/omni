@@ -19,15 +19,14 @@ Initializes a function implementation with the given name, returnType, body and 
 @param body The body (implementation) of this function.
 @param isExported Specifies, whether this function is visible from outside the module it is defined in. @see isExported().
 **/
-omni::core::model::function::function (omni::core::model::scope & parent,
-                                       std::string const & name,
+omni::core::model::function::function (std::string const & name,
                                        std::shared_ptr <type> returnType,
                                        std::shared_ptr <block> body,
                                        bool isExported) :
-    function_prototype (parent, name, returnType),
-    _body (body),
+    function_prototype (name, returnType),
     _isExported (isExported)
 {
+    setComponent (domain::block, "body", body);
 }
 
 /**
@@ -45,7 +44,7 @@ Returns the body of this function in a const form.
 **/
 const std::shared_ptr <omni::core::model::block> omni::core::model::function::getBody () const
 {
-    return _body;
+    return getComponentAs <block> (domain::block, "body");
 }
 
 /**
@@ -53,7 +52,7 @@ Returns the body of this function in a modifyable form.
 **/
 std::shared_ptr <omni::core::model::block> omni::core::model::function::getBody ()
 {
-    return _body;
+    return getComponentAs <block> (domain::block, "body");
 }
 
 
@@ -80,7 +79,7 @@ llvm::Function * omni::core::model::function::llvmFunction ()
         }
 
         auto mainBlock = llvm::BasicBlock::Create (getContext ()->llvmContext (), "__entry__", _llvmFunction);
-        _body->llvmEmitIntoExistingBlock (mainBlock);
+        getBody ()->llvmEmitIntoExistingBlock (mainBlock);
 
         return _llvmFunction;
     }

@@ -42,7 +42,7 @@ namespace core {
         context ();
         ~ context();
 
-        std::shared_ptr <model::type> sharedBasicType (model::type_class typeClass, int indirectionLevel = 0);
+        std::shared_ptr <model::type> sharedBasicType (model::type_class typeClass, int indirectionLevel = 0) const;
 
         void addModule (std::shared_ptr <model::module> module);
 

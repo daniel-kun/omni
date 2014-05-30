@@ -1,7 +1,7 @@
 #include <omni/core/model/while_statement.hpp>
 #include <omni/core/model/do_while_statement.hpp>
 #include <omni/core/context.hpp>
-#include <omni/core/module.hpp>
+#include <omni/core/model/module.hpp>
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/model/literal_expression.hpp>
@@ -27,7 +27,7 @@ int buildAndRunWhileTest (std::string testFileName)
 {
     using namespace omni::core;
     context c;
-    module m (c, "test");
+    model::module m (c, "test");
 
     auto body = std::make_shared <model::block> ();
     auto variableDeclaration = std::make_shared <model::variable_declaration_expression> (std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <int>> (c, 1)));
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE (ctor)
 {
     using namespace omni::core;
     context c;
-    module m (c, "test");
+    model::module m (c, "test");
 
     model::while_statement whileStatement (std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <bool>> (c, true)), std::make_shared <model::block> ());
 }

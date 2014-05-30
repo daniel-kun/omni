@@ -16,7 +16,8 @@ namespace model {
     **/
     class OMNI_CORE_API literal_expression : public pure_expression {
     public:
-        literal_expression (scope & parent);
+        literal_expression ();
+        literal_expression (std::shared_ptr <literal> literal);
         
         std::shared_ptr <literal> getLiteral ();
         const std::shared_ptr <literal> getLiteral () const;
@@ -25,9 +26,6 @@ namespace model {
         std::shared_ptr <type> getType () const override;
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
-
-    private:
-        std::shared_ptr <literal> _literal;
     };
 
 } // namespace model

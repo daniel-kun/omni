@@ -29,13 +29,14 @@ The Omni Language itself does not use types with an indiretionLevel > 0. Instead
 @return A shared instance of type with the specified typeClass and indirectionLevel.
 @see type::sharedBasicType(context&, type_class);
 **/
-std::shared_ptr <omni::core::model::type> omni::core::context::sharedBasicType (model::type_class typeClass, int indirectionLevel)
+std::shared_ptr <omni::core::model::type> omni::core::context::sharedBasicType (model::type_class typeClass, int indirectionLevel) const
 {
     auto typePair = std::make_pair (typeClass, indirectionLevel);
-    std::map <std::pair <model::type_class, int>, std::shared_ptr <model::type>>::iterator result = _sharedBasicTypes.find (typePair);
-    if (result == _sharedBasicTypes.end ()) {
-        std::shared_ptr <model::type> resultType (new model::type (* this, typeClass, indirectionLevel));
-        _sharedBasicTypes [typePair] = resultType;
+    std::map <std::pair <model::type_class, int>, std::shared_ptr <model::type>>::const_iterator result = _sharedBasicTypes.find (typePair);
+    if (result == _sharedBasicTypes.cend ()) {
+        auto * unconst = const_cast <context *> (this);
+        std::shared_ptr <model::type> resultType (new model::type (* unconst, typeClass, indirectionLevel));
+        unconst->_sharedBasicTypes [typePair] = resultType;
         return resultType;
     }
     return result->second;

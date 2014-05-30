@@ -14,7 +14,7 @@ namespace model {
     **/
     class OMNI_CORE_API parameter : public scope {
     public:
-        parameter (scope & parent, std::shared_ptr <type> type, std::string name);
+        parameter (std::shared_ptr <type> type, std::string name);
 
         const std::shared_ptr <type> getType () const;
         std::shared_ptr <type>  getType ();

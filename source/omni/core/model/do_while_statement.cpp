@@ -6,8 +6,13 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/NoFolder.h>
 
-omni::core::model::do_while_statement::do_while_statement (omni::core::model::scope & parent) :
-    while_statement (parent)
+omni::core::model::do_while_statement::do_while_statement () :
+    while_statement ()
+{
+}
+
+omni::core::model::do_while_statement::do_while_statement (std::shared_ptr <omni::core::model::expression> condition, std::shared_ptr <omni::core::model::block> body) :
+    while_statement (condition, body)
 {
 }
 

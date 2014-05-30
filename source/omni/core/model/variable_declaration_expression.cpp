@@ -8,15 +8,31 @@
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/NoFolder.h>
 
+omni::core::model::variable_declaration_expression::variable_declaration_expression () :
+    pure_expression (),
+    _type (),
+    _llvmPointerValue (nullptr)
+{
+}
+
 /**
 @param variableType The type of the variable.
 **/
-omni::core::model::variable_declaration_expression::variable_declaration_expression (omni::core::model::scope & parent) :
-    pure_expression (parent),
-    _type (),
-    _initializationExpression (),
+omni::core::model::variable_declaration_expression::variable_declaration_expression (std::shared_ptr <omni::core::model::type> type) :
+    pure_expression (),
+    _type (type),
     _llvmPointerValue (nullptr)
 {
+}
+
+/**
+**/
+omni::core::model::variable_declaration_expression::variable_declaration_expression (std::shared_ptr <omni::core::model::expression> initializer) :
+    pure_expression (),
+    _type (),
+    _llvmPointerValue (nullptr)
+{
+    setInitializationExpression (initializer);
 }
 
 /**
@@ -33,7 +49,7 @@ Changes the type of this variable to `type' and sets the initializer to nullptr.
 void omni::core::model::variable_declaration_expression::setType (std::shared_ptr <omni::core::model::type> type)
 {
     _type = type;
-    _initializationExpression.reset ();
+    removeComponent (domain::expression, "initializer");
 }
 
 /**
@@ -41,7 +57,7 @@ Returns the expression that this variable will be initialized with. Can be nullp
 **/
 std::shared_ptr <omni::core::model::expression> omni::core::model::variable_declaration_expression::getInitializationExpression () const
 {
-    return _initializationExpression;
+    return getComponentAs <expression> (domain::expression, "initializer");
 }
 
 /**
@@ -49,7 +65,7 @@ Sets the initialization-expression of this varibale to `initializer' and changes
 **/
 void omni::core::model::variable_declaration_expression::setInitializationExpression (std::shared_ptr <omni::core::model::expression> initializer)
 {
-    _initializationExpression = initializer;
+    setComponent (domain::expression, "initializer", initializer);
     _type = initializer->getType ();
 }
 
@@ -65,9 +81,11 @@ omni::core::statement_emit_result omni::core::model::variable_declaration_expres
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     _llvmPointerValue = builder.CreateAlloca (_type->llvmType ());
-    if (_initializationExpression != nullptr) {
-        return variable_assignment_expression::llvmEmitImpl (llvmBasicBlock, * this, * _initializationExpression);
+    std::shared_ptr <expression> initializationExpression = getInitializationExpression ();
+    if (initializationExpression != nullptr) {
+        return variable_assignment_expression::llvmEmitImpl (llvmBasicBlock, * this, * initializationExpression);
     } else {
         return statement_emit_result (llvmBasicBlock, builder.CreateLoad (_llvmPointerValue));
     }
 }
+ 

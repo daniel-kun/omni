@@ -55,8 +55,8 @@ template <> class value_provider <unsigned long long> : public unsigned_provider
 Initializes this builtin_literal in the given context with the provided value.
 **/
 template <typename T>
-omni::core::model::builtin_literal <T>::builtin_literal (omni::core::model::scope & parent, T value) :
-    literal (parent, type::sharedBasicType (* parent.getContext (), native_type_to_type_class <T>::typeClass)),
+omni::core::model::builtin_literal <T>::builtin_literal (omni::core::context & context, T value) :
+    literal (type::sharedBasicType (context, native_type_to_type_class <T>::typeClass)),
     _value (value)
 {
 }

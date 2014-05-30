@@ -13,15 +13,19 @@ Initializes this if_statement with the given condition and the given true- and e
 @param trueBlock The block that will be executed when the condition is true. The trueBlock must be provided.
 @param elseBlock The block that will be executed when the condition is false. The elseBlock is optional and can be nullptr.
 **/
-omni::core::model::if_statement::if_statement (omni::core::model::scope & parent,
-                                               std::shared_ptr <expression> condition,
+omni::core::model::if_statement::if_statement (std::shared_ptr <expression> condition,
                                                std::shared_ptr <block> trueBlock,
                                                std::shared_ptr <block> elseBlock) :
-    statement (parent),
-    _condition (condition),
-    _trueBlock (trueBlock),
-    _elseBlock (elseBlock)
+    statement ()
 {
+    setCondition (condition);
+    setTrueBlock (trueBlock);
+    setElseBlock (elseBlock);
+}
+
+void omni::core::model::if_statement::setCondition (std::shared_ptr <omni::core::model::expression> condition)
+{
+    setComponent (domain::expression, "condition", condition);
 }
 
 /**
@@ -29,7 +33,7 @@ omni::core::model::if_statement::if_statement (omni::core::model::scope & parent
 **/
 std::shared_ptr <omni::core::model::expression> omni::core::model::if_statement::getCondition ()
 {
-    return _condition;
+    return getComponentAs <expression> (domain::expression, "condition");
 }
 
 /**
@@ -37,7 +41,12 @@ std::shared_ptr <omni::core::model::expression> omni::core::model::if_statement:
 **/
 const std::shared_ptr <omni::core::model::expression> omni::core::model::if_statement::getCondition () const
 {
-    return _condition;
+    return getComponentAs <expression> (domain::expression, "condition");
+}
+
+void omni::core::model::if_statement::setTrueBlock (std::shared_ptr <omni::core::model::block> trueBlock)
+{
+    setComponent (domain::block, "trueBlock", trueBlock);
 }
 
 /**
@@ -45,7 +54,7 @@ const std::shared_ptr <omni::core::model::expression> omni::core::model::if_stat
 **/
 std::shared_ptr <omni::core::model::block> omni::core::model::if_statement::getTrueBlock ()
 {
-    return _trueBlock;
+    return getComponentAs <block> (domain::block, "trueBlock");
 }
 
 /**
@@ -53,7 +62,12 @@ std::shared_ptr <omni::core::model::block> omni::core::model::if_statement::getT
 **/
 const std::shared_ptr <omni::core::model::block> omni::core::model::if_statement::getTrueBlock () const
 {
-    return _trueBlock;
+    return getComponentAs <block> (domain::block, "trueBlock");
+}
+
+void omni::core::model::if_statement::setElseBlock (std::shared_ptr <omni::core::model::block> elseBlock)
+{
+    setComponent (domain::block, "elseBlock", elseBlock);
 }
 
 /**
@@ -61,7 +75,7 @@ const std::shared_ptr <omni::core::model::block> omni::core::model::if_statement
 **/
 std::shared_ptr <omni::core::model::block> omni::core::model::if_statement::getElseBlock ()
 {
-    return _elseBlock;
+    return getComponentAs <block> (domain::block, "elseBlock");
 }
 
 /**
@@ -69,7 +83,7 @@ std::shared_ptr <omni::core::model::block> omni::core::model::if_statement::getE
 **/
 const std::shared_ptr <omni::core::model::block> omni::core::model::if_statement::getElseBlock () const
 {
-    return _elseBlock;
+    return getComponentAs <block> (domain::block, "elseBlock");
 }
 
 /**
@@ -77,13 +91,14 @@ const std::shared_ptr <omni::core::model::block> omni::core::model::if_statement
 **/
 omni::core::statement_emit_result omni::core::model::if_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
-    llvm::BasicBlock * llvmTrueBlock = _trueBlock->llvmEmit (llvmBasicBlock).getContinueBlock ();
+    llvm::BasicBlock * llvmTrueBlock = getTrueBlock ()->llvmEmit (llvmBasicBlock).getContinueBlock ();
     llvm::BasicBlock * llvmFalseBlock = nullptr;
 
     bool terminatorNeeded = false;
 
-    if (_elseBlock != nullptr) {
-        llvmFalseBlock = _elseBlock->llvmEmit (llvmBasicBlock).getContinueBlock ();
+    std::shared_ptr <block> elseBlock = getElseBlock ();
+    if (elseBlock != nullptr) {
+        llvmFalseBlock = elseBlock->llvmEmit (llvmBasicBlock).getContinueBlock ();
         if (llvmFalseBlock->getTerminator () == nullptr) {
             terminatorNeeded = true;
         }
@@ -109,7 +124,7 @@ omni::core::statement_emit_result omni::core::model::if_statement::llvmEmit (llv
     }
 
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
-    builder.CreateCondBr (_condition->llvmEmit (llvmBasicBlock).getValue (), llvmTrueBlock, llvmFalseBlock);
+    builder.CreateCondBr (getCondition ()->llvmEmit (llvmBasicBlock).getValue (), llvmTrueBlock, llvmFalseBlock);
 
     return statement_emit_result (result, nullptr);
 }

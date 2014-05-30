@@ -1,7 +1,7 @@
 #include <omni/core/model/parameter.hpp>
 
-omni::core::model::parameter::parameter (omni::core::model::scope & parent, std::shared_ptr <type> type, std::string name) :
-    scope (& parent, name),
+omni::core::model::parameter::parameter (std::shared_ptr <type> type, std::string name) :
+    scope (name),
     _type (type)
 {
 }

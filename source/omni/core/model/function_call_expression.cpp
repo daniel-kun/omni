@@ -6,32 +6,34 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/NoFolder.h>
 
+#include <boost/lexical_cast.hpp>
+
 /**
 Initializes this function call expression without any function to call.
 **/
-omni::core::model::function_call_expression::function_call_expression (omni::core::model::scope & parent) :
-    modifying_expression (parent),
+omni::core::model::function_call_expression::function_call_expression () :
+    modifying_expression (),
     _function (),
-    _parameters ()
+    _paramCount (0u)
 {
 }
 
 /**
 Initializes this function call expression to call the function `func'.
 **/
-omni::core::model::function_call_expression::function_call_expression (omni::core::model::scope & parent, std::shared_ptr <function_prototype> func) :
-    modifying_expression (parent),
+omni::core::model::function_call_expression::function_call_expression (std::shared_ptr <function_prototype> func) :
+    modifying_expression (),
     _function (func),
-    _parameters ()
+    _paramCount (0u)
 {
 }
 
-omni::core::model::function_call_expression::function_call_expression (omni::core::model::scope & parent, std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters) :
-    modifying_expression (parent),
+omni::core::model::function_call_expression::function_call_expression (std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters) :
+    modifying_expression (),
     _function  (func),
-    _parameters (parameters)
+    _paramCount (0u)
 {
-
+    setParameters (parameters);
 }
 
 std::shared_ptr <omni::core::model::type> omni::core::model::function_call_expression::getType () const
@@ -70,7 +72,7 @@ must match those of the function that has been passed to the ctor or was set usi
 **/
 void omni::core::model::function_call_expression::addParameter (std::shared_ptr <expression> parameter)
 {
-    _parameters.push_back (parameter);
+    setComponent (domain::expression, "parameter" + boost::lexical_cast <std::string> (++ _paramCount), parameter);
 }
 
 /**
@@ -80,7 +82,19 @@ must match those of the function that has been passed to the ctor or was set usi
 **/
 void omni::core::model::function_call_expression::setParameters (std::vector <std::shared_ptr <expression>> parameters)
 {
-    _parameters = parameters;
+    clearComponents ();
+    for (auto i : parameters) {
+        addParameter (i);
+    }
+}
+
+std::vector <std::shared_ptr <omni::core::model::expression>> omni::core::model::function_call_expression::getParameters ()
+{
+    std::vector <std::shared_ptr <omni::core::model::expression>> result;
+    for (auto i : getComponentsStartingWithAs <expression> (domain::expression, "parameter")) {
+        result.push_back (i.second);
+    }
+    return result;
 }
 
 /**
@@ -91,10 +105,10 @@ omni::core::statement_emit_result omni::core::model::function_call_expression::l
 {
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
 
-    std::vector <llvm::Value*> llvmParameters;
-    for (auto p : _parameters) {
+    std::vector <llvm::Value*> llvmParameterArguments;
+    for (auto p : getParameters ()) {
         llvm::Value * val = p->llvmEmit (llvmBasicBlock).getValue ();
-        llvmParameters.push_back (val);
+        llvmParameterArguments.push_back (val);
     }
-    return statement_emit_result (llvmBasicBlock, builder.CreateCall (_function->llvmFunction (), llvmParameters));
+    return statement_emit_result (llvmBasicBlock, builder.CreateCall (_function->llvmFunction (), llvmParameterArguments));
 }

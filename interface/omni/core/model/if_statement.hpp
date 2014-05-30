@@ -18,23 +18,21 @@ namespace model {
     **/
     class OMNI_CORE_API if_statement : public statement {
     public:
-        if_statement (scope & parent, std::shared_ptr <expression> condition, std::shared_ptr <block> trueBlock, std::shared_ptr <block> elseBlock);
+        if_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> trueBlock, std::shared_ptr <block> elseBlock);
 
+        void setCondition (std::shared_ptr <expression> condition);
         std::shared_ptr <expression> getCondition ();
         const std::shared_ptr <expression> getCondition () const;
 
+        void setTrueBlock (std::shared_ptr <block> trueBlock);
         std::shared_ptr <block> getTrueBlock ();
         const std::shared_ptr <block> getTrueBlock () const;
 
+        void setElseBlock (std::shared_ptr <block> elseBlock);
         std::shared_ptr <block> getElseBlock ();
         const std::shared_ptr <block> getElseBlock () const;
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
-
-    private:
-        std::shared_ptr <expression> _condition;
-        std::shared_ptr <block> _trueBlock;
-        std::shared_ptr <block> _elseBlock; // May be null
     };
 
 } // namespace model

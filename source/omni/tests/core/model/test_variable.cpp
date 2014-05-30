@@ -33,7 +33,7 @@ void testVariables (T initializationValue, T assignmentValue)
     BOOST_CHECK_NE (initializationValue, assignmentValue);
     using namespace omni::core;
     context c;
-    module m (c, "test");
+    model::module m (c, "test");
     
     // Declare a variable with the initial value of `initializationValue':
     auto variableInitializationLiteral = std::make_shared <model::builtin_literal<T>> (c, initializationValue);
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE (mixedTests)
 {
     using namespace omni::core;
     context c;
-    module m (c, "test");
+    model::module m (c, "test");
     auto t = c.sharedBasicType (model::type_class::t_char);
     auto body = std::make_shared <model::block> ();
     // Declare a variable "A" that holds the letter 'A':
@@ -101,10 +101,10 @@ BOOST_AUTO_TEST_CASE (mixedTests)
     body->appendStatement (variableA);
     // Declare a second variable "B" that holds the value of variableA, incremented by 1. Hence, the value should be 'B'
     auto AplusBexpression = std::make_shared <model::binary_operator_expression> (
-        c,
+        * m.getContext (),
         model::binary_operator_expression::binary_operation::binary_plus_operation,
         std::make_shared <model::variable_expression> (variableA),
-        std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal<char>> (c, static_cast <char> (1))));
+        std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <char>> (c, static_cast <char> (1))));
     auto variableB = std::make_shared <model::variable_declaration_expression> (AplusBexpression);
     body->appendStatement (variableB);
     // Declare a third variable C that will be initialized with the letter 'A', but then (without usage of the letter 'A') it will be assigned
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE (mixedTests)
     auto variableCassignment = std::make_shared <model::variable_assignment_expression> (
         variableC,
         std::make_shared <model::binary_operator_expression> (
-            c,
+            * m.getContext (),
             model::binary_operator_expression::binary_operation::binary_plus_operation,
             std::make_shared <model::variable_expression> (variableB),
             std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal<char>> (c, static_cast <char> (1)))));
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE (mixedTests)
     // Now, return the value of variable "C", which should be 'C':
     body->appendStatement (std::make_shared <model::return_statement> (std::make_shared <model::variable_expression> (variableC)));
 
-    auto func = std::make_shared <model::function> (m, "test", c.sharedBasicType (model::type_class::t_char), body);
+    auto func = std::make_shared <model::function> ("test", c.sharedBasicType (model::type_class::t_char), body);
     m.addFunction (func);
 
     omni::tests::test_file_manager testFileManager;

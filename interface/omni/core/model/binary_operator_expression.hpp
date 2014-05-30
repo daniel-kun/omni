@@ -38,20 +38,20 @@ namespace model {
             binary_minus_operation // -
         };
 
-        binary_operator_expression (scope & parent, binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand);
+        binary_operator_expression (context & context, binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand);
+
+        void setLeftOperand (std::shared_ptr <expression> leftOperand);
+        std::shared_ptr <expression> getLeftOperand () const;
+        void setRightOperand (std::shared_ptr <expression> rightOperand);
+        std::shared_ptr <expression> getRightOperand () const;
 
         std::shared_ptr <type> getType () const override;
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 
-        std::shared_ptr <expression> getLeftOperand ();
-        std::shared_ptr <expression> getRightOperand ();
-
     private:
         std::shared_ptr <type> _type;
         binary_operation _operator;
-        std::shared_ptr <expression> _leftOperand;
-        std::shared_ptr <expression> _rightOperand;
     };
 
 } // namespace model

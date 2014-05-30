@@ -52,7 +52,7 @@ namespace {
 Initializes this module in the context `context' with the name `name'. A new, random id will be assigned to this module.
 **/
 omni::core::model::module::module (omni::core::context & context, std::string name) :
-    scope (nullptr, name),
+    scope (name),
     _llvmModule (),
     _context (context),
     _entryPoint ()
@@ -63,7 +63,7 @@ omni::core::model::module::module (omni::core::context & context, std::string na
 Initializes this existing module in the given context and the given name and moduleId.
 **/
 omni::core::model::module::module (context & context, id moduleId, std::string name) :
-    scope (nullptr, moduleId, name),
+    scope (moduleId, name),
     _llvmModule (),
     _context (context),
     _entryPoint ()
@@ -112,7 +112,7 @@ omni::core::id omni::core::model::module::createId (omni::core::domain domain)
         str << ++ counter;
         //strId = boost::lexical_cast <std::string> (uuid);
         strId = str.str ();
-    } while (findEntityById (id (domain, strId)).get () != nullptr);
+    } while (findContentById (id (domain, strId)).get () != nullptr);
     return id (domain, strId);
 }
 
@@ -159,7 +159,7 @@ void omni::core::model::module::emitAssemblyFile (llvm::raw_ostream & stream, co
 {
     llvm::Module & m (llvmModule ());
     
-    for (auto f : getEntities () [domain::function]) {
+    for (auto f : getComponents (domain::function)) {
         model::function_prototype & func = * std::dynamic_pointer_cast <model::function_prototype> (f.second);
         func.llvmFunction ();
     }
@@ -195,7 +195,7 @@ void omni::core::model::module::emitObjectFile (llvm::raw_ostream & stream, cons
     
     addDllMainIfMissing (_context, m);
     
-    for (auto f : getEntities () [domain::function]) {
+    for (auto f : getComponents (domain::function)) {
         model::function_prototype & func = * std::dynamic_pointer_cast <model::function_prototype> (f.second);
         func.llvmFunction ();
     }
@@ -259,7 +259,7 @@ void omni::core::model::module::emitSharedLibraryFile (std::string const & fileN
     }
     std::set <std::string> additionalLibraries;
     additionalLibraries.insert ("LIBCMT.LIB");
-    for (auto i : getEntities ()) {
+    for (auto i : getComponents ()) {
         for (auto p : i.second) {
             p.second->fillLibraries (additionalLibraries);
         }
@@ -301,7 +301,7 @@ bool omni::core::model::module::verify (std::string & errorInfo)
     llvm::Module & m (llvmModule ());
 
     try {
-        for (auto f : getEntities ()[domain::function]) {
+        for (auto f : getComponents (domain::function)) {
             model::function_prototype & func = *std::dynamic_pointer_cast <model::function_prototype> (f.second);
             func.llvmFunction ();
         }

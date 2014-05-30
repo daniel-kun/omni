@@ -14,13 +14,12 @@ by other functions that use that library or by module_emit_options::addLibrary()
 @param parameters A list of parameters that this function takes, if any. Can be an empty vector.
 @param isDllImport True, if this function is imported from a DLL. Only for Windows.
 **/
-omni::core::model::external_function::external_function (omni::core::model::scope & parent,
-                                                         std::string libraryName,
+omni::core::model::external_function::external_function (std::string libraryName,
                                                          std::string functionName,
                                                          std::shared_ptr <model::type> returnType,
                                                          std::vector <std::shared_ptr <parameter>> parameters,
                                                          bool isDllImport) :
-    function_prototype (parent, functionName, returnType, parameters),
+    function_prototype (functionName, returnType, parameters),
     _libraryName (libraryName),
     _isDllImport (isDllImport)
 {

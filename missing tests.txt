@@ -1,0 +1,75 @@
+If you are adding a public function or a method, immediately add it to this file, so it will not be forgotten to be unit-tested.
+
+
+class entity:
+* entity ();
+* entity (std::string const & name);
+* entity (id entityId, std::string const & name);
+* getContext ();
+* getContext () const;
+* getModule ();
+* getModule () const;
+* getParent ();
+* getParent () const;
+* setParent (scope * parent)
+* getComponents () const;
+* getComponents ();
+* getComponents (domain domain) const;
+* getComponents (domain domain);
+* getComponent (domain domain, std::string name) const;
+* template <typename T> getComponentAs (domain domain, std::string name) const;
+* getComponentsStartingWith (domain domain, std::string name) const;
+* template <typename T> getComponentsStartingWithAs (domain domain, std::string name) const;
+* setComponent (domain domain, std::string name, std::shared_ptr <entity> entity) = 0;
+* clearComponents ();
+* clearComponents (domain domain);
+* removeComponent (domain domain, std::string name);
+* removeComponent (omni::core::domain domain, std::shared_ptr <entity> component);
+* getName () const;
+* setName (const std::string & name);
+* setId (id newId);
+* getId () const;
+* fillLibraries (std::set <std::string> & libraries);
+
+class scope
+* scope (std::string name = std::string ());
+* scope (id scopeId, std::string name = std::string ());
+* void setComponent (domain domain, std::string name, std::shared_ptr <omni::core::model::entity> entity) override;
+
+class binary_operator_expression
+* void setLeftOperand (std::shared_ptr <expression> leftOperand);
+* std::shared_ptr <expression> getLeftOperand () const;
+* void setRightOperand (std::shared_ptr <expression> rightOperand);
+* std::shared_ptr <expression> getRightOperand () const;
+
+class bitcast_expression
+* void setSourceExpression (std::shared_ptr <expression> sourceExpression);
+* std::shared_ptr <expression> getSourceExpression () const;
+
+class block
+* statement_list::iterator statementsEnd ();
+
+class function_call_expression
+* std::vector <std::shared_ptr <expression>> getParameters ();
+
+class function_prototype
+* void addParameter (std::shared_ptr <parameter> parameter);
+* void setParameters (std::vector <std::shared_ptr <parameter>> parameters);
+* std::vector <std::shared_ptr <parameter>> getParameters () const;
+
+class if_statement
+* void setCondition (std::shared_ptr <expression> condition);
+* void setTrueBlock (std::shared_ptr <block> trueBlock);
+* void setElseBlock (std::shared_ptr <block> elseBlock);
+
+class return_statement
+* std::shared_ptr <expression> getExpression ();
+* const std::shared_ptr <expression> getExpression () const;
+* void setExpression (std::shared_ptr <expression> expression);
+
+class variable_assignment_expression
+* void setVariable (std::shared_ptr <variable_declaration_expression> variable);
+* void setValue (std::shared_ptr <expression> value);
+
+class variable_expression
+* void setVariable (std::shared_ptr <variable_declaration_expression> variable);

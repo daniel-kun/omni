@@ -17,7 +17,8 @@ namespace model {
     **/
     class OMNI_CORE_API while_statement : public statement {
     public:
-        while_statement (scope & parent);
+        while_statement ();
+        while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body);
 
         std::shared_ptr <expression> getCondition ();
         const std::shared_ptr <expression> getCondition () const;

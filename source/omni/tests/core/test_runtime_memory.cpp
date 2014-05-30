@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE (referenceCounting)
     using namespace omni::core;
 
     context c;
-    module m (c, "test");
+    model::module m (c, "test");
     runtime r (m);
 
     auto rawPtr= c.sharedBasicType (model::type_class::t_unsignedByte, 1);
