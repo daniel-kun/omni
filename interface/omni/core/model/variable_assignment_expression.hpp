@@ -21,6 +21,8 @@ namespace model {
     public:
         variable_assignment_expression (std::shared_ptr <variable_declaration_expression> variable, std::shared_ptr <expression> value);
 
+        domain getDomain () const override;
+
         void setVariable (std::shared_ptr <variable_declaration_expression> variable);
         std::shared_ptr <variable_declaration_expression> getVariable () const;
 

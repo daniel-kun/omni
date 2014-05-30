@@ -35,6 +35,11 @@ omni::core::model::variable_declaration_expression::variable_declaration_express
     setInitializationExpression (initializer);
 }
 
+omni::core::domain omni::core::model::variable_declaration_expression::getDomain () const
+{
+    return domain::variable_declaration_expression;
+}
+
 /**
 Returns the type of this variable_declaration_expression.
 **/

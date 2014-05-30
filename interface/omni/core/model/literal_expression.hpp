@@ -19,6 +19,8 @@ namespace model {
         literal_expression ();
         literal_expression (std::shared_ptr <literal> literal);
         
+        domain getDomain () const override;
+
         std::shared_ptr <literal> getLiteral ();
         const std::shared_ptr <literal> getLiteral () const;
         void setLiteral (std::shared_ptr <literal> literal);
@@ -26,6 +28,9 @@ namespace model {
         std::shared_ptr <type> getType () const override;
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
+
+    private:
+        std::shared_ptr <literal> _literal;
     };
 
 } // namespace model

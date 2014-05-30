@@ -22,6 +22,7 @@ namespace model {
     class module;
 
     /**
+    Abstract.
     Base class for all information that is part of a context, such as variable declarations.
     (later: function declarations, etc.).
     **/
@@ -40,6 +41,8 @@ namespace model {
 
         virtual module * getModule ();
         virtual const module * getModule () const;
+
+        virtual domain getDomain () const = 0;
 
         scope * getParent ();
         const scope * getParent () const;

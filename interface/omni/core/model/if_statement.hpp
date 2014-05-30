@@ -20,6 +20,8 @@ namespace model {
     public:
         if_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> trueBlock, std::shared_ptr <block> elseBlock);
 
+        domain getDomain () const override;
+
         void setCondition (std::shared_ptr <expression> condition);
         std::shared_ptr <expression> getCondition ();
         const std::shared_ptr <expression> getCondition () const;

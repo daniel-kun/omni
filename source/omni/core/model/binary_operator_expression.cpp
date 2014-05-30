@@ -41,6 +41,11 @@ omni::core::model::binary_operator_expression::binary_operator_expression (
     }
 }
 
+omni::core::domain omni::core::model::binary_operator_expression::getDomain () const
+{
+    return domain::binary_operator_expression;
+}
+
 void omni::core::model::binary_operator_expression::setLeftOperand (std::shared_ptr <omni::core::model::expression> leftOperand)
 {
     setComponent (domain::expression, "leftOperand", leftOperand);

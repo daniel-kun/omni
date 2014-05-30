@@ -23,6 +23,8 @@ namespace model {
         variable_declaration_expression (std::shared_ptr <type> type);
         variable_declaration_expression (std::shared_ptr <expression> initializer);
 
+        domain getDomain () const override;
+
         std::shared_ptr <type> getType () const override;
         void setType (std::shared_ptr <type> type);
 

@@ -16,6 +16,8 @@ namespace model {
     public:
         parameter (std::shared_ptr <type> type, std::string name);
 
+        domain getDomain () const override;
+
         const std::shared_ptr <type> getType () const;
         std::shared_ptr <type>  getType ();
 

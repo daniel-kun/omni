@@ -20,6 +20,8 @@ namespace model {
         return_statement ();
         return_statement (std::shared_ptr <expression> expression);
 
+        domain getDomain () const override;
+
         std::shared_ptr <expression> getExpression ();
         const std::shared_ptr <expression> getExpression () const;
         void setExpression (std::shared_ptr <expression> expression);

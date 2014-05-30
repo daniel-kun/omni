@@ -7,24 +7,29 @@ omni::core::model::literal_expression::literal_expression () :
 }
 
 omni::core::model::literal_expression::literal_expression (std::shared_ptr <omni::core::model::literal> literal) :
-    pure_expression ()
+    pure_expression (),
+    _literal (literal)
 {
-    setLiteral (literal);
+}
+
+omni::core::domain omni::core::model::literal_expression::getDomain () const
+{
+    return domain::literal_expression;
 }
 
 std::shared_ptr <omni::core::model::literal> omni::core::model::literal_expression::getLiteral ()
 {
-    return getComponentAs <literal> (domain::literal, "literal");
+    return _literal;
 }
 
 const std::shared_ptr <omni::core::model::literal> omni::core::model::literal_expression::getLiteral () const
 {
-    return getComponentAs <literal> (domain::literal, "literal");
+    return _literal;
 }
 
 void omni::core::model::literal_expression::setLiteral (std::shared_ptr <omni::core::model::literal> literal)
 {
-    setComponent (domain::literal, "literal", literal);
+    _literal = literal;
 }
 
 std::shared_ptr <omni::core::model::type> omni::core::model::literal_expression::getType () const

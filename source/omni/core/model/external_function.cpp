@@ -25,6 +25,11 @@ omni::core::model::external_function::external_function (std::string libraryName
 {
 }
 
+omni::core::domain omni::core::model::external_function::getDomain () const
+{
+    return domain::external_function;
+}
+
 /**
 Returns the library that this external function is defined in. The value has been passed in the constructor.
 The library will automatically be added to the linker when a shared library is emitted (@see context::emitSharedLibraryFile).

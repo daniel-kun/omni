@@ -16,6 +16,7 @@ namespace model {
     class type;
 
     /**
+    Abstract.
     A literal is a compile-time static value that can be used as expressions.
     To access the value of a literal e.g. as a function parameter or in an assignment or similar,
     use literal_expression.

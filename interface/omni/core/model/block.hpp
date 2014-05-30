@@ -27,6 +27,8 @@ namespace model {
 
         block ();
 
+        domain getDomain () const override;
+
         const statement_list getStatements () const;
         statement_list::iterator findStatement (std::shared_ptr <statement> statement);
         statement_list::iterator statementsEnd ();

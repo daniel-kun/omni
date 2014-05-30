@@ -12,6 +12,11 @@ omni::core::model::block::block () :
 {
 }
 
+omni::core::domain omni::core::model::block::getDomain () const
+{
+    return domain::block;
+}
+
 /**
 @return Returns the list of statements that this block contains.
 **/

@@ -20,6 +20,8 @@ namespace model {
     public:
         explicit builtin_literal (omni::core::context & context, T value);
 
+        domain getDomain () const override;
+
         static const type_class typeClass = native_type_to_type_class <T>::typeClass;
 
         virtual llvm::Value * llvmValue ();

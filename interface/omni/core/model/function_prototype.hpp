@@ -29,6 +29,7 @@ namespace model {
     class type;
 
     /**
+    Abstract.
     A function_prototype defines the name, return type and parameters of a function and adds basic functionalities to read and modify these values.
     **/
     class OMNI_CORE_API function_prototype : public scope {

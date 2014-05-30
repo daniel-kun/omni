@@ -29,6 +29,11 @@ omni::core::model::function::function (std::string const & name,
     setComponent (domain::block, "body", body);
 }
 
+omni::core::domain omni::core::model::function::getDomain () const
+{
+    return domain::function;
+}
+
 /**
 Returns true, if this function is exported from the module it is defined in. Depending on what kind of module it is, exporting
 has different meanings.

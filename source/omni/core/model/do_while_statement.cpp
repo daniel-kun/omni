@@ -16,6 +16,11 @@ omni::core::model::do_while_statement::do_while_statement (std::shared_ptr <omni
 {
 }
 
+omni::core::domain omni::core::model::do_while_statement::getDomain () const
+{
+    return domain::do_while_statement;
+}
+
 omni::core::statement_emit_result omni::core::model::do_while_statement::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     llvm::BasicBlock * whileBlock = getBody ()->llvmEmit (llvmBasicBlock).getContinueBlock ();

@@ -27,6 +27,10 @@ omni::core::model::scope::scope (id scopeId, std::string name) :
 {
 }
 
+omni::core::model::scope::~scope ()
+{
+}
+
 /**
 Finds any entity of this scope by it's unique id. The entity has to be added to this context before it can be found.
 This happens when the entity is created using one of the create...-functions or the entity has been added via one of the add...-functions.

@@ -35,6 +35,8 @@ namespace model {
         module (context & context, std::string name = std::string ());
         module (context & context, id moduleId, std::string name = std::string ());
 
+        domain getDomain () const override;
+
         context * getContext () override;
         const context * getContext () const override;
 

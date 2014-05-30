@@ -23,8 +23,10 @@ namespace model {
         virtual context * getContext ();
         virtual const context * getContext () const;
 
-        virtual module * getModule ();
-        virtual const module * getModule () const;
+        domain getDomain () const override;
+
+        module * getModule () override;
+        const module * getModule () const override;
 
         void setComponent (domain domain, std::string name, std::shared_ptr <entity> entity) override;
 

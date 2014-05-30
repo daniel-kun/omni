@@ -24,6 +24,7 @@ namespace model {
     class module;
     
     /**
+    Abstract.
     A scope contains a list of entities, which are themselves scopes.
     **/
     class OMNI_CORE_API scope : public entity {
@@ -31,6 +32,7 @@ namespace model {
 
         scope (std::string name = std::string ());
         scope (id scopeId, std::string name = std::string ());
+        ~ scope () = 0;
 
         void setComponent (domain domain, std::string name, std::shared_ptr <omni::core::model::entity> entity) override;
 

@@ -15,6 +15,11 @@ omni::core::model::return_statement::return_statement (std::shared_ptr <expressi
     setExpression (expression);
 }
 
+omni::core::domain omni::core::model::return_statement::getDomain () const
+{
+    return domain::return_statement;
+}
+
 std::shared_ptr <omni::core::model::expression> omni::core::model::return_statement::getExpression ()
 {
     return getComponentAs <expression> (domain::expression, "expression");

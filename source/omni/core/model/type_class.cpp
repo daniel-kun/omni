@@ -1,7 +1,7 @@
 #include <omni/core/model/type_class.hpp>
 #include <omni/core/not_implemented_error.hpp>
 
-std::ostream & operator << (std::ostream & lhs, const omni::core::model::type_class rhs)
+std::ostream & omni::core::model::operator << (std::ostream & lhs, const omni::core::model::type_class rhs)
 {
     using namespace omni::core::model;
 

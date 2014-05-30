@@ -36,6 +36,11 @@ omni::core::model::function_call_expression::function_call_expression (std::shar
     setParameters (parameters);
 }
 
+omni::core::domain omni::core::model::function_call_expression::getDomain () const
+{
+    return domain::function_call_expression;
+}
+
 std::shared_ptr <omni::core::model::type> omni::core::model::function_call_expression::getType () const
 {
     return _function->getReturnType ();

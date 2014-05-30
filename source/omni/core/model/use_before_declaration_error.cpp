@@ -7,7 +7,7 @@ std::string buildUseBeforeDeclarationErrorMessage (omni::core::domain domain, st
 {
     std::stringstream result;
     switch (domain) {
-    case omni::core::domain::variable:
+    case omni::core::domain::variable_expression:
         result << "Variable " << identifier << " was used, before it was declared.";
         break;
     default:

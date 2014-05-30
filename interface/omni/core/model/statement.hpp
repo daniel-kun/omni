@@ -15,6 +15,7 @@ namespace core {
 namespace model {
 
     /**
+    Abstract.
     A statement can be anything that is being executed in a block.
     There is a distinction between statements that return a result ("expressions") and all other statements that do not
     return a result. Everything that returns a result derives from omni::core::expression, while anything else does directly

@@ -61,6 +61,12 @@ omni::core::model::builtin_literal <T>::builtin_literal (omni::core::context & c
 {
 }
 
+template <typename T>
+omni::core::domain omni::core::model::builtin_literal <T>::getDomain () const
+{
+    return domain::builtin_literal;
+}
+
 /**
 Internal
 **/

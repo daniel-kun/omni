@@ -70,6 +70,11 @@ omni::core::model::module::module (context & context, id moduleId, std::string n
 {
 }
 
+omni::core::domain omni::core::model::module::getDomain () const
+{
+    return domain::module;
+}
+
 /**
 Returns the context that this module is defined in.
 **/

@@ -9,6 +9,7 @@ namespace core {
 namespace model {
 
     /**
+    Abstract.
     An pure_expression is an expression that does not modify it's operands and does not have side-effects.
     A pure_expression does not have any special functionality or properties, it is just a kind of a class of expressions.
     @see modifying_expression

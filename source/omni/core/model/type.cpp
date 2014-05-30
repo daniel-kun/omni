@@ -44,6 +44,11 @@ omni::core::model::type::~ type ()
 }
 
 
+omni::core::domain omni::core::model::type::getDomain () const
+{
+    return domain::type;
+}
+
 omni::core::context * omni::core::model::type::getContext ()
 {
     return & _context;

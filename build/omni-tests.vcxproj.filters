@@ -75,6 +75,12 @@
     <ClCompile Include="..\source\omni\tests\core\input\test_syntax_tree_parser_xml.cpp">
       <Filter>Quelldateien\core\input</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_domain.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_entity.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />

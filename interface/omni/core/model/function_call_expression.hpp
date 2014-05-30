@@ -28,6 +28,8 @@ namespace model {
         function_call_expression (std::shared_ptr <function_prototype> func);
         function_call_expression (std::shared_ptr <function_prototype> func, std::vector <std::shared_ptr <expression>> parameters);
 
+        domain getDomain () const override;
+
         std::shared_ptr <type> getType () const override;
 
         void setFunction (std::shared_ptr <function_prototype> func);

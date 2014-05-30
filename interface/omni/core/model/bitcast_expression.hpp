@@ -8,25 +8,27 @@ namespace omni {
 namespace core {
 namespace model {
 
-/**
-A bitcast_expression casts one type to another, where both types have the same bit width.
-The cast does not change any bits, but instead just reinterprets the given bits to be a value of the given target type.
-bitcasts are dangerous and are usually only used internal in the compiler. Most likely, they will not surface in the omni language.
-**/
-class OMNI_CORE_API bitcast_expression : public cast_expression {
-public:
-    bitcast_expression (std::shared_ptr <expression> sourceExpression, std::shared_ptr <type> targetType);
+    /**
+    A bitcast_expression casts one type to another, where both types have the same bit width.
+    The cast does not change any bits, but instead just reinterprets the given bits to be a value of the given target type.
+    bitcasts are dangerous and are usually only used internal in the compiler. Most likely, they will not surface in the omni language.
+    **/
+    class OMNI_CORE_API bitcast_expression : public cast_expression {
+    public:
+        bitcast_expression (std::shared_ptr <expression> sourceExpression, std::shared_ptr <type> targetType);
 
-    void setSourceExpression (std::shared_ptr <expression> sourceExpression);
-    std::shared_ptr <expression> getSourceExpression () const;
+        domain getDomain () const override;
 
-    std::shared_ptr <type> getType () const override;
+        void setSourceExpression (std::shared_ptr <expression> sourceExpression);
+        std::shared_ptr <expression> getSourceExpression () const;
 
-    statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
+        std::shared_ptr <type> getType () const override;
 
-private:
-    std::shared_ptr <type>       _targetType;
-};
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
+
+    private:
+        std::shared_ptr <type>       _targetType;
+    };
 
 } // namespace model
 } // namespace core

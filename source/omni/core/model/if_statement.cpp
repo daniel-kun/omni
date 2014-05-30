@@ -23,6 +23,11 @@ omni::core::model::if_statement::if_statement (std::shared_ptr <expression> cond
     setElseBlock (elseBlock);
 }
 
+omni::core::domain omni::core::model::if_statement::getDomain () const
+{
+    return domain::if_statement;
+}
+
 void omni::core::model::if_statement::setCondition (std::shared_ptr <omni::core::model::expression> condition)
 {
     setComponent (domain::expression, "condition", condition);

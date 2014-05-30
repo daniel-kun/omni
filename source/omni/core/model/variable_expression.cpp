@@ -16,6 +16,11 @@ omni::core::model::variable_expression::variable_expression (std::shared_ptr <va
     setVariable (variable);
 }
 
+omni::core::domain omni::core::model::variable_expression::getDomain () const
+{
+    return domain::variable_expression;
+}
+
 std::shared_ptr <omni::core::model::type> omni::core::model::variable_expression::getType () const
 {
     return _variable->getType ();
@@ -41,7 +46,7 @@ omni::core::statement_emit_result omni::core::model::variable_expression::llvmEm
 {
     llvm::Value * pointerValue = _variable->llvmPointerValue ();
     if (pointerValue == nullptr) {
-        throw use_before_declaration_error (omni::core::domain::variable, _variable->getName ());
+        throw use_before_declaration_error (omni::core::domain::variable_expression, _variable->getName ());
     }
     llvm::IRBuilder <true, llvm::NoFolder> builder (llvmBasicBlock);
     return statement_emit_result (llvmBasicBlock, builder.CreateLoad (pointerValue));

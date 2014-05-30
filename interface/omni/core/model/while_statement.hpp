@@ -20,6 +20,8 @@ namespace model {
         while_statement ();
         while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body);
 
+        domain getDomain () const override;
+
         std::shared_ptr <expression> getCondition ();
         const std::shared_ptr <expression> getCondition () const;
         void setCondition (std::shared_ptr <expression> condition);

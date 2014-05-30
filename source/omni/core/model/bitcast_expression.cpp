@@ -15,6 +15,11 @@ omni::core::model::bitcast_expression::bitcast_expression (std::shared_ptr <expr
     setSourceExpression (sourceExpression);
 }
 
+omni::core::domain omni::core::model::bitcast_expression::getDomain () const
+{
+    return domain::bitcast_expression;
+}
+
 void omni::core::model::bitcast_expression::setSourceExpression (std::shared_ptr <omni::core::model::expression> sourceExpression)
 {
     setComponent (domain::expression, "sourceExpression", sourceExpression);

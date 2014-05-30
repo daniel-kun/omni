@@ -27,10 +27,10 @@ namespace model {
         t_enum
     };
 
+    std::ostream OMNI_CORE_API & operator << (std::ostream & lhs, const omni::core::model::type_class rhs);
+
 } // namespace model
 } // namespace core
 } // namespace omni
-
-std::ostream & operator << (std::ostream & lhs, const omni::core::model::type_class rhs);
 
 #endif // include guard

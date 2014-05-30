@@ -1,7 +1,8 @@
-#ifndef OMNI_CORE_ID_DOMAIN_HPP
-#define OMNI_CORE_ID_DOMAIN_HPP
+#ifndef OMNI_CORE_DOMAIN_HPP
+#define OMNI_CORE_DOMAIN_HPP
 
 #include <omni/core/core.hpp>
+#include <ostream>
 
 namespace omni {
 namespace core {
@@ -14,15 +15,31 @@ namespace core {
     enum class domain {
         invalid,
         first,
-        variable = first,
-        expression,
-        statement,
-        function,
+        binary_operator_expression = first,
+        bitcast_expression,
         block,
-        parameter,
+        builtin_literal,
+        do_while_statement,
+        expression,
+        external_function,
+        function,
+        function_call_expression,
+        if_statement,
         literal,
-        last = block,
+        literal_expression,
+        module,
+        parameter,
+        return_statement,
+        statement,
+        type,
+        variable_assignment_expression,
+        variable_declaration_expression,
+        variable_expression,
+        while_statement,
+        last = while_statement,
     };
+
+    std::ostream OMNI_CORE_API & operator << (std::ostream & lhs, omni::core::domain rhs);
 
 } // namespace core
 } // namespace omni

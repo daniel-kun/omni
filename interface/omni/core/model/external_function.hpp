@@ -22,6 +22,8 @@ namespace model {
                            std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> (),
                            bool isDllImport = false);
 
+        domain getDomain () const override;
+
         std::string getLibraryName () const;
         bool isDllImport () const;
 

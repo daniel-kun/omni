@@ -21,6 +21,11 @@ omni::core::model::variable_assignment_expression::variable_assignment_expressio
     }
 }
 
+omni::core::domain omni::core::model::variable_assignment_expression::getDomain () const
+{
+    return domain::variable_assignment_expression;
+}
+
 void omni::core::model::variable_assignment_expression::setVariable (std::shared_ptr <omni::core::model::variable_declaration_expression> variable)
 {
     _variable = variable;

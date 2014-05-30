@@ -20,6 +20,8 @@ namespace model {
     public:
         function (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body, bool isExported = false);
 
+        domain getDomain () const override;
+
         bool isExported () const;
 
         const std::shared_ptr <block> getBody () const;

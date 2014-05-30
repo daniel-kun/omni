@@ -25,6 +25,11 @@ omni::core::model::while_statement::while_statement (std::shared_ptr <omni::core
     setBody (body);
 }
 
+omni::core::domain omni::core::model::while_statement::getDomain () const
+{
+    return domain::while_statement;
+}
+
 /**
 Returns the condition on which the while_statement keeps repeating it's body.
 **/
