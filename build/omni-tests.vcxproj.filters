@@ -81,6 +81,9 @@
     <ClCompile Include="..\source\omni\tests\core\model\test_entity.cpp">
       <Filter>Quelldateien\core\model</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\test_id.cpp">
+      <Filter>Quelldateien\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />
