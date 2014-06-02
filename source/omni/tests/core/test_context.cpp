@@ -69,7 +69,6 @@ BOOST_AUTO_TEST_CASE (createAndFindFunction)
 
     BOOST_CHECK (mod.findContentById (func->getId ()) != std::shared_ptr <model::entity> ());
     BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.findContentById (func->getId ()))->getName () == functionName);
-
 }
 
 /**

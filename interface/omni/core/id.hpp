@@ -5,6 +5,7 @@
 #include <omni/core/domain.hpp>
 
 #include <string>
+#include <ostream>
 
 namespace omni {
 namespace core {
@@ -19,6 +20,7 @@ namespace core {
         id (domain domain, std::string id);
 
         bool operator<(id const & rhs) const;
+        bool operator==(id const & rhs) const;
 
         bool isValid () const;
         domain getDomain () const;
@@ -28,6 +30,8 @@ namespace core {
         domain _domain;
         std::string _id;
     };
+
+    std::ostream OMNI_CORE_API & operator << (std::ostream & lhs, id const & rhs);
 
 } // namespace core
 } // namespace omni

@@ -164,9 +164,6 @@
     <ClCompile Include="..\source\omni\core\statement_emit_result.cpp" />
     <ClCompile Include="..\source\omni\core\verification_failed_eror.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\resources\syntax.xml" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

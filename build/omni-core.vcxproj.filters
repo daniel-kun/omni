@@ -25,9 +25,6 @@
     <Filter Include="Quelldateien\input">
       <UniqueIdentifier>{5b87f2de-3b47-4242-945e-b2cfe51d421d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="resources">
-      <UniqueIdentifier>{bb903489-f6c8-4ea9-8f17-8881c0b548b5}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\interface\omni\core\already_exists_error.hpp">
@@ -371,10 +368,5 @@
     <ClCompile Include="..\source\omni\core\model\scope.cpp">
       <Filter>Quelldateien\model</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\resources\syntax.xml">
-      <Filter>resources</Filter>
-    </Xml>
   </ItemGroup>
 </Project>

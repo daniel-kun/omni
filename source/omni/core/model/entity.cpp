@@ -5,8 +5,7 @@
 
 /**
 Initializes this entity with an empty name and an invalid id.
-The name can be left empty, as long as the actual kind of context part does not require a name.
-The id will be set as soon as this context part is added to a context.
+The id will be set as soon as this entity is added to a context.
 **/
 omni::core::model::entity::entity () :
     _parent (),
@@ -16,7 +15,8 @@ omni::core::model::entity::entity () :
 }
 
 /**
-Initializes this entity within the given parent and with the given name.
+Initializes this entity with the given name.
+The id will be set as soon as this entity is added to a context.
 **/
 omni::core::model::entity::entity (std::string const & name) :
     _parent (),
@@ -88,9 +88,20 @@ const omni::core::model::scope * omni::core::model::entity::getParent () const
     return _parent;
 }
 
+/**
+Changes the parent of this entity to the given parent.
+This should never be called explicitly - the parent is automatically changed as soon as this entity
+becomes a component of another entity.
+When this entity does not have an id, yet, and the new parent is already added to a module, this entity and all components 
+that do not already have an id will be assigned a newly created id each.
+**/
 void omni::core::model::entity::setParent (scope * parent)
 {
     _parent = parent;
+    module * mod = getModule ();
+    if (mod != nullptr) {
+        updateIds ();
+    }
 }
 
 
@@ -114,27 +125,47 @@ omni::core::id omni::core::model::entity::getId () const
     return _id;
 }
 
-const omni::core::model::entity::domain_id_to_entities_map & omni::core::model::entity::getComponents () const
+/**
+Recursively sets the ids of all components their components that do not have an id, yet.
+Only call this function when getModule () does not return nullptr!
+**/
+void omni::core::model::entity::updateIds ()
+{
+    // Set ids for components that do not already have an id:
+    module * mod = getModule ();
+    if (! getId ().isValid ()) {
+        setId (mod->createId (getDomain ()));
+    }
+    for (auto d : getComponents ()) {
+        for (auto c : d.second) {
+            if (! c.second->getId ().isValid ()) {
+                c.second->updateIds ();
+            }
+        }
+    }
+}
+
+const omni::core::model::entity::domain_to_name_to_entities_map & omni::core::model::entity::getComponents () const
 {
     return _components;
 }
 
-omni::core::model::entity::domain_id_to_entities_map omni::core::model::entity::getComponents ()
+omni::core::model::entity::domain_to_name_to_entities_map omni::core::model::entity::getComponents ()
 {
     return _components;
 }
 
-const omni::core::model::entity::id_to_entities_map omni::core::model::entity::getComponents (omni::core::domain domain) const
+const omni::core::model::entity::name_to_entities_map omni::core::model::entity::getComponents (omni::core::domain domain) const
 {
     auto it = _components.find (domain);
     if (it != _components.end ()) {
         return it->second;
     } else {
-        return omni::core::model::entity::id_to_entities_map ();
+        return omni::core::model::entity::name_to_entities_map ();
     }
 }
 
-omni::core::model::entity::id_to_entities_map omni::core::model::entity::getComponents (omni::core::domain domain)
+omni::core::model::entity::name_to_entities_map omni::core::model::entity::getComponents (omni::core::domain domain)
 {
     return _components [domain];
 }

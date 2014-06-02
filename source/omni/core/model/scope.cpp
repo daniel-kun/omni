@@ -39,12 +39,14 @@ This happens when the entity is created using one of the create...-functions or 
 **/
 std::shared_ptr <omni::core::model::entity> omni::core::model::scope::findContentById (omni::core::id id)
 {
-    id_to_entities_map & m (getComponents (id.getDomain ()));
-    id_to_entities_map::iterator i = m.find (id.getId ());
-    if (i != m.end ()) {
-        return i->second;
+    name_to_entities_map & m (getComponents (id.getDomain ()));
+    auto found = std::find_if (m.begin (), m.end (), [id] (std::pair <std::string, std::shared_ptr <entity>> f) -> bool {
+        return f.second->getId ().getId () == id.getId ();
+    });
+    if (found != m.end ()) {
+        return found->second;
     } else {
-        return std::shared_ptr <model::entity> ();
+        return std::shared_ptr <entity> ();
     }
 }
 
@@ -76,9 +78,7 @@ void omni::core::model::scope::addFunction (std::shared_ptr <function_prototype>
     if (func.get () != nullptr) {
         throw already_exists_error (domain::function, function->getName ());
     }
-    id newFunctionId = getModule ()->createId (domain::function);
-    function->setId (newFunctionId);
-    setComponent (domain::function, newFunctionId.getId (), function);
+    setComponent (domain::function, function->getName (), function);
 }
 
 /**
@@ -89,7 +89,7 @@ Only functions that were created using createFunction or were added via addFunct
 **/
 std::shared_ptr <omni::core::model::function_prototype> omni::core::model::scope::findFunctionByName (std::string const & name)
 {
-    id_to_entities_map & functionMap (getComponents (domain::function));
+    name_to_entities_map & functionMap (getComponents (domain::function));
     auto found = std::find_if (functionMap.begin (), functionMap.end (), [name] (std::pair <std::string, std::shared_ptr <entity>> f) -> bool {
         return f.second->getName () == name;
     });

@@ -1,5 +1,11 @@
 #include <omni/core/id.hpp>
 
+std::ostream & omni::core::operator << (std::ostream & lhs, omni::core::id const & rhs)
+{
+    lhs << rhs.getDomain () << ":" << rhs.getId ();
+    return lhs;
+}
+
 /**
 Initializes this id with an invalid domain and an empty string id.
 **/
@@ -31,6 +37,11 @@ bool omni::core::id::operator<(id const & rhs) const
     } else {
         return getDomain () < rhs.getDomain ();
     }
+}
+
+bool omni::core::id::operator==(omni::core::id const & rhs) const
+{
+    return getDomain () == rhs.getDomain () && getId () == rhs.getId ();
 }
 
 /**
