@@ -31,6 +31,7 @@ namespace model {
         void fillLibraries (std::set <std::string> & libraries) override;
 
     private:
+        llvm::Function * _llvmFunction;
         std::string _libraryName;
         bool        _isDllImport;
     };

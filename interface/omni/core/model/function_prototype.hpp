@@ -1,5 +1,5 @@
-#ifndef OMNI_CORE_FUNCTION_PROTOTYPE_HPP
-#define OMNI_CORE_FUNCTION_PROTOTYPE_HPP
+#ifndef OMNI_CORE_MODEL_FUNCTION_PROTOTYPE_HPP
+#define OMNI_CORE_MODEL_FUNCTION_PROTOTYPE_HPP
 
 #include <omni/core/core.hpp>
 #include <omni/core/model/scope.hpp>
@@ -29,8 +29,12 @@ namespace model {
     class type;
 
     /**
-    Abstract.
-    A function_prototype defines the name, return type and parameters of a function and adds basic functionalities to read and modify these values.
+    @class function_prototype function_prototype.hpp omni/core/model/function_prototype.hpp
+
+    @brief This class is abstract. A function_prototype defines the name, return type and parameters of a function and adds basic functionalities to read and modify these values.
+
+    function_prototype serves as a common divisor for function and external_function, since they share their main characteristics.
+    See @see omni::core::model::function and @see external_function for more details.
     **/
     class OMNI_CORE_API function_prototype : public scope {
     public:
@@ -45,14 +49,13 @@ namespace model {
         llvm::FunctionType * llvmFunctionType ();
         virtual llvm::Function * llvmFunction () = 0;
 
-        void addParameter (std::shared_ptr <parameter> parameter);
+        void appendParameter (std::shared_ptr <parameter> parameter);
         void setParameters (std::vector <std::shared_ptr <parameter>> parameters);
-        std::vector <std::shared_ptr <parameter>> getParameters () const;
+        std::vector <const std::shared_ptr <parameter>> getParameters () const;
  
-    protected:
+    private:
         std::shared_ptr <type> _returnType;
         std::size_t _paramCount;
-        llvm::Function * _llvmFunction;
     };
 
 } // namespace model

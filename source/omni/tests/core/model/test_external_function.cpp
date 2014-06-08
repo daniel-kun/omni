@@ -22,14 +22,14 @@ BOOST_AUTO_TEST_CASE (ctor)
     model::module mod (c, "test");
     std::shared_ptr <model::external_function> function_putchar (new model::external_function ("LIBCMT.LIB", "putchar", model::type::sharedBasicType (c, model::type_class::t_signedInt)));
     std::shared_ptr <model::parameter> param1 (new model::parameter (model::type::sharedBasicType (c, model::type_class::t_signedInt), std::string ()));
-    function_putchar->addParameter (param1);
+    function_putchar->appendParameter (param1);
 
     std::shared_ptr <model::function_call_expression> functionCallExpression (new model::function_call_expression (function_putchar));
     std::shared_ptr <model::builtin_literal <signed int>> param1Value (new model::builtin_literal <signed int> (c, 'O'));
     auto param1Type = param1Value->getType ();
     auto putcharParam1Type = function_putchar->getParameters () [0]->getType ();
     std::shared_ptr <model::literal_expression> param1Expression (new model::literal_expression (param1Value));
-    functionCallExpression->addParameter (param1Expression);
+    functionCallExpression->appendParameter (param1Expression);
 
     std::shared_ptr <model::block> body (new model::block ());
     std::shared_ptr <model::return_statement> returnStatement (new model::return_statement (functionCallExpression));

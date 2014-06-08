@@ -20,6 +20,7 @@ omni::core::model::external_function::external_function (std::string libraryName
                                                          std::vector <std::shared_ptr <parameter>> parameters,
                                                          bool isDllImport) :
     function_prototype (functionName, returnType, parameters),
+    _llvmFunction (),
     _libraryName (libraryName),
     _isDllImport (isDllImport)
 {

@@ -49,19 +49,24 @@ omni::core::model::scope::~scope ()
 /**
 @brief Creates a new function with the given characteristics, adds it to this scope and returns it.
 
-Creates a new function object for the function with the given name, return-type and body, adds it to this scope and returns it.
-If the function should have parameters, you have to add these after creating it using createFunction.
-The function's parent will be set to this scope.
+The function's parent will be set to this scope and the body's and paremeter's parent will be set to the created function.
 
-Calling createFunction is the same as creating a new function and then calling addFunction().
+Calling createFunction is the same as creating a new omni::core::model::function and then calling addFunction().
 @param name The name of the function. There may not be a function with the same name in this scope, otherwise an already_exits_error exception will be thrown.
 @param returnType The type of the value that the function returns.
 @param body The body of the function.
-@exception already_exists_error Is thrown when a function with the given name already exists in this context.
+@param parameters An optional list of parameters that the function receives.
+@param isExported Specifies, whether this function is visible from outside the module it is defined in. @see function::isExported().
+@exception already_exists_error Is thrown when a function with the given name already exists in this scope.
 **/
-std::shared_ptr <omni::core::model::function> omni::core::model::scope::createFunction (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body)
+std::shared_ptr <omni::core::model::function> omni::core::model::scope::createFunction (
+    std::string const & name,
+    std::shared_ptr <type> returnType,
+    std::shared_ptr <block> body,
+    std::vector <std::shared_ptr <parameter>> parameters,
+    bool isExported)
 {
-    std::shared_ptr <function> result (new function (name, returnType, body));
+    std::shared_ptr <function> result (new function (name, returnType, body, parameters, isExported));
     addFunction (result);
     return result;
 }

@@ -13,17 +13,23 @@
 #include <llvm/IR/Module.h>
 
 /**
-Initializes a function implementation with the given name, returnType, body and visibility.
+@brief Initializes a function implementation with the given name, returnType, body, parameters and visibility.
+
+The body's and the parameter's parent will be set to this function.
+
 @param name The name of this function.
 @param returnType The return type of this function. Use a type constucted with the type_class omni::core::type_class::t_void for functions that have no return value.
 @param body The body (implementation) of this function.
+@param parameters An optional list of parameters that the function receives.
 @param isExported Specifies, whether this function is visible from outside the module it is defined in. @see isExported().
 **/
 omni::core::model::function::function (std::string const & name,
                                        std::shared_ptr <type> returnType,
                                        std::shared_ptr <block> body,
+                                       std::vector <std::shared_ptr <parameter>> parameters,
                                        bool isExported) :
-    function_prototype (name, returnType),
+    function_prototype (name, returnType, parameters),
+    _llvmFunction (),
     _isExported (isExported)
 {
     setComponent (domain::block, "body", body);

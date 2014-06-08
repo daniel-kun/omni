@@ -36,7 +36,7 @@ namespace model {
         const std::shared_ptr <function_prototype> getFunction () const;
         std::shared_ptr <function_prototype> getFunction ();
 
-        void addParameter (std::shared_ptr <expression> parameter);
+        void appendParameter (std::shared_ptr <expression> parameter);
         void setParameters (std::vector <std::shared_ptr <expression>> parameters);
         std::vector <std::shared_ptr <expression>> getParameters ();
 

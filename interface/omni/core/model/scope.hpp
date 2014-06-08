@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <map>
+#include <vector>
 
 namespace omni {
 namespace core {
@@ -22,6 +23,7 @@ namespace model {
     class function;
     class block;
     class module;
+    class parameter;
     
     /**
     @class scope scope.hpp omni/core/model/scope.hpp
@@ -37,10 +39,15 @@ namespace model {
         explicit scope (id scopeId, std::string name = std::string ());
         ~ scope () = 0;
 
-        std::shared_ptr <model::function> createFunction (std::string const & name, std::shared_ptr <model::type> returnType, std::shared_ptr <model::block> body);
-        std::shared_ptr <model::function_prototype> findFunctionByName (std::string const & name);
-        void addFunction (std::shared_ptr <model::function_prototype> function);
-        bool removeFunction (std::shared_ptr <model::function_prototype> function);
+        std::shared_ptr <function> createFunction (
+            std::string const & name,
+            std::shared_ptr <type> returnType,
+            std::shared_ptr <block> body,
+            std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> (),
+            bool isExported = false);
+        std::shared_ptr <function_prototype> findFunctionByName (std::string const & name);
+        void addFunction (std::shared_ptr <function_prototype> function);
+        bool removeFunction (std::shared_ptr <function_prototype> function);
     };
 } // namespace model
 } // namespace core

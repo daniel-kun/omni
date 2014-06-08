@@ -18,7 +18,7 @@ namespace model {
     **/
     class OMNI_CORE_API function : public function_prototype {
     public:
-        function (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body, bool isExported = false);
+        function (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body, std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> (), bool isExported = false);
 
         domain getDomain () const override;
 
@@ -30,6 +30,7 @@ namespace model {
         llvm::Function * llvmFunction () override;
 
     private:
+        llvm::Function * _llvmFunction;
         bool _isExported;
     };
 

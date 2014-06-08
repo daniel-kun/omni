@@ -820,7 +820,8 @@ EXCLUDE_SYMBOLS        = "native_type_to_type_class< void >" \
                          "native_type_to_type_class< unsigned long long >" \
                          "native_type_to_type_class< signed long long >" \
                          "native_type_to_type_class< char >" \
-                         "native_type_to_type_class< std::string >"
+                         "native_type_to_type_class< std::string >" \
+                         *llvm*
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include

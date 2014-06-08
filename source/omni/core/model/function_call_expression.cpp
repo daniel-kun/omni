@@ -75,7 +75,7 @@ Adds the parameter to the list of parameters that will be fed to the function-ca
 must match those of the function that has been passed to the ctor or was set using setFunction().
 @param parameter The parameter that will be fed to the function that will be called by this expression.
 **/
-void omni::core::model::function_call_expression::addParameter (std::shared_ptr <expression> parameter)
+void omni::core::model::function_call_expression::appendParameter (std::shared_ptr <expression> parameter)
 {
     setComponent (domain::expression, "parameter" + boost::lexical_cast <std::string> (++ _paramCount), parameter);
 }
@@ -89,7 +89,7 @@ void omni::core::model::function_call_expression::setParameters (std::vector <st
 {
     clearComponents ();
     for (auto i : parameters) {
-        addParameter (i);
+        appendParameter (i);
     }
 }
 
