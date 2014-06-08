@@ -122,7 +122,7 @@ setParent() should never be called explicitly - the parent is automatically chan
 becomes a component of another entity.
 @see getParent
 **/
-void omni::core::model::entity::setParent (scope * parent)
+void omni::core::model::entity::setParent (entity * parent)
 {
     _parent = parent;
     module * mod = getModule ();
@@ -142,7 +142,7 @@ The returned parent can be modified.
 @return The current parent of this entity. Can be nullptr.
 @see setParent
 **/
-omni::core::model::scope * omni::core::model::entity::getParent ()
+omni::core::model::entity * omni::core::model::entity::getParent ()
 {
     return _parent;
 }
@@ -158,7 +158,7 @@ The returned parent is const and can not be modified.
 @return The current parent of this entity. Can be nullptr.
 @see setParent
 **/
-const omni::core::model::scope * omni::core::model::entity::getParent () const
+const omni::core::model::entity * omni::core::model::entity::getParent () const
 {
     return _parent;
 }
@@ -271,6 +271,7 @@ void omni::core::model::entity::setComponent (omni::core::domain domain, std::st
             it->second->setParent (nullptr);
         }
         _components [domain] [name] = entity;
+        entity->setParent (this);
     }
 }
 
@@ -399,6 +400,28 @@ std::map <std::string, std::shared_ptr <omni::core::model::entity>> omni::core::
         }
     }
     return result;
+}
+
+/**
+@brief Returns the entity with the given id, if it was found in this entity's list of components, or nullptr, if not.
+
+The entity is looked up in each domain, since entities can be stored in component-lists for domains that do not match the entity's domain.
+
+@param id The id of the entity that should be returned. This should not be an invalid id.
+@return The entity with the id, if such has been added to the context. A null-shared_ptr is returned, if no such entity exists in this scope.
+**/
+std::shared_ptr <omni::core::model::entity> omni::core::model::entity::lookupComponentById (omni::core::id id)
+{
+    for (auto c : _components) {
+        name_to_entities_map & m = c.second;
+        auto found = std::find_if (m.begin (), m.end (), [id] (std::pair <std::string, std::shared_ptr <entity>> f) -> bool {
+            return f.second->getId () == id;
+        });
+        if (found != m.end ()) {
+            return found->second;
+        }
+    }
+    return std::shared_ptr <entity> ();
 }
 
 /**

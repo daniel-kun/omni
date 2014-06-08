@@ -67,8 +67,8 @@ BOOST_AUTO_TEST_CASE (createAndFindFunction)
     BOOST_CHECK (mod.findFunctionByName (functionName) != nullptr);
     BOOST_CHECK (mod.findFunctionByName (functionName)->getName () == functionName);
 
-    BOOST_CHECK (mod.findContentById (func->getId ()) != std::shared_ptr <model::entity> ());
-    BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.findContentById (func->getId ()))->getName () == functionName);
+    BOOST_CHECK (mod.lookupComponentById (func->getId ()) != std::shared_ptr <model::entity> ());
+    BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.lookupComponentById (func->getId ()))->getName () == functionName);
 }
 
 /**
@@ -100,8 +100,8 @@ BOOST_AUTO_TEST_CASE (addAndFindFunction)
     BOOST_CHECK (mod.findFunctionByName (functionName) != nullptr);
     BOOST_CHECK (mod.findFunctionByName (functionName)->getName () == functionName);
 
-    BOOST_CHECK (mod.findContentById (func->getId ()) != std::shared_ptr <model::entity> ());
-    BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.findContentById (func->getId ()))->getName () == functionName);
+    BOOST_CHECK (mod.lookupComponentById (func->getId ()) != std::shared_ptr <model::entity> ());
+    BOOST_CHECK (std::dynamic_pointer_cast <model::function> (mod.lookupComponentById (func->getId ()))->getName () == functionName);
 }
 
 /**

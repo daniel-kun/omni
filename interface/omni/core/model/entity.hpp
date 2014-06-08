@@ -1,5 +1,5 @@
-#ifndef OMNI_CORE_ENTITY_HPP
-#define OMNI_CORE_ENTITY_HPP
+#ifndef OMNI_CORE_MODEL_ENTITY_HPP
+#define OMNI_CORE_MODEL_ENTITY_HPP
 
 #include <omni/core/core.hpp>
 #include <omni/core/id.hpp>
@@ -25,7 +25,7 @@ namespace model {
     @class entity entity.hpp omni/core/model/entity.hpp
     @brief This class is abstract. Base class for all objects that are part of a context, such as any kinds of statements and expressions, like variable declarations, if-statements, etc.
 
-    The Omni Programming Language Model consists of a network of entities. The highest level entity is the module. A module, in turn, mainly contains functions.
+    The Omni Programming Language Model consists of a network of entities. The highest level entity in the model is the module. A module, in turn, mainly contains functions.
     Functions contain a block that builds up it's body, which in turn contains a list of statements, such as variable declarations, etc.
 
     See one of the many base-classes for further description of what they do.
@@ -56,9 +56,9 @@ namespace model {
         void setName (const std::string & name);
         std::string getName () const;
 
-        void setParent (scope * parent);
-        scope * getParent ();
-        const scope * getParent () const;
+        void setParent (entity * parent);
+        entity * getParent ();
+        const entity * getParent () const;
 
         virtual module * getModule ();
         virtual const module * getModule () const;
@@ -66,6 +66,7 @@ namespace model {
         virtual context * getContext ();
         virtual const context * getContext () const;
 
+        virtual void setComponent (domain domain, std::string name, std::shared_ptr <entity> entity);
         const domain_to_name_to_entities_map & getComponents () const;
         domain_to_name_to_entities_map getComponents ();
         const name_to_entities_map getComponents (domain domain) const;
@@ -76,7 +77,7 @@ namespace model {
         std::map <std::string, std::shared_ptr <entity>> getComponentsStartingWith (domain domain, std::string name) const;
         template <typename T>
         std::map <std::string, std::shared_ptr <T>> getComponentsStartingWithAs (domain domain, std::string name) const;
-        virtual void setComponent (domain domain, std::string name, std::shared_ptr <entity> entity) = 0;
+        std::shared_ptr <entity> lookupComponentById (id id);
         void clearComponents ();
         void clearComponents (domain domain);
         bool removeComponent (domain domain, std::string name);
@@ -87,7 +88,7 @@ namespace model {
     private:
         void updateIds ();
 
-        scope * _parent;
+        entity * _parent;
         std::string _name;
         id _id;
         domain_to_name_to_entities_map _components;

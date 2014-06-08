@@ -117,7 +117,7 @@ omni::core::id omni::core::model::module::createId (omni::core::domain domain)
         str << ++ counter;
         //strId = boost::lexical_cast <std::string> (uuid);
         strId = str.str ();
-    } while (findContentById (id (domain, strId)).get () != nullptr);
+    } while (lookupComponentById (id (domain, strId)).get () != nullptr);
     return id (domain, strId);
 }
 

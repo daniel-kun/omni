@@ -32,25 +32,6 @@ omni::core::model::scope::~scope ()
 }
 
 /**
-Finds any entity of this scope by it's unique id. The entity has to be added to this context before it can be found.
-This happens when the entity is created using one of the create...-functions or the entity has been added via one of the add...-functions.
-@param id The id of the entity that should be returned. This should not be an invalid id.
-@return The entity with the id, if such has been added to the context. A null-shared_ptr is returned, if no such entity exists in this scope.
-**/
-std::shared_ptr <omni::core::model::entity> omni::core::model::scope::findContentById (omni::core::id id)
-{
-    name_to_entities_map & m (getComponents (id.getDomain ()));
-    auto found = std::find_if (m.begin (), m.end (), [id] (std::pair <std::string, std::shared_ptr <entity>> f) -> bool {
-        return f.second->getId ().getId () == id.getId ();
-    });
-    if (found != m.end ()) {
-        return found->second;
-    } else {
-        return std::shared_ptr <entity> ();
-    }
-}
-
-/**
 Creates a new function object for the function with the name `name', adds it to this scope and returns it.
 Calling createFunction is the same as creating a new function with this scope as the first paramter and then calling addFunction().
 That's why this function will automatically be assigned a new id.
@@ -110,12 +91,3 @@ bool omni::core::model::scope::removeFunction (std::shared_ptr <model::function_
 {
     return removeComponent (domain::function, function);
 }
-
-void omni::core::model::scope::setComponent (omni::core::domain domain, std::string name, std::shared_ptr <omni::core::model::entity> entity)
-{
-    omni::core::model::entity::setComponent (domain, name, entity);
-    if (entity) {
-        entity->setParent (this);
-    }
-}
-

@@ -24,8 +24,10 @@ namespace model {
     class module;
     
     /**
-    Abstract.
-    A scope contains a list of entities, which are themselves scopes.
+    @class scope scope.hpp omni/core/model/scope.hpp
+    @brief This class is abstract. A scope contains a list of top-level entities, which are accessible within this scope and it's children's scopes.
+
+    Top-level entities currently are functions, only.
     **/
     class OMNI_CORE_API scope : public entity {
     public:
@@ -33,10 +35,6 @@ namespace model {
         scope (std::string name = std::string ());
         scope (id scopeId, std::string name = std::string ());
         ~ scope () = 0;
-
-        void setComponent (domain domain, std::string name, std::shared_ptr <omni::core::model::entity> entity) override;
-
-        std::shared_ptr <model::entity> findContentById (id id);
 
         std::shared_ptr <model::function> createFunction (std::string const & name, std::shared_ptr <model::type> returnType, std::shared_ptr <model::block> body);
         std::shared_ptr <model::function_prototype> findFunctionByName (std::string const & name);
