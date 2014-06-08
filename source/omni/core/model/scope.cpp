@@ -12,7 +12,20 @@
 #include <sstream>
 
 /**
-Initializes this scope in the parent scope `scope' with the name `name'. A new, random id will be assigned to this scope.
+@brief Initializes this scope with an empty name and an invalid id.
+
+The id will be set as soon as this entity is added to a context.
+**/
+omni::core::model::scope::scope () :
+    entity ()
+{
+}
+
+/**
+@brief Initializes this scope with the given name and an invalid id.
+
+The id will be set as soon as this entity is added to a context.
+@see getName
 **/
 omni::core::model::scope::scope (std::string name) :
     entity (name)
@@ -20,7 +33,9 @@ omni::core::model::scope::scope (std::string name) :
 }
 
 /**
-Initializes this existing scope in the given parent scope with the given name and scopeId.
+@brief Initializes this entity within the given parent and with the given id and name.
+@see getName
+@see getId
 **/
 omni::core::model::scope::scope (id scopeId, std::string name) :
     entity (scopeId, name)
@@ -32,13 +47,17 @@ omni::core::model::scope::~scope ()
 }
 
 /**
-Creates a new function object for the function with the name `name', adds it to this scope and returns it.
-Calling createFunction is the same as creating a new function with this scope as the first paramter and then calling addFunction().
-That's why this function will automatically be assigned a new id.
-@param name The name of the function. There may not be a function with the same name in the context, otherwise an already_exits_error exception will be thrown.
-@param returnType The type that the function returns.
+@brief Creates a new function with the given characteristics, adds it to this scope and returns it.
+
+Creates a new function object for the function with the given name, return-type and body, adds it to this scope and returns it.
+If the function should have parameters, you have to add these after creating it using createFunction.
+The function's parent will be set to this scope.
+
+Calling createFunction is the same as creating a new function and then calling addFunction().
+@param name The name of the function. There may not be a function with the same name in this scope, otherwise an already_exits_error exception will be thrown.
+@param returnType The type of the value that the function returns.
 @param body The body of the function.
-@exception already_exists_error Is thrown when a function with the name `name' already exists in this context.
+@exception already_exists_error Is thrown when a function with the given name already exists in this context.
 **/
 std::shared_ptr <omni::core::model::function> omni::core::model::scope::createFunction (std::string const & name, std::shared_ptr <type> returnType, std::shared_ptr <block> body)
 {
@@ -48,8 +67,10 @@ std::shared_ptr <omni::core::model::function> omni::core::model::scope::createFu
 }
 
 /**
-Adds the function `function' to this scope, if there is not already another function with the same name.
-`function' will automatically be assigned a new id before it is added to this scope.
+Adds the given function to this scope, if there is not already another function with the same name.
+
+The function's parent will be set to this scope.
+
 @param function The function that should be added to this scope.
 @exception already_exists_error Is thrown when a function with the same name as `function's name already exists in this scope.
 **/
@@ -63,10 +84,11 @@ void omni::core::model::scope::addFunction (std::shared_ptr <function_prototype>
 }
 
 /**
-Returns the function with the name `name', if such a function exists in this scope.
+@brief Returns the function with the given name, if such a function exists in this scope.
+
 Only functions that were created using createFunction or were added via addFunction are part of this scope.
-@param The name of the function that should be returned. Should not be empty.
-@return The function with the name `name' that has previously been added to this context.
+@param name The name of the function that should be returned. Should not be empty.
+@return The function with the given name that has previously been added to this context.
 **/
 std::shared_ptr <omni::core::model::function_prototype> omni::core::model::scope::findFunctionByName (std::string const & name)
 {
@@ -82,8 +104,9 @@ std::shared_ptr <omni::core::model::function_prototype> omni::core::model::scope
 }
 
 /**
-Removes the function `function' from this scope. This only has an effect if `function' was previously added to this scope by creating it using
-createFunction or adding it via addFunction.
+@brief Removes the given from this scope.
+
+This only has an effect if `function' was previously added to this scope by creating it using createFunction or adding it via addFunction.
 @param function The function to be removed from this scope.
 @return true, if `function' was part of this scope and has been removed. false, if `function' was not found.
 **/

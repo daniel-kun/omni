@@ -32,8 +32,9 @@ namespace model {
     class OMNI_CORE_API scope : public entity {
     public:
 
-        scope (std::string name = std::string ());
-        scope (id scopeId, std::string name = std::string ());
+        explicit scope ();
+        explicit scope (std::string name);
+        explicit scope (id scopeId, std::string name = std::string ());
         ~ scope () = 0;
 
         std::shared_ptr <model::function> createFunction (std::string const & name, std::shared_ptr <model::type> returnType, std::shared_ptr <model::block> body);

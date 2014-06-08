@@ -43,9 +43,9 @@ namespace model {
         **/
         typedef std::map <domain, name_to_entities_map> domain_to_name_to_entities_map;
 
-        entity ();
-        entity (std::string const & name);
-        entity (id entityId, std::string const & name);
+        explicit entity ();
+        explicit entity (std::string const & name);
+        explicit entity (id entityId, std::string const & name);
         virtual ~ entity () = 0;
 
         void setId (id newId);
