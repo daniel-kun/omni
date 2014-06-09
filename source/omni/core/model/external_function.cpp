@@ -76,6 +76,19 @@ bool omni::core::model::external_function::isDllImport () const
     return _isDllImport;
 }
 
+void omni::core::model::external_function::fillLibraries (std::set <std::string> & libraries)
+{
+    if (libraries.find (_libraryName) == libraries.end ())
+        libraries.insert (_libraryName);
+}
+
+/*
+Internal.
+
+Returns an llvm::Function in the module currently returned by getModule () with the same characteristics as this function
+and with llvm::Function::ExternalLinkage. If isDllImport () currently returns true, the DLLStorageClass of the llvm::Function
+is set to DLLImportStorageClass.
+*/
 llvm::Function * omni::core::model::external_function::llvmFunction ()
 {
     if (_llvmFunction == nullptr) {
@@ -88,12 +101,5 @@ llvm::Function * omni::core::model::external_function::llvmFunction ()
             _llvmFunction->setDLLStorageClass (llvm::GlobalValue::DLLImportStorageClass);
         }
     }
-    assert (_llvmFunction != nullptr);
     return _llvmFunction;
-}
-
-void omni::core::model::external_function::fillLibraries (std::set <std::string> & libraries)
-{
-    if (libraries.find (_libraryName) == libraries.end ())
-        libraries.insert (_libraryName);
 }
