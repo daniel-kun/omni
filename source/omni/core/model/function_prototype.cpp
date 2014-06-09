@@ -30,6 +30,20 @@ omni::core::model::function_prototype::~function_prototype ()
 }
 
 /**
+@brief Sets the return-type of this function.
+
+Can be nullptr, if the function should have a void return-type (i.e. does not return a value).
+
+It is important to make sure that the body contains return_statements for each control-flow that match the new return-type.
+
+@param returnType The new return-type of this function.
+**/
+void omni::core::model::function_prototype::setReturnType (std::shared_ptr <type> returnType)
+{
+    _returnType = returnType;
+}
+
+/**
 @brief Returns the type of the value that this function returns when it is called at runtime.
 
 Returns nullptr, if this function does not return a value (i.e. is a "void function").
@@ -105,7 +119,8 @@ std::vector <const std::shared_ptr <omni::core::model::parameter>> omni::core::m
 }
 
 /*
-internal.
+Internal.
+
 Returns an llvm::FunctionType with the same characteristics as this function_prototype.
 */
 llvm::FunctionType * omni::core::model::function_prototype::llvmFunctionType ()

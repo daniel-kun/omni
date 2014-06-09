@@ -32,7 +32,7 @@ omni::core::model::function::function (std::string const & name,
     _llvmFunction (),
     _isExported (isExported)
 {
-    setComponent (domain::block, "body", body);
+    setBody (body);
 }
 
 omni::core::domain omni::core::model::function::getDomain () const
@@ -41,9 +41,22 @@ omni::core::domain omni::core::model::function::getDomain () const
 }
 
 /**
-Returns true, if this function is exported from the module it is defined in. Depending on what kind of module it is, exporting
-has different meanings.
-If isExported () returns false, the function is only locally visible in the module it is defined in.
+@brief Changes whether this function is visible from other modules.
+@param isExported Should be set to true, if this function should be exported from this module. Should be set to false, if this function should only be visible locally within the module.
+@see isExported
+**/
+void omni::core::model::function::setExported (bool isExported)
+{
+    _isExported = isExported;
+}
+
+/**
+@brief Return whether this function is visible from other modules.
+
+If a function is exported, it will create a visible symbol in an emitted executable file. Only exported functions can be called across module boundaries.
+Non-exported functions can only be called from within the same module that the function is defined in.
+
+@return True, if this function is exported from this module. False, if the function is only visible locally within the module.
 **/
 bool omni::core::model::function::isExported () const
 {
@@ -51,7 +64,27 @@ bool omni::core::model::function::isExported () const
 }
 
 /**
-Returns the body of this function in a const form.
+@brief Sets the body of this function.
+
+The body contains the list of statements that are executed when the function is called.
+
+If the function has a non-void return-type, the body must contain a return_statement for every control-flow.
+@param body The new body for this function.
+**/
+void omni::core::model::function::setBody (std::shared_ptr <block> body)
+{
+    setComponent (domain::block, "body", body);
+}
+
+/**
+@brief Returs the body of this function.
+
+The body contains the list of statements that are executed when the function is called.
+
+If the function has a non-void return-type, the body must contain a return_statement for every control-flow.
+
+The returned body is const and can not be modified.
+@result The body of this function.
 **/
 const std::shared_ptr <omni::core::model::block> omni::core::model::function::getBody () const
 {
@@ -59,14 +92,31 @@ const std::shared_ptr <omni::core::model::block> omni::core::model::function::ge
 }
 
 /**
-Returns the body of this function in a modifyable form.
+@brief Returs the body of this function.
+
+The body contains the list of statements that are executed when the function is called.
+
+If the function has a non-void return-type, the body must contain a return_statement for every control-flow.
+
+The returned body can be modified.
+@result The body of this function.
 **/
 std::shared_ptr <omni::core::model::block> omni::core::model::function::getBody ()
 {
     return getComponentAs <block> (domain::block, "body");
 }
 
+/*
+Internal.
 
+Returns an llvm::Function in the module currently returned by getModule () with the same characteristics as this function
+and with a BasicBlock as the entry point named __entry__ that contains all statements from the block currently returned by getBody ().
+
+If this function is called subsequently, the llvm::Function will only be created on the first call - all other calls will simply returned
+the llvm::Function that was created on the first call.
+
+@return An llvm::Function resembling this omni::core::model::function.
+*/
 llvm::Function * omni::core::model::function::llvmFunction ()
 {
     if (getContext () == nullptr) {

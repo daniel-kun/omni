@@ -78,11 +78,12 @@ omni::core::id omni::core::model::entity::getId () const
 }
 
 /**
-@brief Abstract. Returns the domain of this entity.
+@brief Returns the domain of this entity.
 
-The domain is fixed for every class and does not change.
+The domain is fixed for every class and does not change at runtime.
 
-<b>Important:</b> This function needs to be reimplemented by every class directly or indirectly deriving from entity that is not abstract.
+<b>Important:</b> This function is reimplemented by every non-abstract class that directly or indirectly derives from entity.
+This means that every class that derives from entity that can be instantiated returns a different value for getDomain that corresponds to that specific class.
 @return The domain of this entity.
 **/
 omni::core::domain omni::core::model::entity::getDomain () const
