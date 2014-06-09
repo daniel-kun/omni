@@ -11,20 +11,29 @@ namespace model {
     class type;
 
     /**
-    An external_function is defined in another module and does not contain a body and therefore no definition.
-    external_function can be seen similar as a function declaration in C that is not defined in the same module, but imported from another static or shared library.
+    @class external_function external_function.hpp omni/core/model/external_function.hpp
+    @brief Declares an external function that can be called with a function_call_expression.
+
+    An external function is defined in a different module than the function_call_expression is called in.
+    An external function consists of a name that should be unique within a scope, a return-type, a number of parameters and a library name
+    that it is defined in.
+    
+    The library name of an external_function declaration will be added to the list of linked libraries at link-time.
+    Each library will only be added once - multiple external_function s that have the same libraryName will not lead to a library linked multiple times.
     **/
     class OMNI_CORE_API external_function : public function_prototype {
     public:
-        external_function (std::string libraryName,
-                           std::string functionName,
-                           std::shared_ptr <type> returnType,
+        external_function (std::string libraryName = std::string (),
+                           std::string functionName = std::string (),
+                           std::shared_ptr <type> returnType = std::shared_ptr <type> (),
                            std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> (),
                            bool isDllImport = false);
 
         domain getDomain () const override;
 
+        void setLibraryName (std::string libraryName);
         std::string getLibraryName () const;
+        void setDllImport (bool isDllImport);
         bool isDllImport () const;
 
         llvm::Function * llvmFunction () override;
