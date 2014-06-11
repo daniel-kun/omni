@@ -12,11 +12,11 @@ namespace model {
     /**
     @class parameter parameter.hpp omni/core/model/parameter.hpp
 
-	@brief Defines a parameter that can be passed to an external_function or a omni::core::model::function.
+    @brief Defines a parameter that can be passed to an external_function or a omni::core::model::function.
 
-	A parameter consists of a type and a name.
+    A parameter consists of a type and a name.
 
-	@see function_prototype::getParameters ().
+    @see function_prototype::getParameters ().
     **/
     class OMNI_CORE_API parameter : public scope {
     public:
@@ -24,7 +24,7 @@ namespace model {
 
         domain getDomain () const override;
 
-		void setType (std::shared_ptr <type> type);
+        void setType (std::shared_ptr <type> type);
         const std::shared_ptr <type> getType () const;
         std::shared_ptr <type>  getType ();
 
