@@ -16,9 +16,9 @@ namespace core {
     functions, classes, enums, and even statements and expressions.
 
     To minimize the potential clash of ids, the identifiers for entities in omni are split into "domains" (@see domain).
-    This means that only a pair of domain and id builds up a unique identifier of an entity.
+    This means that only a pair of domain and id builds up a unique identifier of an entity. The id alone is not unique.
 
-    Usually objects of type id should be used passed around as values instead of references or shared_ptr.
+    Usually objects of type id should be passed around as values instead of references or shared_ptr.
     **/
     class OMNI_CORE_API id {
     public:
