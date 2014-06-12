@@ -20,7 +20,7 @@ namespace model {
     **/
     class OMNI_CORE_API parameter : public scope {
     public:
-        parameter (std::shared_ptr <type> type = std::shared_ptr <type> (), std::string name = std::string ());
+        parameter (std::shared_ptr <type> parameterType = std::shared_ptr <type> (), std::string name = std::string ());
 
         domain getDomain () const override;
 

@@ -52,10 +52,14 @@ template <> class value_provider <unsigned long long> : public unsigned_provider
 }
 
 /**
-Initializes this builtin_literal in the given context with the provided value.
+@brief Initializes this builtin_literal in the given context with the given value.
+
+A builtin_literal can only exist with a context, since the context defines how the given type is stored and how it behaves.
+@param context The context that this builtin_literal can be used in.
+@param value The value that this builtin_literal will provide.
 **/
 template <typename T>
-omni::core::model::builtin_literal <T>::builtin_literal (omni::core::context & context, T value) :
+omni::core::model::builtin_literal <T>::builtin_literal (context & context, T value) :
     literal (type::sharedBasicType (context, native_type_to_type_class <T>::typeClass)),
     _value (value)
 {
@@ -67,9 +71,11 @@ omni::core::domain omni::core::model::builtin_literal <T>::getDomain () const
     return domain::builtin_literal;
 }
 
-/**
-Internal
-**/
+/*
+Internal.
+
+Returns an llvm::Value that corresponds to the value of this builtin_literal.
+*/
 template <typename T>
 llvm::Value * omni::core::model::builtin_literal <T>::llvmValue ()
 {
@@ -78,6 +84,9 @@ llvm::Value * omni::core::model::builtin_literal <T>::llvmValue ()
     }
     return value_provider <T>::provideValue (getType ()->llvmType (), _value);
 }
+
+// We have explicit template instantiations for all supported types.
+// That way, we do not need to define everything in the header file.
 
 template omni::core::model::builtin_literal <bool>;
 template omni::core::model::builtin_literal <char>;

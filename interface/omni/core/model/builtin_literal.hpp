@@ -1,5 +1,5 @@
-#ifndef OMNI_CORE_BUILTIN_LITERAL_HPP
-#define OMNI_CORE_BUILTIN_LITERAL_HPP
+#ifndef OMNI_CORE_MODEL_BUILTIN_LITERAL_HPP
+#define OMNI_CORE_MODEL_BUILTIN_LITERAL_HPP
 
 #include <omni/core/core.hpp>
 #include <omni/core/model/literal.hpp>
@@ -13,12 +13,16 @@ namespace core {
 namespace model {
 
     /**
-    builtin_literal can be used to define literals of builtin numeric types (char, short, int, double, float).
+    @class builtin_literal builtin_literal.hpp omni/core/model/builtin_literal.hpp
+    @brief A builtin_literal can be used to define literals of builtin numeric types (char, short, int, double, float).
+
+    To access the value of a literal e.g. as a function parameter or in an assignment or similar, instantiate a literal_expression
+    with this literal.
     **/
     template <typename T>
     class OMNI_CORE_API builtin_literal : public literal {
     public:
-        explicit builtin_literal (omni::core::context & context, T value);
+        explicit builtin_literal (context & context, T value);
 
         domain getDomain () const override;
 

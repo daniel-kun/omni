@@ -1,5 +1,5 @@
-#ifndef OMNI_CORE_LITERAL_HPP
-#define OMNI_CORE_LITERAL_HPP
+#ifndef OMNI_CORE_MODEL_LITERAL_HPP
+#define OMNI_CORE_MODEL_LITERAL_HPP
 
 #include <omni/core/core.hpp>
 #include <omni/core/model/scope.hpp>
@@ -16,18 +16,21 @@ namespace model {
     class type;
 
     /**
-    Abstract.
-    A literal is a compile-time static value that can be used as expressions.
-    To access the value of a literal e.g. as a function parameter or in an assignment or similar,
-    use literal_expression.
+    @class literal literal.hpp omni/core/model/literal.hpp
+
+    @brief This class is abstract. A literal is a compile-time static value that can be used as in a literal_expression.
+
+    To access the value of a literal e.g. as a function parameter or in an assignment or similar, instantiate a literal_expression
+    with this literal.
+
     The most simple type is the builtin_literal<>, which is used to access literals of built-in types.
-    (It is not sure whether other kinds of literals will be supported.)
+    (It is not yet sure whether other kinds of literals will be supported.)
     **/
     class OMNI_CORE_API literal : public scope {
     public:
         literal (std::shared_ptr <type> type);
         virtual ~ literal ();
-        
+
         std::shared_ptr <type> getType ();
         const std::shared_ptr <type> getType () const;
 

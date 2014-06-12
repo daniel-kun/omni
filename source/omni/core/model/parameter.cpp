@@ -2,12 +2,14 @@
 
 /**
 @brief Initializes this parameter with the given type and name.
+@param parameterType The type of this parameter. @see getType
+@param name The name of this parameter. @see getName
 The name can be changed later using entity::setName().
 The type can be set or changed later using setType ().
 **/
-omni::core::model::parameter::parameter (std::shared_ptr <type> type, std::string name) :
+omni::core::model::parameter::parameter (std::shared_ptr <type> parameterType, std::string name) :
     scope (name),
-    _type (type)
+    _type (parameterType)
 {
 }
 
