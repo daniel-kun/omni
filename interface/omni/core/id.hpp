@@ -11,8 +11,14 @@ namespace omni {
 namespace core {
 
     /**
-    An `id' is a globally unique identifier that is used throughout omni to identify parts of the context such as variables, types,
+    @class id id.hpp omni/core/model/id.hpp
+    @brief An id consists of a domain and a globally unique identifier that is used throughout omni to identify parts of the context such as variables, types,
     functions, classes, enums, and even statements and expressions.
+
+    To minimize the potential clash of ids, the identifiers for entities in omni are split into "domains" (@see domain).
+    This means that only a pair of domain and id builds up a unique identifier of an entity.
+
+    Usually objects of type id should be used passed around as values instead of references or shared_ptr.
     **/
     class OMNI_CORE_API id {
     public:
