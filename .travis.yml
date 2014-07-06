@@ -1,5 +1,18 @@
-language: c++
-install: sudo apt-get install libllvm3.5 libboost1.55-all-dev
-script: mkdir cbuild && cd cbuild && cmake && make
+env: 
+  global: 
+    secure: I/8p/+MUJVBLCmoyWhfonQCTRVaidkEJb8RRWSBA5IioW10Pf/oDtM1Bg4GGxN7ewEGQfEyPVMwVFGoU8+jrxsWsAyqe8HkzIA5Pe943HqdodO5ChnBPeDUock0Y8cFFdXt9WHvyiHfZHXxgYEDgMCghZiTUud7Hbv5tRZD9+so=
 
+install: sudo apt-get install libllvm3.5 libboost1.55-all-dev
+script: mkdir cbuild && cd cbuild && cmake && make -j4
+language: c++
+
+addons:
+  coverty_scan:
+    project:
+      name: "daniel-kun/omni"
+      description: "The Omni Programming Language"
+  notification_email: d.albuschat@gmail.com
+  build_command_prepend: mkdir cbuild && cd cbuild && CXX=clang++-3.5 cmake ..
+  build_command: make -j4
+  branch_pattern: coverty_scan
 
