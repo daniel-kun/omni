@@ -6,7 +6,7 @@
 
 #include <llvm/IR/IRBuilder.h>
 //#include <llvm/IR/NoFolder.h>
-#include <llvm/Support/NoFolder.h>
+#include <llvm/IR/NoFolder.h>
 
 /**
 Initializes this binary_operator_expression with the binary_operation op and the leftOperand and rightOperand.

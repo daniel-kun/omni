@@ -2,7 +2,7 @@
 #include <omni/core/model/type.hpp>
 
 #include <llvm/IR/IRBuilder.h>
-#include <llvm/Support/NoFolder.h>
+#include <llvm/IR/NoFolder.h>
 
 /**
 Initializes this bitcast_expression to convert the result of sourceExpression to the targetType. sourceExpression->getType ()'s bidwidth
