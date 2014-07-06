@@ -6,7 +6,7 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/BasicBlock.h>
-#include <llvm/Support/NoFolder.h>
+#include <llvm/IR/NoFolder.h>
 
 omni::core::model::variable_declaration_expression::variable_declaration_expression () :
     pure_expression (),

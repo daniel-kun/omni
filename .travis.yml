@@ -1,5 +1,5 @@
 language: c++
-install: sudo apt-get install libllvm3.5 libboost1.55-all-dev
+install: sudo apt-get install libncurses-dev libllvm3.5 libboost1.55-all-dev
 script: mkdir cbuild && cd cbuild && cmake && make
 
 

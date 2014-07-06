@@ -61,7 +61,7 @@ add_library (omni-core SHARED
     source/omni/core/input/template_visitor.cpp
     source/omni/core/input/variable_template_element.cpp)
 
-find_package (Boost 1.54 COMPONENTS system filesystem unit_test_framework REQUIRED)
+find_package (Boost 1.48 COMPONENTS system filesystem unit_test_framework REQUIRED)
 include_directories (${Boost_INCLUDE_DIR})
 target_link_libraries (omni-core ${Boost_LIBRARIES})
 
@@ -171,6 +171,7 @@ target_link_libraries(omni-core
 /usr/lib/llvm-3.5/lib/libLLVMObject.a
 /usr/lib/llvm-3.5/lib/libLLVMCore.a
 /usr/lib/llvm-3.5/lib/libLLVMSupport.a
+-lz
 -lpthread
 -lncurses
 -ldl
