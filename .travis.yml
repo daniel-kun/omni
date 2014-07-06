@@ -1,19 +1,19 @@
 env: 
   global: 
-    secure: I/8p/+MUJVBLCmoyWhfonQCTRVaidkEJb8RRWSBA5IioW10Pf/oDtM1Bg4GGxN7ewEGQfEyPVMwVFGoU8+jrxsWsAyqe8HkzIA5Pe943HqdodO5ChnBPeDUock0Y8cFFdXt9WHvyiHfZHXxgYEDgMCghZiTUud7Hbv5tRZD9+so=
+    - secure: "DlNvVel/tucNlqO1KuVoE7YvJODV4r1iyS3EwCIUN91otNCSRJBhD+77kPtpGaPn3iwVNH00d7t5agzplSq8xl4AdaCzokZ11JCI5X8aSY8gfeWUOBGdilyn7B6atf1OzqBPZhqGF+ueNqCU5eOq6t3OucFh9c3MlxjIHA9Ifrw="
 
-language: c++
-before_install: sudo sh -c 'cat build/ubuntu12/sources.list >> /etc/apt/sources.list' && sudo apt-get update
-install: sudo apt-get install --force-yes libncurses-dev libboost1.48-all-dev clang-3.5 libllvm3.5
-script: mkdir cbuild && cd cbuild && CXX=clang++-3.5 cmake .. && make
-after_script: mkdir ../tests && ./omni-tests
-
-addons:
-  coverity_scan:
-    project:
-      name: "daniel-kun/omni"
-    notification_email: d.albuschat@gmail.com
+addons: 
+  coverity_scan: 
+    project: 
+      name: daniel-kun/omni
     build_command_prepend: mkdir cbuild && cd cbuild && CXX=clang++-3.5 cmake ..
     build_command: make -j4
     branch_pattern: coverity_scan
-
+    notification_email: d.albuschat@gmail.com
+after_script: mkdir ../tests && ./omni-tests
+export COVERITY_SCAN_TOKEN=hB1FTnJx8XhjRffMZgIeVA: 
+  secure: l9t1xEBIonK67fPZKUrI9n88L+yEmZWoSadCbKsG8csFBoivh53M8fazR5yt88z4CiASQsmhRXjRLsjUgVnN7Dc0YCnoyAZ6d5WTqwb9s4AAuf40Mv9eA6Thq67xiWzLzZq6qvs1lhVmlXQo9pUU0Dk/pNTTfSQgsdA0Gi52YQ4=
+before_install: sudo sh -c 'cat build/ubuntu12/sources.list >> /etc/apt/sources.list' && sudo apt-get update
+script: mkdir cbuild && cd cbuild && CXX=clang++-3.5 cmake .. && make
+language: c++
+install: sudo apt-get install --force-yes libncurses-dev libboost1.48-all-dev clang-3.5 libllvm3.5
