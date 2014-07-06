@@ -97,7 +97,7 @@ Only functions that were created using createFunction or were added via addFunct
 **/
 std::shared_ptr <omni::core::model::function_prototype> omni::core::model::scope::findFunctionByName (std::string const & name)
 {
-    name_to_entities_map & functionMap (getComponents (domain::function));
+    name_to_entities_map const & functionMap (getComponents (domain::function));
     auto found = std::find_if (functionMap.begin (), functionMap.end (), [name] (std::pair <std::string, std::shared_ptr <entity>> f) -> bool {
         return f.second->getName () == name;
     });

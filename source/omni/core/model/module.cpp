@@ -33,6 +33,7 @@ namespace {
     **/
     void addDllMainIfMissing (omni::core::context & c, llvm::Module & module)
     {
+#ifdef MSVC
         llvm::Type * i32ptr = llvm::Type::getInt32PtrTy (c.llvmContext ());
         llvm::Type * i32 = llvm::Type::getInt32Ty (c.llvmContext ());
         llvm::Type * i8 = llvm::Type::getInt8Ty (c.llvmContext ());
@@ -45,6 +46,7 @@ namespace {
         llvm::BasicBlock * body = llvm::BasicBlock::Create (c.llvmContext (), "__entry__", func);
         llvm::IRBuilder <> builder (body);
         builder.CreateRet (llvm::ConstantInt::get (i8, 1));
+#endif
     }
 }
 
@@ -212,7 +214,11 @@ void omni::core::model::module::emitObjectFile (llvm::raw_ostream & stream, cons
     }
 
     std::string errors;
+#ifdef WIN32
     std::string targetTriple = "i686-pc-win32";
+#else
+    std::string targetTriple = "x86_64-pc-linux";
+#endif
     llvm::Triple triple = llvm::Triple (targetTriple);
     llvm::InitializeAllTargets ();
     llvm::InitializeAllTargetMCs();
@@ -221,7 +227,7 @@ void omni::core::model::module::emitObjectFile (llvm::raw_ostream & stream, cons
 
     const llvm::Target * target = llvm::TargetRegistry::lookupTarget ("", triple, errors);
     llvm::TargetOptions targetOptions;
-    llvm::TargetMachine * targetMachine = target->createTargetMachine (targetTriple, std::string (), std::string (), targetOptions);
+    llvm::TargetMachine * targetMachine = target->createTargetMachine (targetTriple, std::string (), std::string (), targetOptions, llvm::Reloc::PIC_);
 
     llvm::PassManager pm;
     llvm::formatted_raw_ostream formattedStream (stream);
@@ -263,26 +269,33 @@ void omni::core::model::module::emitSharedLibraryFile (std::string const & fileN
         throw omni::core::logic_error (__FILE__, __FUNCTION__, __LINE__, "Object file \"" + objectFilePath.string () + "\" does not exist");
     }
     std::set <std::string> additionalLibraries;
+#ifdef WIN32
     additionalLibraries.insert ("LIBCMT.LIB");
-    for (auto i : getComponents ()) {
-        for (auto p : i.second) {
-            p.second->fillLibraries (additionalLibraries);
-        }
-    }
     std::string command = "..\\tools\\link_helper.cmd \"" + objectFilePath.string () + "\" \"/OUT:" + sharedLibraryPath.string () + "\"";
     // Add library search path:
     for (auto librarySearchPath : options.getLibrarySearchPaths ()) {
         command += " /LIBPATH:\"" + librarySearchPath.string () + "\"";
     }
+#endif
+    std::string command = "gcc -shared \"" + objectFilePath.string () + "\" -o \"" + sharedLibraryPath.string () + "\"";
+    for (auto i : getComponents ()) {
+        for (auto p : i.second) {
+            p.second->fillLibraries (additionalLibraries);
+        }
+    }
+    // Add library search paths:
+    for (auto librarySearchPath : options.getLibrarySearchPaths ()) {
+        command += " -L\"" + librarySearchPath.string () + "\"";
+    }
     // Add libraries to link:
     for (auto library : additionalLibraries) {
         if (library.length () > 0) {
-            command += " " + library;
+            command += " -l" + library;
         }
     }
     for (auto library : options.getLibraries ()) {
         if (library.length () > 0) {
-            command += " " + library;
+            command += " -l" + library;
         }
     }
 

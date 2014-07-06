@@ -4,12 +4,17 @@
 #include <omni/tests/test_file_manager.hpp>
 #include <omni/core/model/function_call_expression.hpp>
 #include <omni/core/model/return_statement.hpp>
+#include <omni/core/not_implemented_error.hpp>
+
+#include <boost/format.hpp>
+
 #include <memory>
 #include <string>
 
 #ifdef WIN32
 #include <Windows.h>
 #else
+#include <dlfcn.h>
 #endif
 
 namespace omni {
@@ -52,14 +57,13 @@ Return omni::tests::runFunction (std::shared_ptr <omni::core::model::function> f
     testFileManager.getTestFileName (expPath.replace_extension (".lib").filename ().string ()); // To get rid of the temporary files after the test finishes
     boost::filesystem::path objectFilePath = sharedLibraryPath;
     boost::filesystem::path objectFilePath2 = sharedLibraryPath;
-//    BOOST_CHECK (! boost::filesystem::exists (objectFilePath.replace_extension (".obj"))); // There shall not be a temporary file anymore
-//    BOOST_CHECK (! boost::filesystem::exists (objectFilePath2.replace_extension (".o")));   // There shall not be a temporary file anymore
+    typedef Return (* testFunc) ();
+
 #ifdef WIN32
     HMODULE lib = ::LoadLibraryA (sharedLibraryPath.string ().c_str ());
 //    HMODULE nullModule = nullptr;
 //    BOOST_CHECK_NE (lib, nullModule);
     if (lib != nullptr) {
-        typedef Return (* testFunc) ();
 #pragma warning(push)
 #pragma warning(disable:4191)
         testFunc f = reinterpret_cast <testFunc> (::GetProcAddress(lib, functionName.c_str ()));
@@ -79,7 +83,29 @@ Return omni::tests::runFunction (std::shared_ptr <omni::core::model::function> f
     throw omni::core::logic_error (__FILE__, __FUNCTION__, __LINE__,
                                     "Test shared object could not be loaded: \"" + sharedLibraryPath.string () + "\".");
 #else
-    throw omni::core::not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
+    void * lib = dlopen (sharedLibraryPath.string ().c_str (), RTLD_NOW);
+    if (lib != nullptr) {
+        testFunc f = reinterpret_cast <testFunc> (dlsym (lib, functionName.c_str ()));
+        if (f != nullptr) {
+            Return result = (*f)();
+            int error = dlclose (lib);
+            if (error != 0) {
+                throw omni::core::logic_error (__FILE__, __FUNCTION__, __LINE__,
+                                                (boost::format ("dlsym returned %1%.") % error).str ());
+            }
+            return result;
+        } else {
+            int error = dlclose (lib);
+            if (error != 0) {
+                throw omni::core::logic_error (__FILE__, __FUNCTION__, __LINE__,
+                                                (boost::format ("dlsym returned %1%.") % error).str ());
+            }
+            throw omni::core::logic_error (__FILE__, __FUNCTION__, __LINE__,
+                                            "Test function could not be found in temporarily created shared object file \"" + sharedLibraryPath.string () + "\".");
+        }
+    }
+    throw omni::core::logic_error (__FILE__, __FUNCTION__, __LINE__,
+                                    "Test shared object could not be loaded: \"" + sharedLibraryPath.string () + "\".");
 #endif
 }
 

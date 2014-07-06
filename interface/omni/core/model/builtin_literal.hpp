@@ -37,4 +37,17 @@ namespace model {
 } // namespace core
 } // namespace omni
 
+extern template class omni::core::model::builtin_literal <bool>;
+extern template class omni::core::model::builtin_literal <char>;
+extern template class omni::core::model::builtin_literal <signed char>;
+extern template class omni::core::model::builtin_literal <unsigned char>;
+extern template class omni::core::model::builtin_literal <signed short>;
+extern template class omni::core::model::builtin_literal <unsigned short>;
+extern template class omni::core::model::builtin_literal <signed int>;
+extern template class omni::core::model::builtin_literal <unsigned int>;
+extern template class omni::core::model::builtin_literal <signed long>;
+extern template class omni::core::model::builtin_literal <unsigned long>;
+extern template class omni::core::model::builtin_literal <signed long long>;
+extern template class omni::core::model::builtin_literal <unsigned long long>;
+
 #endif

@@ -3,7 +3,7 @@
 #include <omni/core/input/abstract_syntax_element.hpp>
 #include <omni/core/input/concrete_syntax_element.hpp>
 
-#include <rapidxml\rapidxml.hpp>
+#include <rapidxml/rapidxml.hpp>
 
 #include <memory>
 #include <stdexcept>

@@ -109,9 +109,9 @@ The returned list is a copy of the paremeter-list of this function_prototype.
 The contained parameters are const and can not be modified.
 @return The list of parameters that this function takes.
 **/
-std::vector <const std::shared_ptr <omni::core::model::parameter>> omni::core::model::function_prototype::getParameters () const
+std::vector <std::shared_ptr <omni::core::model::parameter>> omni::core::model::function_prototype::getParameters ()
 {
-    std::vector <const std::shared_ptr <omni::core::model::parameter>> result;
+    std::vector <std::shared_ptr <omni::core::model::parameter>> result;
     for (auto i : getComponentsStartingWithAs <parameter> (domain::parameter, "parameter")) {
         result.push_back (i.second);
     }

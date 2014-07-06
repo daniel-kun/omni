@@ -52,7 +52,7 @@ namespace model {
 
         void appendParameter (std::shared_ptr <parameter> parameter);
         void setParameters (std::vector <std::shared_ptr <parameter>> parameters);
-        std::vector <const std::shared_ptr <parameter>> getParameters () const;
+        std::vector <std::shared_ptr <parameter>> getParameters ();
  
     private:
         std::shared_ptr <type> _returnType;

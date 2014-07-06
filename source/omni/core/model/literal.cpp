@@ -9,7 +9,7 @@ use and manage the type.
 @param literalType The type of the value that this literal represents.
 @see getType
 **/
-omni::core::model::literal::literal (std::shared_ptr <type> literalType = std::shared_ptr <type> ()) :
+omni::core::model::literal::literal (std::shared_ptr <type> literalType) :
     scope (),
     _type (literalType)
 {
