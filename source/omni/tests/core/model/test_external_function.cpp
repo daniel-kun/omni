@@ -20,7 +20,12 @@ BOOST_AUTO_TEST_CASE (ctor)
     using namespace omni::core;
     context c;
     model::module mod (c, "test");
-    std::shared_ptr <model::external_function> function_putchar (new model::external_function ("LIBCMT.LIB", "putchar", model::type::sharedBasicType (c, model::type_class::t_signedInt)));
+#ifdef WIN32
+    std::string putcharLib = "LIBCMT.LIB";
+#else
+    std::string putcharLib;
+#endif
+    std::shared_ptr <model::external_function> function_putchar (new model::external_function (putcharLib, "putchar", model::type::sharedBasicType (c, model::type_class::t_signedInt)));
     std::shared_ptr <model::parameter> param1 (new model::parameter (model::type::sharedBasicType (c, model::type_class::t_signedInt), std::string ()));
     function_putchar->appendParameter (param1);
 

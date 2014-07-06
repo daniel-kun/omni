@@ -78,8 +78,10 @@ bool omni::core::model::external_function::isDllImport () const
 
 void omni::core::model::external_function::fillLibraries (std::set <std::string> & libraries)
 {
-    if (libraries.find (_libraryName) == libraries.end ())
-        libraries.insert (_libraryName);
+    if (! _libraryName.empty ()) {
+        if (libraries.find (_libraryName) == libraries.end ())
+            libraries.insert (_libraryName);
+    }
 }
 
 /*

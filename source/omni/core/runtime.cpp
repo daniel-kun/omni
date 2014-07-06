@@ -6,6 +6,14 @@
 #include <omni/core/model/parameter.hpp>
 #include <omni/core/model/external_function.hpp>
 
+namespace {
+#ifdef WIN32
+std::string omniRuntimeLib = "omni-runtime.lib";
+#else
+std::string omniRuntimeLib = "omni-runtime";
+#endif
+}
+
 /**
 Initializes this runtime for the given module.
 **/
@@ -26,7 +34,7 @@ std::shared_ptr <omni::core::model::external_function> omni::core::runtime::getM
         context & c (* _module.getContext ());
         _memoryAllocate.reset (
             new model::external_function (
-                "omni-runtime.lib",
+                omniRuntimeLib,
                 "omni_runtime_memory_allocate",
                 c.sharedBasicType (model::type_class::t_unsignedByte, 1)));
         _memoryAllocate->setParameters (
@@ -47,7 +55,7 @@ std::shared_ptr <omni::core::model::external_function> omni::core::runtime::getM
         context & c (* _module.getContext ());
         _memoryAddReference.reset (
             new model::external_function (
-                "omni-runtime.lib",
+                omniRuntimeLib,
                 "omni_runtime_memory_add_reference",
                 c.sharedBasicType (model::type_class::t_unsignedByte, 1)));
         _memoryAddReference->setParameters (
@@ -68,7 +76,7 @@ std::shared_ptr <omni::core::model::external_function> omni::core::runtime::getM
         context & c (* _module.getContext ());
         _memoryRemoveReference.reset (
             new model::external_function (
-                "omni-runtime.lib",
+                omniRuntimeLib,
                 "omni_runtime_memory_remove_reference",
                 c.sharedBasicType (model::type_class::t_unsignedByte, 1)));
         _memoryRemoveReference->setParameters (

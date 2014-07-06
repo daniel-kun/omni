@@ -88,15 +88,16 @@ llvm::Value * omni::core::model::builtin_literal <T>::llvmValue ()
 // We have explicit template instantiations for all supported types.
 // That way, we do not need to define everything in the header file.
 
-template omni::core::model::builtin_literal <bool>;
-template omni::core::model::builtin_literal <char>;
-template omni::core::model::builtin_literal <signed char>;
-template omni::core::model::builtin_literal <unsigned char>;
-template omni::core::model::builtin_literal <signed short>;
-template omni::core::model::builtin_literal <unsigned short>;
-template omni::core::model::builtin_literal <signed int>;
-template omni::core::model::builtin_literal <unsigned int>;
-template omni::core::model::builtin_literal <signed long>;
-template omni::core::model::builtin_literal <unsigned long>;
-template omni::core::model::builtin_literal <signed long long>;
-template omni::core::model::builtin_literal <unsigned long long>;
+template class omni::core::model::builtin_literal <bool>;
+template class omni::core::model::builtin_literal <char>;
+template class omni::core::model::builtin_literal <signed char>;
+template class omni::core::model::builtin_literal <unsigned char>;
+template class omni::core::model::builtin_literal <signed short>;
+template class omni::core::model::builtin_literal <unsigned short>;
+template class omni::core::model::builtin_literal <signed int>;
+template class omni::core::model::builtin_literal <unsigned int>;
+template class omni::core::model::builtin_literal <signed long>;
+template class omni::core::model::builtin_literal <unsigned long>;
+template class omni::core::model::builtin_literal <signed long long>;
+template class omni::core::model::builtin_literal <unsigned long long>;
+

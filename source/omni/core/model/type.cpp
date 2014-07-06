@@ -142,6 +142,9 @@ llvm::Type * omni::core::model::type::llvmType ()
         break;
     case type_class::t_unsignedLong:
     case type_class::t_signedLong:
+#ifdef ENVIRONMENT64
+        return addIndirection (llvm::Type::getInt64Ty (getContext ()->llvmContext ()), getIndirectionLevel ());
+#endif
     case type_class::t_unsignedInt:
     case type_class::t_signedInt:
         return addIndirection (llvm::Type::getInt32Ty (getContext ()->llvmContext ()), getIndirectionLevel ());

@@ -19,13 +19,9 @@ namespace model {
     class native_type_to_type_class {
     };
 
-}
-}
-}
-
 // void -> t_void
 template <>
-class omni::core::model::native_type_to_type_class <void> {
+class native_type_to_type_class <void> {
 public:
     typedef void nativeType;
     static const type_class typeClass = type_class::t_void;
@@ -33,7 +29,7 @@ public:
 
 // bool -> t_boolean
 template <>
-class omni::core::model::native_type_to_type_class <bool> {
+class native_type_to_type_class <bool> {
 public:
     typedef bool nativeType;
     static const type_class typeClass = type_class::t_boolean;
@@ -41,7 +37,7 @@ public:
 
 // unsigned char -> t_unsignedByte
 template <>
-class omni::core::model::native_type_to_type_class <unsigned char> {
+class native_type_to_type_class <unsigned char> {
 public:
     typedef unsigned char nativeType;
     static const type_class typeClass = type_class::t_unsignedByte;
@@ -49,7 +45,7 @@ public:
 
 // signed char -> t_signedByte
 template <>
-class omni::core::model::native_type_to_type_class <signed char> {
+class native_type_to_type_class <signed char> {
 public:
     typedef signed char nativeType;
     static const type_class typeClass = type_class::t_signedByte;
@@ -57,7 +53,7 @@ public:
 
 // unsigned short -> t_unsignedShort
 template <>
-class omni::core::model::native_type_to_type_class <unsigned short> {
+class native_type_to_type_class <unsigned short> {
 public:
     typedef unsigned short nativeType;
     static const type_class typeClass = type_class::t_unsignedShort;
@@ -65,7 +61,7 @@ public:
 
 // signed short -> t_signedShort
 template <>
-class omni::core::model::native_type_to_type_class <signed short> {
+class native_type_to_type_class <signed short> {
 public:
     typedef signed short nativeType;
     static const type_class typeClass = type_class::t_signedShort;
@@ -73,7 +69,7 @@ public:
 
 // unsigned int -> t_unsignedInt
 template <>
-class omni::core::model::native_type_to_type_class <unsigned int> {
+class native_type_to_type_class <unsigned int> {
 public:
     typedef unsigned int nativeType;
     static const type_class typeClass = type_class::t_unsignedInt;
@@ -81,7 +77,7 @@ public:
 
 // signed int -> t_signedInt
 template <>
-class omni::core::model::native_type_to_type_class <signed int> {
+class native_type_to_type_class <signed int> {
 public:
     typedef signed int nativeType;
     static const type_class typeClass = type_class::t_signedInt;
@@ -89,7 +85,7 @@ public:
 
 // unsigned long -> t_unsignedLong
 template <>
-class omni::core::model::native_type_to_type_class <unsigned long> {
+class native_type_to_type_class <unsigned long> {
 public:
     typedef unsigned long nativeType;
     static const type_class typeClass = type_class::t_unsignedLong;
@@ -97,7 +93,7 @@ public:
 
 // signed long -> t_signedLong
 template <>
-class omni::core::model::native_type_to_type_class <signed long> {
+class native_type_to_type_class <signed long> {
 public:
     typedef signed long nativeType;
     static const type_class typeClass = type_class::t_signedLong;
@@ -105,7 +101,7 @@ public:
 
 // unsigned long long -> t_unsignedLongLong
 template <>
-class omni::core::model::native_type_to_type_class <unsigned long long> {
+class native_type_to_type_class <unsigned long long> {
 public:
     typedef unsigned long long nativeType;
     static const type_class typeClass = type_class::t_unsignedLongLong;
@@ -113,7 +109,7 @@ public:
 
 // signed long long -> t_signedLongLong
 template <>
-class omni::core::model::native_type_to_type_class <signed long long> {
+class native_type_to_type_class <signed long long> {
 public:
     typedef signed long long nativeType;
     static const type_class typeClass = type_class::t_signedLongLong;
@@ -121,7 +117,7 @@ public:
 
 // char -> t_char
 template <>
-class omni::core::model::native_type_to_type_class <char> {
+class native_type_to_type_class <char> {
 public:
     typedef char nativeType;
     static const type_class typeClass = type_class::t_char;
@@ -129,10 +125,14 @@ public:
 
 // std::string -> t_string
 template <>
-class omni::core::model::native_type_to_type_class <std::string> {
+class native_type_to_type_class <std::string> {
 public:
     typedef std::string nativeType;
     static const type_class typeClass = type_class::t_string;
 };
+
+}
+}
+}
 
 #endif

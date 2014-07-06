@@ -3,7 +3,7 @@
 #include <omni/core/model/block.hpp>
 
 #include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/NoFolder.h>
+#include <llvm/Support/NoFolder.h>
 
 /**
 Initializes this while_statement without a condition and a body.

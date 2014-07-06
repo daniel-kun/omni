@@ -2,7 +2,7 @@
 #include <omni/core/model/expression.hpp>
 
 #include <llvm/IR/IRBuilder.h>
-#include <llvm/IR/NoFolder.h>
+#include <llvm/Support/NoFolder.h>
 
 omni::core::model::return_statement::return_statement () :
     statement ()

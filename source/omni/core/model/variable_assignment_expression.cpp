@@ -4,7 +4,7 @@
 
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/Value.h>
-#include <llvm/IR/NoFolder.h>
+#include <llvm/Support/NoFolder.h>
 
 /**
 Initializes this variabe_assignment_expresion to assign `value' to `variable'.
