@@ -10,10 +10,10 @@ addons:
     build_command: make -j4
     branch_pattern: coverity_scan
     notification_email: d.albuschat@gmail.com
-after_script: mkdir ../tests && ./omni-tests
-export COVERITY_SCAN_TOKEN=hB1FTnJx8XhjRffMZgIeVA: 
-  secure: l9t1xEBIonK67fPZKUrI9n88L+yEmZWoSadCbKsG8csFBoivh53M8fazR5yt88z4CiASQsmhRXjRLsjUgVnN7Dc0YCnoyAZ6d5WTqwb9s4AAuf40Mv9eA6Thq67xiWzLzZq6qvs1lhVmlXQo9pUU0Dk/pNTTfSQgsdA0Gi52YQ4=
-before_install: sudo sh -c 'cat build/ubuntu12/sources.list >> /etc/apt/sources.list' && sudo apt-get update
-script: mkdir cbuild && cd cbuild && CXX=clang++-3.5 cmake .. && make
+
 language: c++
-install: sudo apt-get install --force-yes libncurses-dev libboost1.48-all-dev clang-3.5 libllvm3.5
+before_install: sudo sh -c 'cat build/ubuntu12/sources.list >> /etc/apt/sources.list' && sudo apt-get install python-software-properties && sudo add-apt-repository ppa:ubuntu-toolchain-r/test && sudo apt-get update
+install: sudo apt-get install --force-yes gcc-4.8 g++-4.8 libncurses-dev libboost1.48-all-dev clang-3.5 libllvm3.5
+script: mkdir cbuild && cd cbuild && cmake .. && make -j4
+after_script: mkdir ../tests && ./omni-tests
+
