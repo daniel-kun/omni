@@ -1,19 +1,17 @@
 env: 
   global: 
-    - secure: "DlNvVel/tucNlqO1KuVoE7YvJODV4r1iyS3EwCIUN91otNCSRJBhD+77kPtpGaPn3iwVNH00d7t5agzplSq8xl4AdaCzokZ11JCI5X8aSY8gfeWUOBGdilyn7B6atf1OzqBPZhqGF+ueNqCU5eOq6t3OucFh9c3MlxjIHA9Ifrw="
+    secure: "A2yfij1/Xd6c1qPz+HNFKKLBSWFLNLSEF08P6kLiwt3geiMTTAWQ0EF+lhzR9Jc8nYzms7gmoB10mD5xNGVsfLc0MvcvoEEyMiHSeV+GkUXOrje+/+ZISJkxPbQnrU9y8VYDa25AEt3084bBz1R63RbkGoqQlWF6cqQFTUwUr/I="
 
 addons: 
   coverity_scan: 
     project: 
       name: daniel-kun/omni
-    build_command_prepend: mkdir cbuild && cd cbuild && CXX=clang++-3.5 cmake ..
+    build_command_prepend: mkdir cbuild && cd cbuild && cmake ..
     build_command: make -j4
     branch_pattern: coverity_scan
     notification_email: d.albuschat@gmail.com
-after_script: mkdir ../tests && ./omni-tests
-export COVERITY_SCAN_TOKEN=hB1FTnJx8XhjRffMZgIeVA: 
-  secure: l9t1xEBIonK67fPZKUrI9n88L+yEmZWoSadCbKsG8csFBoivh53M8fazR5yt88z4CiASQsmhRXjRLsjUgVnN7Dc0YCnoyAZ6d5WTqwb9s4AAuf40Mv9eA6Thq67xiWzLzZq6qvs1lhVmlXQo9pUU0Dk/pNTTfSQgsdA0Gi52YQ4=
-before_install: sudo sh -c 'cat build/ubuntu12/sources.list >> /etc/apt/sources.list' && sudo apt-get update
-script: mkdir cbuild && cd cbuild && CXX=clang++-3.5 cmake .. && make
+
 language: c++
-install: sudo apt-get install --force-yes libncurses-dev libboost1.48-all-dev clang-3.5 libllvm3.5
+before_install: sudo sh -c 'cat build/ubuntu12/sources.list >> /etc/apt/sources.list' && sudo apt-get install python-software-properties && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update
+install: sudo apt-get install --force-yes gcc-4.8 g++-4.8 libncurses-dev libboost1.48-all-dev clang-3.5 libllvm3.5 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
+script: if [ ${COVERITY_SCAN_BRANCH} != 1 ]; then mkdir cbuild && cd cbuild && cmake .. && make -j4 && mkdir ../tests && ./omni-tests; fi
