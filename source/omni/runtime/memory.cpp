@@ -9,7 +9,11 @@ Allocates new memory and returns a pointer to it. The returned memory's referenc
 **/
 void * omni_runtime_memory_allocate (std::size_t sizeInBytes)
 {
-    reference_count_t * result = reinterpret_cast <reference_count_t *> (std::malloc (sizeInBytes + sizeof (reference_count_t)));
+    // Allocate space for the reference counter and the requested number of bytes:
+    reference_count_t * result = reinterpret_cast <reference_count_t *> (std::malloc (sizeof (reference_count_t) + sizeInBytes));
+    if (result == nullptr) {
+        return nullptr;
+    }
     *result = 1u;
     return ++ result;
 }

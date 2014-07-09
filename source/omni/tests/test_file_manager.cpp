@@ -5,7 +5,6 @@ Removes all files that have been returned by getTestFileName.
 **/
 omni::tests::test_file_manager::~test_file_manager ()
 {
-    return; // NOCOMMIT
     for (auto f : _files) {
         if (boost::filesystem::exists (f)) {
             boost::filesystem::remove (f);
