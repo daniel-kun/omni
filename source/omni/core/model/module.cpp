@@ -33,7 +33,7 @@ namespace {
     **/
     void addDllMainIfMissing (omni::core::context & c, llvm::Module & module)
     {
-#ifdef MSVC
+#ifdef _MSC_VER
         llvm::Type * i32ptr = llvm::Type::getInt32PtrTy (c.llvmContext ());
         llvm::Type * i32 = llvm::Type::getInt32Ty (c.llvmContext ());
         llvm::Type * i8 = llvm::Type::getInt8Ty (c.llvmContext ());
@@ -269,6 +269,11 @@ void omni::core::model::module::emitSharedLibraryFile (std::string const & fileN
         throw omni::core::logic_error (__FILE__, __FUNCTION__, __LINE__, "Object file \"" + objectFilePath.string () + "\" does not exist");
     }
     std::set <std::string> additionalLibraries;
+    for (auto i : getComponents ()) {
+        for (auto p : i.second) {
+            p.second->fillLibraries (additionalLibraries);
+        }
+    }
 #ifdef WIN32
     additionalLibraries.insert ("LIBCMT.LIB");
     std::string command = "..\\tools\\link_helper.cmd \"" + objectFilePath.string () + "\" \"/OUT:" + sharedLibraryPath.string () + "\"";
@@ -276,26 +281,24 @@ void omni::core::model::module::emitSharedLibraryFile (std::string const & fileN
     for (auto librarySearchPath : options.getLibrarySearchPaths ()) {
         command += " /LIBPATH:\"" + librarySearchPath.string () + "\"";
     }
-#endif
+    std::string linkLibraryPrefix = " ";
+#else
     std::string command = "gcc -shared \"" + objectFilePath.string () + "\" -o \"" + sharedLibraryPath.string () + "\"";
-    for (auto i : getComponents ()) {
-        for (auto p : i.second) {
-            p.second->fillLibraries (additionalLibraries);
-        }
-    }
     // Add library search paths:
     for (auto librarySearchPath : options.getLibrarySearchPaths ()) {
         command += " -L\"" + librarySearchPath.string () + "\"";
     }
+    std::string linkLibraryPrefix = " -l";
+#endif
     // Add libraries to link:
     for (auto library : additionalLibraries) {
         if (library.length () > 0) {
-            command += " -l" + library;
+            command += linkLibraryPrefix + library;
         }
     }
     for (auto library : options.getLibraries ()) {
         if (library.length () > 0) {
-            command += " -l" + library;
+            command += linkLibraryPrefix + library;
         }
     }
 

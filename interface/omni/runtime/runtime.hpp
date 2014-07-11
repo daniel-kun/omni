@@ -1,7 +1,7 @@
 #ifndef OMNI_RUNTIME_RUNTIME_HPP
 #define OMNI_RUNTIME_RUNTIME_HPP
 
-#ifdef MSVC
+#ifdef _MSC_VER
 #   ifdef omniruntime_BUILD_LIB
 #       define OMNI_RUNTIME_API __declspec (dllexport)
 #   else

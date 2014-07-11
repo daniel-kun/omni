@@ -1,3 +1,9 @@
+![Travis CI status]
+(https://travis-ci.org/daniel-kun/omni.svg?branch=master)
+
+![Coverity Scan status]
+(https://scan.coverity.com/projects/2559/badge.svg)
+
 omni
 ====
 

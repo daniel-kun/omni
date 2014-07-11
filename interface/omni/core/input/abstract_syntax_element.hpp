@@ -19,10 +19,10 @@ public:
     abstract_syntax_element ();
     abstract_syntax_element (std::vector <std::shared_ptr <syntax_element>> possibleSubstitutions);
 
-    std::vector <syntax_suggestion> suggest (std::string input, std::size_t templatePosition) override;
-
     void setPossibleSubstitutions (std::vector <std::shared_ptr <syntax_element>> possibleSubstitutions);
     std::vector <std::shared_ptr <syntax_element>> getPossibleSubstitutions () const;
+
+    std::vector <syntax_suggestion> suggestImpl (std::string input, std::size_t templatePosition, std::set <syntax_element *> alreadyVisistedElements) override;
 
 private:
     std::vector <std::shared_ptr <syntax_element>> _possibleSubstitutions;

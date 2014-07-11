@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <memory>
+#include <set>
 
 namespace omni {
 namespace core {
@@ -22,7 +23,9 @@ public:
     virtual std::shared_ptr <template_element> templateElementAt (std::size_t templatePosition);
     virtual std::size_t templateElementCount () const;
 
-    virtual std::vector <syntax_suggestion> suggest (std::string input, std::size_t templateIndex = 0u) = 0;
+    std::vector <syntax_suggestion> suggest (std::string input, std::size_t templateIndex = 0u);
+
+    virtual std::vector <syntax_suggestion> suggestImpl (std::string input, std::size_t templatePosition, std::set <syntax_element *> alreadyVisistedElements) = 0;
 
 private:
     std::string _name;
