@@ -19,3 +19,9 @@ std::size_t omni::core::input::syntax_element::templateElementCount () const
 {
     return 0u;
 }
+
+std::vector <omni::core::input::syntax_suggestion> omni::core::input::syntax_element::suggest (std::string input, std::size_t templateIndex)
+{
+    std::set <syntax_element *> alreadyVisitedElements;
+    return suggestImpl (input, templateIndex, alreadyVisitedElements);
+}

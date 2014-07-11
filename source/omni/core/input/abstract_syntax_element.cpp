@@ -10,11 +10,15 @@ omni::core::input::abstract_syntax_element::abstract_syntax_element (std::vector
 {
 }
 
-std::vector <omni::core::input::syntax_suggestion> omni::core::input::abstract_syntax_element::suggest (std::string input, std::size_t templatePosition)
+std::vector <omni::core::input::syntax_suggestion> omni::core::input::abstract_syntax_element::suggestImpl (std::string input, std::size_t templatePosition, std::set <syntax_element *> alreadyVisistedElements)
 {
+    if (alreadyVisistedElements.find (this) != alreadyVisistedElements.end ()) {
+         return std::vector <omni::core::input::syntax_suggestion> ();
+    }
+    alreadyVisistedElements.insert (this);
     std::vector <omni::core::input::syntax_suggestion> result;
     for (auto i : _possibleSubstitutions) {
-        auto suggestions = i->suggest (input, templatePosition);
+        auto suggestions = i->suggestImpl (input, templatePosition, alreadyVisistedElements);
         result.insert (result.end (), suggestions.begin (), suggestions.end ());
     }
     return result;

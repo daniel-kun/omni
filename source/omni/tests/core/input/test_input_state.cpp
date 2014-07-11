@@ -13,12 +13,46 @@
 #include <vector>
 #include <string>
 #include <utility>
-#include <stack>
 
 #include <boost/test/unit_test.hpp>
 
+namespace {
+std::string runInputSimulation (omni::core::input::syntax_element & statementElement, std::size_t templateIndex, std::vector <std::tuple <std::string, std::size_t>> & simulatedInput)
+{
+    using namespace omni::core;
+    std::string output;
+    while (simulatedInput.size () > 0) {
+        std::tuple <std::string, std::size_t> input = simulatedInput.front ();
+        simulatedInput.erase (simulatedInput.begin ());
 
-#if 0
+        std::vector <input::syntax_suggestion> suggestions = statementElement.suggest (std::get <0> (input), templateIndex);
+        BOOST_CHECK_GT (suggestions.size (), 0u);
+        BOOST_CHECK_LT (std::get <1> (input), suggestions.size ());
+        if (! suggestions.empty () && std::get <1> (input) < suggestions.size ()) {
+            input::syntax_suggestion selectedSuggestion = suggestions [std::get <1> (input)];
+            output += selectedSuggestion.text;
+            if (selectedSuggestion.syntaxElement != nullptr) {
+                input::syntax_element & selectedSyntaxElem = * selectedSuggestion.syntaxElement;
+                for (std::size_t t = 1u; t < selectedSyntaxElem.templateElementCount (); ++t) {
+                    std::shared_ptr <input::syntax_element> element = selectedSyntaxElem.templateElementAt (t)->dive ();
+                    if (element != nullptr) {
+                        output += runInputSimulation (* element, 0u, simulatedInput);
+                    } else {
+                        std::shared_ptr <input::fixed_template_element> textTemplateElement = std::dynamic_pointer_cast <input::fixed_template_element> (selectedSyntaxElem.templateElementAt (t));
+                        if (textTemplateElement != nullptr) {
+                            output += textTemplateElement->getText ();
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    }
+    return output;
+}
+
+}
+
 BOOST_AUTO_TEST_SUITE (inputStateTests)
 
 BOOST_AUTO_TEST_CASE (basic)
@@ -26,29 +60,35 @@ BOOST_AUTO_TEST_CASE (basic)
     using namespace omni::core;
 
     auto statementElement = std::make_shared <input::abstract_syntax_element> ();
+    statementElement->setName ("root_statement");
 
     auto ifSyntaxElement (std::make_shared <input::concrete_syntax_element> ());
-    auto a = std::make_shared <input::fixed_template_element> (* ifSyntaxElement, 0, "if");
-    auto b = std::make_shared <input::fixed_template_element> (* ifSyntaxElement, 1, " (");
+    ifSyntaxElement->setName ("if_statement");
+    auto a = std::make_shared <input::fixed_template_element>  (* ifSyntaxElement, 0, "if");
+    auto b = std::make_shared <input::fixed_template_element>  (* ifSyntaxElement, 1, " (");
     auto c = std::make_shared <input::syntax_template_element> (* ifSyntaxElement, 2, statementElement);
-    auto d = std::make_shared <input::fixed_template_element> (* ifSyntaxElement, 3, ") {\n");
+    auto d = std::make_shared <input::fixed_template_element>  (* ifSyntaxElement, 3, ") {\n");
     auto e = std::make_shared <input::syntax_template_element> (* ifSyntaxElement, 4, statementElement);
-    auto f = std::make_shared <input::fixed_template_element> (* ifSyntaxElement, 5, "}\n");
+    auto f = std::make_shared <input::fixed_template_element>  (* ifSyntaxElement, 5, "}\n");
     auto ifTemplates = std::vector <std::shared_ptr <input::template_element>> {
         a, b, c, d, e, f,
     };
     ifSyntaxElement->setTemplates (ifTemplates);
 
     auto returnSyntaxElement = std::make_shared <input::concrete_syntax_element> ();
+    returnSyntaxElement->setName ("return_statement");
     auto returnTemplate1 = std::make_shared <input::fixed_template_element> (* returnSyntaxElement, 0, "return ");
     auto returnTemplate2 = std::make_shared <input::syntax_template_element> (* returnSyntaxElement, 1, statementElement);
+    auto returnTemplate3 = std::make_shared <input::fixed_template_element> (* returnSyntaxElement, 2, "\n");
     returnSyntaxElement->setTemplates (
         std::vector <std::shared_ptr <input::template_element>> {
             returnTemplate1,
             returnTemplate2,
+            returnTemplate3,
         });
 
     auto whileSyntaxElement = std::make_shared <input::concrete_syntax_element> ();
+    whileSyntaxElement->setName ("while_statement");
     auto whileTemplate1 = std::make_shared <input::fixed_template_element> (* whileSyntaxElement, 0, "while");
     auto whileTemplate2 = std::make_shared <input::fixed_template_element> (* whileSyntaxElement, 1, " (");
     auto whileTemplate3 = std::make_shared <input::syntax_template_element> (* whileSyntaxElement, 2, statementElement);
@@ -62,7 +102,8 @@ BOOST_AUTO_TEST_CASE (basic)
         whileTemplate2,
         whileTemplate3,
         whileTemplate4,
-        whileTemplate5
+        whileTemplate5,
+        whileTemplate6
         });
 
     class test_variable_provider : public input::variable_template_provider {
@@ -87,6 +128,7 @@ BOOST_AUTO_TEST_CASE (basic)
     } testVariableProvider;
 
     auto variableSyntaxElement = std::make_shared <input::concrete_syntax_element> ();
+    variableSyntaxElement->setName ("variable_statement");
     auto variableTemplate1 = std::make_shared <input::variable_template_element> (* variableSyntaxElement, 0, testVariableProvider);
     variableSyntaxElement->setTemplates (
         std::vector <std::shared_ptr <input::template_element>> {
@@ -101,50 +143,27 @@ BOOST_AUTO_TEST_CASE (basic)
             variableSyntaxElement
         });
     // Simulates the input of "i<tab>fo<tab>r<tab>f<tab>"
-    // with the desired output of "if (foo) return foo":
-    std::vector <std::tuple <std::string, int, bool>> simulatedInput {
-        std::tuple <std::string, int, bool> ("i",  0, false),   // "if (...)"
-        std::tuple <std::string, int, bool> ("fo", 0, true),    // "foo"
-        std::tuple <std::string, int, bool> ("w",  0, false),   // "while (...)"
-        std::tuple <std::string, int, bool> ("f",  0, true),    // "foo"
-        std::tuple <std::string, int, bool> ("r",  0, false),   // "return ..."
-        std::tuple <std::string, int, bool> ("f",  0, true),    // "foo"
+    // with the desired output of "if (foo) return foo"
+    // first:  Text that has been typed
+    // second: Index of the suggestion that has been accepted
+    // third:  Dive into the suggested element, or step to the next element on the same level?
+    std::vector <std::tuple <std::string, std::size_t>> simulatedInput {
+        std::make_tuple ("i",  0u),   // "if (...)"
+        std::make_tuple ("fo", 0u),    // "foo"
+        std::make_tuple ("w",  0u),   // "while (...)"
+        std::make_tuple ("f",  0u),    // "foo"
+        std::make_tuple ("r",  0u),   // "return ..."
+        std::make_tuple ("f",  0u),    // "foo"
     };
 
-    std::stack <std::pair <input::syntax_element *, std::size_t>> suggestionStack;
-    suggestionStack.push (std::make_pair (statementElement.get (), 0u));
-    std::string output;
-    for (auto i : simulatedInput) {
-        if (suggestionStack.empty ()) {
-            break;
-        }
-        auto suggestionInfo = suggestionStack.top ();        
-        std::string input = std::get <0> (i);
-        std::vector <input::syntax_suggestion> suggestions = suggestionInfo.first->suggest (input, suggestionInfo.second);
-        int selectedIndex = std::get <1> (i);
-        input::syntax_suggestion & suggestion = suggestions [selectedIndex];
-        if (output.empty ()) {
-            output = suggestion.text;
-        } else {
-            output += " " + suggestion.text;
-        }
-        if (!std::get <2> (i)) {
-            input::syntax_element * elem = suggestion.syntaxElement;
-            std::size_t templateIndex = suggestion.templateIndex;
-            suggestionStack.push (std::make_pair (elem, templateIndex));
-            if (std::shared_ptr <input::template_element> templateElement = elem->templateElementAt (suggestion.templateIndex)) {
-                if (std::shared_ptr <input::syntax_element> syntaxElement = templateElement->dive ()) {
-                    // We can do .get () here, because templateElement will live long enough for elem to stay:
-                    suggestionStack.push (std::make_pair (syntaxElement.get (), 0u));
-                }
-            }
-        } else {
-            suggestionStack.pop ();
-        }
-    }
-    BOOST_CHECK_EQUAL (output, "if foo return  foo");
+    std::string output = runInputSimulation (* statementElement, 0u, simulatedInput);
+    std::string desiredOutput = R"(if (foo) {
+while (foo) {
+return foo
+}
+}
+)";
+    BOOST_CHECK_EQUAL (output, desiredOutput);
 }
 
 BOOST_AUTO_TEST_SUITE_END ()
-
-#endif

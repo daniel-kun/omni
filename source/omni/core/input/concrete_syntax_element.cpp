@@ -22,8 +22,13 @@ void omni::core::input::concrete_syntax_element::setTemplates (std::vector <std:
     _templates = templates;
 }
 
-std::vector <omni::core::input::syntax_suggestion> omni::core::input::concrete_syntax_element::suggest (std::string input, std::size_t templatePosition)
+std::vector <omni::core::input::syntax_suggestion> omni::core::input::concrete_syntax_element::suggestImpl (std::string input, std::size_t templatePosition, std::set <syntax_element *> alreadyVisistedElements)
 {
+    if (alreadyVisistedElements.find (this) != alreadyVisistedElements.end ()) {
+         return std::vector <omni::core::input::syntax_suggestion> ();
+    }
+    alreadyVisistedElements.insert (this);
+    // Find the next template that "goes one level deeper":
     std::size_t nextSyntaxTemplate = templatePosition;
     for (std::size_t i = nextSyntaxTemplate; i < _templates.size (); ++i) {
         if (_templates [i]->dive () != nullptr) {
@@ -32,13 +37,15 @@ std::vector <omni::core::input::syntax_suggestion> omni::core::input::concrete_s
         }
     }
 
+    // Make my own suggestions first:
     std::vector <syntax_suggestion> result;
     for (std::string text : _templates [templatePosition]->suggest (input)) {
         result.push_back (syntax_suggestion (* this, nextSyntaxTemplate, text));
     }
+    // And then the suggestions of the underlying syntax_element at the given template position:
     std::shared_ptr <syntax_element> elem = _templates [templatePosition]->dive ();
     if (elem != nullptr) {
-        std::vector <syntax_suggestion> elemSuggestions = elem->suggest (input, 0u);
+        std::vector <syntax_suggestion> elemSuggestions = elem->suggestImpl (input, 0u, alreadyVisistedElements);
         result.insert (result.end (), elemSuggestions.begin (), elemSuggestions.end ());
     }
     return result;

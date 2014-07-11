@@ -23,7 +23,7 @@ public:
 
     void setTemplates (std::vector <std::shared_ptr <template_element>> templates);
 
-    std::vector <syntax_suggestion> suggest (std::string input, std::size_t templatePosition = 0u) override;
+    std::vector <syntax_suggestion> suggestImpl (std::string input, std::size_t templatePosition, std::set <syntax_element *> alreadyVisistedElements) override;
 
 private:
     std::vector <std::shared_ptr <template_element>> _templates;
