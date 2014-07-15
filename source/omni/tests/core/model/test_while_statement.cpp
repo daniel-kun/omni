@@ -4,8 +4,7 @@
 #include <omni/core/model/module.hpp>
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/block.hpp>
-#include <omni/core/model/literal_expression.hpp>
-#include <omni/core/model/builtin_literal.hpp>
+#include <omni/core/model/builtin_literal_expression.hpp>
 #include <omni/core/model/return_statement.hpp>
 #include <omni/core/model/variable_declaration_expression.hpp>
 #include <omni/core/model/variable_assignment_expression.hpp>
@@ -30,15 +29,14 @@ int buildAndRunWhileTest (std::string testFileName)
     model::module m (c, "test");
 
     auto body = std::make_shared <model::block> ();
-    auto variableDeclaration = std::make_shared <model::variable_declaration_expression> (std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <int>> (c, 1)));
+    auto variableDeclaration = std::make_shared <model::variable_declaration_expression> (std::make_shared <model::builtin_literal_expression <int>> (c, 1));
     body->appendStatement (variableDeclaration);
 
     auto whileCondition = std::make_shared <model::binary_operator_expression> (
         c,
         model::binary_operator_expression::binary_operation::binary_lessthan_operation,
         std::make_shared <model::variable_expression> (variableDeclaration),
-        std::make_shared <model::literal_expression> (
-            std::make_shared <model::builtin_literal <int>> (c, 10)));
+            std::make_shared <model::builtin_literal_expression <int>> (c, 10));
 
     auto whileBody = std::make_shared <model::block> ();
     whileBody->appendStatement (
@@ -48,8 +46,7 @@ int buildAndRunWhileTest (std::string testFileName)
                 c,
                 model::binary_operator_expression::binary_operation::binary_plus_operation,
                 std::make_shared <model::variable_expression> (variableDeclaration),
-                std::make_shared <model::literal_expression> (
-                    std::make_shared <model::builtin_literal <int>> (c, 1)))));
+                    std::make_shared <model::builtin_literal_expression <int>> (c, 1))));
     auto whileStatement = std::make_shared <WhileStatement> (whileCondition, whileBody);
     body->appendStatement (whileStatement);
     body->appendStatement (std::make_shared <model::return_statement> (std::make_shared <model::variable_expression> (variableDeclaration)));
@@ -72,7 +69,7 @@ BOOST_AUTO_TEST_CASE (ctor)
     context c;
     model::module m (c, "test");
 
-    model::while_statement whileStatement (std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <bool>> (c, true)), std::make_shared <model::block> ());
+    model::while_statement whileStatement (std::make_shared <model::builtin_literal_expression <bool>> (c, true), std::make_shared <model::block> ());
 }
 
 BOOST_AUTO_TEST_CASE (whileStatement)

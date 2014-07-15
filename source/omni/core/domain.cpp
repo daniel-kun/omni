@@ -17,9 +17,6 @@ std::ostream & omni::core::operator << (std::ostream & lhs, omni::core::domain r
     case omni::core::domain::block:
         lhs << "block";
         break;
-    case omni::core::domain::builtin_literal:
-        lhs << "builtin_literal";
-        break;
     case omni::core::domain::do_while_statement:
         lhs << "do_while_statement";
         break;
@@ -38,11 +35,8 @@ std::ostream & omni::core::operator << (std::ostream & lhs, omni::core::domain r
     case omni::core::domain::if_statement:
         lhs << "if_statement";
         break;
-    case omni::core::domain::literal:
-        lhs << "literal";
-        break;
-    case omni::core::domain::literal_expression:
-        lhs << "literal_expression";
+    case omni::core::domain::builtin_literal_expression:
+        lhs << "builtin_literal_expression";
         break;
     case omni::core::domain::module:
         lhs << "module";

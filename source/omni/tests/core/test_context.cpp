@@ -5,8 +5,7 @@
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/entity.hpp>
 #include <omni/core/model/return_statement.hpp>
-#include <omni/core/model/literal_expression.hpp>
-#include <omni/core/model/builtin_literal.hpp>
+#include <omni/core/model/builtin_literal_expression.hpp>
 #include <omni/core/model/function_call_expression.hpp>
 #include <omni/tests/test_file_manager.hpp>
 #include <omni/tests/test_utils.hpp>
@@ -141,9 +140,8 @@ BOOST_AUTO_TEST_CASE (emitAssemblyFile)
     context c;
     model::module mod (c, "test");
     std::shared_ptr <model::block> body (new model::block ());
-    std::shared_ptr <model::literal> literal42 (new model::builtin_literal <signed int> (c, 42));
-    std::shared_ptr <model::expression> literal42exp (new model::literal_expression (literal42));
-    std::shared_ptr <model::statement> return42 (new model::return_statement (literal42exp));
+    std::shared_ptr <model::builtin_literal_expression <signed int>> literal42 (new model::builtin_literal_expression <signed int> (c, 42));
+    std::shared_ptr <model::statement> return42 (new model::return_statement (literal42));
     body->appendStatement (return42);
     const std::string functionName = "test";
     std::shared_ptr <model::function> func = mod.createFunction (
@@ -165,9 +163,8 @@ BOOST_AUTO_TEST_CASE (emitObjectFile)
     context c;
     model::module mod (c, "test");
     std::shared_ptr <model::block> body (new model::block ());
-    std::shared_ptr <model::literal> literal42 (new model::builtin_literal <signed int> (c, 42));
-    std::shared_ptr <model::expression> literal42exp (new model::literal_expression (literal42));
-    std::shared_ptr <model::statement> return42 (new model::return_statement (literal42exp));
+    std::shared_ptr <model::builtin_literal_expression <signed int>> literal42 (new model::builtin_literal_expression <signed int> (c, 42));
+    std::shared_ptr <model::statement> return42 (new model::return_statement (literal42));
     body->appendStatement (return42);
     const std::string functionName = "test";
     std::shared_ptr <model::function> func = mod.createFunction (
@@ -191,9 +188,8 @@ BOOST_AUTO_TEST_CASE (emitSharedLibraryFile)
     context c;
     model::module mod (c, "test");
     std::shared_ptr <model::block> body (new model::block ());
-    std::shared_ptr <model::literal> literal42 (new model::builtin_literal <signed int> (c, 42));
-    std::shared_ptr <model::expression> literal42exp (new model::literal_expression (literal42));
-    std::shared_ptr <model::statement> return42 (new model::return_statement (literal42exp));
+    std::shared_ptr <model::builtin_literal_expression <signed int>> literal42 (new model::builtin_literal_expression <signed int> (c, 42));
+    std::shared_ptr <model::statement> return42 (new model::return_statement (literal42));
     body->appendStatement (return42);
     const std::string functionName = "test";
     std::shared_ptr <model::function> func = mod.createFunction (functionName, model::type::sharedBasicType (c, model::type_class::t_signedInt), body);
