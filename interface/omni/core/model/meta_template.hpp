@@ -18,10 +18,9 @@ class meta_template : public meta_info {
 public:
     meta_template ();
 
-    std::shared_ptr <entity> createInstance (std::vector <boost::any> parameters) override;
-
     std::string getName() const override;
-    std::shared_ptr <omni::core::input::syntax_element> getSyntaxElement () const override;
+    std::shared_ptr <omni::core::syntax::syntax_template> getSyntax () const override;
+    std::shared_ptr <entity> createFromSyntax (omni::core::syntax::syntax_node syntax) override;
 };
 
 }

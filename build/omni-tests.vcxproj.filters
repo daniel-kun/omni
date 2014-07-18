@@ -25,6 +25,9 @@
     <Filter Include="Quelldateien\core\input">
       <UniqueIdentifier>{11542258-1660-4342-afac-4ced090a7343}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\core\syntax">
+      <UniqueIdentifier>{3e488c04-8c22-42f0-ab59-30b5465884f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\tests\test_file_manager.cpp">
@@ -83,6 +86,9 @@
     </ClCompile>
     <ClCompile Include="..\source\omni\tests\core\test_id.cpp">
       <Filter>Quelldateien\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\syntax\test_syntax.cpp">
+      <Filter>Quelldateien\core\syntax</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
