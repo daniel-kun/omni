@@ -28,6 +28,12 @@
     <Filter Include="Quelldateien\core\syntax">
       <UniqueIdentifier>{3e488c04-8c22-42f0-ab59-30b5465884f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\core">
+      <UniqueIdentifier>{19ef4293-78a2-4974-a11a-53981ed56a72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headerdateien\core\input">
+      <UniqueIdentifier>{859b21f6-425e-4eff-b683-a6012edb00e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\tests\test_file_manager.cpp">
@@ -90,6 +96,12 @@
     <ClCompile Include="..\source\omni\tests\core\syntax\test_syntax.cpp">
       <Filter>Quelldateien\core\syntax</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\input\test_input_manager.cpp">
+      <Filter>Quelldateien\core\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\input\test_utils_input.cpp">
+      <Filter>Quelldateien\core\input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />
@@ -100,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="..\interface\omni\tests\test_utils.hpp">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\source\omni\tests\core\input\test_utils_input.hpp">
+      <Filter>Headerdateien\core\input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

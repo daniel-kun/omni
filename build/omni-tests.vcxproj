@@ -68,8 +68,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\source\omni\tests\core\input\test_input_manager.cpp" />
     <ClCompile Include="..\source\omni\tests\core\input\test_input_state.cpp" />
     <ClCompile Include="..\source\omni\tests\core\input\test_syntax_tree_parser_xml.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\input\test_utils_input.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_binary_operator_expression.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_block.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_domain.cpp" />
@@ -95,6 +97,7 @@
   <ItemGroup>
     <ClInclude Include="..\interface\omni\tests\test_file_manager.hpp" />
     <ClInclude Include="..\interface\omni\tests\test_utils.hpp" />
+    <ClInclude Include="..\source\omni\tests\core\input\test_utils_input.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="omni-core.vcxproj">

@@ -19,7 +19,7 @@ add_library (omni-core SHARED
     source/omni/core/model/binary_operator_expression.cpp
     source/omni/core/model/bitcast_expression.cpp
     source/omni/core/model/block.cpp
-    source/omni/core/model/builtin_literal.cpp
+    source/omni/core/model/builtin_literal_expression.cpp
     source/omni/core/model/cast_expression.cpp
     source/omni/core/model/do_while_statement.cpp
     source/omni/core/model/entity.cpp
@@ -29,7 +29,6 @@ add_library (omni-core SHARED
     source/omni/core/model/function_call_expression.cpp
     source/omni/core/model/function_prototype.cpp
     source/omni/core/model/if_statement.cpp
-    source/omni/core/model/literal.cpp
     source/omni/core/model/literal_expression.cpp
     source/omni/core/model/modifying_expression.cpp
     source/omni/core/model/module.cpp
@@ -190,8 +189,10 @@ add_executable (omni-tests
     source/omni/tests/test_file_manager.cpp
     source/omni/tests/test_llvm.cpp
     source/omni/tests/test_utils.cpp
+    source/omni/tests/core/input/test_input_manager.cpp
     source/omni/tests/core/input/test_input_state.cpp
     source/omni/tests/core/input/test_syntax_tree_parser_xml.cpp
+    source/omni/tests/core/input/test_utils_input.cpp
     source/omni/tests/core/model/test_binary_operator_expression.cpp
     source/omni/tests/core/model/test_block.cpp
     source/omni/tests/core/model/test_domain.cpp

@@ -1,8 +1,7 @@
 #include <omni/core/model/if_statement.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/model/module.hpp>
-#include <omni/core/model/literal_expression.hpp>
-#include <omni/core/model/builtin_literal.hpp>
+#include <omni/core/model/builtin_literal_expression.hpp>
 #include <omni/core/model/return_statement.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/model/function.hpp>
@@ -21,7 +20,7 @@ BOOST_AUTO_TEST_CASE (ctor)
     using namespace omni::core;
     context c;
 
-    auto condition = std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <bool>> (c, true));
+    auto condition = std::make_shared <model::builtin_literal_expression <bool>> (c, true);
     auto trueBlock = std::make_shared <model::block> ();
     auto elseBlock = std::make_shared <model::block> ();
 
@@ -44,11 +43,11 @@ BOOST_AUTO_TEST_CASE (mixedTests)
 
     auto runDemo = [& c, & m] (bool cond) -> int 
     {
-        auto condition = std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <bool>> (c, cond));
+        auto condition = std::make_shared <model::builtin_literal_expression <bool>> (c, cond);
         auto trueBlock = std::make_shared <model::block> ();
-        trueBlock->appendStatement (std::make_shared <model::return_statement> (std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <int>> (c, 42))));
+        trueBlock->appendStatement (std::make_shared <model::return_statement> (std::make_shared <model::builtin_literal_expression <int>> (c, 42)));
         auto elseBlock = std::make_shared <model::block> ();
-        elseBlock->appendStatement (std::make_shared <model::return_statement> (std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <int>> (c, 128))));
+        elseBlock->appendStatement (std::make_shared <model::return_statement> (std::make_shared <model::builtin_literal_expression <int>> (c, 128)));
 
         auto ifStatement = std::make_shared <model::if_statement> (condition, trueBlock, elseBlock);
 

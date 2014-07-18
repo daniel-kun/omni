@@ -8,6 +8,9 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link />
+    <ClCompile>
+      <DisableSpecificWarnings>4555;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
 </Project>

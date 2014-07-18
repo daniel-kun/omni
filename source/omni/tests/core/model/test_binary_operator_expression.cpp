@@ -3,8 +3,7 @@
 #include <omni/core/model/binary_operator_expression.hpp>
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/block.hpp>
-#include <omni/core/model/builtin_literal.hpp>
-#include <omni/core/model/literal_expression.hpp>
+#include <omni/core/model/builtin_literal_expression.hpp>
 
 #include <omni/tests/test_utils.hpp>
 #include <omni/tests/test_file_manager.hpp>
@@ -43,17 +42,15 @@ template <typename T>
 T test (std::size_t & testCounter,
         omni::core::model::module & m,
         omni::core::model::binary_operator_expression::binary_operation operation,
-        omni::core::model::builtin_literal <T> * left,
-        omni::core::model::builtin_literal <T> * right)
+        std::shared_ptr <omni::core::model::builtin_literal_expression <T>> left,
+        std::shared_ptr <omni::core::model::builtin_literal_expression <T>> right)
 {
     using namespace omni::core;
     std::shared_ptr <model::block> body (new model::block ());
-    std::shared_ptr <model::literal_expression> leftExpression (new model::literal_expression (std::shared_ptr <model::literal> (left)));
-    std::shared_ptr <model::literal_expression> rightExpression (new model::literal_expression (std::shared_ptr <model::literal> (right)));
     body->appendStatement (
         std::shared_ptr <model::statement> (
             new model::return_statement (
-                std::shared_ptr <model::expression> (new model::binary_operator_expression (* m.getContext (), operation, leftExpression, rightExpression)))));
+                std::shared_ptr <model::expression> (new model::binary_operator_expression (* m.getContext (), operation, left, right)))));
     std::stringstream funcName;
     funcName << "binaryOperatorExpressionTest" << ++ testCounter;
     std::string testFuncName = funcName.str ();
@@ -72,8 +69,8 @@ This offers a better orientation when a BOOST_CHECK_EQUAL failes.
     auto result = test (TESTCOUNTER,\
                         MODULE,\
                         OPERATION,\
-                        new omni::core::model::builtin_literal <decltype(LEFT)> (* MODULE.getContext (), LEFT),\
-                        new omni::core::model::builtin_literal <decltype(RIGHT)> (* MODULE.getContext (), RIGHT));\
+                        std::make_shared <omni::core::model::builtin_literal_expression <decltype(LEFT)>> (* MODULE.getContext (), LEFT),\
+                        std::make_shared <omni::core::model::builtin_literal_expression <decltype(RIGHT)>> (* MODULE.getContext (), RIGHT));\
     BOOST_CHECK_EQUAL (result, static_cast <decltype (LEFT)> (LEFT OPERATOR RIGHT));\
     if (result != static_cast <decltype (LEFT)> (LEFT OPERATOR RIGHT)) { \
         std::stringstream fileName; \

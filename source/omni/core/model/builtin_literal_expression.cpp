@@ -1,6 +1,5 @@
-#include <omni/core/model/builtin_literal.hpp>
+#include <omni/core/model/builtin_literal_expression.hpp>
 #include <omni/core/context.hpp>
-#include <omni/core/model/type_class.hpp>
 #include <omni/core/model/type.hpp>
 #include <omni/core/model/type_mismatch_error.hpp>
 
@@ -52,52 +51,55 @@ template <> class value_provider <unsigned long long> : public unsigned_provider
 }
 
 /**
-@brief Initializes this builtin_literal in the given context with the given value.
+@brief Initializes this builtin_literal_expression in the given context with the given value.
 
-A builtin_literal can only exist with a context, since the context defines how the given type is stored and how it behaves.
-@param context The context that this builtin_literal can be used in.
-@param value The value that this builtin_literal will provide.
+A builtin_literal_expression can only exist with a context, since the context defines how the given type is stored and how it behaves.
+@param context The context that this builtin_literal_expression can be used in.
+@param value The value that this builtin_literal_expression will emit.
 **/
 template <typename T>
-omni::core::model::builtin_literal <T>::builtin_literal (context & context, T value) :
-    literal (type::sharedBasicType (context, native_type_to_type_class <T>::typeClass)),
+omni::core::model::builtin_literal_expression <T>::builtin_literal_expression (context & context, T value) :
+    _type (type::sharedBasicType (context, native_type_to_type_class <T>::typeClass)),
     _value (value)
 {
 }
 
 template <typename T>
-omni::core::domain omni::core::model::builtin_literal <T>::getDomain () const
+omni::core::domain omni::core::model::builtin_literal_expression <T>::getDomain () const
 {
-    return domain::builtin_literal;
+    return domain::builtin_literal_expression;
 }
 
-/*
-Internal.
-
-Returns an llvm::Value that corresponds to the value of this builtin_literal.
-*/
 template <typename T>
-llvm::Value * omni::core::model::builtin_literal <T>::llvmValue ()
+std::shared_ptr <omni::core::model::type> omni::core::model::builtin_literal_expression <T>::getType () const
+{
+    return _type;
+}
+ 
+template <typename T>
+omni::core::statement_emit_result omni::core::model::builtin_literal_expression <T>::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {
     if (native_type_to_type_class<T>::typeClass != getType ()->getTypeClass ()) {
         throw type_mismatch_error (* getType ()->getContext ()->sharedBasicType (native_type_to_type_class<T>::typeClass), * getType ());
     }
-    return value_provider <T>::provideValue (getType ()->llvmType (), _value);
+    return statement_emit_result (
+            llvmBasicBlock,
+            value_provider <T>::provideValue (getType ()->llvmType (), _value));
 }
 
 // We have explicit template instantiations for all supported types.
 // That way, we do not need to define everything in the header file.
 
-template class omni::core::model::builtin_literal <bool>;
-template class omni::core::model::builtin_literal <char>;
-template class omni::core::model::builtin_literal <signed char>;
-template class omni::core::model::builtin_literal <unsigned char>;
-template class omni::core::model::builtin_literal <signed short>;
-template class omni::core::model::builtin_literal <unsigned short>;
-template class omni::core::model::builtin_literal <signed int>;
-template class omni::core::model::builtin_literal <unsigned int>;
-template class omni::core::model::builtin_literal <signed long>;
-template class omni::core::model::builtin_literal <unsigned long>;
-template class omni::core::model::builtin_literal <signed long long>;
-template class omni::core::model::builtin_literal <unsigned long long>;
+template class omni::core::model::builtin_literal_expression <bool>;
+template class omni::core::model::builtin_literal_expression <char>;
+template class omni::core::model::builtin_literal_expression <signed char>;
+template class omni::core::model::builtin_literal_expression <unsigned char>;
+template class omni::core::model::builtin_literal_expression <signed short>;
+template class omni::core::model::builtin_literal_expression <unsigned short>;
+template class omni::core::model::builtin_literal_expression <signed int>;
+template class omni::core::model::builtin_literal_expression <unsigned int>;
+template class omni::core::model::builtin_literal_expression <signed long>;
+template class omni::core::model::builtin_literal_expression <unsigned long>;
+template class omni::core::model::builtin_literal_expression <signed long long>;
+template class omni::core::model::builtin_literal_expression <unsigned long long>;
 
