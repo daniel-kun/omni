@@ -151,7 +151,6 @@ target_link_libraries(omni-core
 /usr/lib/llvm-3.6/lib/libLLVMX86Info.a
 /usr/lib/llvm-3.6/lib/libLLVMX86AsmPrinter.a
 /usr/lib/llvm-3.6/lib/libLLVMX86Utils.a
-/usr/lib/llvm-3.6/lib/libLLVMJIT.a
 /usr/lib/llvm-3.6/lib/libLLVMLineEditor.a
 /usr/lib/llvm-3.6/lib/libLLVMMCDisassembler.a
 /usr/lib/llvm-3.6/lib/libLLVMInstrumentation.a
@@ -162,7 +161,6 @@ target_link_libraries(omni-core
 /usr/lib/llvm-3.6/lib/libLLVMTransformUtils.a
 /usr/lib/llvm-3.6/lib/libLLVMipa.a
 /usr/lib/llvm-3.6/lib/libLLVMAnalysis.a
-/usr/lib/llvm-3.6/lib/libLLVMMCJIT.a
 /usr/lib/llvm-3.6/lib/libLLVMTarget.a
 /usr/lib/llvm-3.6/lib/libLLVMRuntimeDyld.a
 /usr/lib/llvm-3.6/lib/libLLVMExecutionEngine.a
