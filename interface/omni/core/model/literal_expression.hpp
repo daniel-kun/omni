@@ -4,6 +4,11 @@
 #include <omni/core/core.hpp>
 #include <omni/core/model/pure_expression.hpp>
 
+#ifndef Q_MOC_RUN
+#include <boost/any.hpp>
+#include <boost/signals2.hpp>
+#endif
+
 namespace omni {
 namespace core {
 namespace model {
@@ -17,6 +22,19 @@ namespace model {
     **/
     class OMNI_CORE_API literal_expression : public pure_expression {
     public:
+        typedef boost::signals2::signal <void (literal_expression & sender, boost::any oldValue, boost::any newValue)> ValueChangedSignal;
+
+        boost::signals2::connection connectValueChanged (ValueChangedSignal::slot_type handler);
+
+        virtual std::string toString (bool fullyQualified = true) const = 0;
+
+        static std::shared_ptr <literal_expression> fromString (std::string const & text);
+
+    protected:
+        virtual void valueChanged (boost::any oldValue, boost::any newValue);
+
+    private:
+        ValueChangedSignal _valueChangedSignal;
     };
 
 } // namespace model

@@ -5,6 +5,8 @@
 #include <omni/core/model/literal_expression.hpp>
 #include <omni/core/model/native_type_to_type_class.hpp>
 
+#include <boost/signals2.hpp>
+
 namespace omni {
 namespace core {
 namespace model {
@@ -21,10 +23,15 @@ namespace model {
     public:
         explicit builtin_literal_expression (context & context, T value);
 
+        std::string toString (bool fullyQualified = true) const override;
+
         domain getDomain () const override;
         std::shared_ptr <type> getType () const override;
 
         static const type_class typeClass = native_type_to_type_class <T>::typeClass;
+
+        void setValue (T value);
+        T getValue () const;
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
 

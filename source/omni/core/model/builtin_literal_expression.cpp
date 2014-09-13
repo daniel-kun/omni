@@ -5,6 +5,8 @@
 
 #include <llvm/IR/Constants.h>
 
+#include <sstream>
+
 namespace {
 
 /*
@@ -65,6 +67,17 @@ omni::core::model::builtin_literal_expression <T>::builtin_literal_expression (c
 }
 
 template <typename T>
+std::string omni::core::model::builtin_literal_expression <T>::toString (bool fullyQualified = true) const
+{
+    std::stringstream str;
+    str << _value;
+    if (fullyQualified) {
+        str << getType ()->toString (false);
+    }
+    return str.str ();
+}
+
+template <typename T>
 omni::core::domain omni::core::model::builtin_literal_expression <T>::getDomain () const
 {
     return domain::builtin_literal_expression;
@@ -76,6 +89,31 @@ std::shared_ptr <omni::core::model::type> omni::core::model::builtin_literal_exp
     return _type;
 }
  
+/**
+@brief Changes the value of this builtin_literal to `value'.
+
+Emits the signal ValueChanged.
+@param value The new value for this builtin_literal
+**/
+template <typename T>
+void omni::core::model::builtin_literal_expression <T>::setValue (T value)
+{
+    T oldValue = _value;
+    _value = value;
+    valueChanged (oldValue, _value);
+}
+
+/**
+@brief Returns the current value for this builtin_literal.
+
+@return Te current value for this builtin_literal.
+**/
+template <typename T>
+T omni::core::model::builtin_literal_expression <T>::getValue () const
+{
+    return _value;
+}
+
 template <typename T>
 omni::core::statement_emit_result omni::core::model::builtin_literal_expression <T>::llvmEmit (llvm::BasicBlock * llvmBasicBlock)
 {

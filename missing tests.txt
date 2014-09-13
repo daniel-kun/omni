@@ -1,5 +1,17 @@
 If you are adding a public function or a method, immediately add it to this file, so it will not be forgotten to be unit-tested.
 
+class literal:
+* toString
+* fromString
+
+class type:
+* toString (bool)
+* toString (type_class, bool)
+
+class builtin_literal_expression:
+* setValue
+* getValue
+* connectValueChanged
 
 class entity:
 * entity ();

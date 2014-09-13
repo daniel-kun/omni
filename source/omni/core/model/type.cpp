@@ -50,6 +50,56 @@ omni::core::model::type::~ type ()
 {
 }
 
+/**
+Returns a human-readable text that represents this type.
+@param fullyQualified Specifies, whether the type should be returned fully qualified, or in canonical form. The exact meaning of this depends on the actualy type.
+@return A human-readable text that represents this type.
+**/
+std::string omni::core::model::type::toString (bool fullyQualified)
+{
+    return toString (_typeClass, fullyQualified);
+}
+
+/**
+Returns a human-readable text that represents `typeClass'. Only suitable for built-in types (no classes, no enums).
+@param typeClass The type-class that will be converted to text.
+@param fullyQualified Specifies, whether the type should be returned fully qualified, or in canonical form. The exact meaning of this depends on the actualy type.
+@return A human-readable text that represents `typeClass'.
+**/
+std::string omni::core::model::type::toString (type_class typeClass, bool fullyQualified)
+{
+    switch (typeClass) {
+    case type_class::t_void:
+        return "void";
+    case type_class::t_boolean:
+        return "boolean";
+    case type_class::t_unsignedByte:
+        return "unsigned byte";
+    case type_class::t_signedByte:
+        return "signed byte";
+    case type_class::t_unsignedShort:
+        return "unsigned short";
+    case type_class::t_signedShort:
+        return "signed short";
+    case type_class::t_unsignedInt:
+        return "unsigned int";
+    case type_class::t_signedInt:
+        return "signed int";
+    case type_class::t_unsignedLong:
+        return "unsigned long";
+    case type_class::t_signedLong:
+        return "signed long";
+    case type_class::t_unsignedLongLong:
+        return "unsigned long long";
+    case type_class::t_signedLongLong:
+        return "signed long long";
+    case type_class::t_char:
+        return "character";
+    default:
+        throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
+    }
+}
+
 omni::core::domain omni::core::model::type::getDomain () const
 {
     return domain::type;
