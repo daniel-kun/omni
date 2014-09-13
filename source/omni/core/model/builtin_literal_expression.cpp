@@ -67,7 +67,7 @@ omni::core::model::builtin_literal_expression <T>::builtin_literal_expression (c
 }
 
 template <typename T>
-std::string omni::core::model::builtin_literal_expression <T>::toString (bool fullyQualified = true) const
+std::string omni::core::model::builtin_literal_expression <T>::toString (bool fullyQualified) const
 {
     std::stringstream str;
     str << _value;
