@@ -1,36 +1,40 @@
-#ifndef OMNI_CORE_LITERAL_EXPRESSION_HPP
-#define OMNI_CORE_LITERAL_EXPRESSION_HPP
+#ifndef OMNI_CORE_MODEL_LITERAL_EXPRESSION_HPP
+#define OMNI_CORE_MODEL_LITERAL_EXPRESSION_HPP
 
 #include <omni/core/core.hpp>
 #include <omni/core/model/pure_expression.hpp>
 
-#include <memory>
+#ifndef Q_MOC_RUN
+#include <boost/any.hpp>
+#include <boost/signals2.hpp>
+#endif
 
 namespace omni {
 namespace core {
 namespace model {
-    class literal;
 
     /**
-    A literal expression is an expression that simply returns a value that was already defined at compile time.
+    @class literal_expression literal_expression.hpp omni/core/model/literal_expression.hpp
+    @brief A literal_expression is an expression that returns a value that was already defined at compile time.
+
+    literal_expression is abstract. Use the subclass builtin_literal_expression to create a literal.
+    (class_literal_expression will be coming later, when classes are implemented.)
     **/
     class OMNI_CORE_API literal_expression : public pure_expression {
     public:
-        literal_expression ();
-        literal_expression (std::shared_ptr <literal> literal);
-        
-        domain getDomain () const override;
+        typedef boost::signals2::signal <void (literal_expression & sender, boost::any oldValue, boost::any newValue)> ValueChangedSignal;
 
-        std::shared_ptr <literal> getLiteral ();
-        const std::shared_ptr <literal> getLiteral () const;
-        void setLiteral (std::shared_ptr <literal> literal);
+        boost::signals2::connection connectValueChanged (ValueChangedSignal::slot_type handler);
 
-        std::shared_ptr <type> getType () const override;
+        virtual std::string toString (bool fullyQualified = true) const = 0;
 
-        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
+        static std::shared_ptr <literal_expression> fromString (std::string const & text);
+
+    protected:
+        virtual void valueChanged (boost::any oldValue, boost::any newValue);
 
     private:
-        std::shared_ptr <literal> _literal;
+        ValueChangedSignal _valueChangedSignal;
     };
 
 } // namespace model

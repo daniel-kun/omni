@@ -3,8 +3,7 @@
 #include <omni/core/context.hpp>
 #include <omni/core/model/module.hpp>
 #include <omni/core/model/type.hpp>
-#include <omni/core/model/builtin_literal.hpp>
-#include <omni/core/model/literal_expression.hpp>
+#include <omni/core/model/builtin_literal_expression.hpp>
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/parameter.hpp>
 #include <omni/core/model/function_call_expression.hpp>
@@ -30,10 +29,10 @@ BOOST_AUTO_TEST_CASE (ctor)
     function_putchar->appendParameter (param1);
 
     std::shared_ptr <model::function_call_expression> functionCallExpression (new model::function_call_expression (function_putchar));
-    std::shared_ptr <model::builtin_literal <signed int>> param1Value (new model::builtin_literal <signed int> (c, 'O'));
+    std::shared_ptr <model::builtin_literal_expression <signed int>> param1Value (new model::builtin_literal_expression <signed int> (c, 'O'));
     auto param1Type = param1Value->getType ();
     auto putcharParam1Type = function_putchar->getParameters () [0]->getType ();
-    std::shared_ptr <model::literal_expression> param1Expression (new model::literal_expression (param1Value));
+    std::shared_ptr <model::literal_expression> param1Expression (param1Value);
     functionCallExpression->appendParameter (param1Expression);
 
     std::shared_ptr <model::block> body (new model::block ());

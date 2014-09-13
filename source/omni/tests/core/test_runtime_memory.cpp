@@ -8,8 +8,7 @@
 #include <omni/core/model/function_call_expression.hpp>
 #include <omni/core/model/external_function.hpp>
 #include <omni/core/model/return_statement.hpp>
-#include <omni/core/model/literal_expression.hpp>
-#include <omni/core/model/builtin_literal.hpp>
+#include <omni/core/model/builtin_literal_expression.hpp>
 #include <omni/core/model/variable_declaration_expression.hpp>
 #include <omni/core/model/variable_expression.hpp>
 #include <omni/core/model/bitcast_expression.hpp>
@@ -39,7 +38,7 @@ BOOST_AUTO_TEST_CASE (referenceCounting)
             std::make_shared <model::function_call_expression> (
                 r.getMemoryAllocate (),
                 std::vector <std::shared_ptr <model::expression>> {
-                    std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <unsigned int>> (c, 128))
+                    std::make_shared <model::builtin_literal_expression <unsigned int>> (c, 128)
                 }),
             ptrInt32));
     // Allocate memory:

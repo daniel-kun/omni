@@ -8,8 +8,7 @@
 #include <omni/core/model/type.hpp>
 #include <omni/core/model/type_class.hpp>
 #include <omni/core/model/block.hpp>
-#include <omni/core/model/literal_expression.hpp>
-#include <omni/core/model/builtin_literal.hpp>
+#include <omni/core/model/builtin_literal_expression.hpp>
 #include <omni/core/model/return_statement.hpp>
 
 #include <omni/tests/test_utils.hpp>
@@ -36,15 +35,13 @@ void testVariables (T initializationValue, T assignmentValue)
     model::module m (c, "test");
     
     // Declare a variable with the initial value of `initializationValue':
-    auto variableInitializationLiteral = std::make_shared <model::builtin_literal<T>> (c, initializationValue);
-    auto variableInitializationExpression = std::make_shared <model::literal_expression> (variableInitializationLiteral);
-    auto variableDeclarationStatement = std::make_shared <model::variable_declaration_expression> (variableInitializationExpression);
+    auto variableInitializationLiteral = std::make_shared <model::builtin_literal_expression <T>> (c, initializationValue);
+    auto variableDeclarationStatement = std::make_shared <model::variable_declaration_expression> (variableInitializationLiteral);
     BOOST_CHECK (variableDeclarationStatement->getType ()->getTypeClass () == model::native_type_to_type_class <T>::typeClass);
 
     // Assign `assignmentValue' to the variable:
-    auto variableValueLiteral = std::make_shared <model::builtin_literal<T>> (c, assignmentValue);
-    auto variableValueExpression = std::make_shared <model::literal_expression> (variableValueLiteral);
-    auto variableAssignmentExpression = std::make_shared <model::variable_assignment_expression> (variableDeclarationStatement, variableValueExpression);
+    auto variableValueLiteral = std::make_shared <model::builtin_literal_expression <T>> (c, assignmentValue);
+    auto variableAssignmentExpression = std::make_shared <model::variable_assignment_expression> (variableDeclarationStatement, variableValueLiteral);
 
     // Add the statements to a function body:
     auto body = std::make_shared <model::block> ();
@@ -96,20 +93,19 @@ BOOST_AUTO_TEST_CASE (mixedTests)
     auto body = std::make_shared <model::block> ();
     // Declare a variable "A" that holds the letter 'A':
     auto variableA = std::make_shared <model::variable_declaration_expression> (
-        std::make_shared <model::literal_expression> (
-            std::make_shared <model::builtin_literal <char>> (c, 'A')));
+            std::make_shared <model::builtin_literal_expression <char>> (c, 'A'));
     body->appendStatement (variableA);
     // Declare a second variable "B" that holds the value of variableA, incremented by 1. Hence, the value should be 'B'
     auto AplusBexpression = std::make_shared <model::binary_operator_expression> (
         * m.getContext (),
         model::binary_operator_expression::binary_operation::binary_plus_operation,
         std::make_shared <model::variable_expression> (variableA),
-        std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal <char>> (c, static_cast <char> (1))));
+        std::make_shared <model::builtin_literal_expression <char>> (c, static_cast <char> (1)));
     auto variableB = std::make_shared <model::variable_declaration_expression> (AplusBexpression);
     body->appendStatement (variableB);
     // Declare a third variable C that will be initialized with the letter 'A', but then (without usage of the letter 'A') it will be assigned
     // the result of variableB plus 1. Hence, the value should be 'C'.
-    auto variableC = std::make_shared <model::variable_declaration_expression> (std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal<char>> (c, 'A')));
+    auto variableC = std::make_shared <model::variable_declaration_expression> (std::make_shared <model::builtin_literal_expression <char>> (c, 'A'));
     body->appendStatement (variableC);
     auto variableCassignment = std::make_shared <model::variable_assignment_expression> (
         variableC,
@@ -117,7 +113,7 @@ BOOST_AUTO_TEST_CASE (mixedTests)
             * m.getContext (),
             model::binary_operator_expression::binary_operation::binary_plus_operation,
             std::make_shared <model::variable_expression> (variableB),
-            std::make_shared <model::literal_expression> (std::make_shared <model::builtin_literal<char>> (c, static_cast <char> (1)))));
+            std::make_shared <model::builtin_literal_expression <char>> (c, static_cast <char> (1))));
     body->appendStatement (variableCassignment);
 
     // Now, return the value of variable "C", which should be 'C':

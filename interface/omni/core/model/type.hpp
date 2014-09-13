@@ -35,6 +35,9 @@ namespace model {
         type (context & context, type_class typeClass, unsigned int indirectionLevel = 0);
         virtual ~ type ();
 
+        std::string toString (bool fullyQualified = true);
+        static std::string toString (type_class typeClass, bool fullyQualified = true);
+
         context * getContext () override;
         const context * getContext () const override;
 
