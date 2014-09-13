@@ -1,0 +1,100 @@
+<syntax>
+    <abstract name="statement">
+        <concrete name="block">
+            <fixed text="{"/>
+            <indentright/>
+            <repeater prefix="\n">
+                <variable name="statement"/>
+            </repeater>
+            <indentleft/>
+            <fixed text="}"/>
+        </concrete>
+        <concrete name="if">
+            <fixed text="if("/>
+            <syntax name="condition" type="expression"/>
+            <fixed text=") {"/>
+            <indentright/>
+            <syntax name="body" type="block"/>
+            <indentleft/>
+            <fixed text="}"/>
+        </concrete>
+        <concrete name="return">
+            <fixed text="return "/>
+            <syntax name="value" type="expression"/>
+        </concrete>
+        <concrete name="while">
+            <fixed text="while("/>
+            <syntax name="condition" type="expression"/>
+            <fixed text=") {"/>
+            <indentright/>
+            <syntax name="body" type="block"/>
+            <indentleft/>
+            <fixed text="}"/>
+        </concrete>
+        <concrete name="do_while">
+            <fixed text="do {"/>
+            <indentright/>
+            <syntax name="body" type="block"/>
+            <indentleft/>
+            <fixed text="} while("/>
+            <syntax name="condition" type="expression"/>
+            <fixed text=")"/>
+        </concrete>
+
+        <abstract name="expression">
+            <abstract name="pure_expression">
+                <concrete name="binary_operator">
+                    <syntax name="lhs" type="expression"/>
+                    <fixed text=" "/>
+                    <variable name="operator"/>
+                    <fixed text=" "/>
+                    <syntax name="rhs" type="expression"/>
+                </concrete>
+
+                <abstract name="cast_expression">
+                    <concrete name="cast_expression">
+                        <fixed text="bitcast&lt;"/>
+                        <syntax name="target" type="type"/>
+                        <fixed text="&gt;("/>
+                        <syntax name="source" type="expression"/>
+                        <fixed text=")"/>
+                    </concrete>
+                </abstract>
+
+                <concrete name="literal_expression">
+                    <variable name="literal"/>
+                </concrete>
+
+                <concrete name="variable_declaration_expression">
+                    <fixed text="var "/>
+                    <variable name="name"/>
+                    <fixed text=" = ("/>
+                    <syntax name="init_value" type="expression"/>
+                    <fixed text=")"/>
+                </concrete>
+
+                <concrete name="variable_expression">
+                    <variable name="variable"/>
+                </concrete>
+
+            </abstract>
+
+            <abstract name="modifying_expression">
+                <concrete name="function_call_expression">
+                    <variable name="function"/>
+                    <fixed text="("/>
+                    <repeater prefix=",">
+                        <syntax name="parameter" type="expression"/>
+                    </repeater>
+                    <fixed text=")"/>
+                </concrete>
+
+                <concrete name="variable_assignment_expression">
+                    <variable name="variable"/>
+                    <fixed text=" = "/>
+                    <syntax name="rhs" type="expression"/>
+                </concrete>
+            </abstract>
+        </abstract>
+    </abstract>
+</syntax>
