@@ -139,8 +139,8 @@ Emits llvm IR language code to the file at path fileName.
 **/
 void omni::core::model::module::emitAssemblyFile (std::string const & fileName, const module_emit_options & options)
 {
-    std::string errorInfo;
-    llvm::raw_fd_ostream fileStream (fileName.c_str (), errorInfo, llvm::sys::fs::F_None);
+    std::error_code errorInfo;
+    llvm::raw_fd_ostream fileStream (static_cast <llvm::StringRef> (fileName), errorInfo, llvm::sys::fs::F_None);
     emitAssemblyFile (fileStream, options);
 }
 
@@ -242,8 +242,8 @@ Emits a native object file (e.g. .obj on win32) to the file `fileName'.
 **/
 void omni::core::model::module::emitObjectFile (std::string const & fileName, const module_emit_options & options)
 {
-    std::string errorInfo;
-    llvm::raw_fd_ostream rawStream (fileName.c_str (), errorInfo, llvm::sys::fs::F_None);
+    std::error_code errorInfo;
+    llvm::raw_fd_ostream rawStream (static_cast <llvm::StringRef> (fileName), errorInfo, llvm::sys::fs::F_None);
     emitObjectFile (rawStream, options);
 }
 
