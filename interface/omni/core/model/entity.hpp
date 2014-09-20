@@ -4,6 +4,10 @@
 #include <omni/core/core.hpp>
 #include <omni/core/id.hpp>
 
+#ifndef Q_MOC_RUN
+#include <boost/signals2.hpp>
+#endif
+
 #include <string>
 #include <memory>
 #include <map>
@@ -32,6 +36,8 @@ namespace model {
     **/
     class OMNI_CORE_API entity {
     public:
+        typedef boost::signals2::signal <void (entity & sender)> ChangedSignal;
+
         /**
         Used to store lists that map a component's name to an entity.
         @see getComponents(omni::core::domain)
@@ -83,7 +89,12 @@ namespace model {
         bool removeComponent (domain domain, std::string name);
         bool removeComponent (domain domain, std::shared_ptr <entity> component);
 
+        boost::signals2::connection connectChanged (ChangedSignal::slot_type handler);
+
         virtual void fillLibraries (std::set <std::string> & libraries);
+
+    protected:
+        virtual void changed ();
 
     private:
         void updateIds ();
@@ -92,6 +103,7 @@ namespace model {
         std::string _name;
         id _id;
         domain_to_name_to_entities_map _components;
+        ChangedSignal _changedSignal;
     };
 
 } // namespace model

@@ -11,7 +11,9 @@ The id will be set as soon as this entity is added to a context.
 omni::core::model::entity::entity () :
     _parent (),
     _name (),
-    _id ()
+    _id (),
+    _components (),
+    _changedSignal ()
 {
 }
 
@@ -25,7 +27,9 @@ The id will be set as soon as this entity is added to a context.
 omni::core::model::entity::entity (std::string const & name) :
     _parent (),
     _name (name),
-    _id ()
+    _id (),
+    _components (),
+    _changedSignal ()
 {
 }
 
@@ -38,7 +42,9 @@ omni::core::model::entity::entity (std::string const & name) :
 omni::core::model::entity::entity (omni::core::id entityId, std::string const & name) :
     _parent (),
     _name (name),
-    _id (entityId)
+    _id (entityId),
+    _components (),
+    _changedSignal ()
 {
 }
 
@@ -531,6 +537,28 @@ the library will only be linked once.
 **/
 void omni::core::model::entity::fillLibraries (std::set <std::string> & libraries)
 {
+}
+
+/**
+@brief Connects a handler to the Changed signal that is emitted after a change has been made to this entity.
+
+Each kind of entity has other "changes" that can happen. Refer to the specific class for a list of possible changes that emit the Changed signal.
+@param handler The handler that will be called after something within this entity changed.
+@return A signal connection that can be used disconnect this handler.
+**/
+boost::signals2::connection omni::core::model::entity::connectChanged (ChangedSignal::slot_type handler)
+{
+    return _changedSignal.connect (handler);
+}
+
+/**
+@brief Emits the signal Changed.
+
+When overriding this function, make sure to call the base class implementation. Otherwise, all other functionality that depends on the Changed signal will break.
+**/
+void omni::core::model::entity::changed ()
+{
+    _changedSignal (* this);
 }
 
 /**

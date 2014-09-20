@@ -5,8 +5,6 @@
 #include <omni/core/model/literal_expression.hpp>
 #include <omni/core/model/native_type_to_type_class.hpp>
 
-#include <boost/signals2.hpp>
-
 namespace omni {
 namespace core {
 namespace model {
