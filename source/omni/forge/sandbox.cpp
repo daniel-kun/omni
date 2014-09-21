@@ -1,33 +1,102 @@
 #include "sandbox.hpp"
 
+#include <omni/ui/generic_entity_editor.hpp>
+
+#include <omni/core/invalid_argument_error.hpp>
 #include <omni/core/model/literal_expression.hpp>
 #include <omni/core/model/builtin_literal_expression.hpp>
 #include <omni/core/model/type.hpp>
 
 #include <QKeyEvent>
 
-omni::forge::entity_widget::entity_widget (QWidget * parent) :
-    QWidget (parent)
+std::map <std::string, omni::forge::
+    entity_widget_provider> s_widgetProviderRegistry = {
+        { "literal_expression", omni::forge::entity_widget_provider (
+            [] (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget * editWidget) -> std::unique_ptr <omni::ui::entity_base_widget> {
+                std::shared_ptr <omni::core::model::literal_expression> literal;
+                if (editWidget != nullptr) {
+                    literal = std::dynamic_pointer_cast <omni::core::model::literal_expression> (editWidget->getEntity ());
+                }
+                auto viewWidget = std::make_unique <omni::forge::literal_expression_view> (parent);
+                viewWidget->setLiteral (literal);
+                return std::move (viewWidget);
+            },
+            [] (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget & viewWidget) -> std::unique_ptr <omni::ui::entity_base_widget> {
+                auto result = std::make_unique <omni::ui::generic_entity_editor> (parent, viewWidget.getEntity ());
+                result->setTextToEntityConverter ([&context] (std::string text, std::shared_ptr <omni::core::model::entity> originatingEntity) -> std::shared_ptr <omni::core::model::entity> {
+                    auto literal = std::dynamic_pointer_cast <omni::core::model::literal_expression> (originatingEntity);
+                    return omni::core::model::literal_expression::fromString (context, text, literal.get ());
+                });
+                result->setEntity (viewWidget.getEntity ());
+                return std::move (result);
+            },
+            std::function <bool (QKeyEvent * event)> ())
+        }
+};
+
+std::unique_ptr <omni::ui::entity_base_widget> omni::forge::entity_widget_provider::createViewWidget (std::string entityType, QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget * editWidget)
+{
+    auto iterator = s_widgetProviderRegistry.find (entityType);
+    if (iterator != s_widgetProviderRegistry.end ()) {
+        return iterator->second.createViewWidget (parent, context, editWidget);
+    } else {
+        throw omni::core::invalid_argument_error (__FILE__, __FUNCTION__, __LINE__, "entityType", "An entity \"" + entityType + "\" was not found.");
+    }
+}
+
+std::unique_ptr <omni::ui::entity_base_widget> omni::forge::entity_widget_provider::createEditWidget (std::string entityType, QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget & viewWidget)
+{
+    auto iterator = s_widgetProviderRegistry.find (entityType);
+    if (iterator != s_widgetProviderRegistry.end ()) {
+        return iterator->second.createEditWidget (parent, context, viewWidget);
+    } else {
+        throw omni::core::invalid_argument_error (__FILE__, __FUNCTION__, __LINE__, "entityType", "An entity \"" + entityType + "\" was not found.");
+    }
+}
+
+
+omni::forge::entity_widget_provider::entity_widget_provider (
+    std::function <std::unique_ptr <omni::ui::entity_base_widget> (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget * editWidget)> viewCreator,
+    std::function <std::unique_ptr <omni::ui::entity_base_widget> (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget & viewWidget)> editCreator,
+    std::function <bool (QKeyEvent * event)> keyHandler) :
+    _viewCreator (viewCreator),
+    _editCreator (editCreator),
+    _keyHandler (keyHandler)
 {
 }
 
-std::shared_ptr <omni::core::model::entity> omni::forge::entity_widget::getEntity ()
+void omni::forge::entity_widget_provider::setViewWidgetCreator (std::function <std::unique_ptr <omni::ui::entity_base_widget> (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget * editWidget)> creator)
 {
-    return std::shared_ptr <omni::core::model::entity> ();
+    _viewCreator = creator;
 }
 
-void omni::forge::entity_widget::setEntity (std::shared_ptr <omni::core::model::entity> entity)
+void omni::forge::entity_widget_provider::setEditWidgetCreator (std::function <std::unique_ptr <omni::ui::entity_base_widget> (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget & viewWidget)> creator)
 {
-    // nop
+    _editCreator = creator;
 }
 
-bool omni::forge::entity_edit_provider::keyPressEvent (QKeyEvent *)
+void omni::forge::entity_widget_provider::setKeyPressHandler (std::function <bool (QKeyEvent * event)> keyHandler)
 {
-    return false;
+    _keyHandler = keyHandler;
+}
+
+std::unique_ptr <omni::ui::entity_base_widget> omni::forge::entity_widget_provider::createViewWidget (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget * editWidget)
+{
+    return _viewCreator (parent, context, editWidget);
+}
+
+std::unique_ptr <omni::ui::entity_base_widget> omni::forge::entity_widget_provider::createEditWidget (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget & viewWidget)
+{
+    return _editCreator (parent, context, viewWidget);
+}
+
+bool omni::forge::entity_widget_provider::keyPressEvent (QKeyEvent * event)
+{
+    return _keyHandler (event);
 }
 
 omni::forge::literal_expression_view::literal_expression_view (QWidget * parent) :
-    entity_widget (parent),
+    entity_base_widget (parent),
     _layout (this),
     _valueLabel (this),
     _typeLabel (this),
@@ -96,8 +165,7 @@ omni::forge::sandbox::sandbox () :
     _c (),
     _m (_c, "forge-sandbox"),
     _layout (this),
-    _literalEditProvider (),
-    _literalView (_c, _literalEditProvider, this),
+    _literalView (_c, "literal_expression", this),
     _changeLiteralValueButton (this),
     _changeLiteralTypeButton (this)
 {
@@ -122,11 +190,10 @@ void omni::forge::sandbox::changeLiteralType ()
 {
 }
 
-
-omni::forge::entity_edit_widget::entity_edit_widget (omni::core::context & context, entity_edit_provider & editProvider, QWidget * parent) :
-    entity_widget (parent),
+omni::forge::entity_edit_widget::entity_edit_widget (omni::core::context & context, std::string entityType, QWidget * parent) :
+    entity_base_widget (parent),
     _c (context),
-    _editProvider (editProvider),
+    _entityType (entityType),
     _toggleAction ("Test", this),
     _layout (this),
     _entity (),
@@ -174,7 +241,7 @@ omni::forge::entity_edit_widget::Mode omni::forge::entity_edit_widget::toggleVie
     if (_viewWidget) {
         // Go into edit mode:
         bool hadFocus = hasFocus () || _viewWidget->hasFocus ();
-        _editWidget = _editProvider.createEditWidget (this, _c, *_viewWidget);
+        _editWidget = entity_widget_provider::createEditWidget (_entityType, this, _c, *_viewWidget);
         _layout.addWidget (_editWidget.get ());
         _viewWidget.reset ();
         if (hadFocus) {
@@ -189,7 +256,7 @@ omni::forge::entity_edit_widget::Mode omni::forge::entity_edit_widget::toggleVie
         } else {
             hadFocus = hasFocus ();
         }
-        _viewWidget = _editProvider.createViewWidget (this, _c, _editWidget.get ());
+        _viewWidget = entity_widget_provider::createViewWidget (_entityType, this, _c, _editWidget.get ());
         _editWidget.reset ();
         _layout.addWidget (_viewWidget.get ());
         if (hadFocus) {
@@ -201,33 +268,14 @@ omni::forge::entity_edit_widget::Mode omni::forge::entity_edit_widget::toggleVie
 
 void omni::forge::entity_edit_widget::keyPressEvent (QKeyEvent * event)
 {
+/*
     if (! _editProvider.keyPressEvent (event)) {
         QWidget::keyPressEvent (event);
     }
+*/
 }
 
-std::unique_ptr <omni::forge::entity_widget> omni::forge::literal_edit_provider::createViewWidget (QWidget * parent, omni::core::context & context, entity_widget * editWidget)
-{
-    std::shared_ptr <omni::core::model::literal_expression> literal;
-    if (editWidget != nullptr) {
-        literal = std::dynamic_pointer_cast <omni::core::model::literal_expression> (editWidget->getEntity ());
-    }
-    auto viewWidget = std::make_unique <literal_expression_view> (parent);
-    viewWidget->setLiteral (literal);
-    return std::move (viewWidget);
-}
-
-std::unique_ptr <omni::forge::entity_widget> omni::forge::literal_edit_provider::createEditWidget (QWidget * parent, omni::core::context & context, entity_widget & viewWidget)
-{
-    auto result = std::make_unique <generic_entity_editor> (parent, viewWidget.getEntity ());
-    result->setTextToEntityConverter ([&context] (std::string text, std::shared_ptr <omni::core::model::entity> originatingEntity) -> std::shared_ptr <omni::core::model::entity> {
-        auto literal = std::dynamic_pointer_cast <omni::core::model::literal_expression> (originatingEntity);
-        return omni::core::model::literal_expression::fromString (context, text, literal.get ());
-    });
-    result->setEntity (viewWidget.getEntity ());
-    return std::move (result);
-}
-
+/*
 bool omni::forge::literal_edit_provider::keyPressEvent (QKeyEvent * event)
 {
     if (std::isalnum (event->key (), std::locale (""))) {
@@ -236,39 +284,5 @@ bool omni::forge::literal_edit_provider::keyPressEvent (QKeyEvent * event)
         return false;
     }
 }
+*/
 
-omni::forge::generic_entity_editor::generic_entity_editor (QWidget * parent, std::shared_ptr <omni::core::model::entity> entity) :
-    entity_widget (parent),
-    _entity (entity),
-    _layout (this),
-    _edit (this)
-{
-    _layout.addWidget (& _edit);
-    setFocusProxy (& _edit);
-}
-
-boost::function <std::shared_ptr <omni::core::model::entity> (std::string text, std::shared_ptr <omni::core::model::entity> originatingEntity)> omni::forge::generic_entity_editor::getTextToEntityConverter ()
-{
-    return _converter;
-}
-
-void omni::forge::generic_entity_editor::setTextToEntityConverter (boost::function <std::shared_ptr <omni::core::model::entity> (std::string text, std::shared_ptr <omni::core::model::entity> originatingEntity)> converter)
-{
-    _converter = converter;
-}
-
-std::shared_ptr <omni::core::model::entity> omni::forge::generic_entity_editor::getEntity ()
-{
-    if (_converter) {
-        return _converter (_edit.text ().toStdString (), _entity);
-    } else {
-        return _entity;
-    }
-}
-
-void omni::forge::generic_entity_editor::setEntity (std::shared_ptr <omni::core::model::entity> entity)
-{
-    _entity = entity;
-    auto literal = std::dynamic_pointer_cast <omni::core::model::literal_expression> (entity);
-    _edit.setText (QString::fromStdString (literal->toString (false)));
-}

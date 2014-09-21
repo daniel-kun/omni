@@ -30,7 +30,13 @@
     <ClCompile Include="..\source\omni\ui\blueprint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\ui\entity_base_widget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\source\omni\ui\flowlayout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\ui\generic_entity_editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\source\omni\ui\suggestion_list_model.cpp">
@@ -50,9 +56,15 @@
     <CustomBuild Include="..\interface\omni\ui\blueprint.hpp">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="..\interface\omni\ui\entity_base_widget.hpp">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
     <ClInclude Include="..\interface\omni\ui\flowlayout.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <CustomBuild Include="..\interface\omni\ui\generic_entity_editor.hpp">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
     <CustomBuild Include="..\interface\omni\ui\suggestion_list_model.hpp">
       <Filter>Header Files</Filter>
     </CustomBuild>
@@ -71,6 +83,18 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="release\.moc\moc_blueprint.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debug\.moc\moc_entity_base_widget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="release\.moc\moc_entity_base_widget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debug\.moc\moc_generic_entity_editor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="release\.moc\moc_generic_entity_editor.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="debug\.moc\moc_suggestion_list_model.cpp">
