@@ -1,21 +1,22 @@
+TEMPLATE = vcapp
+TARGET = omni-forge
+
 CONFIG(debug, debug|release){
     DESTDIR = ./bin
-    OBJECTS_DIR = debug/.obj
-    MOC_DIR = debug/.moc
-    RCC_DIR = debug/.rcc
-    UI_DIR = debug/.ui
+    OBJECTS_DIR = debug/$$TARGET/.obj
+    MOC_DIR = debug/$$TARGET/.moc
+    RCC_DIR = debug/$$TARGET/.rcc
+    UI_DIR = debug/$$TARGET/.ui
 }
 
 CONFIG(release, debug|release){
     DESTDIR = ./release
-    OBJECTS_DIR = release/.obj
-    MOC_DIR = release/.moc
-    RCC_DIR = release/.rcc
-    UI_DIR = release/.ui
+    OBJECTS_DIR = release/$$TARGET/.obj
+    MOC_DIR = release/$$TARGET/.moc
+    RCC_DIR = release/$$TARGET/.rcc
+    UI_DIR = release/$$TARGET/.ui
 }
 
-TEMPLATE = vcapp
-TARGET = omni-forge
 INCLUDEPATH += ../interface
 INCLUDEPATH += D:/Projects/thirdparty/boost_1_55_0
 LIBPATH += D:/Projects/thirdparty/boost_1_55_0/stage/lib

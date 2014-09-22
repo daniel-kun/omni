@@ -46,16 +46,16 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="debug\.moc\moc_mainwindow.cpp">
+    <ClCompile Include="debug\omni-forge\.moc\moc_mainwindow.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="release\.moc\moc_mainwindow.cpp">
+    <ClCompile Include="release\omni-forge\.moc\moc_mainwindow.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="debug\.moc\moc_sandbox.cpp">
+    <ClCompile Include="debug\omni-forge\.moc\moc_sandbox.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="release\.moc\moc_sandbox.cpp">
+    <ClCompile Include="release\omni-forge\.moc\moc_sandbox.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
