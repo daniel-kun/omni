@@ -30,32 +30,50 @@
     <ClCompile Include="..\source\omni\forge\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\omni\forge\mainwindow.cpp">
+    <ClCompile Include="..\source\omni\forge\main_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\source\omni\forge\sandbox.cpp">
+    <ClCompile Include="..\source\omni\forge\sandbox_selector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\forge\sandbox_selector_model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\forge\sandbox_widget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\interface\omni\forge\mainwindow.hpp">
+    <CustomBuild Include="..\source\omni\forge\main_window.hpp">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\source\omni\forge\sandbox.hpp">
+    <CustomBuild Include="..\source\omni\forge\sandbox_selector.hpp">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <ClInclude Include="..\source\omni\forge\sandbox_selector_model.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <CustomBuild Include="..\source\omni\forge\sandbox_widget.hpp">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="debug\omni-forge\.moc\moc_mainwindow.cpp">
+    <ClCompile Include="debug\omni-forge\.moc\moc_main_window.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="release\omni-forge\.moc\moc_mainwindow.cpp">
+    <ClCompile Include="release\omni-forge\.moc\moc_main_window.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="debug\omni-forge\.moc\moc_sandbox.cpp">
+    <ClCompile Include="debug\omni-forge\.moc\moc_sandbox_selector.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="release\omni-forge\.moc\moc_sandbox.cpp">
+    <ClCompile Include="release\omni-forge\.moc\moc_sandbox_selector.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="debug\omni-forge\.moc\moc_sandbox_widget.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="release\omni-forge\.moc\moc_sandbox_widget.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>

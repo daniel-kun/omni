@@ -137,42 +137,61 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\forge\main.cpp" />
-    <ClCompile Include="..\source\omni\forge\mainwindow.cpp" />
-    <ClCompile Include="..\source\omni\forge\sandbox.cpp" />
+    <ClCompile Include="..\source\omni\forge\main_window.cpp" />
+    <ClCompile Include="..\source\omni\forge\sandbox_selector.cpp" />
+    <ClCompile Include="..\source\omni\forge\sandbox_selector_model.cpp" />
+    <ClCompile Include="..\source\omni\forge\sandbox_widget.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\interface\omni\forge\mainwindow.hpp">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\interface\omni\forge\mainwindow.hpp;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Projects\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\bin\moc.exe  -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -I"..\interface" -I"..\..\thirdparty\boost_1_55_0" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtWidgets" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtGui" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtANGLE" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtCore" -I"debug\omni-forge\.moc" -I..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\mkspecs\win32-msvc2013 ..\interface\omni\forge\mainwindow.hpp -o debug\omni-forge\.moc\moc_mainwindow.cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ..\interface\omni\forge\mainwindow.hpp</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\omni-forge\.moc\moc_mainwindow.cpp;%(Outputs)</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\interface\omni\forge\mainwindow.hpp;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Projects\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -I"..\interface" -I"..\..\thirdparty\boost_1_55_0" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtWidgets" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtGui" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtANGLE" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtCore" -I"release\omni-forge\.moc" -I..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\mkspecs\win32-msvc2013 ..\interface\omni\forge\mainwindow.hpp -o release\omni-forge\.moc\moc_mainwindow.cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ..\interface\omni\forge\mainwindow.hpp</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\omni-forge\.moc\moc_mainwindow.cpp;%(Outputs)</Outputs>
+    <CustomBuild Include="..\source\omni\forge\main_window.hpp">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\source\omni\forge\main_window.hpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Projects\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\bin\moc.exe  -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -I"..\interface" -I"..\..\thirdparty\boost_1_55_0" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtWidgets" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtGui" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtANGLE" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtCore" -I"debug\omni-forge\.moc" -I..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\mkspecs\win32-msvc2013 ..\source\omni\forge\main_window.hpp -o debug\omni-forge\.moc\moc_main_window.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ..\source\omni\forge\main_window.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\omni-forge\.moc\moc_main_window.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\source\omni\forge\main_window.hpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Projects\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -I"..\interface" -I"..\..\thirdparty\boost_1_55_0" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtWidgets" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtGui" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtANGLE" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtCore" -I"release\omni-forge\.moc" -I..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\mkspecs\win32-msvc2013 ..\source\omni\forge\main_window.hpp -o release\omni-forge\.moc\moc_main_window.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ..\source\omni\forge\main_window.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\omni-forge\.moc\moc_main_window.cpp;%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\source\omni\forge\sandbox.hpp">
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\source\omni\forge\sandbox.hpp;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Projects\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\bin\moc.exe  -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -I"..\interface" -I"..\..\thirdparty\boost_1_55_0" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtWidgets" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtGui" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtANGLE" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtCore" -I"debug\omni-forge\.moc" -I..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\mkspecs\win32-msvc2013 ..\source\omni\forge\sandbox.hpp -o debug\omni-forge\.moc\moc_sandbox.cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ..\source\omni\forge\sandbox.hpp</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\omni-forge\.moc\moc_sandbox.cpp;%(Outputs)</Outputs>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\source\omni\forge\sandbox.hpp;%(AdditionalInputs)</AdditionalInputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Projects\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -I"..\interface" -I"..\..\thirdparty\boost_1_55_0" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtWidgets" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtGui" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtANGLE" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtCore" -I"release\omni-forge\.moc" -I..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\mkspecs\win32-msvc2013 ..\source\omni\forge\sandbox.hpp -o release\omni-forge\.moc\moc_sandbox.cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ..\source\omni\forge\sandbox.hpp</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\omni-forge\.moc\moc_sandbox.cpp;%(Outputs)</Outputs>
+    <CustomBuild Include="..\source\omni\forge\sandbox_selector.hpp">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\source\omni\forge\sandbox_selector.hpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Projects\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\bin\moc.exe  -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -I"..\interface" -I"..\..\thirdparty\boost_1_55_0" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtWidgets" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtGui" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtANGLE" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtCore" -I"debug\omni-forge\.moc" -I..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\mkspecs\win32-msvc2013 ..\source\omni\forge\sandbox_selector.hpp -o debug\omni-forge\.moc\moc_sandbox_selector.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ..\source\omni\forge\sandbox_selector.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\omni-forge\.moc\moc_sandbox_selector.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\source\omni\forge\sandbox_selector.hpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Projects\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -I"..\interface" -I"..\..\thirdparty\boost_1_55_0" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtWidgets" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtGui" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtANGLE" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtCore" -I"release\omni-forge\.moc" -I..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\mkspecs\win32-msvc2013 ..\source\omni\forge\sandbox_selector.hpp -o release\omni-forge\.moc\moc_sandbox_selector.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ..\source\omni\forge\sandbox_selector.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\omni-forge\.moc\moc_sandbox_selector.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="..\source\omni\forge\sandbox_selector_model.hpp" />
+    <CustomBuild Include="..\source\omni\forge\sandbox_widget.hpp">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\source\omni\forge\sandbox_widget.hpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">D:\Projects\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\bin\moc.exe  -DUNICODE -DWIN32 -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -I"..\interface" -I"..\..\thirdparty\boost_1_55_0" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtWidgets" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtGui" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtANGLE" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtCore" -I"debug\omni-forge\.moc" -I..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\mkspecs\win32-msvc2013 ..\source\omni\forge\sandbox_widget.hpp -o debug\omni-forge\.moc\moc_sandbox_widget.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC ..\source\omni\forge\sandbox_widget.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">debug\omni-forge\.moc\moc_sandbox_widget.cpp;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\source\omni\forge\sandbox_widget.hpp;%(AdditionalInputs)</AdditionalInputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\Projects\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\bin\moc.exe  -DUNICODE -DWIN32 -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB -DQT_OPENGL_ES_2 -DQT_OPENGL_ES_2_ANGLE -D_MSC_VER=1800 -D_WIN32 -I"..\interface" -I"..\..\thirdparty\boost_1_55_0" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtWidgets" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtGui" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtANGLE" -I"..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\include\QtCore" -I"release\omni-forge\.moc" -I..\..\thirdparty\qt\qt-everywhere-opensource-src-5.2.0\qtbase\mkspecs\win32-msvc2013 ..\source\omni\forge\sandbox_widget.hpp -o release\omni-forge\.moc\moc_sandbox_widget.cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ..\source\omni\forge\sandbox_widget.hpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\omni-forge\.moc\moc_sandbox_widget.cpp;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="debug\omni-forge\.moc\moc_mainwindow.cpp">
+    <ClCompile Include="debug\omni-forge\.moc\moc_main_window.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="release\omni-forge\.moc\moc_mainwindow.cpp">
+    <ClCompile Include="release\omni-forge\.moc\moc_main_window.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="debug\omni-forge\.moc\moc_sandbox.cpp">
+    <ClCompile Include="debug\omni-forge\.moc\moc_sandbox_selector.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="release\omni-forge\.moc\moc_sandbox.cpp">
+    <ClCompile Include="release\omni-forge\.moc\moc_sandbox_selector.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="debug\omni-forge\.moc\moc_sandbox_widget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="release\omni-forge\.moc\moc_sandbox_widget.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>

@@ -1,0 +1,222 @@
+#include "sandbox_selector_model.hpp"
+#include <omni/ui/literal_expression_view.hpp>
+#include <omni/ui/entity_edit_widget.hpp>
+#include <omni/ui/entity_widget_provider.hpp>
+#include <omni/core/invalid_argument_error.hpp>
+#include <omni/core/model/builtin_literal_expression.hpp>
+
+#include <functional>
+
+using creator_function = std::function <std::unique_ptr <QWidget> (omni::core::context & context, QWidget & parent)>;
+
+class omni::forge::sandbox_selector_model::sandbox_selector_data_base {
+public:
+    sandbox_selector_data_base (
+        sandbox_selector_data_base * parent,
+        QString title,
+        QString description,
+        creator_function creator,
+        std::vector <std::shared_ptr <sandbox_selector_data_base>> children = std::vector <std::shared_ptr <sandbox_selector_data_base>> ());
+
+    sandbox_selector_data_base * parent;
+    QString title;
+    QString description;
+    std::unique_ptr <QWidget> widget;
+    creator_function creator;
+
+    std::vector <std::shared_ptr <sandbox_selector_data_base>> children;
+};
+
+omni::forge::sandbox_selector_model::sandbox_selector_data_base::sandbox_selector_data_base (
+    sandbox_selector_data_base * parent,
+    QString title,
+    QString description,
+    creator_function creator,
+    std::vector <std::shared_ptr <sandbox_selector_data_base>> children) :
+    parent (parent),
+    title (title),
+    description (description),
+    widget (),
+    creator (creator),
+    children (children)
+{
+}
+
+namespace {
+template <typename Widget>
+std::unique_ptr <Widget> createWidget (QWidget &parent)
+{
+    return std::make_unique <Widget> (&parent);
+}
+
+template <typename Widget>
+class sandbox_selector_data : public omni::forge::sandbox_selector_model::sandbox_selector_data_base {
+public:
+    sandbox_selector_data (
+        QString title,
+        QString description,
+        creator_function creator,
+        std::vector <std::shared_ptr <sandbox_selector_data_base>> children = std::vector <std::shared_ptr <sandbox_selector_data_base>> ()) :
+        sandbox_selector_data_base (
+            nullptr,
+            title,
+            description, 
+            creator,
+            children)
+    {
+    }
+};
+
+template <>
+class sandbox_selector_data <void>: public omni::forge::sandbox_selector_model::sandbox_selector_data_base {
+public:
+    sandbox_selector_data (
+        QString title,
+        QString description,
+        std::vector <std::shared_ptr <sandbox_selector_data_base>> children = std::vector <std::shared_ptr <sandbox_selector_data_base>> ()) :
+        sandbox_selector_data_base (
+            nullptr,
+            title,
+            description, 
+            [] (omni::core::context &, QWidget &) -> std::unique_ptr <QWidget> {
+                return std::unique_ptr <QWidget> ();
+            },
+            children)
+    {
+    }
+};
+
+void setParents (omni::forge::sandbox_selector_model::sandbox_selector_data_base & item)
+{
+    for (auto & i : item.children) {
+        i->parent = & item;
+        setParents (*i);
+    }
+}
+
+std::unique_ptr <QWidget> createLiteralView (omni::core::context & context, QWidget & parent)
+{
+    auto result = std::make_unique <omni::ui::entity_edit_widget> (context, omni::ui::entity_widget_provider::getProvider ("literal_expression"), & parent);
+    auto literal = std::make_shared <omni::core::model::builtin_literal_expression <int>> (context, 42);
+    result->setEntity (literal);
+    return std::move (result);
+}
+
+std::unique_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base> initSandboxData ()
+{
+    using data_list = std::vector <std::shared_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base>>;
+
+    auto result = std::make_unique <sandbox_selector_data <void>> (
+        "root",
+        "root",
+        data_list {
+            std::make_shared <sandbox_selector_data <void>> (
+                "core",
+                "core",
+                data_list {
+                    std::make_shared <sandbox_selector_data <omni::ui::literal_expression_view>> (
+                        "literal_expression",
+                        "literal_expression",
+                        & createLiteralView)
+                }) 
+        });
+    setParents (* result);
+    return std::move (result);
+}
+
+}
+
+omni::forge::sandbox_selector_model::sandbox_selector_model (omni::core::context & context) :
+    _context (context),
+    _root (initSandboxData ())
+{
+}
+
+omni::forge::sandbox_selector_model::~ sandbox_selector_model ()
+{
+}
+
+QWidget * omni::forge::sandbox_selector_model::createDemoFromModelIndex (QWidget & parent, const QModelIndex & index)
+{
+    auto item = reinterpret_cast <sandbox_selector_data_base *> (index.internalPointer ());
+    if (item->widget == nullptr) {
+        item->widget = item->creator (_context, parent);
+    }
+    return item->widget.get ();
+}
+
+QModelIndex omni::forge::sandbox_selector_model::index (int row, int column, const QModelIndex & parent) const
+{
+
+    sandbox_selector_data_base * base;
+    if (parent == QModelIndex ()) {
+        base = _root.get ();
+    } else {
+        base = reinterpret_cast <sandbox_selector_data_base *> (parent.internalPointer ());
+    }
+    switch (column) {
+    case columns::title:
+        return createIndex (row, column, base->children [row].get ());
+    default:
+        throw omni::core::invalid_argument_error (__FILE__, __FUNCTION__, __LINE__, "column", "Invalid column");
+    }
+    return QModelIndex ();
+}
+
+QModelIndex omni::forge::sandbox_selector_model::parent (const QModelIndex & index) const
+{
+    sandbox_selector_data_base & parent = * reinterpret_cast <sandbox_selector_data_base *> (index.internalPointer ())->parent;
+    sandbox_selector_data_base * grandParent = parent.parent;
+    if (grandParent == nullptr) {
+        return QModelIndex ();
+    } else {
+        return createIndex (
+            std::find_if (
+                grandParent->children.begin (),
+                grandParent->children.end (),
+                [&parent] (std::shared_ptr <sandbox_selector_data_base> & item) -> bool {
+                    return item.get () == & parent;
+                }) - grandParent->children.begin (),
+            index.column (),
+            & parent);
+    }
+}
+
+int omni::forge::sandbox_selector_model::rowCount (const QModelIndex & parent) const
+{
+    if (parent == QModelIndex ()) {
+        return _root->children.size ();
+    } else {
+        return reinterpret_cast <sandbox_selector_data_base *> (parent.internalPointer ())->children.size ();
+    }
+}
+
+int omni::forge::sandbox_selector_model::columnCount (const QModelIndex &) const
+{
+    return 1;
+}
+
+QVariant omni::forge::sandbox_selector_model::data (const QModelIndex & index, int role) const
+{
+    sandbox_selector_data_base * base;
+    if (index == QModelIndex ()) {
+        base = _root.get ();
+    } else {
+        base = reinterpret_cast <sandbox_selector_data_base *> (index.internalPointer ());
+    }
+    sandbox_selector_data_base & item = * base;//->children [index.row ()];
+
+    switch (role) {
+    case Qt::DisplayRole:
+        switch (index.column ()) {
+        case columns::title:
+            return item.title;
+        default:
+            throw omni::core::invalid_argument_error (__FILE__, __FUNCTION__, __LINE__, "column", "Invalid column");
+        }
+    default:
+        return QVariant ();
+        //throw omni::core::invalid_argument_error (__FILE__, __FUNCTION__, __LINE__, "role", "Unsupported role");
+    }
+}
+

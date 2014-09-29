@@ -1,6 +1,5 @@
 #include <QApplication>
-#include <omni/forge/mainwindow.hpp>
-#include "sandbox.hpp"
+#include "main_window.hpp"
 
 /*
 
@@ -26,7 +25,7 @@ statement
 int main (int argc, char * argv[])
 {
     QApplication app (argc, argv);
-    omni::forge::sandbox mainWindow;
+    omni::forge::main_window mainWindow;
     mainWindow.show ();
 
     return app.exec ();

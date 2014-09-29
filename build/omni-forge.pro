@@ -29,6 +29,6 @@ SOURCEDIR = "../source/omni/forge"
 QMAKE_CXXFLAGS += /wd4251
 
 # Input
-HEADERS += $$INCLUDEDIR/mainwindow.hpp $$SOURCEDIR/sandbox.hpp
-SOURCES += $$SOURCEDIR/mainwindow.cpp $$SOURCEDIR/main.cpp $$SOURCEDIR/sandbox.cpp
+HEADERS += $$SOURCEDIR/main_window.hpp $$SOURCEDIR/sandbox_selector.hpp $$SOURCEDIR/sandbox_widget.hpp $$SOURCEDIR/sandbox_selector_model.hpp
+SOURCES += $$SOURCEDIR/main_window.cpp $$SOURCEDIR/main.cpp $$SOURCEDIR/sandbox_selector.cpp $$SOURCEDIR/sandbox_widget.cpp $$SOURCEDIR/sandbox_selector_model.cpp
 
