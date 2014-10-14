@@ -13,6 +13,7 @@ class context;
 
 namespace omni {
 namespace forge {
+class sandbox_widget;
 
 /**
 @brief The hierarchical data model that contains all available sandbox demos. Suitable for QTreeView.
@@ -32,7 +33,7 @@ public:
     sandbox_selector_model (omni::core::context & context);
     ~ sandbox_selector_model ();
 
-    QWidget * createDemoFromModelIndex (QWidget & parent, const QModelIndex & index);
+    sandbox_widget * createDemoFromModelIndex (QWidget & parent, const QModelIndex & index);
 
     QModelIndex index (int row, int column, const QModelIndex & parent) const override;
     QModelIndex parent (const QModelIndex & index) const override;

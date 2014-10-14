@@ -1,13 +1,26 @@
 #include "sandbox_selector_model.hpp"
+#include "sandbox_widget.hpp"
 #include <omni/ui/literal_expression_view.hpp>
 #include <omni/ui/entity_edit_widget.hpp>
 #include <omni/ui/entity_widget_provider.hpp>
 #include <omni/core/invalid_argument_error.hpp>
+#include <omni/core/context.hpp>
+#include <omni/core/model/type.hpp>
 #include <omni/core/model/builtin_literal_expression.hpp>
+#include <omni/core/model/module.hpp>
+#include <omni/core/model/function.hpp>
+#include <omni/core/model/block.hpp>
+#include <omni/core/model/return_statement.hpp>
 
+#include <QLibrary>
+#include <QMessageBox>
+
+#include <boost/filesystem.hpp>
+
+#include <sstream>
 #include <functional>
 
-using creator_function = std::function <std::unique_ptr <QWidget> (omni::core::context & context, QWidget & parent)>;
+using creator_function = std::function <std::unique_ptr <omni::forge::sandbox_widget> (omni::core::context & context, QWidget & parent)>;
 
 class omni::forge::sandbox_selector_model::sandbox_selector_data_base {
 public:
@@ -21,7 +34,7 @@ public:
     sandbox_selector_data_base * parent;
     QString title;
     QString description;
-    std::unique_ptr <QWidget> widget;
+    std::unique_ptr <sandbox_widget> widget;
     creator_function creator;
 
     std::vector <std::shared_ptr <sandbox_selector_data_base>> children;
@@ -78,8 +91,8 @@ public:
             nullptr,
             title,
             description, 
-            [] (omni::core::context &, QWidget &) -> std::unique_ptr <QWidget> {
-                return std::unique_ptr <QWidget> ();
+            [] (omni::core::context &, QWidget &) -> std::unique_ptr <omni::forge::sandbox_widget> {
+                return std::unique_ptr <omni::forge::sandbox_widget> ();
             },
             children)
     {
@@ -94,11 +107,38 @@ void setParents (omni::forge::sandbox_selector_model::sandbox_selector_data_base
     }
 }
 
-std::unique_ptr <QWidget> createLiteralView (omni::core::context & context, QWidget & parent)
+std::unique_ptr <omni::forge::sandbox_widget> createLiteralView (omni::core::context & context, QWidget & parent)
 {
-    auto result = std::make_unique <omni::ui::entity_edit_widget> (context, omni::ui::entity_widget_provider::getProvider ("literal_expression"), & parent);
     auto literal = std::make_shared <omni::core::model::builtin_literal_expression <int>> (context, 42);
-    result->setEntity (literal);
+    QWidget & localParent (parent);
+    // For editor and layout, we rely on Qt's object ownership mechanism to free them:
+    auto * editor = new omni::ui::entity_edit_widget (context, omni::ui::entity_widget_provider::getProvider ("literal_expression"), & parent);
+    auto result = std::make_unique <omni::forge::sandbox_widget> (
+        parent,
+        [editor, & localParent] (omni::core::context &, omni::core::model::module & module) -> void {
+            auto literalExpression = std::dynamic_pointer_cast <omni::core::model::literal_expression> (editor->getEntity ());
+            auto body = std::make_shared <omni::core::model::block> ();
+            body->appendStatement (std::make_shared <omni::core::model::return_statement> (literalExpression));
+            auto fun = module.createFunction (
+                "test",
+                literalExpression->getType (),
+                body);
+            fun->setExported (true);
+            std::string libraryFileName = 
+                (boost::filesystem::temp_directory_path() /
+                boost::filesystem::unique_path ("omni-sandbox-%%%%%%%%%%%.dll")).string ();
+            module.emitSharedLibraryFile (libraryFileName);
+            module.removeFunction (fun);
+            QLibrary lib (QString::fromStdString (libraryFileName));
+            auto realFunc = reinterpret_cast <int (*) ()> (lib.resolve ("test"));
+            std::stringstream str;
+            str << (*realFunc) ();
+            QMessageBox::information (& localParent, "Test", QString::fromStdString (str.str ()));
+        });
+    auto * layout = new QVBoxLayout (result.get ());
+    
+    layout->addWidget (editor);
+    editor->setEntity (literal);
     return std::move (result);
 }
 
@@ -136,7 +176,7 @@ omni::forge::sandbox_selector_model::~ sandbox_selector_model ()
 {
 }
 
-QWidget * omni::forge::sandbox_selector_model::createDemoFromModelIndex (QWidget & parent, const QModelIndex & index)
+omni::forge::sandbox_widget * omni::forge::sandbox_selector_model::createDemoFromModelIndex (QWidget & parent, const QModelIndex & index)
 {
     auto item = reinterpret_cast <sandbox_selector_data_base *> (index.internalPointer ());
     if (item->widget == nullptr) {

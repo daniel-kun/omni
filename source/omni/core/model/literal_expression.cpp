@@ -31,7 +31,7 @@ std::shared_ptr <omni::core::model::literal_expression> omni::core::model::liter
     unsigned int value = 0u;
     std::stringstream str (text);
     str >> value;
-    auto result = std::make_shared <builtin_literal_expression <unsigned int>> (context, value);
+    auto result = std::make_shared <builtin_literal_expression <int>> (context, value);
     return result;
 }
 

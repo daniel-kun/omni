@@ -2,6 +2,7 @@
 #define OMNI_FORGE_MAIN_WINDOW_HPP
 
 #include "sandbox_selector.hpp"
+#include "sandbox_widget.hpp"
 
 #include <omni/ui/entity_edit_widget.hpp>
 
@@ -26,7 +27,8 @@ public:
     main_window ();
 
 private slots:
-    void activateDemo (QWidget & demo);
+    void activateDemo (sandbox_widget & demo);
+    void compileAndRunActiveDemo ();
 
 private:
     omni::core::context _c;
@@ -35,8 +37,9 @@ private:
     QHBoxLayout _layout;
     QVBoxLayout _rightLayout;
     sandbox_selector _selector;
-    QLabel _demoLabel;
-    QWidget * _activeDemo;
+    sandbox_widget _demoLabel;
+    QLabel _demoChildLabel;
+    sandbox_widget * _activeDemo;
     QPushButton _compileAndRunButton;
 };
 

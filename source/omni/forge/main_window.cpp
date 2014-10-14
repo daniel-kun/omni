@@ -11,7 +11,8 @@ omni::forge::main_window::main_window () :
     _layout (this),
     _rightLayout (),
     _selector (_c, this),
-    _demoLabel (this),
+    _demoLabel (* this),
+    _demoChildLabel (& _demoLabel),
     _activeDemo (& _demoLabel),
     _compileAndRunButton (this)
 {
@@ -22,12 +23,14 @@ omni::forge::main_window::main_window () :
     _rightLayout.addWidget (& _demoLabel, 1);
     _rightLayout.addWidget (& _compileAndRunButton, 0, Qt::AlignBottom);
     _compileAndRunButton.setText ("Compile &and run");
-    _demoLabel.setText ("Select a demo in the tree on the left side.");
+    _demoChildLabel.setText ("Select a demo in the tree on the left side.");
 
-    connect (& _selector, SIGNAL (demoSelected(QWidget&)), SLOT (activateDemo(QWidget&)));
+    connect (& _selector, SIGNAL (demoSelected(sandbox_widget&)), SLOT (activateDemo(sandbox_widget&)));
+    connect (& _compileAndRunButton, SIGNAL(clicked()), SLOT(compileAndRunActiveDemo()));
+    _selector.setFocus ();
 }
 
-void omni::forge::main_window::activateDemo (QWidget & demo)
+void omni::forge::main_window::activateDemo (sandbox_widget & demo)
 {
     if (_activeDemo != nullptr) {
         _rightLayout.removeWidget (_activeDemo);
@@ -37,5 +40,12 @@ void omni::forge::main_window::activateDemo (QWidget & demo)
     if (_activeDemo != nullptr) {
         _rightLayout.insertWidget (0, _activeDemo, 1, Qt::AlignVCenter);
         _activeDemo->show ();
+    }
+}
+
+void omni::forge::main_window::compileAndRunActiveDemo ()
+{
+    if (_activeDemo != nullptr) {
+        _activeDemo->compileAndRun (_c, _m);
     }
 }

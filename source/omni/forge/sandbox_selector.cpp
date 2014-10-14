@@ -14,7 +14,7 @@ omni::forge::sandbox_selector::sandbox_selector (omni::core::context & context, 
 void omni::forge::sandbox_selector::emitDemoSelected (const QModelIndex & current, const QModelIndex &)
 {
     if (current != QModelIndex ()) {
-        QWidget * demoWidget = _model.createDemoFromModelIndex (* parentWidget (), current);
+        sandbox_widget * demoWidget = _model.createDemoFromModelIndex (* parentWidget (), current);
         if (demoWidget != nullptr) {
             emit demoSelected (*demoWidget);
         }

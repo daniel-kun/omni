@@ -9,12 +9,13 @@
 
 namespace omni {
 namespace forge {
+class sandbox_widget;
 
 /**
 @brief A widget that lets you select sandbox demos.
 
 sandbox_selector uses the sandbox_selector_model, which itself contains a standard set of available sandbox demos.
-If a demo is selected by the user, demoSelected(QWidget) will be emitted.
+If a demo is selected by the user, demoSelected(sandbox_widget) will be emitted.
 **/
 class sandbox_selector : public QWidget {
     Q_OBJECT
@@ -22,7 +23,7 @@ public:
     sandbox_selector (omni::core::context & context, QWidget * parent);
 
 signals:
-    void demoSelected (QWidget & demoWidget);
+    void demoSelected (sandbox_widget & demoWidget);
 
 private slots:
     void emitDemoSelected (const QModelIndex & current, const QModelIndex & previous);

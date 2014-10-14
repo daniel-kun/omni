@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include <functional>
+
 namespace omni {
 namespace core {
 class context;
@@ -25,9 +27,14 @@ A demo can be compiled and run so that the piece of code-generation for the corr
 class sandbox_widget : public QWidget {
     Q_OBJECT
 public:
-    sandbox_widget (QWidget * parent);
+    using CompileAndRunFun = std::function <void (omni::core::context & context, omni::core::model::module & module)>;
 
-    virtual void compileAndRun (omni::core::context & context, omni::core::model::module & module) = 0;
+    sandbox_widget (QWidget & parent, CompileAndRunFun compileAndRunFunction = CompileAndRunFun ());
+
+    virtual void compileAndRun (omni::core::context & context, omni::core::model::module & module);
+
+private:
+    CompileAndRunFun _compileAndRunFun;
 };
 
 }
