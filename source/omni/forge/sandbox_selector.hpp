@@ -3,9 +3,12 @@
 
 #include "sandbox_selector_model.hpp"
 
+#include <omni/ui/tree_sort_filter_proxy_model.hpp>
+
 #include <QWidget>
 #include <QHBoxLayout>
 #include <QTreeView>
+#include <QLineEdit>
 
 namespace omni {
 namespace forge {
@@ -25,13 +28,19 @@ public:
 signals:
     void demoSelected (sandbox_widget & demoWidget);
 
+public slots:
+    void focusSearchField ();
+    void setFilter (QString filterText);
+
 private slots:
-    void emitDemoSelected (const QModelIndex & current, const QModelIndex & previous);
+    void emitDemoSelected (const QModelIndex & current);
 
 private:
-    QHBoxLayout _layout;
+    QVBoxLayout _layout;
+    QLineEdit _searchField;
     QTreeView _selector;
     sandbox_selector_model _model;
+    omni::ui::tree_sort_filter_proxy_model _filterModel;
 };
 
 }

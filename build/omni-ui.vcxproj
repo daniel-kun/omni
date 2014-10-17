@@ -145,6 +145,7 @@
     <ClCompile Include="..\source\omni\ui\suggestion_list_model.cpp" />
     <ClCompile Include="..\source\omni\ui\suggestion_text_edit.cpp" />
     <ClCompile Include="..\source\omni\ui\syntax_input.cpp" />
+    <ClCompile Include="..\source\omni\ui\tree_sort_filter_proxy_model.cpp" />
     <ClCompile Include="..\source\omni\ui\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +241,7 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC ..\interface\omni\ui\syntax_input.hpp</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">release\omni-ui\.moc\moc_syntax_input.cpp;%(Outputs)</Outputs>
     </CustomBuild>
+    <ClInclude Include="..\interface\omni\ui\tree_sort_filter_proxy_model.hpp" />
     <ClInclude Include="..\interface\omni\ui\ui.hpp" />
   </ItemGroup>
   <ItemGroup>

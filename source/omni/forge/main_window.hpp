@@ -12,6 +12,8 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QGridLayout>
+#include <QGroupBox>
+#include <QShortcut>
 
 namespace omni {
 namespace forge {
@@ -27,6 +29,7 @@ public:
     main_window ();
 
 private slots:
+    void showEvent (QShowEvent * event) override;
     void activateDemo (sandbox_widget & demo);
     void compileAndRunActiveDemo ();
 
@@ -36,11 +39,14 @@ private:
 
     QHBoxLayout _layout;
     QVBoxLayout _rightLayout;
+    QGroupBox _groupDemoList;
+    QVBoxLayout _groupDemoListLayout;
     sandbox_selector _selector;
     sandbox_widget _demoLabel;
     QLabel _demoChildLabel;
     sandbox_widget * _activeDemo;
     QPushButton _compileAndRunButton;
+    QShortcut _searchShortcut;
 };
 
 } // namespace forge

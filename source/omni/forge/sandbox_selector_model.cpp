@@ -236,6 +236,19 @@ int omni::forge::sandbox_selector_model::columnCount (const QModelIndex &) const
     return 1;
 }
 
+QVariant omni::forge::sandbox_selector_model::headerData (int section, Qt::Orientation orientation, int role) const
+{
+    switch (role) {
+    case Qt::DisplayRole:
+        switch (section) {
+        case 0:
+            return "Available demos";
+        }
+        break;
+    }
+    return QVariant ();
+}
+
 QVariant omni::forge::sandbox_selector_model::data (const QModelIndex & index, int role) const
 {
     sandbox_selector_data_base * base;
