@@ -1,8 +1,10 @@
 #include "sandbox_selector_model.hpp"
 #include "sandbox_widget.hpp"
 #include <omni/ui/literal_expression_view.hpp>
-#include <omni/ui/entity_edit_widget.hpp>
+#include <omni/ui/entity_toggle_widget.hpp>
 #include <omni/ui/entity_widget_provider.hpp>
+#include <omni/ui/variable_declaration_expression_view.hpp>
+
 #include <omni/core/invalid_argument_error.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/model/type.hpp>
@@ -112,7 +114,7 @@ std::unique_ptr <omni::forge::sandbox_widget> createLiteralView (omni::core::con
     auto literal = std::make_shared <omni::core::model::builtin_literal_expression <int>> (context, 42);
     QWidget & localParent (parent);
     // For editor and layout, we rely on Qt's object ownership mechanism to free them:
-    auto * editor = new omni::ui::entity_edit_widget (context, omni::ui::entity_widget_provider::getProvider ("literal_expression"), & parent);
+    auto * editor = new omni::ui::entity_toggle_widget (context, omni::ui::entity_widget_provider::getProvider ("literal_expression"), & parent);
     auto result = std::make_unique <omni::forge::sandbox_widget> (
         parent,
         [editor, & localParent] (omni::core::context &, omni::core::model::module & module) -> void {
@@ -142,6 +144,23 @@ std::unique_ptr <omni::forge::sandbox_widget> createLiteralView (omni::core::con
     return std::move (result);
 }
 
+std::unique_ptr <omni::forge::sandbox_widget> createVariableDeclarationView (omni::core::context & context, QWidget & parent)
+{
+    auto variableDecl = std::make_shared <omni::core::model::variable_declaration_expression> ();
+    variableDecl->setName ("foobar");
+    // For editor and layout, we rely on Qt's object ownership mechanism to free them:
+    auto * editor = new omni::ui::variable_declaration_expression_view (context, & parent);
+    editor->setEntity (variableDecl);
+    auto result = std::make_unique <omni::forge::sandbox_widget> (
+        parent,
+        [] (omni::core::context &, omni::core::model::module & module) -> void {
+        });
+    auto * layout = new QVBoxLayout (result.get ());
+    
+    layout->addWidget (editor);
+    return std::move (result);
+}
+
 std::unique_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base> initSandboxData ()
 {
     using data_list = std::vector <std::shared_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base>>;
@@ -157,7 +176,11 @@ std::unique_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base
                     std::make_shared <sandbox_selector_data <omni::ui::literal_expression_view>> (
                         "literal_expression",
                         "literal_expression",
-                        & createLiteralView)
+                        & createLiteralView),
+                    std::make_shared <sandbox_selector_data <omni::ui::variable_declaration_expression_view>> (
+                        "variable_declaration_expression",
+                        "variable_declaration_expression",
+                        & createVariableDeclarationView)
                 }) 
         });
     setParents (* result);
@@ -238,11 +261,15 @@ int omni::forge::sandbox_selector_model::columnCount (const QModelIndex &) const
 
 QVariant omni::forge::sandbox_selector_model::headerData (int section, Qt::Orientation orientation, int role) const
 {
-    switch (role) {
-    case Qt::DisplayRole:
-        switch (section) {
-        case 0:
-            return "Available demos";
+    switch (orientation) {
+    case Qt::Horizontal:
+        switch (role) {
+        case Qt::DisplayRole:
+            switch (section) {
+            case 0:
+                return "Available demos";
+            }
+            break;
         }
         break;
     }

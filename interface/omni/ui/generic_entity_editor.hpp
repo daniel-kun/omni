@@ -15,8 +15,8 @@ namespace ui {
 /**
 @brief generic_entity_editor can be used directly or as a base class for simple entity editors that use a QLineEdit to edit the entity.
 
-generic_entity_editor uses the entity's toString() method (with fullyQualified set to false) to form an editable text from the entity. Converting a text to an entity is less generic, so it requires an text-to-entity-converter
-to be set via @see setTextToEntityConverter().
+generic_entity_editor uses the entity's toString() method (with fullyQualified set to false) or the provided textToEntityConverter (@see setEntityToTextConverter())to form an editable text from the entity.
+Converting a text to an entity is less generic, so it requires an text-to-entity-converter to be set via @see setTextToEntityConverter().
 
 Auto-completion and other editing aids are yet to be implemented.
 
@@ -28,14 +28,18 @@ class OMNI_UI_API generic_entity_editor : public entity_base_widget {
 public:
     generic_entity_editor (QWidget * parent, std::shared_ptr <omni::core::model::entity> entity = std::shared_ptr <omni::core::model::entity> ());
 
-    std::function <std::shared_ptr <omni::core::model::entity> (std::string text, std::shared_ptr <omni::core::model::entity> originatingEntity)> getTextToEntityConverter ();
+    std::function <std::string (std::shared_ptr <omni::core::model::entity>)> getEntityToTextConverter () const;
+    void setEntityToTextConverter (std::function <std::string (std::shared_ptr <omni::core::model::entity>)> converter);
+
+    std::function <std::shared_ptr <omni::core::model::entity> (std::string text, std::shared_ptr <omni::core::model::entity> originatingEntity)> getTextToEntityConverter () const;
     void setTextToEntityConverter (std::function <std::shared_ptr <omni::core::model::entity> (std::string text, std::shared_ptr <omni::core::model::entity> originatingEntity)> converter);
 
     std::shared_ptr <omni::core::model::entity> getEntity () override;
     void setEntity (std::shared_ptr <omni::core::model::entity> entity) override;
 
 private:
-    std::function <std::shared_ptr <omni::core::model::entity> (std::string text, std::shared_ptr <omni::core::model::entity> originatingEntity)> _converter;
+    std::function <std::string (std::shared_ptr <omni::core::model::entity>)> _entityToTextConverter;
+    std::function <std::shared_ptr <omni::core::model::entity> (std::string text, std::shared_ptr <omni::core::model::entity> originatingEntity)> _textToEntityConverter;
     std::shared_ptr <omni::core::model::entity> _entity;
     QStackedLayout _layout;
     QLineEdit _edit;

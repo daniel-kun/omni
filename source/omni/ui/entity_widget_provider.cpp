@@ -40,28 +40,6 @@ omni::ui::entity_widget_provider & omni::ui::entity_widget_provider::getProvider
     }
 }
 
-/*
-std::unique_ptr <omni::ui::entity_base_widget> omni::ui::entity_widget_provider::createViewWidget (std::string entityType, QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget * editWidget)
-{
-    auto iterator = s_widgetProviderRegistry.find (entityType);
-    if (iterator != s_widgetProviderRegistry.end ()) {
-        return iterator->second.createViewWidget (parent, context, editWidget);
-    } else {
-        throw omni::core::invalid_argument_error (__FILE__, __FUNCTION__, __LINE__, "entityType", "An entity \"" + entityType + "\" was not found.");
-    }
-}
-
-std::unique_ptr <omni::ui::entity_base_widget> omni::ui::entity_widget_provider::createEditWidget (std::string entityType, QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget & viewWidget)
-{
-    auto iterator = s_widgetProviderRegistry.find (entityType);
-    if (iterator != s_widgetProviderRegistry.end ()) {
-        return iterator->second.createEditWidget (parent, context, viewWidget);
-    } else {
-        throw omni::core::invalid_argument_error (__FILE__, __FUNCTION__, __LINE__, "entityType", "An entity \"" + entityType + "\" was not found.");
-    }
-}
-*/
-
 omni::ui::entity_widget_provider::entity_widget_provider (
     std::function <std::unique_ptr <omni::ui::entity_base_widget> (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget * editWidget)> viewCreator,
     std::function <std::unique_ptr <omni::ui::entity_base_widget> (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget & viewWidget)> editCreator,

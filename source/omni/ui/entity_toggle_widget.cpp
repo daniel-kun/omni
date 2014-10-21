@@ -1,7 +1,7 @@
-#include <omni/ui/entity_edit_widget.hpp>
-#include <omni/ui/entity_widget_provider.hpp>
+#include <omni/ui/entity_toggle_widget.hpp>
+#include <omni/ui/entity_widget_provider_base.hpp>
 
-omni::ui::entity_edit_widget::entity_edit_widget (omni::core::context & context, entity_widget_provider & provider, QWidget * parent) :
+omni::ui::entity_toggle_widget::entity_toggle_widget (omni::core::context & context, entity_widget_provider_base & provider, QWidget * parent) :
     entity_base_widget (parent),
     _c (context),
     _provider (provider),
@@ -16,9 +16,11 @@ omni::ui::entity_edit_widget::entity_edit_widget (omni::core::context & context,
     addAction (& _toggleAction);
     connect (& _toggleAction, SIGNAL(triggered()), SLOT (toggleViewMode()));
     toggleViewMode ();
+    setAutoFillBackground (true);
+    setFocusPolicy (Qt::StrongFocus);
 }
 
-std::shared_ptr <omni::core::model::entity> omni::ui::entity_edit_widget::getEntity ()
+std::shared_ptr <omni::core::model::entity> omni::ui::entity_toggle_widget::getEntity ()
 {
     if (_viewWidget) {
         return _viewWidget->getEntity ();
@@ -29,7 +31,7 @@ std::shared_ptr <omni::core::model::entity> omni::ui::entity_edit_widget::getEnt
     }
 }
 
-void omni::ui::entity_edit_widget::setEntity (std::shared_ptr <omni::core::model::entity> entity)
+void omni::ui::entity_toggle_widget::setEntity (std::shared_ptr <omni::core::model::entity> entity)
 {
     if (_viewWidget) {
         _viewWidget->setEntity (entity);
@@ -38,7 +40,22 @@ void omni::ui::entity_edit_widget::setEntity (std::shared_ptr <omni::core::model
     }
 }
 
-omni::ui::entity_edit_widget::Mode omni::ui::entity_edit_widget::currentViewMode ()
+void omni::ui::entity_toggle_widget::focusInEvent (QFocusEvent * event)
+{
+    QWidget::focusInEvent (event);
+    QPalette pal;
+    pal.setBrush (QPalette::Background, Qt::red);
+    setPalette (pal);
+}
+
+void omni::ui::entity_toggle_widget::focusOutEvent (QFocusEvent * event)
+{
+    QWidget::focusOutEvent (event);
+    QPalette pal;
+    setPalette (pal);
+}
+
+omni::ui::entity_toggle_widget::Mode omni::ui::entity_toggle_widget::currentViewMode ()
 {
     if (_viewWidget) {
         return Mode::m_view;
@@ -47,7 +64,7 @@ omni::ui::entity_edit_widget::Mode omni::ui::entity_edit_widget::currentViewMode
     }
 }
 
-omni::ui::entity_edit_widget::Mode omni::ui::entity_edit_widget::toggleViewMode ()
+omni::ui::entity_toggle_widget::Mode omni::ui::entity_toggle_widget::toggleViewMode ()
 {
     if (_viewWidget) {
         // Go into edit mode:
@@ -58,6 +75,7 @@ omni::ui::entity_edit_widget::Mode omni::ui::entity_edit_widget::toggleViewMode 
         if (hadFocus) {
             _editWidget->setFocus (Qt::TabFocusReason);
         }
+        setFocusProxy (_editWidget.get ());
         return Mode::m_edit;
     } else {
         // Accept input, go into view mode:
@@ -70,14 +88,15 @@ omni::ui::entity_edit_widget::Mode omni::ui::entity_edit_widget::toggleViewMode 
         _viewWidget = _provider.createViewWidget (this, _c, _editWidget.get ());
         _editWidget.reset ();
         _layout.addWidget (_viewWidget.get ());
+        setFocusProxy (nullptr);
         if (hadFocus) {
-            _viewWidget->setFocus (Qt::TabFocusReason);
+            setFocus (Qt::TabFocusReason);
         }
         return Mode::m_view;
     }
 }
 
-void omni::ui::entity_edit_widget::keyPressEvent (QKeyEvent * /*event*/)
+void omni::ui::entity_toggle_widget::keyPressEvent (QKeyEvent * /*event*/)
 {
 /*
     if (! _editProvider.keyPressEvent (event)) {

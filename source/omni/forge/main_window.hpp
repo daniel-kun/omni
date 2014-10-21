@@ -4,8 +4,6 @@
 #include "sandbox_selector.hpp"
 #include "sandbox_widget.hpp"
 
-#include <omni/ui/entity_edit_widget.hpp>
-
 #include <omni/core/context.hpp>
 #include <omni/core/model/module.hpp>
 

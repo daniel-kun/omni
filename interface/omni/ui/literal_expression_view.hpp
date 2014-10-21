@@ -28,7 +28,7 @@ namespace ui {
 
 It displays the value and the type of the literal_expression that is set via @see setEntity() or @see setLiteral(), with live update when changes are detected.
 **/
-class OMNI_UI_API literal_expression_view : public omni::ui::entity_base_widget {
+class OMNI_UI_API literal_expression_view : public entity_base_widget {
     Q_OBJECT
 public:
     literal_expression_view (QWidget * parent);
@@ -38,10 +38,6 @@ public:
 
     void setLiteral (std::shared_ptr <omni::core::model::literal_expression> literalExpression);
     std::shared_ptr <omni::core::model::literal_expression> getLiteral ();
-
-protected:
-    void focusInEvent (QFocusEvent * event) override;
-    void focusOutEvent (QFocusEvent * event) override;
 
 private:
     void updateContent ();

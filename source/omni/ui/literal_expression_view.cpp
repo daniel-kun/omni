@@ -10,7 +10,6 @@ omni::ui::literal_expression_view::literal_expression_view (QWidget * parent) :
     _literalExpression ()
 {
     setAutoFillBackground (true);
-    setFocusPolicy (Qt::StrongFocus);
     _layout.addWidget (& _valueLabel, 0, Qt::AlignRight);
     _layout.addWidget (& _typeLabel);
 }
@@ -39,21 +38,6 @@ void omni::ui::literal_expression_view::setLiteral (std::shared_ptr <omni::core:
 std::shared_ptr <omni::core::model::literal_expression> omni::ui::literal_expression_view::getLiteral ()
 {
     return _literalExpression;
-}
-
-void omni::ui::literal_expression_view::focusInEvent (QFocusEvent * event)
-{
-    QWidget::focusInEvent (event);
-    QPalette pal;
-    pal.setBrush (QPalette::Background, Qt::red);
-    setPalette (pal);
-}
-
-void omni::ui::literal_expression_view::focusOutEvent (QFocusEvent * event)
-{
-    QWidget::focusOutEvent (event);
-    QPalette pal;
-    setPalette (pal);
 }
 
 void omni::ui::literal_expression_view::updateContent ()
