@@ -5,7 +5,9 @@
 #include <omni/core/model/entity.hpp>
 #include <omni/core/model/type_class.hpp>
 
+#ifndef Q_MOC_RUN
 #include <boost/noncopyable.hpp>
+#endif
 
 namespace llvm {
     class Type;

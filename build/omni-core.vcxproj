@@ -72,6 +72,7 @@
     <ClInclude Include="..\interface\omni\core\input\template_visitor.hpp" />
     <ClInclude Include="..\interface\omni\core\input\variable_template_element.hpp" />
     <ClInclude Include="..\interface\omni\core\input\variable_template_provider.hpp" />
+    <ClInclude Include="..\interface\omni\core\invalid_argument_error.hpp" />
     <ClInclude Include="..\interface\omni\core\logic_error.hpp" />
     <ClInclude Include="..\interface\omni\core\model\binary_operator_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\model\bitcast_expression.hpp" />
@@ -129,6 +130,7 @@
     <ClCompile Include="..\source\omni\core\input\template_element.cpp" />
     <ClCompile Include="..\source\omni\core\input\template_visitor.cpp" />
     <ClCompile Include="..\source\omni\core\input\variable_template_element.cpp" />
+    <ClCompile Include="..\source\omni\core\invalid_argument_error.cpp" />
     <ClCompile Include="..\source\omni\core\logic_error.cpp" />
     <ClCompile Include="..\source\omni\core\model\binary_operator_expression.cpp" />
     <ClCompile Include="..\source\omni\core\model\bitcast_expression.cpp" />

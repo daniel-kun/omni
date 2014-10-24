@@ -7,6 +7,8 @@
 #include <omni/core/already_exists_error.hpp>
 #include <omni/core/verification_failed_error.hpp>
 
+#include <llvm/IR/Module.h>
+
 #include <boost/format.hpp>
 
 #include <sstream>
@@ -117,5 +119,6 @@ This only has an effect if `function' was previously added to this scope by crea
 **/
 bool omni::core::model::scope::removeFunction (std::shared_ptr <model::function_prototype> function)
 {
+    function->llvmFunction ()->eraseFromParent ();
     return removeComponent (domain::function, function);
 }

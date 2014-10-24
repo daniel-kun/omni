@@ -11,6 +11,11 @@
 
 namespace omni {
 namespace core {
+class context;
+}}
+
+namespace omni {
+namespace core {
 namespace model {
 
     /**
@@ -28,7 +33,7 @@ namespace model {
 
         virtual std::string toString (bool fullyQualified = true) const = 0;
 
-        static std::shared_ptr <literal_expression> fromString (std::string const & text);
+        static std::shared_ptr <literal_expression> fromString (omni::core::context & context, std::string const & text, literal_expression * originatingLiteral);
 
     protected:
         virtual void valueChanged (boost::any oldValue, boost::any newValue);

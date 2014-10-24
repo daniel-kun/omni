@@ -3,7 +3,9 @@
 
 #include <omni/core/core.hpp>
 
+#ifndef Q_MOC_RUN
 #include <boost/filesystem/path.hpp>
+#endif
 
 #include <vector>
 #include <set>

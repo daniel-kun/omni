@@ -208,8 +208,9 @@ void omni::core::model::module::emitObjectFile (llvm::raw_ostream & stream, cons
     }
 
     std::string errorInfo;
-    if (llvm::verifyModule(m, & llvm::outs ())) {
-        // TODO: Create a special error class for this:
+    llvm::raw_string_ostream errorStream (errorInfo);
+    if (llvm::verifyModule(m, & errorStream)) {
+        errorStream.flush ();
         throw verification_failed_error (getName (), errorInfo);
     }
 

@@ -1,0 +1,90 @@
+#statement (
+    #block
+    #expression
+    #if_statement
+    #return_statement
+    #while_statement
+    #do_while_statement)
+
+#block(indent=+1) =
+[    #statement
+    *]
+
+#expression (
+    #modifying_expression
+    #pure_expression)
+
+#modifying_expression (
+    #function_call_expression
+    #variable_assignment_expression)
+
+#pure_expression (
+    #binary_operator_expression
+    #cast_expression
+    #literal_expression
+    #variable_declaration_expression
+    #variable_expression)
+
+#binary_operator_expression =
+[#expression ${operator} #expression]
+[#expression ${operator} #expression]
+[#expression ${operator} #expression]
+[#expression ${operator} #expression]
+
+#cast_expression (
+    #bitcast_expression)
+
+#literal_expression =
+[${sign=+} <value:[0..9]*> $<type>]
+
+#variable_declaration_expression =
+[variable ${type} <name:[a-zA-Z]*> (#expression)]
+
+#variable_expression =
+[${variable}]
+
+#bitcast_expression =
+[(cast #expression to #type)]
+
+#type =
+[void]
+[boolean]
+[unsignedByte]
+[signedByte]
+[unsignedShort]
+[signedShort]
+[unsignedInt]
+[signedInt]
+[unsignedLong]
+[signedLong]
+[unsignedLongLong]
+[signedLongLong]
+[char]
+
+#function_call_expression =
+[call ${function}]
+
+#variable_assignment_expression =
+[${variable} = #expression]
+
+
+#if_statement =
+[if (#expression) {
+#block
+} else {
+#block
+}]
+
+#return_statement =
+[return #expression]
+
+#while_statement =
+[while (#expression) {
+#block
+}]
+
+#do_while_statement =
+[do {
+#block
+} while (#expression)]
+
