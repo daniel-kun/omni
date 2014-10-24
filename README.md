@@ -36,8 +36,10 @@ Higher productivity and quality for programmers
 
 ## Technology
 
+* Code is not stored in text files, but in a database
+* This enables Omni to present code pieces independent of their physical storage
 * Declarative and imperative code model in the same language
-* Automatic Reference Counting (like Objective C, but built in from the beginning and with better guidance)
+* Deterministic Garbage Collector via Automatic Reference Counting
 * API to access the code model (for coded refactoring, analysis, metrics, reports, etc.)
 * Built-in, compile-time-safe multithreading
 
