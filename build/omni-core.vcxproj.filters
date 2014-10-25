@@ -201,6 +201,12 @@
     <ClInclude Include="..\interface\omni\core\invalid_argument_error.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="..\interface\omni\core\model\meta_info.hpp">
+      <Filter>Headerdateien\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\model\meta_info_extension.hpp">
+      <Filter>Headerdateien\model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\core\already_exists_error.cpp">
@@ -367,6 +373,12 @@
     </ClCompile>
     <ClCompile Include="..\source\omni\core\invalid_argument_error.cpp">
       <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\model\meta_info.cpp">
+      <Filter>Quelldateien\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\model\meta_info_extension.cpp">
+      <Filter>Quelldateien\model</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

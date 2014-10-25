@@ -79,6 +79,7 @@
     <ClCompile Include="..\source\omni\tests\core\model\test_external_function.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_function.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_if_statement.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\model\test_meta_info.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_native_type_to_type_class.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_variable.cpp" />
     <ClCompile Include="..\source\omni\tests\core\model\test_while_statement.cpp" />

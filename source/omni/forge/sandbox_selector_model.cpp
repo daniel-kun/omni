@@ -153,7 +153,7 @@ std::unique_ptr <omni::forge::sandbox_widget> createVariableDeclarationView (omn
     editor->setEntity (variableDecl);
     auto result = std::make_unique <omni::forge::sandbox_widget> (
         parent,
-        [] (omni::core::context &, omni::core::model::module & module) -> void {
+        [] (omni::core::context &, omni::core::model::module &) -> void {
         });
     auto * layout = new QVBoxLayout (result.get ());
     

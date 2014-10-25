@@ -96,6 +96,9 @@
     <ClCompile Include="..\source\omni\tests\core\input\test_utils_input.cpp">
       <Filter>Quelldateien\core\input</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_meta_info.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />

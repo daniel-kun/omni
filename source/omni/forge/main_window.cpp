@@ -48,7 +48,7 @@ void omni::forge::main_window::activateDemo (sandbox_widget & demo)
     }
 }
 
-void omni::forge::main_window::showEvent (QShowEvent * event)
+void omni::forge::main_window::showEvent (QShowEvent *)
 {
     _selector.focusSearchField ();
 }

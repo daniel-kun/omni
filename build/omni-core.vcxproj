@@ -88,6 +88,8 @@
     <ClInclude Include="..\interface\omni\core\model\function_prototype.hpp" />
     <ClInclude Include="..\interface\omni\core\model\if_statement.hpp" />
     <ClInclude Include="..\interface\omni\core\model\literal_expression.hpp" />
+    <ClInclude Include="..\interface\omni\core\model\meta_info.hpp" />
+    <ClInclude Include="..\interface\omni\core\model\meta_info_extension.hpp" />
     <ClInclude Include="..\interface\omni\core\model\modifying_expression.hpp" />
     <ClInclude Include="..\interface\omni\core\model\module.hpp" />
     <ClInclude Include="..\interface\omni\core\model\native_type_to_type_class.hpp" />
@@ -146,6 +148,8 @@
     <ClCompile Include="..\source\omni\core\model\function_prototype.cpp" />
     <ClCompile Include="..\source\omni\core\model\if_statement.cpp" />
     <ClCompile Include="..\source\omni\core\model\literal_expression.cpp" />
+    <ClCompile Include="..\source\omni\core\model\meta_info.cpp" />
+    <ClCompile Include="..\source\omni\core\model\meta_info_extension.cpp" />
     <ClCompile Include="..\source\omni\core\model\modifying_expression.cpp" />
     <ClCompile Include="..\source\omni\core\model\module.cpp" />
     <ClCompile Include="..\source\omni\core\model\native_type_to_type_class.cpp" />
