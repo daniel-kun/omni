@@ -6,10 +6,10 @@
 
 # The Omni Programming Language Manifest
 
-This manifest declares goals that The Omni Programming Language wants to reach.
+This manifest declares goals that The Omni Programming Language is designed to reach.
 Omni is meant to provide a new way of coding. A way of coding where less time is spent on text editing and more time spent on engineering, designing, defining and changing logic and architecture, assuring quality and documenting.
 
-In short, Omni frees the programmer of unnecessary tasks that the classic way of writing programs in text files imposes on them.
+In short, Omni frees the programmer of unnecessary tasks that the classic way of writing programs in text files imposes on them to let you get things done.
 
 # Goals
 
