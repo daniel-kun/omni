@@ -205,7 +205,23 @@ add_executable (omni-tests
     source/omni/tests/core/test_context.cpp
     source/omni/tests/core/test_id.cpp
     source/omni/tests/core/test_runtime_memory.cpp
-    source/omni/tests/runtime/test_memory.cpp)
+    source/omni/tests/runtime/test_memory.cpp
+    source/omni/tests/core/model/test_bitcast_expression.cpp
+    source/omni/tests/core/model/test_builtin_literal_expression.cpp
+    source/omni/tests/core/model/test_cast_expression.cpp
+    source/omni/tests/core/model/test_expression.cpp
+    source/omni/tests/core/model/test_function_prototype.cpp
+    source/omni/tests/core/model/test_literal_expression.cpp
+    source/omni/tests/core/model/test_modifying_expression.cpp
+    source/omni/tests/core/model/test_module.cpp
+    source/omni/tests/core/model/test_parameter.cpp
+    source/omni/tests/core/model/test_pure_expression.cpp
+    source/omni/tests/core/model/test_return_statement.cpp
+    source/omni/tests/core/model/test_scope.cpp
+    source/omni/tests/core/model/test_statement.cpp
+    source/omni/tests/core/model/test_type.cpp
+    source/omni/tests/core/model/test_variable_declaration_expression.cpp
+    source/omni/tests/core/model/test_variable_expression.cpp)
 
 add_definitions (-DBOOST_TEST_DYN_LINK)
 
