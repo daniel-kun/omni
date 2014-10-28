@@ -46,6 +46,7 @@ add_library (omni-core SHARED
     source/omni/core/model/variable_declaration_expression.cpp
     source/omni/core/model/variable_expression.cpp
     source/omni/core/model/while_statement.cpp
+    source/omni/core/model/meta_info.cpp
     source/omni/core/input/abstract_syntax_element.cpp
     source/omni/core/input/concrete_syntax_element.cpp
     source/omni/core/input/fixed_template_element.cpp
