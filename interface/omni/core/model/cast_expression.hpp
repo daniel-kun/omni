@@ -16,6 +16,10 @@ namespace model {
     class OMNI_CORE_API cast_expression : public pure_expression {
     public:
         cast_expression ();
+
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const = 0;
     };
 
 } // namespace model

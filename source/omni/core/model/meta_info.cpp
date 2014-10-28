@@ -89,3 +89,34 @@ void omni::core::model::meta_info::setExtension (const std::string & extensionNa
 {
     _extensions [extensionName] = extension;
 }
+
+// Initialization of all meta_info objects:
+// (This has to be done in a central translation unit, because initialization order is undefined across translation units.)
+namespace omniMetaImpl {
+omni::core::model::meta_info entityMetaInfo ("entity");
+    omni::core::model::meta_info typeMetaInfo (entityMetaInfo, "type");
+    omni::core::model::meta_info scopeMetaInfo (entityMetaInfo, "scope");
+        omni::core::model::meta_info function_prototypeMetaInfo (scopeMetaInfo, "function_prototype");
+            omni::core::model::meta_info external_functionMetaInfo (function_prototypeMetaInfo, "external_function");
+            omni::core::model::meta_info functionMetaInfo (function_prototypeMetaInfo, "function");
+        omni::core::model::meta_info moduleMetaInfo (scopeMetaInfo, "module");
+        omni::core::model::meta_info parameterMetaInfo (scopeMetaInfo, "parameter");
+        omni::core::model::meta_info statementMetaInfo (scopeMetaInfo, "statement");
+            omni::core::model::meta_info blockMetaInfo (statementMetaInfo, "block");
+            omni::core::model::meta_info expressionMetaInfo (statementMetaInfo, "expression");
+                omni::core::model::meta_info modifying_expressionMetaInfo (expressionMetaInfo, "modifying_expression");
+                    omni::core::model::meta_info function_call_expressionMetaInfo (modifying_expressionMetaInfo, "function_call_expression");
+                    omni::core::model::meta_info variable_assignment_expressionMetaInfo (modifying_expressionMetaInfo, "variable_assignment_expression");
+                omni::core::model::meta_info pure_expressionMetaInfo (expressionMetaInfo, "pure_expression");
+                    omni::core::model::meta_info binary_operator_expressionMetaInfo (pure_expressionMetaInfo, "binary_operator_expression");
+                    omni::core::model::meta_info cast_expressionMetaInfo (pure_expressionMetaInfo, "cast_expression");
+                        omni::core::model::meta_info bitcast_expressionMetaInfo (cast_expressionMetaInfo, "bitcast_expression");
+                    omni::core::model::meta_info literal_expressionMetaInfo (pure_expressionMetaInfo, "literal_expression");
+                        omni::core::model::meta_info builtin_literal_expressionMetaInfo (literal_expressionMetaInfo, "builtin_literal_expression");
+                    omni::core::model::meta_info variable_declaration_expressionMetaInfo (pure_expressionMetaInfo, "variable_declaration_expression");
+                    omni::core::model::meta_info variable_expressionMetaInfo (pure_expressionMetaInfo, "variable_expression");
+            omni::core::model::meta_info if_statementMetaInfo (statementMetaInfo, "if_statement");
+            omni::core::model::meta_info return_statementMetaInfo (statementMetaInfo, "return_statement");
+            omni::core::model::meta_info while_statementMetaInfo (statementMetaInfo, "while_statement");
+            omni::core::model::meta_info do_while_statementMetaInfo (statementMetaInfo, "do_while_statement");
+}

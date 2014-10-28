@@ -4,6 +4,11 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/NoFolder.h>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info bitcast_expressionMetaInfo;
+}
+
 /**
 Initializes this bitcast_expression to convert the result of sourceExpression to the targetType. sourceExpression->getType ()'s bidwidth
 must be of the same bit-width as targetType.
@@ -13,6 +18,16 @@ omni::core::model::bitcast_expression::bitcast_expression (std::shared_ptr <expr
     _targetType (targetType)
 {
     setSourceExpression (sourceExpression);
+}
+
+omni::core::model::meta_info & omni::core::model::bitcast_expression::getStaticMetaInfo ()
+{
+    return omniMetaImpl::bitcast_expressionMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::bitcast_expression::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::bitcast_expression::getDomain () const

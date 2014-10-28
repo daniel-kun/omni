@@ -23,6 +23,10 @@ namespace model {
         variable_declaration_expression (std::shared_ptr <type> type);
         variable_declaration_expression (std::shared_ptr <expression> initializer);
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         std::shared_ptr <type> getType () const override;

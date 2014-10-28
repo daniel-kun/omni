@@ -12,6 +12,11 @@
 #include <llvm/IR/CallingConv.h>
 #include <llvm/IR/Module.h>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info functionMetaInfo;
+}
+
 /**
 @brief Initializes a function implementation with the given name, returnType, body, parameters and visibility.
 
@@ -33,6 +38,16 @@ omni::core::model::function::function (std::string const & name,
     _isExported (isExported)
 {
     setBody (body);
+}
+
+omni::core::model::meta_info & omni::core::model::function::getStaticMetaInfo ()
+{
+    return omniMetaImpl::functionMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::function::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::function::getDomain () const

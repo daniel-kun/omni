@@ -22,6 +22,10 @@ namespace model {
     public:
         parameter (std::shared_ptr <type> parameterType = std::shared_ptr <type> (), std::string name = std::string ());
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         void setType (std::shared_ptr <type> type);

@@ -10,6 +10,7 @@
 #include <omni/core/model/variable_assignment_expression.hpp>
 #include <omni/core/model/variable_expression.hpp>
 #include <omni/core/model/binary_operator_expression.hpp>
+#include <omni/core/model/meta_info.hpp>
 
 #include <omni/tests/test_file_manager.hpp>
 #include <omni/tests/test_utils.hpp>
@@ -70,6 +71,26 @@ BOOST_AUTO_TEST_CASE (ctor)
     model::module m (c, "test");
 
     model::while_statement whileStatement (std::make_shared <model::builtin_literal_expression <bool>> (c, true), std::make_shared <model::block> ());
+}
+
+BOOST_AUTO_TEST_CASE (metaInfoWhile)
+{
+    using namespace omni::core::model;
+
+    meta_info & meta = while_statement::getStaticMetaInfo ();
+    BOOST_CHECK_EQUAL (meta.getName (), "while_statement");
+    BOOST_CHECK_EQUAL (meta.getParent (), & statement::getStaticMetaInfo ());
+    BOOST_CHECK_EQUAL (meta.getChildCount (), 0u);
+}
+
+BOOST_AUTO_TEST_CASE (metaInfoDoWhile)
+{
+    using namespace omni::core::model;
+
+    meta_info & meta = do_while_statement::getStaticMetaInfo ();
+    BOOST_CHECK_EQUAL (meta.getName (), "do_while_statement");
+    BOOST_CHECK_EQUAL (meta.getParent (), & statement::getStaticMetaInfo ());
+    BOOST_CHECK_EQUAL (meta.getChildCount (), 0u);
 }
 
 BOOST_AUTO_TEST_CASE (whileStatement)

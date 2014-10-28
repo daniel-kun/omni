@@ -4,6 +4,7 @@
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/model/builtin_literal_expression.hpp>
+#include <omni/core/model/meta_info.hpp>
 
 #include <omni/tests/test_utils.hpp>
 #include <omni/tests/test_file_manager.hpp>
@@ -268,6 +269,16 @@ BOOST_AUTO_TEST_CASE (minusUnsignedInt)
     TEST_MINUS (_testCounter, _module, 256u, 256u);
     TEST_MINUS (_testCounter, _module, (static_cast <unsigned int> (std::numeric_limits <signed int>::max ()) + 1u), 1u);
     TEST_MINUS (_testCounter, _module, (static_cast <unsigned int> (std::numeric_limits <signed int>::max ()) + 1u), (static_cast <unsigned int> (std::numeric_limits <signed int>::max ()) + 1u));
+}
+
+BOOST_AUTO_TEST_CASE (metaInfo)
+{
+    using namespace omni::core::model;
+
+    meta_info & meta = binary_operator_expression::getStaticMetaInfo ();
+    BOOST_CHECK_EQUAL (meta.getName (), "binary_operator_expression");
+    BOOST_CHECK_EQUAL (meta.getParent (), & pure_expression::getStaticMetaInfo ());
+    BOOST_CHECK_EQUAL (meta.getChildCount (), 0u);
 }
 
 BOOST_AUTO_TEST_SUITE_END ();

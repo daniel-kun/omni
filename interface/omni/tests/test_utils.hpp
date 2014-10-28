@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #ifdef WIN32
 #include <Windows.h>
@@ -37,6 +38,8 @@ template <typename Return>
 Return runFunction (std::shared_ptr <omni::core::model::function> func,
                     omni::tests::test_file_manager & testFileManager,
                     std::string const & fileBaseName);
+
+bool checkMetaInfoChildren (const omni::core::model::meta_info & metaInfo, std::set <const omni::core::model::meta_info *> children);
 
 } // namespace tests
 } // namespace omni

@@ -8,6 +8,11 @@
 
 #include <boost/lexical_cast.hpp>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info function_call_expressionMetaInfo;
+}
+
 /**
 Initializes this function call expression without any function to call.
 **/
@@ -34,6 +39,16 @@ omni::core::model::function_call_expression::function_call_expression (std::shar
     _paramCount (0u)
 {
     setParameters (parameters);
+}
+
+omni::core::model::meta_info & omni::core::model::function_call_expression::getStaticMetaInfo ()
+{
+    return omniMetaImpl::function_call_expressionMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::function_call_expression::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::function_call_expression::getDomain () const

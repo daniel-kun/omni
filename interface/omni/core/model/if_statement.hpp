@@ -20,6 +20,10 @@ namespace model {
     public:
         if_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> trueBlock, std::shared_ptr <block> elseBlock);
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         void setCondition (std::shared_ptr <expression> condition);

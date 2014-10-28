@@ -1,6 +1,9 @@
 #include <omni/core/model/entity.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/model/module.hpp>
+#include <omni/core/model/type.hpp>
+#include <omni/core/model/scope.hpp>
+#include <omni/core/model/meta_info.hpp>
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/model/variable_declaration_expression.hpp>
@@ -28,6 +31,11 @@ public:
     testable_entity (omni::core::id entityId, std::string const & name) :
         entity (entityId, name)
     {
+    }
+
+    omni::core::model::meta_info & getMetaInfo () const override
+    {
+        return entity::getMetaInfo ();
     }
 
     void setComponent (omni::core::domain domain, std::string name, std::shared_ptr <entity> entity) override {
@@ -71,6 +79,7 @@ BOOST_AUTO_TEST_CASE (ctor1)
 {
     using namespace omni::core;
     testable_entity e1;
+    BOOST_CHECK_EQUAL (e1.getMetaInfo ().getName (), "entity");
     BOOST_CHECK_EQUAL (e1.getName (), std::string ());
     BOOST_CHECK_EQUAL (e1.getId (), id ());
     BOOST_CHECK (! e1.getId ().isValid ());
@@ -101,6 +110,22 @@ BOOST_AUTO_TEST_CASE (ctor3)
     BOOST_CHECK_EQUAL (e1.getName (), name);
     BOOST_CHECK_EQUAL (e1.getId (), i);
     BOOST_CHECK_EQUAL (e1.getId ().isValid (), i.isValid ());
+}
+
+BOOST_AUTO_TEST_CASE (metaInfo)
+{
+    using namespace omni::core::model;
+    testable_entity e;
+    meta_info & meta = entity::getStaticMetaInfo ();
+    BOOST_CHECK_EQUAL (& meta, & e.getMetaInfo ());
+    BOOST_CHECK_EQUAL (meta.getName (), "entity");
+    BOOST_CHECK (meta.getParent () == nullptr);
+    BOOST_CHECK_EQUAL (meta.getChildCount (), 2u);
+
+    BOOST_CHECK (omni::tests::checkMetaInfoChildren (meta, {
+        & type::getStaticMetaInfo (),
+        & scope::getStaticMetaInfo (),
+    }));
 }
 
 /**

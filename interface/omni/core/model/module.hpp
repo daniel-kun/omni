@@ -35,6 +35,10 @@ namespace model {
         module (context & context, std::string name = std::string ());
         module (context & context, id moduleId, std::string name = std::string ());
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         context * getContext () override;

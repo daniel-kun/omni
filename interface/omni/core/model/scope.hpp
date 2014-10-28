@@ -39,6 +39,10 @@ namespace model {
         explicit scope (id scopeId, std::string name = std::string ());
         ~ scope () = 0;
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const = 0;
+
         std::shared_ptr <function> createFunction (
             std::string const & name,
             std::shared_ptr <type> returnType,

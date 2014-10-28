@@ -8,6 +8,11 @@
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/NoFolder.h>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info variable_declaration_expressionMetaInfo;
+}
+
 omni::core::model::variable_declaration_expression::variable_declaration_expression () :
     pure_expression (),
     _type (),
@@ -33,6 +38,16 @@ omni::core::model::variable_declaration_expression::variable_declaration_express
     _llvmPointerValue (nullptr)
 {
     setInitializationExpression (initializer);
+}
+
+omni::core::model::meta_info & omni::core::model::variable_declaration_expression::getStaticMetaInfo ()
+{
+    return omniMetaImpl::variable_declaration_expressionMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::variable_declaration_expression::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::variable_declaration_expression::getDomain () const

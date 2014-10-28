@@ -99,6 +99,54 @@
     <ClCompile Include="..\source\omni\tests\core\model\test_meta_info.cpp">
       <Filter>Quelldateien\core\model</Filter>
     </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_type.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_scope.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_function_prototype.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_module.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_parameter.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_statement.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_return_statement.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_expression.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_modifying_expression.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_cast_expression.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_pure_expression.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_bitcast_expression.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_literal_expression.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_builtin_literal_expression.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_variable_declaration_expression.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\model\test_variable_expression.cpp">
+      <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tools\link_helper.cmd" />

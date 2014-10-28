@@ -21,6 +21,10 @@ namespace model {
     public:
         explicit builtin_literal_expression (context & context, T value);
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         std::string toString (bool fullyQualified = true) const override;
 
         domain getDomain () const override;

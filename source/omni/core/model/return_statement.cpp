@@ -4,6 +4,11 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/NoFolder.h>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info return_statementMetaInfo;
+}
+
 omni::core::model::return_statement::return_statement () :
     statement ()
 {
@@ -13,6 +18,16 @@ omni::core::model::return_statement::return_statement (std::shared_ptr <expressi
     statement ()
 {
     setExpression (expression);
+}
+
+omni::core::model::meta_info & omni::core::model::return_statement::getStaticMetaInfo ()
+{
+    return omniMetaImpl::return_statementMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::return_statement::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::return_statement::getDomain () const

@@ -37,6 +37,10 @@ namespace model {
         type (context & context, type_class typeClass, unsigned int indirectionLevel = 0);
         virtual ~ type ();
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         std::string toString (bool fullyQualified = true);
         static std::string toString (type_class typeClass, bool fullyQualified = true);
 

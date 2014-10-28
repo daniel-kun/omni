@@ -26,6 +26,11 @@
 
 #include <sstream>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info moduleMetaInfo;
+}
+
 namespace {
     /**
     Adds a function with the prototype "dllexport x86_stdcallcc i8 @DllMain(i32*, i32, i32*)" if such a function does not already exist.
@@ -70,6 +75,16 @@ omni::core::model::module::module (context & context, id moduleId, std::string n
     _context (context),
     _entryPoint ()
 {
+}
+
+omni::core::model::meta_info & omni::core::model::module::getStaticMetaInfo ()
+{
+    return omniMetaImpl::moduleMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::module::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::module::getDomain () const

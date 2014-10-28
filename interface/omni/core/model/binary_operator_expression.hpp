@@ -40,6 +40,10 @@ namespace model {
 
         binary_operator_expression (context & context, binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand);
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         void setLeftOperand (std::shared_ptr <expression> leftOperand);

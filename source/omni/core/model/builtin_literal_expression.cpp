@@ -7,6 +7,11 @@
 
 #include <sstream>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info builtin_literal_expressionMetaInfo;
+}
+
 namespace {
 
 /*
@@ -64,6 +69,18 @@ omni::core::model::builtin_literal_expression <T>::builtin_literal_expression (c
     _type (type::sharedBasicType (context, native_type_to_type_class <T>::typeClass)),
     _value (value)
 {
+}
+
+template <typename T>
+omni::core::model::meta_info & omni::core::model::builtin_literal_expression <T>::getStaticMetaInfo ()
+{
+    return omniMetaImpl::builtin_literal_expressionMetaInfo;
+}
+
+template <typename T>
+omni::core::model::meta_info & omni::core::model::builtin_literal_expression <T>::getMetaInfo () const
+{
+    return builtin_literal_expression <T>::getStaticMetaInfo ();
 }
 
 template <typename T>

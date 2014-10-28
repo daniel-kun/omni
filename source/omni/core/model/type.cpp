@@ -7,6 +7,11 @@
 
 #include <sstream>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info typeMetaInfo;
+}
+
 namespace {
 /*
 Returns the type that points to baseType with the given indirectionLevel. For example, if baseType is int32 and indirectionLevel is 1,
@@ -48,6 +53,16 @@ omni::core::model::type::type (omni::core::context & context, omni::core::model:
 
 omni::core::model::type::~ type ()
 {
+}
+
+omni::core::model::meta_info & omni::core::model::type::getStaticMetaInfo ()
+{
+    return omniMetaImpl::typeMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::type::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 /**

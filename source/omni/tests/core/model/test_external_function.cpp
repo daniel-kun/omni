@@ -1,4 +1,5 @@
 #include <omni/core/model/external_function.hpp>
+#include <omni/core/model/meta_info.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/model/module.hpp>
@@ -46,6 +47,16 @@ BOOST_AUTO_TEST_CASE (ctor)
     omni::tests::test_file_manager testFileManager;
     std::string functionName;
     omni::tests::runFunction <int> (funcCaller, testFileManager, "externalFunctionTestsCtor");
+}
+
+BOOST_AUTO_TEST_CASE (metaInfo)
+{
+    using namespace omni::core::model;
+
+    meta_info & meta = external_function::getStaticMetaInfo ();
+    BOOST_CHECK_EQUAL (meta.getName (), "external_function");
+    BOOST_CHECK_EQUAL (meta.getParent (), & function_prototype::getStaticMetaInfo ());
+    BOOST_CHECK_EQUAL (meta.getChildCount (), 0u);
 }
 
 BOOST_AUTO_TEST_SUITE_END ()

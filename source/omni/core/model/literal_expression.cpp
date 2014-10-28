@@ -4,6 +4,11 @@
 
 #include <sstream>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info literal_expressionMetaInfo;
+}
+
 /**
 @brief Creates a new literal_expression from the human-readable `text'.
 
@@ -11,7 +16,7 @@ The format of a human-readable text that can be converted to a literal follows t
 <number> <type specifier>
 
 The numer can be typed in the current locale's form, e.g. in English environments, it uses "," as the thousands separator and "." as the decimal separator,
-whereas e.g. in German environments, "." is the thousands separator and "," the decimal separator.
+whereas e.g. in German environments, "." as the thousands separator and "," as the decimal separator.
 
 When the same literal will be converted to text on a different locale, it will automatically adapt to the new environment. The internal storage is binary and
 therefore independent from the locale.
@@ -33,6 +38,16 @@ std::shared_ptr <omni::core::model::literal_expression> omni::core::model::liter
     str >> value;
     auto result = std::make_shared <builtin_literal_expression <int>> (context, value);
     return result;
+}
+
+omni::core::model::meta_info & omni::core::model::literal_expression::getStaticMetaInfo ()
+{
+    return omniMetaImpl::literal_expressionMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::literal_expression::getMetaInfo () const
+{
+    return literal_expression::getStaticMetaInfo ();
 }
 
 /**

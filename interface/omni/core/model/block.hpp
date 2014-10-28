@@ -27,6 +27,10 @@ namespace model {
 
         block ();
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         const statement_list getStatements () const;

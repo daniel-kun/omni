@@ -31,6 +31,10 @@ namespace model {
                   std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> (),
                   bool isExported = false);
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         void setExported (bool isExported);

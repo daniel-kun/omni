@@ -20,6 +20,10 @@ namespace model {
         do_while_statement ();
         do_while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body);
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;

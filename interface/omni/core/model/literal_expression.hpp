@@ -31,6 +31,10 @@ namespace model {
 
         boost::signals2::connection connectValueChanged (ValueChangedSignal::slot_type handler);
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const = 0;
+
         virtual std::string toString (bool fullyQualified = true) const = 0;
 
         static std::shared_ptr <literal_expression> fromString (omni::core::context & context, std::string const & text, literal_expression * originatingLiteral);

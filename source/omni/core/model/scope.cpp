@@ -13,6 +13,11 @@
 
 #include <sstream>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info scopeMetaInfo;
+}
+
 /**
 @brief Initializes this scope with an empty name and an invalid id.
 
@@ -46,6 +51,16 @@ omni::core::model::scope::scope (id scopeId, std::string name) :
 
 omni::core::model::scope::~scope ()
 {
+}
+
+omni::core::model::meta_info & omni::core::model::scope::getStaticMetaInfo ()
+{
+    return omniMetaImpl::scopeMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::scope::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 /**

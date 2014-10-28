@@ -5,6 +5,7 @@
 #include <omni/core/model/return_statement.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/model/function.hpp>
+#include <omni/core/model/meta_info.hpp>
 
 #include <omni/tests/test_file_manager.hpp>
 #include <omni/tests/test_utils.hpp>
@@ -33,6 +34,16 @@ BOOST_AUTO_TEST_CASE (ctor)
     BOOST_CHECK (ifStatement2.getCondition () == condition);
     BOOST_CHECK (ifStatement2.getTrueBlock () == trueBlock);
     BOOST_CHECK (ifStatement2.getElseBlock () == nullptr);
+}
+
+BOOST_AUTO_TEST_CASE (metaInfo)
+{
+    using namespace omni::core::model;
+
+    meta_info & meta = if_statement::getStaticMetaInfo ();
+    BOOST_CHECK_EQUAL (meta.getName (), "if_statement");
+    BOOST_CHECK_EQUAL (meta.getParent (), & statement::getStaticMetaInfo ());
+    BOOST_CHECK_EQUAL (meta.getChildCount (), 0u);
 }
 
 BOOST_AUTO_TEST_CASE (mixedTests)

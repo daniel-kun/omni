@@ -3,6 +3,11 @@
 #include <omni/core/model/module.hpp>
 #include <omni/core/context.hpp>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info entityMetaInfo;
+}
+
 /**
 @brief Initializes this entity with an empty name and an invalid id.
 
@@ -51,6 +56,28 @@ omni::core::model::entity::entity (omni::core::id entityId, std::string const & 
 omni::core::model::entity::~entity ()
 {
     clearComponents ();
+}
+
+/**
+@brief Returns the base meta-information for entity objects.
+
+The meta-information of the root `entity' class that is the base for all entities in the omni code model can be used to get information
+that is valid for all entities, or to represent "any" kind of entity.
+
+@return Base meta-information for entity objects.
+**/
+omni::core::model::meta_info & omni::core::model::entity::getStaticMetaInfo ()
+{
+    return omniMetaImpl::entityMetaInfo;
+}
+
+/**
+@brief Returns the meta-information for the actual kind of entity that this object has.
+@return The meta-information for the actual kind of entity that this object has.
+**/
+omni::core::model::meta_info & omni::core::model::entity::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 /**

@@ -24,6 +24,7 @@ namespace core {
 namespace model {
     class scope;
     class module;
+    class meta_info;
 
     /**
     @class entity entity.hpp omni/core/model/entity.hpp
@@ -53,6 +54,10 @@ namespace model {
         explicit entity (std::string const & name);
         explicit entity (id entityId, std::string const & name);
         virtual ~ entity () = 0;
+
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const = 0;
 
         void setId (id newId);
         id getId () const;

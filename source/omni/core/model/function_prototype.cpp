@@ -8,6 +8,12 @@
 
 #include <boost/lexical_cast.hpp>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info function_prototypeMetaInfo;
+}
+
+
 /**
 @brief Initializes this function prototype with the given function name, return-type and parameters.
 
@@ -27,6 +33,16 @@ omni::core::model::function_prototype::function_prototype (std::string const & n
 
 omni::core::model::function_prototype::~function_prototype ()
 {
+}
+
+omni::core::model::meta_info & omni::core::model::function_prototype::getStaticMetaInfo ()
+{
+    return omniMetaImpl::function_prototypeMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::function_prototype::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 /**

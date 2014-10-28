@@ -6,6 +6,11 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/NoFolder.h>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info variable_assignment_expressionMetaInfo;
+}
+
 /**
 Initializes this variabe_assignment_expresion to assign `value' to `variable'.
 variable and value need to be of exactly the same type.
@@ -19,6 +24,16 @@ omni::core::model::variable_assignment_expression::variable_assignment_expressio
     if (_variable->getType () != value->getType ()) {
         throw type_mismatch_error (* _variable->getType (), * value->getType ());
     }
+}
+
+omni::core::model::meta_info & omni::core::model::variable_assignment_expression::getStaticMetaInfo ()
+{
+    return omniMetaImpl::variable_assignment_expressionMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::variable_assignment_expression::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::variable_assignment_expression::getDomain () const

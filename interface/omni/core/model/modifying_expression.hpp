@@ -17,6 +17,10 @@ namespace model {
     class OMNI_CORE_API modifying_expression : public expression {
     public:
         modifying_expression ();
+
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const = 0;
     };
 
 } // namespace model

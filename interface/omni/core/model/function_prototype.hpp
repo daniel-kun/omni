@@ -43,6 +43,10 @@ namespace model {
                             std::vector <std::shared_ptr <parameter>> parameters = std::vector <std::shared_ptr <parameter>> ());
         virtual ~ function_prototype ();
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const = 0;
+
         void setReturnType (std::shared_ptr <type> returnType);
         const std::shared_ptr <type> getReturnType () const;
         std::shared_ptr <type> getReturnType ();

@@ -3,6 +3,7 @@
 #include <omni/core/model/module.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/model/function.hpp>
+#include <omni/core/model/meta_info.hpp>
 #include <omni/core/context.hpp>
 #include <omni/core/module_emit_options.hpp>
 #include <sstream>
@@ -48,3 +49,19 @@ boost::filesystem::path omni::tests::emitSharedLibraryWithFunction (std::shared_
     return sharedLibraryName;
 }
 
+/**
+@brief Returns true if the children of metaInfo are equal to the provided children.
+@return True if the children of metaInfo are equal to the provided children.
+**/
+bool omni::tests::checkMetaInfoChildren (const omni::core::model::meta_info & metaInfo, std::set <const omni::core::model::meta_info *> children)
+{
+    for (std::size_t i = 0; i < metaInfo.getChildCount (); ++i) {
+        auto child = children.find (& metaInfo.getChildAt (i));
+        if (child != children.end ()) {
+            children.erase (child);
+        } else {
+            return false;
+        }
+    }
+    return children.size () == 0u;
+}

@@ -6,6 +6,11 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/NoFolder.h>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info do_while_statementMetaInfo;
+}
+
 omni::core::model::do_while_statement::do_while_statement () :
     while_statement ()
 {
@@ -14,6 +19,16 @@ omni::core::model::do_while_statement::do_while_statement () :
 omni::core::model::do_while_statement::do_while_statement (std::shared_ptr <omni::core::model::expression> condition, std::shared_ptr <omni::core::model::block> body) :
     while_statement (condition, body)
 {
+}
+
+omni::core::model::meta_info & omni::core::model::do_while_statement::getStaticMetaInfo ()
+{
+    return omniMetaImpl::do_while_statementMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::do_while_statement::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::do_while_statement::getDomain () const

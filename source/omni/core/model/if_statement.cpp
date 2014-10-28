@@ -7,6 +7,11 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/NoFolder.h>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info if_statementMetaInfo;
+}
+
 /**
 Initializes this if_statement with the given condition and the given true- and elseBlocks.
 @param condition The condition depending on which either the trueBlock or the elseBlock will be executed. The condition must be provided.
@@ -21,6 +26,16 @@ omni::core::model::if_statement::if_statement (std::shared_ptr <expression> cond
     setCondition (condition);
     setTrueBlock (trueBlock);
     setElseBlock (elseBlock);
+}
+
+omni::core::model::meta_info & omni::core::model::if_statement::getStaticMetaInfo ()
+{
+    return omniMetaImpl::if_statementMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::if_statement::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::if_statement::getDomain () const

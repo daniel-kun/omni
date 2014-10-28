@@ -20,6 +20,10 @@ namespace model {
         while_statement ();
         while_statement (std::shared_ptr <expression> condition, std::shared_ptr <block> body);
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         std::shared_ptr <expression> getCondition ();

@@ -17,6 +17,10 @@ namespace model {
     public:
         bitcast_expression (std::shared_ptr <expression> sourceExpression, std::shared_ptr <type> targetType);
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         void setSourceExpression (std::shared_ptr <expression> sourceExpression);

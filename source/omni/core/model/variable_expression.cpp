@@ -7,6 +7,11 @@
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/NoFolder.h>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info variable_expressionMetaInfo;
+}
+
 /**
 Initializes this expression to return variable's at the time this expression is executed.
 **/
@@ -14,6 +19,16 @@ omni::core::model::variable_expression::variable_expression (std::shared_ptr <va
     pure_expression ()
 {
     setVariable (variable);
+}
+
+omni::core::model::meta_info & omni::core::model::variable_expression::getStaticMetaInfo ()
+{
+    return omniMetaImpl::variable_expressionMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::variable_expression::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::variable_expression::getDomain () const

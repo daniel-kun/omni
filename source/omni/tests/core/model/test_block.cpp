@@ -5,6 +5,7 @@
 #include <omni/core/model/variable_expression.hpp>
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/return_statement.hpp>
+#include <omni/core/model/meta_info.hpp>
 
 #include <boost/test/auto_unit_test.hpp>
 
@@ -48,6 +49,16 @@ void buildModule (bool shouldBeValid, buildModuleBody builder)
 }
 
 BOOST_AUTO_TEST_SUITE (blockTests)
+
+BOOST_AUTO_TEST_CASE (metaInfo)
+{
+    using namespace omni::core::model;
+
+    meta_info & meta = block::getStaticMetaInfo ();
+    BOOST_CHECK_EQUAL (meta.getName (), "block");
+    BOOST_CHECK_EQUAL (meta.getParent (), & statement::getStaticMetaInfo ());
+    BOOST_CHECK_EQUAL (meta.getChildCount (), 0u);
+}
 
 BOOST_AUTO_TEST_CASE (appendStatement)
 {

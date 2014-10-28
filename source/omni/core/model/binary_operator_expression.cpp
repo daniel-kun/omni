@@ -5,8 +5,12 @@
 #include <omni/core/model/type.hpp>
 
 #include <llvm/IR/IRBuilder.h>
-//#include <llvm/IR/NoFolder.h>
 #include <llvm/IR/NoFolder.h>
+
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info binary_operator_expressionMetaInfo;
+}
 
 /**
 Initializes this binary_operator_expression with the binary_operation op and the leftOperand and rightOperand.
@@ -40,6 +44,16 @@ omni::core::model::binary_operator_expression::binary_operator_expression (
     default:
         throw not_implemented_error (__FILE__, __FUNCTION__, __LINE__);
     }
+}
+
+omni::core::model::meta_info & omni::core::model::binary_operator_expression::getStaticMetaInfo ()
+{
+    return omniMetaImpl::binary_operator_expressionMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::binary_operator_expression::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::binary_operator_expression::getDomain () const

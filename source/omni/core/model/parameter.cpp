@@ -1,5 +1,10 @@
 #include <omni/core/model/parameter.hpp>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info parameterMetaInfo;
+}
+
 /**
 @brief Initializes this parameter with the given type and name.
 @param parameterType The type of this parameter. @see getType
@@ -11,6 +16,16 @@ omni::core::model::parameter::parameter (std::shared_ptr <type> parameterType, s
     scope (name),
     _type (parameterType)
 {
+}
+
+omni::core::model::meta_info & omni::core::model::parameter::getStaticMetaInfo ()
+{
+    return omniMetaImpl::parameterMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::parameter::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::parameter::getDomain () const

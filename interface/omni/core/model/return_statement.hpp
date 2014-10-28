@@ -20,6 +20,10 @@ namespace model {
         return_statement ();
         return_statement (std::shared_ptr <expression> expression);
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const;
+
         domain getDomain () const override;
 
         std::shared_ptr <expression> getExpression ();

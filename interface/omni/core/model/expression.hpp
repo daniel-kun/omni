@@ -25,6 +25,10 @@ namespace model {
     public:
         expression ();
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const = 0;
+
         virtual std::shared_ptr <type> getType () const = 0;
     };
 

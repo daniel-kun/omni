@@ -26,6 +26,10 @@ namespace model {
         statement ();
         virtual ~ statement ();
 
+        static meta_info & getStaticMetaInfo ();
+
+        virtual meta_info & getMetaInfo () const = 0;
+
         virtual statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) = 0;
     };
 

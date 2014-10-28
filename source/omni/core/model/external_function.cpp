@@ -5,6 +5,11 @@
 
 #include <llvm/IR/Function.h>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info external_functionMetaInfo;
+}
+
 /**
 @brief Initializes an external_function with the given libraryName, functionName, returnType, parameters and flag whether the function is imported from a dll (isDllImport).
 
@@ -25,6 +30,16 @@ omni::core::model::external_function::external_function (std::string libraryName
     _libraryName (libraryName),
     _isDllImport (isDllImport)
 {
+}
+
+omni::core::model::meta_info & omni::core::model::external_function::getStaticMetaInfo ()
+{
+    return omniMetaImpl::external_functionMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::external_function::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::external_function::getDomain () const

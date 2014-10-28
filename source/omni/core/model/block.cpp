@@ -6,10 +6,25 @@
 
 #include <boost/lexical_cast.hpp>
 
+// See meta_info.cpp for initialization.
+namespace omniMetaImpl {
+extern omni::core::model::meta_info blockMetaInfo;
+}
+
 omni::core::model::block::block () :
     statement (),
     _statementCount (0u)
 {
+}
+
+omni::core::model::meta_info & omni::core::model::block::getStaticMetaInfo ()
+{
+    return omniMetaImpl::blockMetaInfo;
+}
+
+omni::core::model::meta_info & omni::core::model::block::getMetaInfo () const
+{
+    return getStaticMetaInfo ();
 }
 
 omni::core::domain omni::core::model::block::getDomain () const
