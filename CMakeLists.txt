@@ -88,10 +88,6 @@ target_link_libraries(omni-core
 /usr/lib/llvm-3.6/lib/libLLVMSystemZDesc.a
 /usr/lib/llvm-3.6/lib/libLLVMSystemZInfo.a
 /usr/lib/llvm-3.6/lib/libLLVMSystemZAsmPrinter.a
-/usr/lib/llvm-3.6/lib/libLLVMHexagonCodeGen.a
-/usr/lib/llvm-3.6/lib/libLLVMHexagonAsmPrinter.a
-/usr/lib/llvm-3.6/lib/libLLVMHexagonDesc.a
-/usr/lib/llvm-3.6/lib/libLLVMHexagonInfo.a
 /usr/lib/llvm-3.6/lib/libLLVMNVPTXCodeGen.a
 /usr/lib/llvm-3.6/lib/libLLVMNVPTXDesc.a
 /usr/lib/llvm-3.6/lib/libLLVMNVPTXInfo.a
@@ -168,6 +164,11 @@ target_link_libraries(omni-core
 /usr/lib/llvm-3.6/lib/libLLVMObject.a
 /usr/lib/llvm-3.6/lib/libLLVMCore.a
 /usr/lib/llvm-3.6/lib/libLLVMSupport.a
+/usr/lib/llvm-3.6/lib/libllvm_Hexagon.a
+/usr/lib/llvm-3.6/lib/libLLVMHexagonCodeGen.a
+/usr/lib/llvm-3.6/lib/libLLVMHexagonDesc.a
+/usr/lib/llvm-3.6/lib/libLLVMHexagonDisassembler.a
+/usr/lib/llvm-3.6/lib/libLLVMHexagonInfo.a
 -lz
 -lpthread
 -lncurses

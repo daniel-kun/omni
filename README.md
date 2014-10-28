@@ -6,10 +6,10 @@
 
 # The Omni Programming Language Manifest
 
-This manifest declares goals that The Omni Programming Language wants to reach.
+This manifest declares goals that The Omni Programming Language is designed to reach.
 Omni is meant to provide a new way of coding. A way of coding where less time is spent on text editing and more time spent on engineering, designing, defining and changing logic and architecture, assuring quality and documenting.
 
-In short, Omni frees the programmer of unnecessary tasks that the classic way of writing programs in text files imposes on them.
+In short, Omni frees the programmer of unnecessary tasks that the classic way of writing programs in text files imposes on them to let you get things done.
 
 # Goals
 
@@ -43,9 +43,17 @@ Higher productivity and quality for programmers
 * API to access the code model (for coded refactoring, analysis, metrics, reports, etc.)
 * Built-in, compile-time-safe multithreading
 
+# Further readings
+
+(TODO:)
+* Motivation
+* Technology
+* Architecture
+* Vision
+
 # Status quo
 
-Last updated: 24.10.2014
+Last updated: 26.10.2014
 
 Currently, the code model exists for basic structures such as functions, variables, if/for/while/etc. and can be compiled to binaries on Win32 and Linux.
-I am building prototypes for the UI to edit the code model in the branch omni-forge. Nothing fancy, yet.
+I am building prototypes for the UI to edit the code model in the branch omni-forge. Nothing fancy, yet. Update: Reintegrated and deleted omni-forge. I am working on a meta-information system for entities (such as epressions, statements, modules) to dynamically bind them to the appropriate ui. Will be needed for serializing, later.
