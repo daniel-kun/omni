@@ -27,6 +27,17 @@ omni::core::model::meta_info::meta_info (const meta_info & parent, const std::st
 }
 
 /**
+@brief Returns true when the entity type of this meta_info is abstract and is solely a base class for other entity types.
+
+This is identical to checking whether getChildCount() returns > 0u.
+@return  True, when the entity type of this meta_info is abstract and is solely a base class for other entity types.
+**/
+bool omni::core::model::meta_info::isAbstract () const
+{
+    return getChildCount () > 0u;
+}
+
+/**
 @brief Returns the name of the entity-type that this meta-info belongs to.
 @return The name of the entity-type that this meta-info belongs to.
 **/

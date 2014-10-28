@@ -4,6 +4,7 @@
 #include <omni/ui/entity_toggle_widget.hpp>
 #include <omni/ui/entity_widget_provider.hpp>
 #include <omni/ui/variable_declaration_expression_view.hpp>
+#include <omni/ui/entity_placeholder_widget.hpp>
 
 #include <omni/core/invalid_argument_error.hpp>
 #include <omni/core/context.hpp>
@@ -109,6 +110,9 @@ void setParents (omni::forge::sandbox_selector_model::sandbox_selector_data_base
     }
 }
 
+/*
+Creates an entity_toggle_widget with an entity_widget_provider named "literal_expression" in a sandbox_widget container to be shown in the main_window.
+*/
 std::unique_ptr <omni::forge::sandbox_widget> createLiteralView (omni::core::context & context, QWidget & parent)
 {
     auto literal = std::make_shared <omni::core::model::builtin_literal_expression <int>> (context, 42);
@@ -144,6 +148,9 @@ std::unique_ptr <omni::forge::sandbox_widget> createLiteralView (omni::core::con
     return std::move (result);
 }
 
+/*
+Creates a variable_declaration_expression_view in a sandbox_widget container to be shown in the main_window.
+*/
 std::unique_ptr <omni::forge::sandbox_widget> createVariableDeclarationView (omni::core::context & context, QWidget & parent)
 {
     auto variableDecl = std::make_shared <omni::core::model::variable_declaration_expression> ();
@@ -161,6 +168,25 @@ std::unique_ptr <omni::forge::sandbox_widget> createVariableDeclarationView (omn
     return std::move (result);
 }
 
+/*
+Creates an entity_placeholder_widget for the root type omni::core::model::entity, wrapped in a sandbox_widget.
+*/
+std::unique_ptr <omni::forge::sandbox_widget> createEntityPlaceholderWidget (omni::core::context &, QWidget & parent)
+{
+    auto result = std::make_unique <omni::forge::sandbox_widget> (
+        parent,
+        [] (omni::core::context &, omni::core::model::module &) -> void {
+        });
+    // Relies on Qt's object ownership mechanism to free it:
+    auto * placeholderWidget = new omni::ui::entity_placeholder_widget (& parent, omni::core::model::entity::getStaticMetaInfo ());
+    auto * layout = new QVBoxLayout (result.get ());
+    layout->addWidget (placeholderWidget);
+    return std::move (result);
+}
+
+/*
+Initializes the sandbox tree structure:
+*/
 std::unique_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base> initSandboxData ()
 {
     using data_list = std::vector <std::shared_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base>>;
@@ -181,7 +207,16 @@ std::unique_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base
                         "variable_declaration_expression",
                         "variable_declaration_expression",
                         & createVariableDeclarationView)
-                }) 
+                }),
+            std::make_shared <sandbox_selector_data <void>> (
+                "ui",
+                "ui",
+                data_list {
+                    std::make_shared <sandbox_selector_data <omni::ui::literal_expression_view>> (
+                        "entity_placeholder_widget",
+                        "entity_placeholder_widget",
+                        & createEntityPlaceholderWidget)
+                })
         });
     setParents (* result);
     return std::move (result);
@@ -217,7 +252,7 @@ QModelIndex omni::forge::sandbox_selector_model::index (int row, int column, con
     } else {
         base = reinterpret_cast <sandbox_selector_data_base *> (parent.internalPointer ());
     }
-    switch (column) {
+    switch (static_cast <columns> (column)) {
     case columns::title:
         return createIndex (row, column, base->children [row].get ());
     default:
@@ -288,7 +323,7 @@ QVariant omni::forge::sandbox_selector_model::data (const QModelIndex & index, i
 
     switch (role) {
     case Qt::DisplayRole:
-        switch (index.column ()) {
+        switch (static_cast <columns> (index.column ())) {
         case columns::title:
             return item.title;
         default:

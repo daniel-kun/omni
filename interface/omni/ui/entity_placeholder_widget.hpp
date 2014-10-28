@@ -3,6 +3,8 @@
 
 #include <omni/ui/ui.hpp>
 
+#include <omni/core/model/meta_info.hpp>
+
 #include <QWidget>
 #include <QMenu>
 
@@ -22,10 +24,18 @@ chosen and replaced with the entity_base_widget for the given type?
 class OMNI_UI_API entity_placeholder_widget : public QWidget {
     Q_OBJECT
 public:
-    entity_placeholder_widget (QWidget * parent, std::string entityType);
+    entity_placeholder_widget (QWidget * parent, omni::core::model::meta_info const & entityMeta);
+
+protected:
+    void contextMenuEvent (QContextMenuEvent * event) override;
+
+private slots:
+    void switchToEntityType ();
 
 private:
-    std::string _entityType;
+    void populateMenu (omni::core::model::meta_info const & meta, QMenu & menu);
+
+    omni::core::model::meta_info const & _entityMeta;
     QMenu _selectorPopup;
 };
 

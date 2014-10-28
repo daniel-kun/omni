@@ -28,6 +28,7 @@ namespace model {
         meta_info (const std::string & name);
         meta_info (const meta_info & parent, const std::string & name);
 
+        bool isAbstract () const;
         const std::string & getName () const;
         const meta_info * getParent () const;
         const meta_info & getChildAt (std::size_t index) const;
