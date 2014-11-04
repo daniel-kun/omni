@@ -48,12 +48,13 @@ Higher productivity and quality for programmers
 (TODO:)
 * Motivation
 * Technology
-* Architecture
 * Vision
 
 # Status quo
 
-Last updated: 26.10.2014
+Last updated: 04.11.2014
 
 Currently, the code model exists for basic structures such as functions, variables, if/for/while/etc. and can be compiled to binaries on Win32 and Linux.
-I am building prototypes for the UI to edit the code model in the branch omni-forge. Nothing fancy, yet. Update: Reintegrated and deleted omni-forge. I am working on a meta-information system for entities (such as epressions, statements, modules) to dynamically bind them to the appropriate ui. Will be needed for serializing, later.
+A flexible meta-information system that allows you to attach any kind of information to entity types (expressions and statements) is finished and used to combine the code model and the UI.
+There are some little prototypes for the UI to edit and view elements such as literals and variable declarations. The next step will be a "free-form" input field that automatically detects the type of entity that is being written and auto-transforms in that entity's special ui. E.g. when I write "va", it auto-expands to the UI for variable declarations, looking like "var [variable-name] = [init-expression]".
+In parallel, I am writing the docs "Motivation" and "Technology". "Vision" is to follow.
