@@ -8,6 +8,10 @@
 namespace omni {
 namespace core {
 class context;
+
+namespace model {
+class module;
+}
 }
 }
 
@@ -30,7 +34,7 @@ public:
         title
     };
 
-    sandbox_selector_model (omni::core::context & context);
+    sandbox_selector_model (omni::core::context & context, omni::core::model::module & module);
     ~ sandbox_selector_model ();
 
     sandbox_widget * createDemoFromModelIndex (QWidget & parent, const QModelIndex & index);
@@ -44,6 +48,7 @@ public:
 
 private:
     omni::core::context & _context;
+    omni::core::model::module & _module;
     std::unique_ptr <sandbox_selector_data_base> _root;
 };
 

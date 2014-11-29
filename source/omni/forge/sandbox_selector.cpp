@@ -2,12 +2,12 @@
 
 #include <QHeaderView>
 
-omni::forge::sandbox_selector::sandbox_selector (omni::core::context & context, QWidget * parent) :
+omni::forge::sandbox_selector::sandbox_selector (omni::core::context & context, omni::core::model::module & module, QWidget * parent) :
     QWidget (parent),
     _layout (this),
     _searchField (this),
     _selector (this),
-    _model (context),
+    _model (context, module),
     _filterModel ()
 {
     _searchField.setPlaceholderText ("Search demos...");

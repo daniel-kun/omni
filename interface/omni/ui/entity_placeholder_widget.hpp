@@ -2,11 +2,28 @@
 #define OMNI_UI_ENTITY_PLACEHOLDER_WIDGET_HPP
 
 #include <omni/ui/ui.hpp>
+#include <omni/ui/entity_base_widget.hpp>
 
 #include <omni/core/model/meta_info.hpp>
 
+#ifndef Q_MOC_RUN
+#include <boost/signals2.hpp>
+#endif
+
 #include <QWidget>
 #include <QMenu>
+#include <QHBoxLayout>
+#include <QLineEdit>
+
+namespace omni {
+namespace core {
+class context;
+
+namespace model {
+class module;
+}
+}
+}
 
 namespace omni {
 namespace ui {
@@ -24,19 +41,30 @@ chosen and replaced with the entity_base_widget for the given type?
 class OMNI_UI_API entity_placeholder_widget : public QWidget {
     Q_OBJECT
 public:
-    entity_placeholder_widget (QWidget * parent, omni::core::model::meta_info const & entityMeta);
+    using on_entity_expanded_signal = boost::signals2::signal <void (std::shared_ptr <omni::core::model::entity>)>;
+    
+    entity_placeholder_widget (omni::core::context & context, omni::core::model::module & module, QWidget * parent, omni::core::model::meta_info const & entityMeta);
+
+    on_entity_expanded_signal onEntityExpanded;
 
 protected:
     void contextMenuEvent (QContextMenuEvent * event) override;
 
 private slots:
     void switchToEntityType ();
+    void editorTextChanged (const QString & text);
 
 private:
     void populateMenu (omni::core::model::meta_info const & meta, QMenu & menu);
+    void createEditorViewFromMetaInfo (const omni::core::model::meta_info & metaInfo, std::shared_ptr <omni::core::model::entity> entity);
 
+    omni::core::context & _context;
+    omni::core::model::module & _module;
     omni::core::model::meta_info const & _entityMeta;
     QMenu _selectorPopup;
+    QHBoxLayout _layout;
+    QLineEdit _editor;
+    std::unique_ptr <entity_base_widget> _entityWidget;
 };
 
 } // namespace ui

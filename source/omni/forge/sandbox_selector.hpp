@@ -23,7 +23,7 @@ If a demo is selected by the user, demoSelected(sandbox_widget) will be emitted.
 class sandbox_selector : public QWidget {
     Q_OBJECT
 public:
-    sandbox_selector (omni::core::context & context, QWidget * parent);
+    sandbox_selector (omni::core::context & context, omni::core::model::module & module, QWidget * parent);
 
 signals:
     void demoSelected (sandbox_widget & demoWidget);

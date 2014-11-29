@@ -109,9 +109,11 @@
     <ClInclude Include="..\interface\omni\core\module_emit_options.hpp" />
     <ClInclude Include="..\interface\omni\core\not_implemented_error.hpp" />
     <ClInclude Include="..\interface\omni\core\no_context_error.hpp" />
+    <ClInclude Include="..\interface\omni\core\parser.hpp" />
     <ClInclude Include="..\interface\omni\core\runtime.hpp" />
     <ClInclude Include="..\interface\omni\core\core.hpp" />
     <ClInclude Include="..\interface\omni\core\statement_emit_result.hpp" />
+    <ClInclude Include="..\interface\omni\core\tools\string.hpp" />
     <ClInclude Include="..\interface\omni\core\verification_failed_error.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -169,8 +171,10 @@
     <ClCompile Include="..\source\omni\core\module_emit_options.cpp" />
     <ClCompile Include="..\source\omni\core\not_implemented_error.cpp" />
     <ClCompile Include="..\source\omni\core\no_context_error.cpp" />
+    <ClCompile Include="..\source\omni\core\parser.cpp" />
     <ClCompile Include="..\source\omni\core\runtime.cpp" />
     <ClCompile Include="..\source\omni\core\statement_emit_result.cpp" />
+    <ClCompile Include="..\source\omni\core\tools\string.cpp" />
     <ClCompile Include="..\source\omni\core\verification_failed_eror.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -25,6 +25,12 @@
     <Filter Include="Quelldateien\input">
       <UniqueIdentifier>{5b87f2de-3b47-4242-945e-b2cfe51d421d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headerdateien\tools">
+      <UniqueIdentifier>{22f35638-40f0-4c33-ae24-c122dd778cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Quelldateien\tools">
+      <UniqueIdentifier>{760d8aed-ddda-4684-b61e-4d201953cee3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\interface\omni\core\already_exists_error.hpp">
@@ -207,6 +213,12 @@
     <ClInclude Include="..\interface\omni\core\model\meta_info_extension.hpp">
       <Filter>Headerdateien\model</Filter>
     </ClInclude>
+    <ClInclude Include="..\interface\omni\core\parser.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\interface\omni\core\tools\string.hpp">
+      <Filter>Headerdateien\tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\core\already_exists_error.cpp">
@@ -379,6 +391,12 @@
     </ClCompile>
     <ClCompile Include="..\source\omni\core\model\meta_info_extension.cpp">
       <Filter>Quelldateien\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\parser.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\core\tools\string.cpp">
+      <Filter>Quelldateien\tools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -15,3 +15,11 @@ void omni::ui::entity_base_widget::setEntity (std::shared_ptr <omni::core::model
     // nop
 }
 
+/**
+@brief Called after entity_placeholder_widget has been completed to this entity_base_widget and this widget needs to be put into editing mode to continue typing.
+**/
+void omni::ui::entity_base_widget::startEdit ()
+{
+
+}
+

@@ -14,6 +14,7 @@
 #include <omni/core/model/function.hpp>
 #include <omni/core/model/block.hpp>
 #include <omni/core/model/return_statement.hpp>
+#include <omni/core/model/variable_expression.hpp>
 
 #include <QLibrary>
 #include <QMessageBox>
@@ -23,7 +24,7 @@
 #include <sstream>
 #include <functional>
 
-using creator_function = std::function <std::unique_ptr <omni::forge::sandbox_widget> (omni::core::context & context, QWidget & parent)>;
+using creator_function = std::function <std::unique_ptr <omni::forge::sandbox_widget> (omni::core::context & context, omni::core::model::module & module, QWidget & parent)>;
 
 class omni::forge::sandbox_selector_model::sandbox_selector_data_base {
 public:
@@ -94,7 +95,7 @@ public:
             nullptr,
             title,
             description, 
-            [] (omni::core::context &, QWidget &) -> std::unique_ptr <omni::forge::sandbox_widget> {
+            [] (omni::core::context &, omni::core::model::module &, QWidget &) -> std::unique_ptr <omni::forge::sandbox_widget> {
                 return std::unique_ptr <omni::forge::sandbox_widget> ();
             },
             children)
@@ -113,7 +114,7 @@ void setParents (omni::forge::sandbox_selector_model::sandbox_selector_data_base
 /*
 Creates an entity_toggle_widget with an entity_widget_provider named "literal_expression" in a sandbox_widget container to be shown in the main_window.
 */
-std::unique_ptr <omni::forge::sandbox_widget> createLiteralView (omni::core::context & context, QWidget & parent)
+std::unique_ptr <omni::forge::sandbox_widget> createLiteralView (omni::core::context & context, omni::core::model::module &, QWidget & parent)
 {
     auto literal = std::make_shared <omni::core::model::builtin_literal_expression <int>> (context, 42);
     QWidget & localParent (parent);
@@ -151,16 +152,37 @@ std::unique_ptr <omni::forge::sandbox_widget> createLiteralView (omni::core::con
 /*
 Creates a variable_declaration_expression_view in a sandbox_widget container to be shown in the main_window.
 */
-std::unique_ptr <omni::forge::sandbox_widget> createVariableDeclarationView (omni::core::context & context, QWidget & parent)
+std::unique_ptr <omni::forge::sandbox_widget> createVariableDeclarationView (omni::core::context & context, omni::core::model::module & module, QWidget & parent)
 {
     auto variableDecl = std::make_shared <omni::core::model::variable_declaration_expression> ();
     variableDecl->setName ("foobar");
     // For editor and layout, we rely on Qt's object ownership mechanism to free them:
-    auto * editor = new omni::ui::variable_declaration_expression_view (context, & parent);
+    auto * editor = new omni::ui::variable_declaration_expression_view (context, module, & parent);
     editor->setEntity (variableDecl);
+    QWidget & localParent (parent);
     auto result = std::make_unique <omni::forge::sandbox_widget> (
         parent,
-        [] (omni::core::context &, omni::core::model::module &) -> void {
+        [editor, & localParent] (omni::core::context &, omni::core::model::module & module) -> void {
+            auto variableExpression = std::dynamic_pointer_cast <omni::core::model::variable_declaration_expression> (editor->getEntity ());
+            auto body = std::make_shared <omni::core::model::block> ();
+            body->appendStatement (variableExpression);
+            body->appendStatement (std::make_shared <omni::core::model::return_statement> (
+                std::make_shared <omni::core::model::variable_expression> (variableExpression)));
+            auto fun = module.createFunction (
+                "test",
+                variableExpression->getType (),
+                body);
+            fun->setExported (true);
+            std::string libraryFileName = 
+                (boost::filesystem::temp_directory_path() /
+                boost::filesystem::unique_path ("omni-sandbox-%%%%%%%%%%%.dll")).string ();
+            module.emitSharedLibraryFile (libraryFileName);
+            module.removeFunction (fun);
+            QLibrary lib (QString::fromStdString (libraryFileName));
+            auto realFunc = reinterpret_cast <int (*) ()> (lib.resolve ("test"));
+            std::stringstream str;
+            str << (*realFunc) ();
+            QMessageBox::information (& localParent, "Test", QString::fromStdString (str.str ()));
         });
     auto * layout = new QVBoxLayout (result.get ());
     
@@ -171,14 +193,14 @@ std::unique_ptr <omni::forge::sandbox_widget> createVariableDeclarationView (omn
 /*
 Creates an entity_placeholder_widget for the root type omni::core::model::entity, wrapped in a sandbox_widget.
 */
-std::unique_ptr <omni::forge::sandbox_widget> createEntityPlaceholderWidget (omni::core::context &, QWidget & parent)
+std::unique_ptr <omni::forge::sandbox_widget> createEntityPlaceholderWidget (omni::core::context & context, omni::core::model::module & module, QWidget & parent)
 {
     auto result = std::make_unique <omni::forge::sandbox_widget> (
         parent,
         [] (omni::core::context &, omni::core::model::module &) -> void {
         });
     // Relies on Qt's object ownership mechanism to free it:
-    auto * placeholderWidget = new omni::ui::entity_placeholder_widget (& parent, omni::core::model::entity::getStaticMetaInfo ());
+    auto * placeholderWidget = new omni::ui::entity_placeholder_widget (context, module, & parent, omni::core::model::entity::getStaticMetaInfo ());
     auto * layout = new QVBoxLayout (result.get ());
     layout->addWidget (placeholderWidget);
     return std::move (result);
@@ -224,8 +246,9 @@ std::unique_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base
 
 }
 
-omni::forge::sandbox_selector_model::sandbox_selector_model (omni::core::context & context) :
+omni::forge::sandbox_selector_model::sandbox_selector_model (omni::core::context & context, omni::core::model::module & module) :
     _context (context),
+    _module (module),
     _root (initSandboxData ())
 {
 }
@@ -238,7 +261,7 @@ omni::forge::sandbox_widget * omni::forge::sandbox_selector_model::createDemoFro
 {
     auto item = reinterpret_cast <sandbox_selector_data_base *> (index.internalPointer ());
     if (item->widget == nullptr) {
-        item->widget = item->creator (_context, parent);
+        item->widget = item->creator (_context, _module, parent);
     }
     return item->widget.get ();
 }

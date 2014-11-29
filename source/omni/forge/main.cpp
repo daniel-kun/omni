@@ -1,5 +1,8 @@
-#include <QApplication>
+#include <omni/ui/init.hpp>
+
 #include "main_window.hpp"
+
+#include <QApplication>
 
 /*
 
@@ -24,6 +27,7 @@ statement
 
 int main (int argc, char * argv[])
 {
+    omni::ui::init ();
     QApplication app (argc, argv);
     omni::forge::main_window mainWindow;
     mainWindow.show ();

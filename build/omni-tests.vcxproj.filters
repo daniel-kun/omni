@@ -31,6 +31,9 @@
     <Filter Include="Headerdateien\core\input">
       <UniqueIdentifier>{859b21f6-425e-4eff-b683-a6012edb00e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Quelldateien\core\tools">
+      <UniqueIdentifier>{4a4e8636-e604-4126-a237-73edf8c9c367}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\source\omni\tests\test_file_manager.cpp">
@@ -146,6 +149,12 @@
     </ClCompile>
     <ClCompile Include="..\source\omni\tests\core\model\test_variable_expression.cpp">
       <Filter>Quelldateien\core\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\test_parser.cpp">
+      <Filter>Quelldateien\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\source\omni\tests\core\tools\test_string.cpp">
+      <Filter>Quelldateien\core\tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

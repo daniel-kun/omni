@@ -35,6 +35,8 @@ public:
 
     virtual std::shared_ptr <omni::core::model::entity> getEntity ();
     virtual void setEntity (std::shared_ptr <omni::core::model::entity> entity);
+
+    virtual void startEdit ();
 };
 
 } // namespace ui

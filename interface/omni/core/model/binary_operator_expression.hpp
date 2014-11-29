@@ -33,9 +33,9 @@ namespace model {
     class OMNI_CORE_API binary_operator_expression : public pure_expression {
     public:
         enum class binary_operation {
-            binary_lessthan_operation,
-            binary_plus_operation, // +
-            binary_minus_operation // -
+            binary_lessthan_operation, /// a < b
+            binary_plus_operation, /// a + b
+            binary_minus_operation /// a - b
         };
 
         binary_operator_expression (context & context, binary_operation op, std::shared_ptr <expression> leftOperand, std::shared_ptr <expression> rightOperand);

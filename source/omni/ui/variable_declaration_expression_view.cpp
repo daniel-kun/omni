@@ -73,18 +73,22 @@ public:
 };
 }
 
-omni::ui::variable_declaration_expression_view::variable_declaration_expression_view (omni::core::context & context, QWidget * parent) :
+omni::ui::variable_declaration_expression_view::variable_declaration_expression_view (omni::core::context & context, omni::core::model::module & module, QWidget * parent) :
     entity_base_widget (parent),
     _layout (this),
+    _varFixedText (this),
     _nameWidgetProvider (std::make_unique <variable_name_edit_provider> ()),
     _nameWidget (context, * _nameWidgetProvider, this),
     _assignmentOperator (this),
-    _initializationExpression (this),
-    _variableDeclExpression ()
+    _initializationExpression (context, module, this, omni::core::model::expression::getStaticMetaInfo ()),
+    _variableDeclExpression (),
+    _initExpressionExpandedConnection (_initializationExpression.onEntityExpanded.connect ([this] (std::shared_ptr <omni::core::model::entity> entity) -> void { updateInitializationExpression (entity); }))
 {
+    _layout.addWidget (& _varFixedText, 0, Qt::AlignLeft);
     _layout.addWidget (& _nameWidget, 0, Qt::AlignLeft);
     _layout.addWidget (& _assignmentOperator, 0, Qt::AlignLeft);
     _layout.addWidget (& _initializationExpression, 1, Qt::AlignLeft);
+    _varFixedText.setText ("var ");
     _assignmentOperator.setText (" = ");
     setAutoFillBackground (true);
     auto pal = palette ();
@@ -104,4 +108,21 @@ void omni::ui::variable_declaration_expression_view::setEntity (std::shared_ptr 
         throw omni::core::invalid_argument_error (__FILE__, __FUNCTION__, __LINE__, "entity", "Not of type variable_declaration_expression or null");
     }
     _nameWidget.setEntity (entity);
+}
+
+void omni::ui::variable_declaration_expression_view::startEdit ()
+{
+    if (_nameWidget.currentViewMode () != omni::ui::entity_toggle_widget::Mode::m_edit) {
+        _nameWidget.toggleViewMode ();
+        _nameWidget.setFocus (Qt::TabFocusReason);
+    }
+}
+
+void omni::ui::variable_declaration_expression_view::updateInitializationExpression (std::shared_ptr <omni::core::model::entity> initializationExpression)
+{
+    auto initExpr = std::dynamic_pointer_cast <omni::core::model::expression> (initializationExpression);
+    if (!initExpr) {
+        throw omni::core::invalid_argument_error (__FILE__, __FUNCTION__, __LINE__, "initializationExpression", "Not of type expression or null");
+    }
+    _variableDeclExpression->setInitializationExpression (initExpr);
 }

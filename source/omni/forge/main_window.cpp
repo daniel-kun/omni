@@ -12,13 +12,19 @@ omni::forge::main_window::main_window () :
     _rightLayout (),
     _groupDemoList (this),
     _groupDemoListLayout (& _groupDemoList),
-    _selector (_c, & _groupDemoList),
+    _selector (_c, _m, & _groupDemoList),
     _demoLabel (* this),
     _demoChildLabel (& _demoLabel),
     _activeDemo (& _demoLabel),
     _compileAndRunButton (this),
     _searchShortcut (QKeySequence ("Ctrl+F"), this)
 {
+    setAutoFillBackground (true);
+    QPalette pal = palette ();
+    pal.setBrush (QPalette::Background, QColor::fromRgb (0x30, 0x3D, 0x35));
+    pal.setBrush (QPalette::Foreground, Qt::white);
+    setPalette (pal);
+
     setWindowState (Qt::WindowMaximized);
     _layout.addWidget (& _groupDemoList);
     _groupDemoListLayout.addWidget (& _selector);

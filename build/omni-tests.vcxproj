@@ -54,8 +54,8 @@
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>$(TargetPath) --result_code=no --report_level=no --detect_memory_leaks=0 --run_test=stringTests</Command>
+      <Message>Running Unit Tests</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -101,7 +101,9 @@
     <ClCompile Include="..\source\omni\tests\core\model\test_while_statement.cpp" />
     <ClCompile Include="..\source\omni\tests\core\test_context.cpp" />
     <ClCompile Include="..\source\omni\tests\core\test_id.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\test_parser.cpp" />
     <ClCompile Include="..\source\omni\tests\core\test_runtime_memory.cpp" />
+    <ClCompile Include="..\source\omni\tests\core\tools\test_string.cpp" />
     <ClCompile Include="..\source\omni\tests\runtime\test_memory.cpp" />
     <ClCompile Include="..\source\omni\tests\test_file_manager.cpp" />
     <ClCompile Include="..\source\omni\tests\test_llvm.cpp" />
