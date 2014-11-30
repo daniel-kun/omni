@@ -6,8 +6,10 @@
 #include <stdexcept>
 #include <string>
 
-#pragma warning(push)
-#pragma warning(disable:4275)
+#ifdef _MSC_VER
+#   pragma warning(push)
+#   pragma warning(disable:4275)
+#endif
 
 namespace omni {
 namespace core {
@@ -20,6 +22,8 @@ namespace core {
 } // namespace core
 } // namespace omni
 
-#pragma warning(pop)
+#ifdef _MSC_VER
+#   pragma warning(pop)
+#endif
 
 #endif // include guard
