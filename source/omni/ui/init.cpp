@@ -51,7 +51,7 @@ std::unique_ptr <omni::ui::entity_base_widget> createVariableDeclarationExpressi
 template <typename T>
 void setUiMeta (omni::ui::ui_meta_extension::CreateViewWidgetFunction viewWidgetCreator)
 {
-    auto & meta = typename T::getStaticMetaInfo ();
+    auto & meta = T::getStaticMetaInfo ();
     meta.setExtension ("omni.ui", std::make_shared <omni::ui::ui_meta_extension> (viewWidgetCreator));
 }
 
