@@ -20,7 +20,7 @@ namespace model {
 
         static meta_info & getStaticMetaInfo ();
 
-        virtual meta_info & getMetaInfo () const;
+        meta_info & getMetaInfo () const override;
     };
 
 } // namespace model

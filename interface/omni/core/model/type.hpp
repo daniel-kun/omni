@@ -39,7 +39,7 @@ namespace model {
 
         static meta_info & getStaticMetaInfo ();
 
-        virtual meta_info & getMetaInfo () const;
+        meta_info & getMetaInfo () const override;
 
         std::string toString (bool fullyQualified = true);
         static std::string toString (type_class typeClass, bool fullyQualified = true);
