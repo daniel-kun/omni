@@ -1,6 +1,8 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8.11)
 
 project (omni)
+
+add_compile_options(-std=c++1y)
 
 include_directories ("${PROJECT_SOURCE_DIR}/interface/")
 
@@ -67,7 +69,6 @@ add_library (omni-core SHARED
 
 find_package (Boost 1.48 COMPONENTS system filesystem unit_test_framework REQUIRED)
 include_directories (${Boost_INCLUDE_DIR})
-target_link_libraries (omni-core ${Boost_LIBRARIES})
 
 execute_process(COMMAND "llvm-config-3.6" --includedir OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE LLVM_INCLUDE_DIRS)
 execute_process(COMMAND "llvm-config-3.6" --cxxflags OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE LLVM_CXXFLAGS)
@@ -76,14 +77,14 @@ execute_process(COMMAND "llvm-config-3.6" --libs OUTPUT_STRIP_TRAILING_WHITESPAC
 
 include_directories (${LLVM_INCLUDE_DIRS})
 target_link_libraries(omni-core 
+${Boost_LIBRARIES}
 ${LLVM_LDFLAGS}
 ${LLVM_LIBS}
 -lz
 -lpthread
 -lncurses
 -ldl
--lboost_filesystem
--lboost_system
+-lstdc++
 )
 
 set(CMAKE_CXX_FLAGS "-std=c++11 ${LLVM_CXXFLAGS} -fexceptions")
@@ -91,7 +92,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 ${LLVM_CXXFLAGS} -fexceptions")
 add_library (omni-runtime SHARED
     source/omni/runtime/memory.cpp)
 
-target_link_libraries (omni-runtime ${Boost_LIBRARIES})
+target_link_libraries (omni-runtime ${Boost_LIBRARIES} -lstdc++)
 
 add_executable (omni-tests
     source/omni/tests/test_file_manager.cpp
@@ -135,5 +136,62 @@ add_executable (omni-tests
 
 add_definitions (-DBOOST_TEST_DYN_LINK)
 
-target_link_libraries (omni-tests omni-core omni-runtime ${Boost_LIBRARIES})
+target_link_libraries (omni-tests omni-core omni-runtime ${Boost_LIBRARIES} -lstdc++)
+
+set(CMAKE_AUTOMOC on)
+
+find_package(Qt5Widgets REQUIRED)
+
+add_library (omni-ui SHARED 
+    interface/omni/ui/ui_meta_extension.hpp
+    interface/omni/ui/blueprint.hpp
+    interface/omni/ui/entity_placeholder_widget.hpp
+    interface/omni/ui/syntax_input.hpp
+    interface/omni/ui/ui.hpp
+    interface/omni/ui/generic_entity_editor.hpp
+    interface/omni/ui/suggestion_text_edit.hpp
+    interface/omni/ui/entity_toggle_widget.hpp
+    interface/omni/ui/entity_widget_provider_base.hpp
+    interface/omni/ui/entity_widget_provider.hpp
+    interface/omni/ui/flowlayout.hpp
+    interface/omni/ui/entity_base_widget.hpp
+    interface/omni/ui/init.hpp
+    interface/omni/ui/literal_expression_view.hpp
+    interface/omni/ui/suggestion_list_model.hpp
+    interface/omni/ui/tree_sort_filter_proxy_model.hpp
+    interface/omni/ui/variable_declaration_expression_view.hpp
+    source/omni/ui/entity_widget_provider.cpp
+    source/omni/ui/flowlayout.cpp
+    source/omni/ui/syntax_input.cpp
+    source/omni/ui/generic_entity_editor.cpp
+    source/omni/ui/ui_meta_extension.cpp
+    source/omni/ui/blueprint.cpp
+    source/omni/ui/init.cpp
+    source/omni/ui/variable_declaration_expression_view.cpp
+    source/omni/ui/suggestion_list_model.cpp
+    source/omni/ui/tree_sort_filter_proxy_model.cpp
+    source/omni/ui/entity_placeholder_widget.cpp
+    source/omni/ui/ui.cpp
+    source/omni/ui/suggestion_text_edit.cpp
+    source/omni/ui/entity_toggle_widget.cpp
+    source/omni/ui/entity_base_widget.cpp
+    source/omni/ui/literal_expression_view.cpp
+)
+
+
+target_link_libraries (omni-ui Qt5::Widgets -lstdc++)
+
+add_executable (omni-forge
+    source/omni/forge/sandbox_selector_model.hpp
+    source/omni/forge/sandbox_widget.hpp
+    source/omni/forge/main_window.hpp
+    source/omni/forge/sandbox_selector.cpp
+    source/omni/forge/sandbox_selector_model.cpp
+    source/omni/forge/main_window.cpp
+    source/omni/forge/main.cpp
+    source/omni/forge/sandbox_selector.hpp
+    source/omni/forge/sandbox_widget.cpp
+)
+
+target_link_libraries (omni-forge Qt5::Widgets omni-core omni-ui -lstdc++)
 
