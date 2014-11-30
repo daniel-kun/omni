@@ -16,6 +16,8 @@ add_library (omni-core SHARED
     source/omni/core/runtime.cpp
     source/omni/core/statement_emit_result.cpp
     source/omni/core/verification_failed_eror.cpp
+    source/omni/core/invalid_argument_error.cpp
+    source/omni/core/parser.cpp
     source/omni/core/model/binary_operator_expression.cpp
     source/omni/core/model/bitcast_expression.cpp
     source/omni/core/model/block.cpp
@@ -30,6 +32,8 @@ add_library (omni-core SHARED
     source/omni/core/model/function_prototype.cpp
     source/omni/core/model/if_statement.cpp
     source/omni/core/model/literal_expression.cpp
+    source/omni/core/model/meta_info.cpp
+    source/omni/core/model/meta_info_extension.cpp
     source/omni/core/model/modifying_expression.cpp
     source/omni/core/model/module.cpp
     source/omni/core/model/native_type_to_type_class.cpp
@@ -46,7 +50,7 @@ add_library (omni-core SHARED
     source/omni/core/model/variable_declaration_expression.cpp
     source/omni/core/model/variable_expression.cpp
     source/omni/core/model/while_statement.cpp
-    source/omni/core/model/meta_info.cpp
+    source/omni/core/tools/string.cpp
     source/omni/core/input/abstract_syntax_element.cpp
     source/omni/core/input/concrete_syntax_element.cpp
     source/omni/core/input/fixed_template_element.cpp
@@ -111,6 +115,7 @@ add_executable (omni-tests
     source/omni/tests/core/test_id.cpp
     source/omni/tests/core/test_runtime_memory.cpp
     source/omni/tests/runtime/test_memory.cpp
+    source/omni/tests/core/tools/test_string.cpp
     source/omni/tests/core/model/test_bitcast_expression.cpp
     source/omni/tests/core/model/test_builtin_literal_expression.cpp
     source/omni/tests/core/model/test_cast_expression.cpp
