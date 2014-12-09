@@ -30,7 +30,7 @@ namespace model {
         const std::shared_ptr <expression> getExpression () const;
         void setExpression (std::shared_ptr <expression> expression);
 
-        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock);
+        statement_emit_result llvmEmit (llvm::BasicBlock * llvmBasicBlock) override;
     };
 
 } // namespace model

@@ -32,7 +32,7 @@ std::unique_ptr <omni::ui::entity_base_widget> createBuiltinLiteralExpressionVie
                                                                                    QWidget                                   * parent,
                                                                                    std::shared_ptr <omni::core::model::entity> entity)
 {
-    auto result = std::make_unique <omni::ui::entity_toggle_widget> (context, omni::ui::entity_widget_provider::getProvider ("literal_expression"), parent);
+    auto result = std::unique_ptr <omni::ui::entity_toggle_widget> (new omni::ui::entity_toggle_widget (context, omni::ui::entity_widget_provider::getProvider ("literal_expression"), parent));
     result->setEntity (entity);
     return std::move (result);
 }
@@ -42,7 +42,7 @@ std::unique_ptr <omni::ui::entity_base_widget> createVariableDeclarationExpressi
                                                                                     QWidget                   * parent,
                                                                                     std::shared_ptr <omni::core::model::entity> entity)
 {
-    auto result = std::make_unique <omni::ui::variable_declaration_expression_view> (context, module, parent);
+    auto result = std::unique_ptr <omni::ui::variable_declaration_expression_view> (new omni::ui::variable_declaration_expression_view (context, module, parent));
     result->setEntity (entity);
     return std::move (result);
 }

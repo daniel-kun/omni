@@ -13,12 +13,12 @@ std::map <std::string, omni::ui::entity_widget_provider> s_widgetProviderRegistr
                 if (editWidget != nullptr) {
                     literal = std::dynamic_pointer_cast <omni::core::model::literal_expression> (editWidget->getEntity ());
                 }
-                auto viewWidget = std::make_unique <omni::ui::literal_expression_view> (parent);
+                auto viewWidget = std::unique_ptr <omni::ui::literal_expression_view> (new omni::ui::literal_expression_view (parent));
                 viewWidget->setLiteral (literal);
                 return std::move (viewWidget);
             },
             [] (QWidget * parent, omni::core::context & context, omni::ui::entity_base_widget & viewWidget) -> std::unique_ptr <omni::ui::entity_base_widget> {
-                auto result = std::make_unique <omni::ui::generic_entity_editor> (parent, viewWidget.getEntity ());
+                auto result = std::unique_ptr <omni::ui::generic_entity_editor> (new omni::ui::generic_entity_editor (parent, viewWidget.getEntity ()));
                 result->setTextToEntityConverter ([&context] (std::string text, std::shared_ptr <omni::core::model::entity> originatingEntity) -> std::shared_ptr <omni::core::model::entity> {
                     auto literal = std::dynamic_pointer_cast <omni::core::model::literal_expression> (originatingEntity);
                     return omni::core::model::literal_expression::fromString (context, text, literal.get ());

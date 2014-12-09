@@ -39,7 +39,7 @@ class variable_name_edit_provider : public omni::ui::entity_widget_provider_base
 public:
     std::unique_ptr <omni::ui::entity_base_widget> createViewWidget (QWidget * parent, omni::core::context &, omni::ui::entity_base_widget * editWidget) override
     {
-        auto result = std::make_unique <variable_name_view_widget> (parent);
+        auto result = std::unique_ptr <variable_name_view_widget> (new variable_name_view_widget (parent));
         if (editWidget != nullptr) {
             result->setEntity (editWidget->getEntity ());
         }
@@ -48,7 +48,7 @@ public:
     
     std::unique_ptr <omni::ui::entity_base_widget> createEditWidget (QWidget * parent, omni::core::context &, omni::ui::entity_base_widget & viewWidget) override
     {
-        auto result = std::make_unique <omni::ui::generic_entity_editor> (parent);
+        auto result = std::unique_ptr <omni::ui::generic_entity_editor> (new omni::ui::generic_entity_editor (parent));
         result->setEntityToTextConverter (
             [] (std::shared_ptr <omni::core::model::entity> originatingEntity) -> std::string {
                 return originatingEntity->getName ();
@@ -77,7 +77,7 @@ omni::ui::variable_declaration_expression_view::variable_declaration_expression_
     entity_base_widget (parent),
     _layout (this),
     _varFixedText (this),
-    _nameWidgetProvider (std::make_unique <variable_name_edit_provider> ()),
+    _nameWidgetProvider (std::unique_ptr <variable_name_edit_provider> (new variable_name_edit_provider ())),
     _nameWidget (context, * _nameWidgetProvider, this),
     _assignmentOperator (this),
     _initializationExpression (context, module, this, omni::core::model::expression::getStaticMetaInfo ()),

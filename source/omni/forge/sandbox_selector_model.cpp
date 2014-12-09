@@ -63,7 +63,7 @@ namespace {
 template <typename Widget>
 std::unique_ptr <Widget> createWidget (QWidget &parent)
 {
-    return std::make_unique <Widget> (&parent);
+    return std::unique_ptr <Widget> (new Widget (& parent));
 }
 
 template <typename Widget>
@@ -120,28 +120,29 @@ std::unique_ptr <omni::forge::sandbox_widget> createLiteralView (omni::core::con
     QWidget & localParent (parent);
     // For editor and layout, we rely on Qt's object ownership mechanism to free them:
     auto * editor = new omni::ui::entity_toggle_widget (context, omni::ui::entity_widget_provider::getProvider ("literal_expression"), & parent);
-    auto result = std::make_unique <omni::forge::sandbox_widget> (
-        parent,
-        [editor, & localParent] (omni::core::context &, omni::core::model::module & module) -> void {
-            auto literalExpression = std::dynamic_pointer_cast <omni::core::model::literal_expression> (editor->getEntity ());
-            auto body = std::make_shared <omni::core::model::block> ();
-            body->appendStatement (std::make_shared <omni::core::model::return_statement> (literalExpression));
-            auto fun = module.createFunction (
-                "test",
-                literalExpression->getType (),
-                body);
-            fun->setExported (true);
-            std::string libraryFileName = 
-                (boost::filesystem::temp_directory_path() /
-                boost::filesystem::unique_path ("omni-sandbox-%%%%%%%%%%%.dll")).string ();
-            module.emitSharedLibraryFile (libraryFileName);
-            module.removeFunction (fun);
-            QLibrary lib (QString::fromStdString (libraryFileName));
-            auto realFunc = reinterpret_cast <int (*) ()> (lib.resolve ("test"));
-            std::stringstream str;
-            str << (*realFunc) ();
-            QMessageBox::information (& localParent, "Test", QString::fromStdString (str.str ()));
-        });
+    auto result = std::unique_ptr <omni::forge::sandbox_widget> (
+        new omni::forge::sandbox_widget (
+            parent,
+            [editor, & localParent] (omni::core::context &, omni::core::model::module & module) -> void {
+                auto literalExpression = std::dynamic_pointer_cast <omni::core::model::literal_expression> (editor->getEntity ());
+                auto body = std::make_shared <omni::core::model::block> ();
+                body->appendStatement (std::make_shared <omni::core::model::return_statement> (literalExpression));
+                auto fun = module.createFunction (
+                    "test",
+                    literalExpression->getType (),
+                    body);
+                fun->setExported (true);
+                std::string libraryFileName = 
+                    (boost::filesystem::temp_directory_path() /
+                    boost::filesystem::unique_path ("omni-sandbox-%%%%%%%%%%%.dll")).string ();
+                module.emitSharedLibraryFile (libraryFileName);
+                module.removeFunction (fun);
+                QLibrary lib (QString::fromStdString (libraryFileName));
+                auto realFunc = reinterpret_cast <int (*) ()> (lib.resolve ("test"));
+                std::stringstream str;
+                str << (*realFunc) ();
+                QMessageBox::information (& localParent, "Test", QString::fromStdString (str.str ()));
+            }));
     auto * layout = new QVBoxLayout (result.get ());
     
     layout->addWidget (editor);
@@ -160,30 +161,31 @@ std::unique_ptr <omni::forge::sandbox_widget> createVariableDeclarationView (omn
     auto * editor = new omni::ui::variable_declaration_expression_view (context, module, & parent);
     editor->setEntity (variableDecl);
     QWidget & localParent (parent);
-    auto result = std::make_unique <omni::forge::sandbox_widget> (
-        parent,
-        [editor, & localParent] (omni::core::context &, omni::core::model::module & module) -> void {
-            auto variableExpression = std::dynamic_pointer_cast <omni::core::model::variable_declaration_expression> (editor->getEntity ());
-            auto body = std::make_shared <omni::core::model::block> ();
-            body->appendStatement (variableExpression);
-            body->appendStatement (std::make_shared <omni::core::model::return_statement> (
-                std::make_shared <omni::core::model::variable_expression> (variableExpression)));
-            auto fun = module.createFunction (
-                "test",
-                variableExpression->getType (),
-                body);
-            fun->setExported (true);
-            std::string libraryFileName = 
-                (boost::filesystem::temp_directory_path() /
-                boost::filesystem::unique_path ("omni-sandbox-%%%%%%%%%%%.dll")).string ();
-            module.emitSharedLibraryFile (libraryFileName);
-            module.removeFunction (fun);
-            QLibrary lib (QString::fromStdString (libraryFileName));
-            auto realFunc = reinterpret_cast <int (*) ()> (lib.resolve ("test"));
-            std::stringstream str;
-            str << (*realFunc) ();
-            QMessageBox::information (& localParent, "Test", QString::fromStdString (str.str ()));
-        });
+    auto result = std::unique_ptr <omni::forge::sandbox_widget> (
+        new omni::forge::sandbox_widget (
+            parent,
+            [editor, & localParent] (omni::core::context &, omni::core::model::module & module) -> void {
+                auto variableExpression = std::dynamic_pointer_cast <omni::core::model::variable_declaration_expression> (editor->getEntity ());
+                auto body = std::make_shared <omni::core::model::block> ();
+                body->appendStatement (variableExpression);
+                body->appendStatement (std::make_shared <omni::core::model::return_statement> (
+                    std::make_shared <omni::core::model::variable_expression> (variableExpression)));
+                auto fun = module.createFunction (
+                    "test",
+                    variableExpression->getType (),
+                    body);
+                fun->setExported (true);
+                std::string libraryFileName = 
+                    (boost::filesystem::temp_directory_path() /
+                    boost::filesystem::unique_path ("omni-sandbox-%%%%%%%%%%%.dll")).string ();
+                module.emitSharedLibraryFile (libraryFileName);
+                module.removeFunction (fun);
+                QLibrary lib (QString::fromStdString (libraryFileName));
+                auto realFunc = reinterpret_cast <int (*) ()> (lib.resolve ("test"));
+                std::stringstream str;
+                str << (*realFunc) ();
+                QMessageBox::information (& localParent, "Test", QString::fromStdString (str.str ()));
+            }));
     auto * layout = new QVBoxLayout (result.get ());
     
     layout->addWidget (editor);
@@ -195,10 +197,11 @@ Creates an entity_placeholder_widget for the root type omni::core::model::entity
 */
 std::unique_ptr <omni::forge::sandbox_widget> createEntityPlaceholderWidget (omni::core::context & context, omni::core::model::module & module, QWidget & parent)
 {
-    auto result = std::make_unique <omni::forge::sandbox_widget> (
-        parent,
-        [] (omni::core::context &, omni::core::model::module &) -> void {
-        });
+    auto result = std::unique_ptr <omni::forge::sandbox_widget> (
+        new omni::forge::sandbox_widget (
+            parent,
+            [] (omni::core::context &, omni::core::model::module &) -> void {
+            }));
     // Relies on Qt's object ownership mechanism to free it:
     auto * placeholderWidget = new omni::ui::entity_placeholder_widget (context, module, & parent, omni::core::model::entity::getStaticMetaInfo ());
     auto * layout = new QVBoxLayout (result.get ());
@@ -213,33 +216,34 @@ std::unique_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base
 {
     using data_list = std::vector <std::shared_ptr <omni::forge::sandbox_selector_model::sandbox_selector_data_base>>;
 
-    auto result = std::make_unique <sandbox_selector_data <void>> (
-        "root",
-        "root",
-        data_list {
-            std::make_shared <sandbox_selector_data <void>> (
-                "core",
-                "core",
-                data_list {
-                    std::make_shared <sandbox_selector_data <omni::ui::literal_expression_view>> (
-                        "literal_expression",
-                        "literal_expression",
-                        & createLiteralView),
-                    std::make_shared <sandbox_selector_data <omni::ui::variable_declaration_expression_view>> (
-                        "variable_declaration_expression",
-                        "variable_declaration_expression",
-                        & createVariableDeclarationView)
-                }),
-            std::make_shared <sandbox_selector_data <void>> (
-                "ui",
-                "ui",
-                data_list {
-                    std::make_shared <sandbox_selector_data <omni::ui::literal_expression_view>> (
-                        "entity_placeholder_widget",
-                        "entity_placeholder_widget",
-                        & createEntityPlaceholderWidget)
-                })
-        });
+    auto result = std::unique_ptr <sandbox_selector_data <void>> (
+        new sandbox_selector_data <void> (
+            "root",
+            "root",
+            data_list {
+                std::make_shared <sandbox_selector_data <void>> (
+                    "core",
+                    "core",
+                    data_list {
+                        std::make_shared <sandbox_selector_data <omni::ui::literal_expression_view>> (
+                            "literal_expression",
+                            "literal_expression",
+                            & createLiteralView),
+                        std::make_shared <sandbox_selector_data <omni::ui::variable_declaration_expression_view>> (
+                            "variable_declaration_expression",
+                            "variable_declaration_expression",
+                            & createVariableDeclarationView)
+                    }),
+                std::make_shared <sandbox_selector_data <void>> (
+                    "ui",
+                    "ui",
+                    data_list {
+                        std::make_shared <sandbox_selector_data <omni::ui::literal_expression_view>> (
+                            "entity_placeholder_widget",
+                            "entity_placeholder_widget",
+                            & createEntityPlaceholderWidget)
+                    })
+            }));
     setParents (* result);
     return std::move (result);
 }
