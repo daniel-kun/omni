@@ -13,5 +13,5 @@ addons:
 
 language: c++
 before_install: sudo sh -c 'cat build/ubuntu12/sources.list >> /etc/apt/sources.list' && sudo apt-get install python-software-properties && sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-add-repository -y ppa:ubuntu-sdk-team/ppa && sudo apt-add-repository -y ppa:kalakris/cmake && sudo apt-get update
-install: sudo apt-get install --force-yes qt5-default cmake=2.8.11 gcc-4.8 g++-4.8 libncurses-dev libboost1.48-all-dev clang-3.6 libllvm3.6 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
+install: sudo apt-get install --force-yes qt5-default cmake='cmake=2.8.11.2-1ubuntu2~precise1' gcc-4.8 g++-4.8 libncurses-dev libboost1.48-all-dev clang-3.6 libllvm3.6 && sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50 && sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
 script: if [ ${COVERITY_SCAN_BRANCH} != 1 ]; then mkdir cbuild && cd cbuild && cmake -DCMAKE_CXX_COMPILER=clang-3.6 .. && make -j4 && mkdir ../tests && ./omni-tests; fi
