@@ -11,7 +11,8 @@
 #include <llvm/IR/CallingConv.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/Support/TargetRegistry.h>
-#include <llvm/PassManager.h>
+#include <llvm/IR/PassManager.h>
+#include <llvm/IR/LegacyPassManager.h>
 #include <llvm/IR/IRPrintingPasses.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Support/raw_ostream.h>
@@ -188,7 +189,7 @@ void omni::core::model::module::emitAssemblyFile (llvm::raw_ostream & stream, co
 
     llvm::verifyModule(m, & llvm::outs ());
 
-    llvm::PassManager pm;
+    llvm::legacy::PassManager pm;
     pm.add (llvm::createPrintModulePass (stream));
     pm.run (m);
 }
@@ -245,7 +246,7 @@ void omni::core::model::module::emitObjectFile (llvm::raw_ostream & stream, cons
     llvm::TargetOptions targetOptions;
     llvm::TargetMachine * targetMachine = target->createTargetMachine (targetTriple, std::string (), std::string (), targetOptions, llvm::Reloc::PIC_);
 
-    llvm::PassManager pm;
+    llvm::legacy::PassManager pm;
     llvm::formatted_raw_ostream formattedStream (stream);
     targetMachine->addPassesToEmitFile (pm, formattedStream, llvm::TargetMachine::CGFT_ObjectFile);
     pm.run (m);

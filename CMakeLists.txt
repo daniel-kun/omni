@@ -5,6 +5,7 @@ project (omni)
 set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "") # To suppress -rdynamic, which causes problems on linux with OpenGL-drivers that use llvm-3.4
 
 add_compile_options(-std=c++1y)
+set(CMAKE_CXX_FLAGS "-std=c++1y")
 
 include_directories ("${PROJECT_SOURCE_DIR}/interface/")
 
@@ -89,12 +90,14 @@ ${LLVM_LIBS}
 -lstdc++
 )
 
-set(CMAKE_CXX_FLAGS "-std=c++11 ${LLVM_CXXFLAGS} -fexceptions")
+set(CMAKE_CXX_FLAGS "-std=c++1y ${LLVM_CXXFLAGS} -fexceptions")
 
 add_library (omni-runtime SHARED
     source/omni/runtime/memory.cpp)
 
 target_link_libraries (omni-runtime ${Boost_LIBRARIES} -lstdc++)
+
+set(CMAKE_CXX_FLAGS "-std=c++1y")
 
 add_executable (omni-tests
     source/omni/tests/test_file_manager.cpp
@@ -143,6 +146,10 @@ target_link_libraries (omni-tests omni-core omni-runtime ${Boost_LIBRARIES} -lst
 set(CMAKE_AUTOMOC on)
 
 find_package(Qt5Widgets REQUIRED)
+
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+add_definitions(${Qt5Widgets_DEFINITIONS})
+set(CMAKE_CXX_FLAGS "-std=c++1y ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 add_library (omni-ui SHARED 
     interface/omni/ui/ui_meta_extension.hpp
