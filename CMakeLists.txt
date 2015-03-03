@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 2.8.11)
 
 project (omni)
 
+set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "") # To suppress -rdynamic, which causes problems on linux with OpenGL-drivers that use llvm-3.4
+
 add_compile_options(-std=c++1y)
 
 include_directories ("${PROJECT_SOURCE_DIR}/interface/")
@@ -180,6 +182,8 @@ add_library (omni-ui SHARED
 
 
 target_link_libraries (omni-ui Qt5::Widgets -lstdc++)
+
+set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "") # To suppress -rdynamic, which causes problems on linux with OpenGL-drivers that use llvm-3.4
 
 add_executable (omni-forge
     source/omni/forge/sandbox_selector_model.hpp
