@@ -2,10 +2,15 @@ cmake_minimum_required (VERSION 2.8.11)
 
 project (omni)
 
-set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "") # To suppress -rdynamic, which causes problems on linux with OpenGL-drivers that use llvm-3.4
+if (NOT MSVC)
+    set (CMAKE_CXX_FLAGS "-std=c++1y")
+    set (OMNI_LD_FLAGS "-lstdc++")
+else ()
+    set (CMAKE_CXX_FLAGS "/wd4244 /wd4251 /wd4800 -DWIN32 -D_SCL_SECURE_NO_WARNINGS /EHsc")
+    set (OMNI_LD_FLAGS "")
+endif()
 
-add_compile_options(-std=c++1y)
-set(CMAKE_CXX_FLAGS "-std=c++1y")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBOOST_ALL_NO_LIB")
 
 include_directories ("${PROJECT_SOURCE_DIR}/interface/")
 
@@ -73,33 +78,25 @@ add_library (omni-core SHARED
 find_package (Boost 1.48 COMPONENTS system filesystem unit_test_framework REQUIRED)
 include_directories (${Boost_INCLUDE_DIR})
 
-execute_process(COMMAND "llvm-config-3.6" --includedir OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE LLVM_INCLUDE_DIRS)
-execute_process(COMMAND "llvm-config-3.6" --cxxflags OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE LLVM_CXXFLAGS)
-execute_process(COMMAND "llvm-config-3.6" --ldflags OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE LLVM_LDFLAGS)
-execute_process(COMMAND "llvm-config-3.6" --libs OUTPUT_STRIP_TRAILING_WHITESPACE OUTPUT_VARIABLE LLVM_LIBS)
+find_package (LLVM 3.6 REQUIRED CONFIG)
+
+message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
+message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 
 include_directories (${LLVM_INCLUDE_DIRS})
-target_link_libraries(omni-core 
-${Boost_LIBRARIES}
-${LLVM_LDFLAGS}
-${LLVM_LIBS}
--lz
--lpthread
--lncurses
--ldl
--lstdc++
-)
+add_definitions(${LLVM_DEFINITIONS})
 
-set(CMAKE_CXX_FLAGS "-std=c++1y ${LLVM_CXXFLAGS} -fexceptions")
+llvm_map_components_to_libnames(LLVM_LIBS support tablegen x86 x86asmparser x86asmprinter x86codegen x86desc x86disassembler x86info x86utils)
+
+target_link_libraries(omni-core ${Boost_LIBRARIES} ${LLVM_LIBS} ${OMNI_LD_FLAGS})
 
 add_library (omni-runtime SHARED
     source/omni/runtime/memory.cpp)
 
-target_link_libraries (omni-runtime ${Boost_LIBRARIES} -lstdc++)
-
-set(CMAKE_CXX_FLAGS "-std=c++1y")
+target_link_libraries (omni-runtime ${Boost_LIBRARIES} ${OMNI_LD_FLAGS})
 
 add_executable (omni-tests
+    source/omni/tests/test_main.cpp
     source/omni/tests/test_file_manager.cpp
     source/omni/tests/test_llvm.cpp
     source/omni/tests/test_utils.cpp
@@ -139,9 +136,7 @@ add_executable (omni-tests
     source/omni/tests/core/model/test_variable_declaration_expression.cpp
     source/omni/tests/core/model/test_variable_expression.cpp)
 
-add_definitions (-DBOOST_TEST_DYN_LINK)
-
-target_link_libraries (omni-tests omni-core omni-runtime ${Boost_LIBRARIES} -lstdc++)
+target_link_libraries (omni-tests omni-core omni-runtime ${Boost_LIBRARIES} ${OMNI_LD_FLAGS})
 
 set(CMAKE_AUTOMOC on)
 
@@ -149,7 +144,7 @@ find_package(Qt5Widgets REQUIRED)
 
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 add_definitions(${Qt5Widgets_DEFINITIONS})
-set(CMAKE_CXX_FLAGS "-std=c++1y ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 add_library (omni-ui SHARED 
     interface/omni/ui/ui_meta_extension.hpp
@@ -188,9 +183,11 @@ add_library (omni-ui SHARED
 )
 
 
-target_link_libraries (omni-ui Qt5::Widgets -lstdc++)
+target_link_libraries (omni-ui Qt5::Widgets ${OMNI_LD_FLAGS} omni-core)
 
-set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "") # To suppress -rdynamic, which causes problems on linux with OpenGL-drivers that use llvm-3.4
+set(CMAKE_AUTOMOC on)
+
+find_package(Qt5Widgets REQUIRED)
 
 add_executable (omni-forge
     source/omni/forge/sandbox_selector_model.hpp
@@ -204,5 +201,4 @@ add_executable (omni-forge
     source/omni/forge/sandbox_widget.cpp
 )
 
-target_link_libraries (omni-forge Qt5::Widgets omni-core omni-ui -lstdc++)
-
+target_link_libraries (omni-forge Qt5::Widgets omni-core omni-ui ${OMNI_LD_FLAGS})

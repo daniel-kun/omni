@@ -13,7 +13,6 @@
 #include <memory>
 #include <iostream>
 
-#define BOOST_TEST_MODULE Omni
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(contextTests)

@@ -2,7 +2,7 @@
 #define OMNI_CORE_CORE_HPP
 
 #ifdef _MSC_VER
-#   ifdef omnicore_BUILD_LIB
+#   ifdef omni_core_EXPORTS
 #       define OMNI_CORE_API __declspec (dllexport)
 #   else
 #       define OMNI_CORE_API __declspec (dllimport)
