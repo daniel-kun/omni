@@ -1,0 +1,7 @@
+## For llvm and clang
+deb http://llvm.org/apt/unstable/ llvm-toolchain-3.6 main
+deb-src http://llvm.org/apt/unstable/ llvm-toolchain-3.6 main
+
+## Common
+deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu precise main
+
