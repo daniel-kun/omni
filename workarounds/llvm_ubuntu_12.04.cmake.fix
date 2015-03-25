@@ -1,0 +1,1 @@
+sed -i 's,/usr/lib/llvm-3.6/share/llvm/cmake,/usr/share/llvm-3.6/cmake/,' /usr/share/llvm-3.6/cmake/LLVMConfig.cmake
