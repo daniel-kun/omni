@@ -237,10 +237,10 @@ void omni::core::model::module::emitObjectFile (llvm::raw_ostream & stream, cons
     std::string targetTriple = "x86_64-pc-linux";
 #endif
     llvm::Triple triple = llvm::Triple (targetTriple);
+
     llvm::InitializeNativeTarget ();
-    //llvm::InitializeNativeTargetMC();
-    //llvm::InitializeNativeAsmPrinter();
-    //llvm::InitializeNativeAsmParser();
+    llvm::InitializeNativeTargetAsmPrinter();
+    llvm::InitializeNativeTargetAsmParser();
 
     const llvm::Target * target = llvm::TargetRegistry::lookupTarget ("", triple, errors);
     llvm::TargetOptions targetOptions;
