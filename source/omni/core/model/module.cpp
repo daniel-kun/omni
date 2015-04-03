@@ -234,7 +234,11 @@ void omni::core::model::module::emitObjectFile (llvm::raw_ostream & stream, cons
 #ifdef WIN32
     std::string targetTriple = "i686-pc-win32";
 #else
+#   ifdef OMNI_ARM
+    std::string targetTriple = "armv6-unknown-linux-gnueabi";
+#   else
     std::string targetTriple = "x86_64-pc-linux";
+#   endif
 #endif
     llvm::Triple triple = llvm::Triple (targetTriple);
 
@@ -244,6 +248,10 @@ void omni::core::model::module::emitObjectFile (llvm::raw_ostream & stream, cons
 
     const llvm::Target * target = llvm::TargetRegistry::lookupTarget ("", triple, errors);
     llvm::TargetOptions targetOptions;
+#ifdef OMNI_ARM
+    // Required to output Hard-Float object code. Otherwise linking will fail with error message "*.so uses VFP register arguments, *.o does not".
+    targetOptions.FloatABIType = llvm::FloatABI::Hard;
+#endif
     llvm::TargetMachine * targetMachine = target->createTargetMachine (targetTriple, std::string (), std::string (), targetOptions, llvm::Reloc::PIC_);
 
     llvm::legacy::PassManager pm;
@@ -300,7 +308,12 @@ void omni::core::model::module::emitSharedLibraryFile (std::string const & fileN
     }
     std::string linkLibraryPrefix = " ";
 #else
-    std::string command = "gcc -shared \"" + objectFilePath.string () + "\" -o \"" + sharedLibraryPath.string () + "\"";
+#   ifdef OMNI_ARM
+    std::string ldFlags = "-mfloat-abi=hard -mfpu=vfpu";
+#   else
+    std::string ldFlags;
+#   endif
+    std::string command = "gcc -shared \"" + objectFilePath.string () + "\" " + ldFlags + " -o \"" + sharedLibraryPath.string () + "\"";
     // Add library search paths:
     for (auto librarySearchPath : options.getLibrarySearchPaths ()) {
         command += " -L\"" + librarySearchPath.string () + "\"";
