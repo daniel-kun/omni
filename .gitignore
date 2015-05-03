@@ -1,9 +1,3 @@
-/build/omni.opensdf
-/build/omni.sdf
-/build/*.suo
-/build/Debug
-/build/bin
-*.user
-/test
-/build/Release
-/docs
+/build/
+/tests/
+/docs/
