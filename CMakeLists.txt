@@ -20,6 +20,65 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBOOST_ALL_NO_LIB")
 include_directories ("${PROJECT_SOURCE_DIR}/interface/")
 
 add_library (omni-core SHARED
+    interface/omni/core/already_exists_error.hpp
+    interface/omni/core/context.hpp
+    interface/omni/core/domain.hpp
+    interface/omni/core/id.hpp
+    interface/omni/core/logic_error.hpp
+    interface/omni/core/module_emit_options.hpp
+    interface/omni/core/no_context_error.hpp
+    interface/omni/core/not_implemented_error.hpp
+    interface/omni/core/runtime.hpp
+    interface/omni/core/statement_emit_result.hpp
+    interface/omni/core/verification_failed_error.hpp
+    interface/omni/core/invalid_argument_error.hpp
+    interface/omni/core/parser.hpp
+    interface/omni/core/model/binary_operator_expression.hpp
+    interface/omni/core/model/bitcast_expression.hpp
+    interface/omni/core/model/block.hpp
+    interface/omni/core/model/builtin_literal_expression.hpp
+    interface/omni/core/model/cast_expression.hpp
+    interface/omni/core/model/do_while_statement.hpp
+    interface/omni/core/model/entity.hpp
+    interface/omni/core/model/expression.hpp
+    interface/omni/core/model/external_function.hpp
+    interface/omni/core/model/function.hpp
+    interface/omni/core/model/function_call_expression.hpp
+    interface/omni/core/model/function_prototype.hpp
+    interface/omni/core/model/if_statement.hpp
+    interface/omni/core/model/literal_expression.hpp
+    interface/omni/core/model/meta_info.hpp
+    interface/omni/core/model/meta_info_extension.hpp
+    interface/omni/core/model/modifying_expression.hpp
+    interface/omni/core/model/module.hpp
+    interface/omni/core/model/native_type_to_type_class.hpp
+    interface/omni/core/model/parameter.hpp
+    interface/omni/core/model/pure_expression.hpp
+    interface/omni/core/model/return_statement.hpp
+    interface/omni/core/model/scope.hpp
+    interface/omni/core/model/statement.hpp
+    interface/omni/core/model/type.hpp
+    interface/omni/core/model/type_class.hpp
+    interface/omni/core/model/type_mismatch_error.hpp
+    interface/omni/core/model/use_before_declaration_error.hpp
+    interface/omni/core/model/variable_assignment_expression.hpp
+    interface/omni/core/model/variable_declaration_expression.hpp
+    interface/omni/core/model/variable_expression.hpp
+    interface/omni/core/model/while_statement.hpp
+    interface/omni/core/tools/string.hpp
+    interface/omni/core/input/abstract_syntax_element.hpp
+    interface/omni/core/input/concrete_syntax_element.hpp
+    interface/omni/core/input/fixed_template_element.hpp
+    interface/omni/core/input/input_state.hpp
+    interface/omni/core/input/regex_template_element.hpp
+    interface/omni/core/input/repeater_template_element.hpp
+    interface/omni/core/input/syntax_element.hpp
+    interface/omni/core/input/syntax_suggestion.hpp
+    interface/omni/core/input/syntax_template_element.hpp
+    interface/omni/core/input/syntax_tree_parser_xml.hpp
+    interface/omni/core/input/template_element.hpp
+    interface/omni/core/input/template_visitor.hpp
+    interface/omni/core/input/variable_template_element.hpp
     source/omni/core/already_exists_error.cpp
     source/omni/core/context.cpp
     source/omni/core/domain.cpp
@@ -30,7 +89,7 @@ add_library (omni-core SHARED
     source/omni/core/not_implemented_error.cpp
     source/omni/core/runtime.cpp
     source/omni/core/statement_emit_result.cpp
-    source/omni/core/verification_failed_eror.cpp
+    source/omni/core/verification_failed_error.cpp
     source/omni/core/invalid_argument_error.cpp
     source/omni/core/parser.cpp
     source/omni/core/model/binary_operator_expression.cpp
@@ -80,6 +139,14 @@ add_library (omni-core SHARED
     source/omni/core/input/template_visitor.cpp
     source/omni/core/input/variable_template_element.cpp)
 
+SOURCE_GROUP("Header Files\\model" REGULAR_EXPRESSION "interface/omni/core/model/")
+SOURCE_GROUP("Header Files\\tools" REGULAR_EXPRESSION "interface/omni/core/tools/")
+SOURCE_GROUP("Header Files\\input" REGULAR_EXPRESSION "interface/omni/core/input/")
+
+SOURCE_GROUP("Source Files\\model" REGULAR_EXPRESSION "source/omni/core/model/")
+SOURCE_GROUP("Source Files\\tools" REGULAR_EXPRESSION "source/omni/core/tools/")
+SOURCE_GROUP("Source Files\\input" REGULAR_EXPRESSION "source/omni/core/input/")
+
 find_package (Boost 1.48 COMPONENTS system filesystem unit_test_framework REQUIRED)
 include_directories (${Boost_INCLUDE_DIR})
 
@@ -105,6 +172,8 @@ add_library (omni-runtime SHARED
 target_link_libraries (omni-runtime ${Boost_LIBRARIES} ${OMNI_LD_FLAGS})
 
 add_executable (omni-tests
+    interface/omni/tests/test_utils.hpp
+    interface/omni/tests/test_file_manager.hpp
     source/omni/tests/test_main.cpp
     source/omni/tests/test_file_manager.cpp
     source/omni/tests/test_llvm.cpp
@@ -144,6 +213,10 @@ add_executable (omni-tests
     source/omni/tests/core/model/test_type.cpp
     source/omni/tests/core/model/test_variable_declaration_expression.cpp
     source/omni/tests/core/model/test_variable_expression.cpp)
+
+SOURCE_GROUP("Source Files\\core\\input"    REGULAR_EXPRESSION "source/omni/tests/core/input/")
+SOURCE_GROUP("Source Files\\core\\model"    REGULAR_EXPRESSION "source/omni/tests/core/model/")
+SOURCE_GROUP("Source Files\\runtime"        REGULAR_EXPRESSION "source/omni/tests/runtime/")
 
 target_link_libraries (omni-tests omni-core omni-runtime ${Boost_LIBRARIES} ${OMNI_LD_FLAGS})
 
