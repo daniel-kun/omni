@@ -52,7 +52,17 @@ Higher productivity and quality for programmers
 
 # Status quo
 
-Last updated: 04.11.2014
+Update: 13.05.2015
+
+I haven't been working much on th code base lately, because my primary goal was to get portability before driving features. I have ported the build system to CMake and Omni now builds on Win32 and Linux on x86, x86_64 and ARM v7 (using a Raspberry Pi as a development platform).
+
+There is even a little bi GUI up and running (on all platforms). I have built a few input fields for literal expressions and variable definitions. I am not very happy with the result, though - both the code architecture and the look&feel.
+
+So I decided to do some backend work, which currently consists mainly of reseach, hence little code changes. I am trying to integrate either static code analysis or automatic unit test generation to Omni, so I am currently looking around to see what has already been done. My plan is to update the Wikipedia article to include a comprehensive feature comparison of C++ Static Code Analysis tools.
+
+Omni is going slow-paced, because I don't find much time to work on it. But this gives me the time to build up the ideas and the big picture in my mind before hacking away. :-)
+
+Update: 04.11.2014
 
 Currently, the code model exists for basic structures such as functions, variables, if/for/while/etc. and can be compiled to binaries on Win32 and Linux.
 A flexible meta-information system that allows you to attach any kind of information to entity types (expressions and statements) is finished and used to combine the code model and the UI.
