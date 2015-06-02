@@ -53,7 +53,7 @@ Higher productivity and quality for programmers
 
 Update: 02.06.2015
 
-I have made progress in a prototype for the input architecture. This is not trivial, but I might be able to show a small sneak preview soon.
+I have made progress on a prototype for the input architecture. This is not trivial, but I might be able to show a small sneak preview soon.
 
 Update: 13.05.2015
 
