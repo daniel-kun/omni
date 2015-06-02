@@ -51,6 +51,10 @@ Higher productivity and quality for programmers
 
 # Status quo
 
+Update: 02.06.2015
+
+I have made progress in a prototype for the input architecture. This is not trivial, but I might be able to show a small sneak preview soon.
+
 Update: 13.05.2015
 
 I haven't been working much on th code base lately, because my primary goal was to get portability before driving features. I have ported the build system to CMake and Omni now builds on Win32 and Linux on x86, x86_64 and ARM v7 (using a Raspberry Pi as a development platform).
