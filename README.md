@@ -45,10 +45,9 @@ Higher productivity and quality for programmers
 
 # Further readings
 
-(TODO:)
-* Motivation
-* Technology
-* Vision
+- [Motivation](Motivation.md "Motivation")
+- Technology (Coming soon)
+- Vision (Coming soon)
 
 # Status quo
 
