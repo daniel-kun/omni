@@ -37,7 +37,7 @@ There are many use-cases for automated language analysis and manipulation that c
 * Find code smells, such as code duplication.
 * Check for logical errors - knowing your classes and their semantics, you could run algorithms on your codebase - if you just could access it.
 
-![](OmniVsCallHierarchyNotWorkingWTF.png)  
+![](media/OmniVsCallHierarchyNotWorkingWTF.png)  
 
 ## Only little guiding
 
