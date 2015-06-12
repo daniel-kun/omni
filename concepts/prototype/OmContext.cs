@@ -12,7 +12,7 @@ namespace OmniPrototype
             IntLiteralExpressionMeta.           SetExtension("omni.ui", new OmIntLiteralxpressionMetaUiExtension());
             VariableUseExpressionMeta.          SetExtension("omni.ui", new OmVariableUseExpressionMetaUiExtension());
             BinaryOperatorExpressionMeta.       SetExtension("omni.ui", new OmBinaryOperatorExpressionMetaUiExtension());
-            //IfStatementMeta.                    SetExtension("omni.ui", new OmIfStatementMetaUiExtension ());
+            IfStatementMeta.                    SetExtension("omni.ui", new OmIfStatementMetaUiExtension ());
         }
 
         public readonly OmMeta VariableDeclarationExpressionMeta = new OmMeta ("variable_declaration_expression", new OmVariableDeclarationExpressionParser ());
@@ -21,7 +21,7 @@ namespace OmniPrototype
         public readonly OmMeta IntLiteralExpressionMeta          = new OmMeta ("int_literal_expression", null);
         public readonly OmMeta VariableUseExpressionMeta         = new OmMeta ("variable_use_expression", new OmVariableUseExpressionParser ());
         public readonly OmMeta BinaryOperatorExpressionMeta      = new OmMeta ("binary_operator_expression", null);
-        public readonly OmMeta IfStatementMeta                   = new OmMeta ("if_statement", null);
+        public readonly OmMeta IfStatementMeta                   = new OmMeta ("if_statement", new OmIfStatementParser ());
 
         public Dictionary<string, string> Templates = new Dictionary<string, string>()
         {
@@ -31,6 +31,12 @@ namespace OmniPrototype
             {"int_literal_expression", "<value>"},
             {"variable_declaration_expression", "variable [name]=<initexpr>"},
             {"variable_use_expression", "<variable>"},
+            {"if_statement",
+@"if (<condition>) {
+    <body>
+} else {
+    <else-body>
+}"},
         };
 
         public IEnumerable <OmMeta> GetEntityMetas ()
@@ -41,6 +47,7 @@ namespace OmniPrototype
             yield return IntLiteralExpressionMeta;
             yield return VariableUseExpressionMeta;
             yield return BinaryOperatorExpressionMeta;
+            yield return IfStatementMeta;
         }
     }
 

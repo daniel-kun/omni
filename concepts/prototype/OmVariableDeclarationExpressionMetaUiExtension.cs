@@ -63,9 +63,9 @@ namespace OmniPrototype
                         {
                             ext.InitializationExpressionInput.ReplaceWithExpression(theContext, theLinesPanel, theP, ref thePlaceholderIndex, varDecl.InitializationExpression);
                         }
-                        ext.InitializationExpressionInput.ExpressionCreated += (ExpressionInputControl theSender, OmExpression theNewExpression) =>
+                        ext.InitializationExpressionInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theNewExpression) =>
                         {
-                            varDecl.InitializationExpression = theNewExpression;
+                            varDecl.InitializationExpression = theNewExpression as OmExpression;
                         };
                         return ext.InitializationExpressionInput;
                     }

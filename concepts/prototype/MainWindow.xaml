@@ -7,6 +7,7 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="ThreeDBorderWindow"
         AllowsTransparency="False"
+        FontFamily="Consolas"
         Left="0"
         Top="0"
         >

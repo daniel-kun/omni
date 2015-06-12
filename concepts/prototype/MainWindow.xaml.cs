@@ -20,6 +20,10 @@ namespace OmniPrototype
                 {"int_literal_expression", "<value>"},
                 {"variable_declaration_expression", "(let [name] <initexpr>)"},
                 {"variable_use_expression", "<variable>"},
+{"if_statement",
+@"(cond (<condition>)
+    (<body>)
+    (<else-body>)"},
             };
 
 
@@ -69,28 +73,21 @@ namespace OmniPrototype
                     Value = 20
                 }
             };
-            rootBlock.AddComponent("4", new OmBinaryOperatorExpression()
-            {
-                LeftOperand = new OmIntLiteralExpression()
-                {
-                    Value = 30
-                },
-                Operator = "+",
-                RightOperand = new OmIntLiteralExpression()
-                {
-                    Value = 20
-                }
-            });
-            /*
-            varDecl3.InitializationExpression = initExpr3;
-            var useVar2Expr = new OmVariableUseExpression();
-            initExpr3.LeftOperand = useVar2Expr;
-            useVar2Expr.Variable = varDecl2;
-            var intLiteral2 = new OmIntLiteralExpression();
-            initExpr3.RightOperand = intLiteral2;
-            intLiteral2.Value = 20;
-            initExpr3.Operator = "+";
-            */
+            rootBlock.AddComponent("4",
+                new OmIfStatement () {
+                    Condition = new OmBoolLiteralExpression () { Value = true },
+                    Body = new OmBinaryOperatorExpression()
+                    {
+                        LeftOperand = new OmIntLiteralExpression()
+                        {
+                            Value = 30
+                        },
+                        Operator = "+",
+                        RightOperand = new OmIntLiteralExpression()
+                        {
+                            Value = 20
+                        }
+                    }});
         }
 
         private OmContext mContext = new OmContext();
