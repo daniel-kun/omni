@@ -216,6 +216,7 @@ add_executable (omni-tests
 
 SOURCE_GROUP("Source Files\\core\\input"    REGULAR_EXPRESSION "source/omni/tests/core/input/")
 SOURCE_GROUP("Source Files\\core\\model"    REGULAR_EXPRESSION "source/omni/tests/core/model/")
+SOURCE_GROUP("Source Files\\core\\tools"    REGULAR_EXPRESSION "source/omni/tests/core/tools/")
 SOURCE_GROUP("Source Files\\runtime"        REGULAR_EXPRESSION "source/omni/tests/runtime/")
 
 target_link_libraries (omni-tests omni-core omni-runtime ${Boost_LIBRARIES} ${OMNI_LD_FLAGS})

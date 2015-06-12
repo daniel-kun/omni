@@ -68,6 +68,30 @@ namespace OmniPrototype
             mPopup.IsOpen = false;
         }
 
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+            if (e.Key == Key.Down)
+            {
+                if ((mPopupList.SelectedIndex < mPopupList.Items.Count - 1) || (mPopupList.SelectedIndex == -1 && mPopupList.Items.Count > 0))
+                {
+                    mPopupList.SelectionChanged -= popupList_SelectionChanged;
+                    mPopupList.SelectedIndex = mPopupList.SelectedIndex + 1;
+                    mPopupList.SelectionChanged += popupList_SelectionChanged;
+                }
+
+            }
+            else
+            {
+                if ((mPopupList.SelectedIndex < mPopupList.Items.Count - 1) || (mPopupList.SelectedIndex == -1 && mPopupList.Items.Count > 0))
+                {
+                    mPopupList.SelectionChanged -= popupList_SelectionChanged;
+                    mPopupList.SelectedIndex = mPopupList.SelectedIndex + 1;
+                    mPopupList.SelectionChanged += popupList_SelectionChanged;
+                }
+            }
+        }
+
         public OmExpression Expression
         {
             get
