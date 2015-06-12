@@ -109,6 +109,10 @@
     <Compile Include="OmEntityUiExtension.cs" />
     <Compile Include="OmExpression.cs" />
     <Compile Include="OmIfStatement.cs" />
+    <Compile Include="OmIfStatementFactory.cs" />
+    <Compile Include="OmIfStatementMetaUiExtension.cs" />
+    <Compile Include="OmIfStatementParser.cs" />
+    <Compile Include="OmIfStatementUiExtension.cs" />
     <Compile Include="OmIntLiteralExpression.cs" />
     <Compile Include="OmIntLiteralExpressionUiExtension.cs" />
     <Compile Include="OmIntLiteralxpressionMetaUiExtension.cs" />

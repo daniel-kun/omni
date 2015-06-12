@@ -15,7 +15,7 @@ namespace OmniPrototype
     public partial class ExpressionInputControl : UserControl
     {
 
-        public delegate void ExpressionCreatedHandler(ExpressionInputControl theSender, OmExpression theExpression);
+        public delegate void ExpressionCreatedHandler(ExpressionInputControl theSender, OmStatement theExpression);
 
         public event ExpressionCreatedHandler ExpressionCreated;
 
@@ -46,6 +46,7 @@ namespace OmniPrototype
                 Height = 300,
                 PlacementTarget = mGrid,
                 Placement = PlacementMode.Bottom,
+                MaxHeight = 150,
                 Child = mPopupList
             };
             
@@ -58,7 +59,7 @@ namespace OmniPrototype
             {
                 mPopup.IsOpen = false;
                 var factory = (OmEntityFactory)e.AddedItems[0];
-                Expression = factory.Create(Scope) as OmExpression;
+                Expression = factory.Create (Scope) as OmStatement;
             }
         }
 
@@ -68,7 +69,7 @@ namespace OmniPrototype
             mPopup.IsOpen = false;
         }
 
-        public OmExpression Expression
+        public OmStatement Expression
         {
             get
             {
@@ -123,7 +124,7 @@ namespace OmniPrototype
             */
         }
 
-        public FrameworkElement ReplaceWithExpression (OmContext theContext, StackPanel theLinesPanel, WrapPanel thePanel, ref int theDefaultPos, OmExpression theExpression)
+        public FrameworkElement ReplaceWithExpression (OmContext theContext, StackPanel theLinesPanel, WrapPanel thePanel, ref int theDefaultPos, OmStatement theExpression)
         {
             if (theExpression == null)
             {
@@ -155,7 +156,7 @@ namespace OmniPrototype
             return null;
         }
 
-        private OmExpression mExpression = null;
+        private OmStatement mExpression = null;
 
 
         public Popup mPopup

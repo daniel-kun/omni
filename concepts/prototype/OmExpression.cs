@@ -3,9 +3,7 @@ namespace OmniPrototype
 {
     public class OmExpression : OmStatement
     {
-        public event ChangeHandler TypeChanged;
-
-        public OmType Type
+        public override OmType Type
         {
             get
             {
@@ -14,11 +12,9 @@ namespace OmniPrototype
             set
             {
                 mType = value;
-                EmitChangeEvent(TypeChanged);
+                EmitTypeChangedEvent ();
             }
         }
-
-        private OmType mType;
 
         public new OmMeta GetMetaStatic (OmContext theContext)
         {

@@ -24,7 +24,7 @@ namespace OmniPrototype {
                 var newWrapPanel = new WrapPanel();
                 int ignore = 0;
                 theLinesPanel.Children.Insert(theLinesPanel.Children.Count - 1, newWrapPanel);
-                ext.AddExpressionControl.ReplaceWithExpression(theContext, theLinesPanel, newWrapPanel, ref ignore, theChild as OmExpression);
+                ext.AddExpressionControl.ReplaceWithExpression(theContext, theLinesPanel, newWrapPanel, ref ignore, theChild as OmStatement);
             };
 
             FrameworkElement focusElement = null;
@@ -50,10 +50,10 @@ namespace OmniPrototype {
             return focusElement;
         }
 
-        private void ExpressionCreatedFromInput (ExpressionInputControl theSender, OmExpression theNewExpression)
+        private void ExpressionCreatedFromInput (ExpressionInputControl theSender, OmStatement theNewExpression)
         {
             var block = theSender.Scope as OmBlockStatement;
-            block.AddComponent(string.Empty, theNewExpression);
+            block.AddComponent((block.Components.Count + 1).ToString (), theNewExpression);
             var newInput = new ExpressionInputControl (theSender.Context, block, OmType.Void);
             var ext = block.GetExtension(theSender.Context, "omni.ui") as OmBlockStatementUiExtension;
             ext.AddExpressionControl = newInput;
