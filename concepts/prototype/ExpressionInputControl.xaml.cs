@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
@@ -155,6 +156,29 @@ namespace OmniPrototype
                 Expression = expressions[0].Create (Scope) as OmExpression;
             }
             */
+        }
+
+        public static IEnumerable<List <FrameworkElement>> CreateInputOrControls (OmContext                      theContext,
+                                                                                  OmScope                        theScope,
+                                                                                  OmStatement                    theStatement,
+                                                                                  OmType                         theTargetType,
+                                                                                  Action<ExpressionInputControl> theInitializeInput)
+        {
+            if (theStatement == null)
+            {
+                // Yay, create a cool input control now:
+                var input = new ExpressionInputControl(theContext, theScope, theTargetType);
+                theInitializeInput(input);
+                yield return new List <FrameworkElement> () { input };
+            }
+            else
+            {
+                var childUiExt = theStatement.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
+                foreach (var controls in childUiExt.CreateControls2 (theContext, theStatement))
+                {
+                    yield return controls;
+                }
+            }
         }
 
         /// TODO: Create a function that either creates an ExpressionInputControl or the controls for a given, existing expression.

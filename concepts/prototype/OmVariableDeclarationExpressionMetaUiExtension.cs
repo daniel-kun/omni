@@ -38,10 +38,13 @@ namespace OmniPrototype
                 applyName();
             };
 
+            /*
             varDecl.InitializationExpressionChanged += (OmEntity theSender) =>
             {
+
                 ext.InitializationExpressionInput.ReplaceWithExpression(theContext, theLinesPanel, thePanel, ref index, varDecl.InitializationExpression);
             };
+            */
 
             FrameworkElement focusElement = null;
             var creator = new OmMetaUiControlCreator(
@@ -64,15 +67,19 @@ namespace OmniPrototype
                     }
                     else if (theName == "initexpr")
                     {
-                        ext.InitializationExpressionInput = new ExpressionInputControl(theContext, theExpression as OmScope, OmType.Void);
-                        if (varDecl.InitializationExpression != null)
-                        {
-                            ext.InitializationExpressionInput.ReplaceWithExpression(theContext, theLinesPanel, theP, ref thePlaceholderIndex, varDecl.InitializationExpression);
-                        }
-                        ext.InitializationExpressionInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theNewExpression) =>
-                        {
-                            varDecl.InitializationExpression = theNewExpression as OmExpression;
-                        };
+                        ExpressionInputControl.CreateInputOrControls(
+                            theContext,
+                            varDecl, 
+                            varDecl.InitializationExpression,
+                            OmType.Void,
+                            (ExpressionInputControl theInput) =>
+                            {
+                                ext.InitializationExpressionInput = theInput;
+                                theInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theNewExpression) =>
+                                {
+                                    varDecl.InitializationExpression = theNewExpression as OmExpression;
+                                }; 
+                            });
                         return ext.InitializationExpressionInput;
                     }
                     else

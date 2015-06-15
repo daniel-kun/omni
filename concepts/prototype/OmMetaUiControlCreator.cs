@@ -9,7 +9,7 @@ namespace OmniPrototype
     public class OmMetaUiControlCreator
     {
         public delegate FrameworkElement ComponentPlaceholderRequestedHandler(WrapPanel thePanel, ref int thePlaceholderIndex, string thePlaceholderName);
-        public delegate IEnumerable <FrameworkElement> ComponentPlaceholderRequestedHandler2(string thePlaceholderName);
+        public delegate IEnumerable <List <FrameworkElement>> ComponentPlaceholderRequestedHandler2(string thePlaceholderName);
 
         public OmMetaUiControlCreator (
             ComponentPlaceholderRequestedHandler theExpressionPlaceholderRequested)
@@ -17,7 +17,13 @@ namespace OmniPrototype
             mExpressionPlaceholderRequested = theExpressionPlaceholderRequested;
         }
 
-        public static Brush ColorFromText (string theText)
+        public OmMetaUiControlCreator(
+           ComponentPlaceholderRequestedHandler2 theExpressionPlaceholderRequested)
+        {
+            mExpressionPlaceholderRequested2 = theExpressionPlaceholderRequested;
+        }
+
+        public static Brush ColorFromText(string theText)
         {
             // When the text only consists of some kind of brackets and whitespace:
             if (theText.Trim("{}()[] \t\r\n".ToCharArray()).Length == 0)
@@ -175,12 +181,31 @@ namespace OmniPrototype
             return null;
         }
 
+        private static IEnumerable <List <FrameworkElement>> Merge(List<FrameworkElement> theCurrentLine, IEnumerable<List<FrameworkElement>> theControls)
+        {
+            var controls = new List <List<FrameworkElement>> (theControls);
+            bool isInline = true;
+            foreach (var line in theControls)
+            {
+                if (isInline)
+                {
+                    isInline = false;
+                    theCurrentLine.AddRange(line);
+                }
+                else
+                {
+                    yield return line;
+                }
+            }
+        }
+
         public IEnumerable <List <FrameworkElement>> CreateControlsFromTemplate2 (OmContext theContext, string theTemplate)
         {
             string[] lines = theTemplate.Split(new string[] { "\r\n" }, System.StringSplitOptions.None);
             foreach (var line in lines)
             {
                 var controls = new List<FrameworkElement>();
+                var newLineControls = new List <List<FrameworkElement>>();
                 var lineRest = line;
                 while (lineRest.Length > 0)
                 {
@@ -212,7 +237,7 @@ namespace OmniPrototype
                             throw new Exception("Unterminated [");
                         }
                         string freeInputName = lineRest.Substring(0, freeInputIndexEnd);
-                        controls.AddRange (mExpressionPlaceholderRequested2(freeInputName));
+                        newLineControls.AddRange(Merge(controls, mExpressionPlaceholderRequested2(freeInputName)));
                         lineRest = lineRest.Substring(freeInputIndexEnd + 1);
                     }
                     else if (expressionTypeIndex >= 0)
@@ -240,7 +265,7 @@ namespace OmniPrototype
                             }
                         }
                         var componentName = lineRest.Substring(0, expressionTypeIndexEnd);
-                        controls.AddRange(mExpressionPlaceholderRequested2(componentName));
+                        newLineControls.AddRange(Merge(controls, mExpressionPlaceholderRequested2(componentName)));
                         lineRest = lineRest.Substring(expressionTypeIndexEnd + 1);
                     }
                     else
@@ -261,6 +286,29 @@ namespace OmniPrototype
                     }
                 }
                 yield return controls;
+                foreach (var newLine in newLineControls)
+                {
+                    yield return newLine;
+                }
+            }
+        }
+
+        public static void ApplyControlsToLayout (StackPanel theLinesPanel, WrapPanel thePanel, IEnumerable <List <FrameworkElement>> theControls)
+        {
+            bool isFirstInline = true;
+            WrapPanel currentLinePanel = thePanel;
+            foreach (var controlLine in theControls)
+            {
+                if (! isFirstInline) {
+                    currentLinePanel = new WrapPanel();
+                    theLinesPanel.Children.Add(currentLinePanel);
+                    theLinesPanel.Children.Add(currentLinePanel);
+                }
+                isFirstInline = false;
+                foreach (var control in controlLine)
+                {
+                    thePanel.Children.Add(control);
+                }
             }
         }
 
