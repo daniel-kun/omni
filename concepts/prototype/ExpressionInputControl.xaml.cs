@@ -157,6 +157,8 @@ namespace OmniPrototype
             */
         }
 
+        /// TODO: Create a function that either creates an ExpressionInputControl or the controls for a given, existing expression.
+        /// That way, a replace while constructing a new statement is not needed anymore, hence the ref theDefaultPos/ref thePosition/ref theIndex parameter is not needed anymore.
         public FrameworkElement ReplaceWithExpression (OmContext theContext, StackPanel theLinesPanel, WrapPanel thePanel, ref int theDefaultPos, OmStatement theExpression)
         {
             if (theExpression == null)
@@ -164,28 +166,39 @@ namespace OmniPrototype
                 return this;
             }
             var childUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
-            WrapPanel p = Parent as WrapPanel;
-            if (p == null)
+            Panel parent;
+            WrapPanel panel;
+            int index;
+            if (Parent is WrapPanel)
             {
-                p = thePanel;
+                panel = (WrapPanel)Parent;
+                parent = panel;
+                index = parent.Children.IndexOf(this);
+                parent.Children.RemoveAt(index);
             }
-            int pos = thePanel.Children.IndexOf(this);
-            if (pos < 0)
+            else if (Parent is StackPanel)
             {
-                pos = theDefaultPos;
+                parent = (StackPanel)Parent;
+                index = 0;
+                panel = new WrapPanel();
+                int myIndex = parent.Children.IndexOf(this);
+                parent.Children.Insert(myIndex, panel);
+                parent.Children.RemoveAt(myIndex);
             }
             else
             {
-                thePanel.Children.RemoveAt(pos);
+                panel = thePanel;
+                index = theDefaultPos;
             }
+
             Debug.Assert(thePanel.Children.IndexOf(this) == -1);
             bool wasFocused = IsKeyboardFocusWithin;
-            FrameworkElement focus = childUiExt.CreateControls(theContext, theLinesPanel, thePanel, ref pos, theExpression);
+            FrameworkElement focus = childUiExt.CreateControls(theContext, theLinesPanel, panel, ref index, theExpression);
             if (wasFocused && focus != null)
             {
                 focus.Focus();
             }
-            theDefaultPos = pos;
+            theDefaultPos = index;
             return null;
         }
 

@@ -20,10 +20,25 @@ namespace OmniPrototype {
             ref int theIndex,
             OmStatement theExpression)
         {
+            var ifStatement = theExpression as OmIfStatement;
+            var ext = ifStatement.GetExtension(theContext, "omni.ui") as OmIfStatementUiExtension;
+            Action <OmExpression> applyCondition = (theConditionExpression) =>
+            {
+                //int dummy = 0;
+                //ext.ConditionInput.ReplaceWithExpression (theContext, theLinesPanel, thePanel, ref dummy, theConditionExpression);
+            };
+
             var creator = new OmMetaUiControlCreator (
                 (WrapPanel theInnerPanel, ref int thePlaceholderIndex, string thePlaceholderName) => {
                     if (thePlaceholderName == "condition") {
-                        return new ExpressionInputControl (theContext, theExpression, OmType.Bool);
+                        var result = new ExpressionInputControl (theContext, theExpression, OmType.Bool);
+                        int index = thePlaceholderIndex;
+                        result.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theConditionExpression) =>
+                        {
+                            int localIndex = index;
+                            result.ReplaceWithExpression(theContext, theLinesPanel, theInnerPanel, ref localIndex, theConditionExpression);
+                        };
+                        return result;
                     } else if (thePlaceholderName == "body") {
                         return new ExpressionInputControl (theContext, theExpression, OmType.Void);
                     } else if (thePlaceholderName == "else-body") {

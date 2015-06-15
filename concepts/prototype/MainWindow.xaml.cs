@@ -32,9 +32,9 @@ namespace OmniPrototype
             var metaUiExt = OmBlockStatement.GetMetaStatic(mContext).GetExtension("omni.ui") as OmMetaUiExtension;
             metaUiExt.CreateControls(mContext, mLinesPanel1, null, ref index, rootBlock);
 
-            index = 0;
-            var metaUiExt2 = OmBlockStatement.GetMetaStatic(mContext2).GetExtension("omni.ui") as OmMetaUiExtension;
-            metaUiExt2.CreateControls(mContext2, mLinesPanel2, null, ref index, rootBlock);
+            //index = 0;
+            //var metaUiExt2 = OmBlockStatement.GetMetaStatic(mContext2).GetExtension("omni.ui") as OmMetaUiExtension;
+            //metaUiExt2.CreateControls(mContext2, mLinesPanel2, null, ref index, rootBlock);
 
             var varDecl = new OmVariableDeclarationExpression ()
             {
