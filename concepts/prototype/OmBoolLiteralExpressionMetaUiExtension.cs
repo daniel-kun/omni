@@ -52,7 +52,7 @@
                                 literalExpr.Value = value;
                             }
                         };
-                        return new List <List <FrameworkElement>> { new List<FrameworkElement> { ext.ValueInput } };
+                        return MakeSingleControlList (ext.ValueInput);
                     }
                     else
                     {
@@ -60,7 +60,7 @@
                     }
 
                 });
-            return creator.CreateControlsFromTemplate2(theContext, GetTemplate(theContext));
+            return creator.CreateControlsFromTemplate2 (theContext, GetTemplate(theContext));
         }
 
         public override FrameworkElement CreateControls(OmContext theContext, StackPanel theLinesPanel, WrapPanel thePanel, ref int theIndex, OmStatement theExpression)

@@ -183,6 +183,23 @@ namespace OmniPrototype
 
         /// TODO: Create a function that either creates an ExpressionInputControl or the controls for a given, existing expression.
         /// That way, a replace while constructing a new statement is not needed anymore, hence the ref theDefaultPos/ref thePosition/ref theIndex parameter is not needed anymore.
+        public void ReplaceWithExpression2 (OmContext theContext, OmStatement theExpression)
+        {
+            if (! (Parent is Panel))
+            {
+                throw new Exception("Can not use ReplaceWithExpression if Parent is not a Panel");
+            }
+            var panel = (Panel)Parent;
+            int oldIndex = panel.Children.IndexOf(this);
+            if (oldIndex < 0)
+            {
+                throw new Exception ("Can not use ReplaceWithExpression if this ExpressionInputControl is not part of the Parent panel");
+            }
+            
+        }
+
+        /// TODO: Create a function that either creates an ExpressionInputControl or the controls for a given, existing expression.
+        /// That way, a replace while constructing a new statement is not needed anymore, hence the ref theDefaultPos/ref thePosition/ref theIndex parameter is not needed anymore.
         public FrameworkElement ReplaceWithExpression (OmContext theContext, StackPanel theLinesPanel, WrapPanel thePanel, ref int theDefaultPos, OmStatement theExpression)
         {
             if (theExpression == null)

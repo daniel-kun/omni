@@ -35,5 +35,10 @@ namespace OmniPrototype
             get;
             private set;
         }
+
+        protected static IEnumerable<List<FrameworkElement>> MakeSingleControlList(FrameworkElement theControl)
+        {
+            return new List<List<FrameworkElement>> { new List<FrameworkElement> { theControl } };
+        }
     }
 }

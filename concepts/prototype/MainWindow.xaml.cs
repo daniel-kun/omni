@@ -28,14 +28,20 @@ namespace OmniPrototype
             };
 
 
-            var initExpr = new OmBoolLiteralExpression()
+            var binOp = new OmBinaryOperatorExpression()
             {
-                Value = true
+                LeftOperand = new OmIntLiteralExpression()
+                {
+                    Value = 42
+                },
+                RightOperand = new OmIntLiteralExpression()
+                {
+                    Value = 1337
+                },
+                Operator = "+"
             };
-            var metaUiExt = OmBoolLiteralExpression.GetMetaStatic(mContext).GetExtension("omni.ui") as OmMetaUiExtension;
-            var firstLinePanel = new WrapPanel();
-            mLinesPanel1.Children.Add(firstLinePanel);
-            OmMetaUiControlCreator.ApplyControlsToLayout(mLinesPanel1, firstLinePanel, metaUiExt.CreateControls2(mContext, initExpr));
+            CreateRootControl(mLinesPanel1, mContext1, binOp);
+            CreateRootControl(mLinesPanel2, mContext2, binOp);
 
             /*
              var rootBlock = new OmBlockStatement ();
@@ -101,7 +107,15 @@ namespace OmniPrototype
              */
         }
 
-        private OmContext mContext = new OmContext();
+        private static void CreateRootControl(StackPanel theLinesPanel, OmContext theContext, OmStatement theStatement)
+        {
+            var metaUiExt = theStatement.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
+            var firstLinePanel = new WrapPanel();
+            theLinesPanel.Children.Add(firstLinePanel);
+            OmMetaUiControlCreator.ApplyControlsToLayout(theLinesPanel, firstLinePanel, metaUiExt.CreateControls2(theContext, theStatement));
+        }
+
+        private OmContext mContext1 = new OmContext();
         private OmContext mContext2 = new OmContext();
     }
 }
