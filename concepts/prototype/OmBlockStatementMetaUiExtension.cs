@@ -38,6 +38,9 @@ namespace OmniPrototype {
                         {
                             block.AddComponent ((block.Components.Count + 1).ToString (), theNewExpression);
                         };
+                        ext.AddExpressionControl.ContinuationInputCreated += (ExpressionInputControl theSender) => {
+                            ext.AddExpressionControl = theSender;
+                        };
                         controlList.Add(new List<FrameworkElement> { ext.AddExpressionControl });
                         return controlList;
                     }

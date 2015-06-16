@@ -20,6 +20,10 @@ namespace OmniPrototype
 
         public event ExpressionCreatedHandler ExpressionCreated;
 
+        public delegate void ContinuationInputCreatedHandler (ExpressionInputControl theSender);
+
+        public event ContinuationInputCreatedHandler ContinuationInputCreated;
+
         public ExpressionInputControl (OmContext theContext, OmScope theScope, OmType theType)
         {
             if (theContext == null || theScope == null || theType == null)
@@ -158,6 +162,8 @@ namespace OmniPrototype
             */
         }
 
+        private Action<ExpressionInputControl> mInitializationRoutine;
+
         public static IEnumerable<List <FrameworkElement>> CreateInputOrControls (OmContext                      theContext,
                                                                                   OmScope                        theScope,
                                                                                   OmStatement                    theStatement,
@@ -168,7 +174,8 @@ namespace OmniPrototype
             {
                 // Yay, create a cool input control now:
                 var input = new ExpressionInputControl(theContext, theScope, theTargetType);
-                theInitializeInput(input);
+                input.mInitializationRoutine = theInitializeInput;
+                input.mInitializationRoutine (input);
                 yield return new List <FrameworkElement> () { input };
             }
             else
@@ -194,24 +201,24 @@ namespace OmniPrototype
         {
             if (! (Parent is WrapPanel))
             {
-                throw new Exception("Can not use ReplaceWithExpression if Parent is not a WrapPanel");
+                throw new Exception("Can not use ReplaceWithExpression2 if Parent is not a WrapPanel");
             }
             var panel = (Panel)Parent;
             int oldIndex = panel.Children.IndexOf(this);
             if (oldIndex < 0)
             {
-                throw new Exception ("Can not use ReplaceWithExpression if this ExpressionInputControl is not part of the Parent panel");
+                throw new Exception ("Can not use ReplaceWithExpression2 if this ExpressionInputControl is not part of the Parent panel");
             }
             if (! (panel.Parent is StackPanel))
             {
-                throw new Exception("Can not use ReplaceWithExpression if Parent.Parent is not a StackPanel");
+                throw new Exception("Can not use ReplaceWithExpression2 if Parent.Parent is not a StackPanel");
             }
             var linesPanel = (StackPanel) panel.Parent;
             panel.Children.RemoveAt(oldIndex);
             int oldLinesIndex = linesPanel.Children.IndexOf(panel);
             if (oldLinesIndex < 0)
             {
-                throw new Exception("Can not use ReplaceWithExpression if the parent WrapPanel is not part of it's parent StackPanel");
+                throw new Exception("Can not use ReplaceWithExpression2 if the parent WrapPanel is not part of it's parent StackPanel");
             }
             
             var childUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
@@ -222,6 +229,7 @@ namespace OmniPrototype
                 {
                     panel = new WrapPanel();
                     linesPanel.Children.Insert(++oldLinesIndex, panel);
+                    oldIndex = 0;
                 }
                 isFirstInline = false;
                 foreach (var control in line) {
@@ -232,10 +240,18 @@ namespace OmniPrototype
             {
                 case Continuation.Beneath:
                     var continuationInput = new ExpressionInputControl (Context, Scope, TargetType);
+                    continuationInput.mInitializationRoutine = mInitializationRoutine;
                     continuationInput.ExpressionCreated = ExpressionCreated;
                     var newPanel = new WrapPanel();
                     linesPanel.Children.Insert(++oldLinesIndex, newPanel);
                     newPanel.Children.Add(continuationInput);
+                    if (continuationInput.mInitializationRoutine != null) {
+                        continuationInput.mInitializationRoutine (continuationInput);
+                    }
+                    var handler = ContinuationInputCreated;
+                    if (handler != null) {
+                        handler (continuationInput);
+                    }
                     break;
                 case Continuation.RightTo:
                     // TODO

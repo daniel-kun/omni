@@ -218,17 +218,7 @@ namespace OmniPrototype
                         if (staticText.Length > 0)
                         {
                             //mGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1.0, GridUnitType.Auto) });
-                            foreach (var text in SplitAtBrackets(staticText))
-                            {
-                                var tb = new TextBlock()
-                                {
-                                    Text = text,
-                                    VerticalAlignment = VerticalAlignment.Center,
-                                    Foreground = ColorFromText(text),
-                                    Margin = new Thickness(0)
-                                };
-                                controls.Add(tb);
-                            }
+                            CreateStaticTextControls(controls, staticText);
                         }
                         lineRest = lineRest.Substring(freeInputIndex + 1);
                         int freeInputIndexEnd = lineRest.IndexOf("]");
@@ -252,17 +242,7 @@ namespace OmniPrototype
                         }
                         if (staticText.Length > 0)
                         {
-                            foreach (var text in SplitAtBrackets(staticText))
-                            {
-                                var tb = new TextBlock()
-                                {
-                                    Text = text,
-                                    VerticalAlignment = VerticalAlignment.Center,
-                                    Foreground = ColorFromText(text),
-                                    Margin = new Thickness(0)
-                                };
-                                controls.Add(tb);
-                            }
+                            CreateStaticTextControls(controls, staticText);
                         }
                         var componentName = lineRest.Substring(0, expressionTypeIndexEnd);
                         newLineControls.AddRange(Merge(controls, mExpressionPlaceholderRequested2(componentName)));
@@ -271,17 +251,7 @@ namespace OmniPrototype
                     else
                     {
                         // No placeholders any more
-                        foreach (var text in SplitAtBrackets(lineRest))
-                        {
-                            var tb = new TextBlock()
-                            {
-                                Text = text,
-                                VerticalAlignment = VerticalAlignment.Center,
-                                Foreground = ColorFromText(text),
-                                Margin = new Thickness(0)
-                            };
-                            controls.Add(tb);
-                        }
+                        CreateStaticTextControls(controls, lineRest);
                         lineRest = string.Empty;
                     }
                 }
@@ -290,6 +260,30 @@ namespace OmniPrototype
                 {
                     yield return newLine;
                 }
+            }
+        }
+
+        private static void CreateStaticTextControls (List<FrameworkElement> controls,string staticText)
+        {
+            foreach(var text in SplitAtBrackets(staticText)) {
+                var userControl = new UserControl () {
+                    Content = new Viewbox () {
+                        Child = new TextBlock() {
+                            Text = text,
+                            VerticalAlignment = VerticalAlignment.Top,
+                            Foreground = ColorFromText(text),
+                            Background = Brushes.Bisque,
+                            Margin = new Thickness(0)
+                        },
+                        VerticalAlignment = VerticalAlignment.Top,
+                        StretchDirection = StretchDirection.DownOnly,
+                    },
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalContentAlignment = VerticalAlignment.Top,
+                    Background = Brushes.Beige
+                };
+                controls.Add(userControl);
             }
         }
 

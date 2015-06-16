@@ -17,10 +17,12 @@ namespace OmniPrototype {
         {
             var ifStatement = theExpression as OmIfStatement;
             var ext = ifStatement.GetExtension(theContext, "omni.ui") as OmIfStatementUiExtension;
-            Action<OmExpression> applyCondition = (theConditionExpression) =>
-            {
-                //int dummy = 0;
-                //ext.ConditionInput.ReplaceWithExpression (theContext, theLinesPanel, thePanel, ref dummy, theConditionExpression);
+
+            ifStatement.BodyChanged += (theIfStatement) => {
+                ext.BodyInput.ReplaceWithExpression2 (theContext, ifStatement.Body, ExpressionInputControl.Continuation.Beneath);
+            };
+            ifStatement.ConditionChanged += (theIfStatement) => {
+                ext.ConditionInput.ReplaceWithExpression2 (theContext, ifStatement.Condition);
             };
 
             var creator = new OmMetaUiControlCreator(
@@ -35,28 +37,35 @@ namespace OmniPrototype {
                             OmType.Bool,
                             (theInput) =>
                             {
-                                theInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theConditionExpression) =>
+                                ext.ConditionInput = theInput;
+                                ext.ConditionInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theConditionExpression) =>
                                 {
                                     ifStatement.Condition = theConditionExpression as OmExpression;
-                                    theInput.ReplaceWithExpression2(theContext, theConditionExpression);
                                 };
                             });
                     }
                     else if (thePlaceholderName == "body")
                     {
-                        return ExpressionInputControl.CreateInputOrControls(
-                            theContext,
-                            theExpression,
-                            ifStatement.Body,
-                            OmType.Void,
-                            (theInput) =>
-                            {
-                                theInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theBodyStatement) =>
+                        var linesPanel = new StackPanel ();
+                        var panel = new WrapPanel ();
+                        linesPanel.Children.Add (panel);
+                        OmMetaUiControlCreator.ApplyControlsToLayout (
+                            linesPanel,
+                            panel,
+                            ExpressionInputControl.CreateInputOrControls(
+                                theContext,
+                                theExpression,
+                                ifStatement.Body,
+                                OmType.Void,
+                                (theInput) =>
                                 {
-                                    ifStatement.Body = theBodyStatement;
-                                    theInput.ReplaceWithExpression2(theContext, theBodyStatement);
-                                };
-                            });
+                                    ext.BodyInput = theInput;
+                                    ext.BodyInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theBodyStatement) =>
+                                    {
+                                        ifStatement.Body = theBodyStatement;
+                                    };
+                                }));
+                        return MakeSingleControlList (linesPanel);
                     }
                         /*
                     else if (thePlaceholderName == "else-body")

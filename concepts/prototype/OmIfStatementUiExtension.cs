@@ -13,5 +13,11 @@ namespace OmniPrototype {
             set;
         }
 
+        public ExpressionInputControl BodyInput
+        {
+            get;
+            set;
+        }
+
     }
 }
