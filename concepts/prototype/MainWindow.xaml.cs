@@ -27,27 +27,17 @@ namespace OmniPrototype
             };
 
 
-            var ifStmt = new OmIfStatement()
+            var block = new OmBlockStatement ();
+            block.AddComponent ("1", new OmIntLiteralExpression()
             {
-                Condition = new OmBinaryOperatorExpression()
-                {
-                    LeftOperand = new OmIntLiteralExpression()
-                    {
-                        Value = 42
-                    },
-                    RightOperand = new OmIntLiteralExpression()
-                    {
-                        Value = 1337
-                    },
-                    Operator = "+"
-                },
-                Body = new OmBoolLiteralExpression()
-                {
-                    Value = true
-                }
-            };
-            CreateRootControl(mLinesPanel1, mContext1, ifStmt);
-            CreateRootControl(mLinesPanel2, mContext2, ifStmt);
+                Value = 42
+            });
+            block.AddComponent("2", new OmIntLiteralExpression()
+            {
+                Value = 1337
+            });
+            CreateRootControl(mLinesPanel1, mContext1, block);
+            CreateRootControl(mLinesPanel2, mContext2, block);
 
             /*
              var rootBlock = new OmBlockStatement ();

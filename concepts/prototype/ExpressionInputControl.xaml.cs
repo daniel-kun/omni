@@ -181,13 +181,20 @@ namespace OmniPrototype
             }
         }
 
-        /// TODO: Create a function that either creates an ExpressionInputControl or the controls for a given, existing expression.
-        /// That way, a replace while constructing a new statement is not needed anymore, hence the ref theDefaultPos/ref thePosition/ref theIndex parameter is not needed anymore.
-        public void ReplaceWithExpression2 (OmContext theContext, OmStatement theExpression)
+        /// Specifies whether, when an expression has been selected for this input, a new ExpressionInputControl should be created and displayed
+        /// next to or beneath the old one. Used for e.g. block statements, parameter lists and any other kinds of lists of elements.
+        public enum Continuation
         {
-            if (! (Parent is Panel))
+            None,
+            RightTo,
+            Beneath
+        }
+
+        public void ReplaceWithExpression2(OmContext theContext, OmStatement theExpression, Continuation theContinuation = Continuation.None)
+        {
+            if (! (Parent is WrapPanel))
             {
-                throw new Exception("Can not use ReplaceWithExpression if Parent is not a Panel");
+                throw new Exception("Can not use ReplaceWithExpression if Parent is not a WrapPanel");
             }
             var panel = (Panel)Parent;
             int oldIndex = panel.Children.IndexOf(this);
@@ -195,7 +202,45 @@ namespace OmniPrototype
             {
                 throw new Exception ("Can not use ReplaceWithExpression if this ExpressionInputControl is not part of the Parent panel");
             }
+            if (! (panel.Parent is StackPanel))
+            {
+                throw new Exception("Can not use ReplaceWithExpression if Parent.Parent is not a StackPanel");
+            }
+            var linesPanel = (StackPanel) panel.Parent;
+            panel.Children.RemoveAt(oldIndex);
+            int oldLinesIndex = linesPanel.Children.IndexOf(panel);
+            if (oldLinesIndex < 0)
+            {
+                throw new Exception("Can not use ReplaceWithExpression if the parent WrapPanel is not part of it's parent StackPanel");
+            }
             
+            var childUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
+            bool isFirstInline = true;
+            foreach (var line in childUiExt.CreateControls2 (theContext, theExpression))
+            {
+                if (! isFirstInline)
+                {
+                    panel = new WrapPanel();
+                    linesPanel.Children.Insert(++oldLinesIndex, panel);
+                }
+                isFirstInline = false;
+                foreach (var control in line) {
+                    panel.Children.Insert (oldIndex++, control);
+                }
+            }
+            switch (theContinuation)
+            {
+                case Continuation.Beneath:
+                    var continuationInput = new ExpressionInputControl (Context, Scope, TargetType);
+                    continuationInput.ExpressionCreated = ExpressionCreated;
+                    var newPanel = new WrapPanel();
+                    linesPanel.Children.Insert(++oldLinesIndex, newPanel);
+                    newPanel.Children.Add(continuationInput);
+                    break;
+                case Continuation.RightTo:
+                    // TODO
+                    break;
+            }
         }
 
         /// TODO: Create a function that either creates an ExpressionInputControl or the controls for a given, existing expression.

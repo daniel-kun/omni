@@ -306,7 +306,7 @@ namespace OmniPrototype
                 isFirstInline = false;
                 foreach (var control in controlLine)
                 {
-                    thePanel.Children.Add(control);
+                    currentLinePanel.Children.Add(control);
                 }
             }
         }
