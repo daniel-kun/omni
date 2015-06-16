@@ -302,7 +302,6 @@ namespace OmniPrototype
                 if (! isFirstInline) {
                     currentLinePanel = new WrapPanel();
                     theLinesPanel.Children.Add(currentLinePanel);
-                    theLinesPanel.Children.Add(currentLinePanel);
                 }
                 isFirstInline = false;
                 foreach (var control in controlLine)

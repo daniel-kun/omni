@@ -34,8 +34,6 @@ namespace OmniPrototype
             {"if_statement",
 @"if (<condition>) {
     <body>
-} else {
-    <else-body>
 }"},
         };
 

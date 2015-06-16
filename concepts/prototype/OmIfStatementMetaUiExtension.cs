@@ -13,7 +13,78 @@ namespace OmniPrototype {
         {
         }
 
-        public override FrameworkElement CreateControls (
+        public override IEnumerable <List <FrameworkElement>> CreateControls2 (OmContext theContext, OmStatement theExpression)
+        {
+            var ifStatement = theExpression as OmIfStatement;
+            var ext = ifStatement.GetExtension(theContext, "omni.ui") as OmIfStatementUiExtension;
+            Action<OmExpression> applyCondition = (theConditionExpression) =>
+            {
+                //int dummy = 0;
+                //ext.ConditionInput.ReplaceWithExpression (theContext, theLinesPanel, thePanel, ref dummy, theConditionExpression);
+            };
+
+            var creator = new OmMetaUiControlCreator(
+                (string thePlaceholderName) =>
+                {
+                    if (thePlaceholderName == "condition")
+                    {
+                        return ExpressionInputControl.CreateInputOrControls(
+                            theContext,
+                            theExpression,
+                            ifStatement.Condition,
+                            OmType.Bool,
+                            (theInput) =>
+                            {
+                                theInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theConditionExpression) =>
+                                {
+                                    ifStatement.Condition = theConditionExpression as OmExpression;
+                                    theInput.ReplaceWithExpression2(theContext, theConditionExpression);
+                                };
+                            });
+                    }
+                    else if (thePlaceholderName == "body")
+                    {
+                        return ExpressionInputControl.CreateInputOrControls(
+                            theContext,
+                            theExpression,
+                            ifStatement.Body,
+                            OmType.Void,
+                            (theInput) =>
+                            {
+                                theInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theBodyStatement) =>
+                                {
+                                    ifStatement.Body = theBodyStatement;
+                                    theInput.ReplaceWithExpression2(theContext, theBodyStatement);
+                                };
+                            });
+                    }
+                        /*
+                    else if (thePlaceholderName == "else-body")
+                    {
+                        return ExpressionInputControl.CreateInputOrControls(
+                            theContext,
+                            theExpression,
+                            ifStatement.else,
+                            OmType.Void,
+                            (theInput) =>
+                            {
+                                theInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theBodyStatement) =>
+                                {
+                                    ifStatement.Body = theBodyStatement;
+                                    theInput.ReplaceWithExpression2(theContext, theBodyStatement);
+                                };
+                            });
+                    }
+                        */
+                    else
+                    {
+                        throw new Exception(string.Format("In OmVariableDeclarationExpressionMetaUiExtension: Unknown text placeholder {0}", thePlaceholderName));
+                    }
+                });
+            return creator.CreateControlsFromTemplate2(theContext, GetTemplate(theContext));
+        }
+
+        public override FrameworkElement CreateControls(
             OmContext theContext,
             StackPanel theLinesPanel,
             WrapPanel thePanel,

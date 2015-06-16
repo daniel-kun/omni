@@ -23,25 +23,31 @@ namespace OmniPrototype
                 {"variable_use_expression", "<variable>"},
 {"if_statement",
 @"(cond (<condition>)
-    (<body>)
-    (<else-body>)"},
+    (<body>)"},
             };
 
 
-            var binOp = new OmBinaryOperatorExpression()
+            var ifStmt = new OmIfStatement()
             {
-                LeftOperand = new OmIntLiteralExpression()
+                Condition = new OmBinaryOperatorExpression()
                 {
-                    Value = 42
+                    LeftOperand = new OmIntLiteralExpression()
+                    {
+                        Value = 42
+                    },
+                    RightOperand = new OmIntLiteralExpression()
+                    {
+                        Value = 1337
+                    },
+                    Operator = "+"
                 },
-                RightOperand = new OmIntLiteralExpression()
+                Body = new OmBoolLiteralExpression()
                 {
-                    Value = 1337
-                },
-                Operator = "+"
+                    Value = true
+                }
             };
-            CreateRootControl(mLinesPanel1, mContext1, binOp);
-            CreateRootControl(mLinesPanel2, mContext2, binOp);
+            CreateRootControl(mLinesPanel1, mContext1, ifStmt);
+            CreateRootControl(mLinesPanel2, mContext2, ifStmt);
 
             /*
              var rootBlock = new OmBlockStatement ();
