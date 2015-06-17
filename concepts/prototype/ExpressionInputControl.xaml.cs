@@ -63,9 +63,16 @@ namespace OmniPrototype
             if (e.AddedItems != null && e.AddedItems.Count > 0 && e.AddedItems[0] is OmEntityFactory)
             {
                 mPopup.IsOpen = false;
-                var factory = (OmEntityFactory)e.AddedItems[0];
-                Expression = factory.Create (Scope) as OmStatement;
+                SetExpression ((OmEntityFactory)e.AddedItems[0]);
             }
+        }
+
+        private void SetExpression (OmEntityFactory theFactory)
+        {
+            var newStatement = theFactory.Create(Scope) as OmStatement;
+            var uiExt = newStatement.GetMeta(Context).GetExtension("omni.ui") as OmMetaUiExtension;
+            uiExt.ApplyUiDefaults(Context, newStatement);
+            Expression = newStatement;
         }
 
         protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
@@ -102,7 +109,7 @@ namespace OmniPrototype
                 {
                     mPopup.IsOpen = false;
                     var factory = (OmEntityFactory)mPopupList.SelectedItem;
-                    Expression = factory.Create(Scope) as OmStatement;
+                    SetExpression(factory);
                 }
             }
         }
@@ -242,6 +249,7 @@ namespace OmniPrototype
                     var continuationInput = new ExpressionInputControl (Context, Scope, TargetType);
                     continuationInput.mInitializationRoutine = mInitializationRoutine;
                     continuationInput.ExpressionCreated = ExpressionCreated;
+                    continuationInput.ContinuationInputCreated = ContinuationInputCreated;
                     var newPanel = new WrapPanel();
                     linesPanel.Children.Insert(++oldLinesIndex, newPanel);
                     newPanel.Children.Add(continuationInput);

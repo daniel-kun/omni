@@ -13,7 +13,13 @@ namespace OmniPrototype {
         {
         }
 
-        public override IEnumerable <List <FrameworkElement>> CreateControls2 (OmContext theContext, OmStatement theExpression)
+        public override void ApplyUiDefaults(OmContext theContext, OmEntity theEntity)
+        {
+            var ifStatement = (OmIfStatement)theEntity;
+            ifStatement.Body = new OmBlockStatement();
+        }
+
+        public override IEnumerable<List<FrameworkElement>> CreateControls2(OmContext theContext, OmStatement theExpression)
         {
             var ifStatement = theExpression as OmIfStatement;
             var ext = ifStatement.GetExtension(theContext, "omni.ui") as OmIfStatementUiExtension;
