@@ -207,6 +207,7 @@ namespace OmniPrototype
                 var controls = new List<FrameworkElement>();
                 var newLineControls = new List <List<FrameworkElement>>();
                 var lineRest = line;
+                bool isBeforePlaceholder = true;
                 while (lineRest.Length > 0)
                 {
                     int freeInputIndex = lineRest.IndexOf("[");
@@ -218,7 +219,7 @@ namespace OmniPrototype
                         if (staticText.Length > 0)
                         {
                             //mGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1.0, GridUnitType.Auto) });
-                            CreateStaticTextControls(controls, staticText);
+                            CreateStaticTextControls(controls, staticText, isBeforePlaceholder);
                         }
                         lineRest = lineRest.Substring(freeInputIndex + 1);
                         int freeInputIndexEnd = lineRest.IndexOf("]");
@@ -228,6 +229,7 @@ namespace OmniPrototype
                         }
                         string freeInputName = lineRest.Substring(0, freeInputIndexEnd);
                         newLineControls.AddRange(Merge(controls, mExpressionPlaceholderRequested2(freeInputName)));
+                        isBeforePlaceholder = false;
                         lineRest = lineRest.Substring(freeInputIndexEnd + 1);
                     }
                     else if (expressionTypeIndex >= 0)
@@ -242,16 +244,17 @@ namespace OmniPrototype
                         }
                         if (staticText.Length > 0)
                         {
-                            CreateStaticTextControls(controls, staticText);
+                            CreateStaticTextControls(controls, staticText, isBeforePlaceholder);
                         }
                         var componentName = lineRest.Substring(0, expressionTypeIndexEnd);
                         newLineControls.AddRange(Merge(controls, mExpressionPlaceholderRequested2(componentName)));
+                        isBeforePlaceholder = false;
                         lineRest = lineRest.Substring(expressionTypeIndexEnd + 1);
                     }
                     else
                     {
                         // No placeholders any more
-                        CreateStaticTextControls(controls, lineRest);
+                        CreateStaticTextControls(controls, lineRest, isBeforePlaceholder);
                         lineRest = string.Empty;
                     }
                 }
@@ -263,9 +266,9 @@ namespace OmniPrototype
             }
         }
 
-        private static void CreateStaticTextControls (List<FrameworkElement> controls,string staticText)
+        private static void CreateStaticTextControls (List<FrameworkElement> theControls,string theStaticText, bool theIsBeforePlaceholder)
         {
-            foreach(var text in SplitAtBrackets(staticText)) {
+            foreach(var text in SplitAtBrackets(theStaticText)) {
                 var userControl = new UserControl () {
                     Content = new Viewbox () {
                         Child = new TextBlock() {
@@ -278,12 +281,12 @@ namespace OmniPrototype
                         VerticalAlignment = VerticalAlignment.Top,
                         StretchDirection = StretchDirection.DownOnly,
                     },
-                    VerticalAlignment = VerticalAlignment.Top,
+                    VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalContentAlignment = VerticalAlignment.Top,
+                    VerticalContentAlignment = theIsBeforePlaceholder ? VerticalAlignment.Top : VerticalAlignment.Bottom,
                     Background = Brushes.Beige
                 };
-                controls.Add(userControl);
+                theControls.Add(userControl);
             }
         }
 
