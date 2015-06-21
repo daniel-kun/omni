@@ -35,11 +35,11 @@
         <TextBlock Grid.Column="1" Grid.Row="0" Text="&lt;&gt;" TextAlignment="Center" FontSize="26"/>
         <TextBlock Grid.Column="2" Grid.Row="0" Text="Lisp-Style" TextAlignment="Center" FontSize="26"/>
         <ScrollViewer Grid.Column="0" Grid.Row="1"  Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
-            <StackPanel x:Name="mLinesPanel1"/>
+            <Grid x:Name="mLinesPanel1"/>
         </ScrollViewer>
         <UserControl Grid.Column="1" Grid.Row="1" Width="1" Background="LightGray" Margin="0,5,0,5"/>
         <ScrollViewer Grid.Column="2" Grid.Row="1"  Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Focusable="False">
-            <StackPanel x:Name="mLinesPanel2"/>
+            <Grid x:Name="mLinesPanel2"/>
         </ScrollViewer>
     </Grid>
 </Window>

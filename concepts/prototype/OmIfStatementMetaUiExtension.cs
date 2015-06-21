@@ -52,9 +52,14 @@ namespace OmniPrototype {
                     }
                     else if (thePlaceholderName == "body")
                     {
-                        var linesPanel = new StackPanel ();
+                        var linesPanel = new Grid ();
+                        linesPanel.RowDefinitions.Add(new RowDefinition()
+                        {
+                            Height = GridLength.Auto
+                        });
                         var panel = new WrapPanel ();
-                        linesPanel.Children.Add (panel);
+                        Grid.SetRow(panel, 0);
+                        linesPanel.Children.Add(panel);
                         OmMetaUiControlCreator.ApplyControlsToLayout (
                             linesPanel,
                             panel,

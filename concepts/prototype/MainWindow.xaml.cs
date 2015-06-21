@@ -103,12 +103,17 @@ namespace OmniPrototype
              */
         }
 
-        private static void CreateRootControl(StackPanel theLinesPanel, OmContext theContext, OmStatement theStatement)
+        private static void CreateRootControl(Grid theGrid, OmContext theContext, OmStatement theStatement)
         {
             var metaUiExt = theStatement.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
             var firstLinePanel = new WrapPanel();
-            theLinesPanel.Children.Add(firstLinePanel);
-            OmMetaUiControlCreator.ApplyControlsToLayout(theLinesPanel, firstLinePanel, metaUiExt.CreateControls2(theContext, theStatement));
+            theGrid.RowDefinitions.Add(new RowDefinition()
+            {
+                Height = GridLength.Auto
+            });
+            Grid.SetRow(firstLinePanel, theGrid.RowDefinitions.Count - 1);
+            theGrid.Children.Add(firstLinePanel);
+            OmMetaUiControlCreator.ApplyControlsToLayout(theGrid, firstLinePanel, metaUiExt.CreateControls2(theContext, theStatement));
         }
 
         private OmContext mContext1 = new OmContext();

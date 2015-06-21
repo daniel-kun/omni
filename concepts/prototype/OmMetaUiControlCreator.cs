@@ -60,7 +60,7 @@ namespace OmniPrototype
                 yield return c.ToString ();
             }
             */
-            const string match = "{}[]() \t\r\n";
+            const string match = "{}[]()"; // "{}()[] \t\r\n"
             int startIdx = 0;
             int endIdx = 0;
             do
@@ -266,31 +266,74 @@ namespace OmniPrototype
             }
         }
 
-        private static void CreateStaticTextControls (List<FrameworkElement> theControls,string theStaticText, bool theIsBeforePlaceholder)
+        class Parantheses : FrameworkElement
         {
-            foreach(var text in SplitAtBrackets(theStaticText)) {
-                var userControl = new UserControl () {
-                    Content = new Viewbox () {
-                        Child = new TextBlock() {
-                            Text = text,
-                            VerticalAlignment = VerticalAlignment.Top,
-                            Foreground = ColorFromText(text),
-                            Background = Brushes.Bisque,
-                            Margin = new Thickness(0)
-                        },
-                        VerticalAlignment = VerticalAlignment.Top,
-                        StretchDirection = StretchDirection.DownOnly,
-                    },
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalContentAlignment = theIsBeforePlaceholder ? VerticalAlignment.Top : VerticalAlignment.Bottom,
-                    Background = Brushes.Beige
-                };
-                theControls.Add(userControl);
+            public Parantheses()
+            {
+                MinWidth = 10;
+            }
+
+            protected override void OnRender(DrawingContext dc)
+            {
+                //var text = new FormattedText("foobar", CultureInfo.CurrentCulture, System.Windows.FlowDirection.LeftToRight, new Typeface ("Courier New"), 28.0, Brushes.Black);
+                //dc.DrawText(text, new Point(0, 0));
+                var w = RenderSize.Width;
+                var h = RenderSize.Height;
+                var segment = new QuadraticBezierSegment(new Point(0, h / 2.0), new Point(w, h), true);
+                var path = new PathGeometry(new List<PathFigure> { new PathFigure(new Point(w, 0), new List<PathSegment> { segment }, false) });
+                dc.DrawGeometry(Brushes.Transparent, new Pen(Brushes.Black, 0.5), path);
+                //base.OnRender(dc);
             }
         }
 
-        public static void ApplyControlsToLayout (StackPanel theLinesPanel, WrapPanel thePanel, IEnumerable <List <FrameworkElement>> theControls)
+        private static void CreateStaticTextControls (List<FrameworkElement> theControls,string theStaticText, bool theIsBeforePlaceholder)
+        {
+            foreach(var text in SplitAtBrackets(theStaticText)) {
+                /*
+                var viewBox = new Viewbox()
+                {
+                    Child = new TextBlock()
+                    {
+                        Text = text,
+                        Foreground = ColorFromText(text),
+                        Background = Brushes.Bisque,
+                        Margin = new Thickness(0)
+                    },
+                    StretchDirection = StretchDirection.Both,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    HorizontalAlignment = HorizontalAlignment.Left
+                };
+                */
+                // TODO Render text myself.... ;-(
+                /*var userControl = new UserControl () {
+                    Content = viewBox,
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalContentAlignment = VerticalAlignment.Top,
+                    HorizontalContentAlignment = HorizontalAlignment.Left,
+                    Background = Brushes.Beige
+                };
+                userControl.SizeChanged += (object sender, SizeChangedEventArgs e) =>
+                {
+                    viewBox.Width = userControl.ActualWidth;
+                    viewBox.Height = userControl.ActualHeight;
+                };
+                */
+                if (text == "(")
+                {
+                    theControls.Add(new Parantheses ());
+                }
+                else
+                {
+                    theControls.Add(new TextBlock()
+                    {
+                        Text = text
+                    });
+                }
+            }
+        }
+
+        public static void ApplyControlsToLayout (Grid theGrid, WrapPanel thePanel, IEnumerable <List <FrameworkElement>> theControls)
         {
             bool isFirstInline = true;
             WrapPanel currentLinePanel = thePanel;
@@ -298,7 +341,12 @@ namespace OmniPrototype
             {
                 if (! isFirstInline) {
                     currentLinePanel = new WrapPanel();
-                    theLinesPanel.Children.Add(currentLinePanel);
+                    theGrid.RowDefinitions.Add(new RowDefinition()
+                    {
+                        Height = GridLength.Auto
+                    });
+                    Grid.SetRow(currentLinePanel, theGrid.RowDefinitions.Count - 1);
+                    theGrid.Children.Add(currentLinePanel);
                 }
                 isFirstInline = false;
                 foreach (var control in controlLine)

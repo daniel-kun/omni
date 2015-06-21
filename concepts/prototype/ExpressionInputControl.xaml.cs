@@ -129,7 +129,7 @@ namespace OmniPrototype
                     handler(this, value);
                 }
                 // And now dissolve into the void
-                var panel = Parent as StackPanel;
+                var panel = Parent as Panel;
                 if (panel != null)
                 {
                     panel.Children.Remove(this);
@@ -216,16 +216,16 @@ namespace OmniPrototype
             {
                 throw new Exception ("Can not use ReplaceWithExpression2 if this ExpressionInputControl is not part of the Parent panel");
             }
-            if (! (panel.Parent is StackPanel))
+            if (! (panel.Parent is Grid))
             {
-                throw new Exception("Can not use ReplaceWithExpression2 if Parent.Parent is not a StackPanel");
+                throw new Exception("Can not use ReplaceWithExpression2 if Parent.Parent is not a Grid");
             }
-            var linesPanel = (StackPanel) panel.Parent;
+            var linesPanel = (Grid)panel.Parent;
             panel.Children.RemoveAt(oldIndex);
             int oldLinesIndex = linesPanel.Children.IndexOf(panel);
             if (oldLinesIndex < 0)
             {
-                throw new Exception("Can not use ReplaceWithExpression2 if the parent WrapPanel is not part of it's parent StackPanel");
+                throw new Exception("Can not use ReplaceWithExpression2 if the parent WrapPanel is not part of it's parent Grid");
             }
             
             var childUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
@@ -235,7 +235,24 @@ namespace OmniPrototype
                 if (! isFirstInline)
                 {
                     panel = new WrapPanel();
-                    linesPanel.Children.Insert(++oldLinesIndex, panel);
+                    linesPanel.RowDefinitions.Add(new RowDefinition()
+                    {
+                        Height = GridLength.Auto
+                    });
+                    foreach (UIElement child in linesPanel.Children)
+                    {
+                        int row = Grid.GetRow(child);
+                        if (row > oldLinesIndex)
+                        {
+                            Grid.SetRow(child, row);
+                        }
+                    }
+                    Grid.SetRow(panel, ++oldLinesIndex);
+                    linesPanel.RowDefinitions.Add(new RowDefinition()
+                    {
+                        Height = GridLength.Auto
+                    });
+                    linesPanel.Children.Add(panel);
                     oldIndex = 0;
                 }
                 isFirstInline = false;
@@ -251,8 +268,21 @@ namespace OmniPrototype
                     continuationInput.ExpressionCreated = ExpressionCreated;
                     continuationInput.ContinuationInputCreated = ContinuationInputCreated;
                     var newPanel = new WrapPanel();
-                    linesPanel.Children.Insert(++oldLinesIndex, newPanel);
+                    foreach (UIElement child in linesPanel.Children)
+                    {
+                        int row = Grid.GetRow(child);
+                        if (row > oldLinesIndex)
+                        {
+                            Grid.SetRow(child, row);
+                        }
+                    }
+                    linesPanel.RowDefinitions.Add(new RowDefinition()
+                    {
+                        Height = GridLength.Auto
+                    });
+                    Grid.SetRow(newPanel, ++oldLinesIndex);
                     newPanel.Children.Add(continuationInput);
+                    linesPanel.Children.Add(newPanel);
                     if (continuationInput.mInitializationRoutine != null) {
                         continuationInput.mInitializationRoutine (continuationInput);
                     }
