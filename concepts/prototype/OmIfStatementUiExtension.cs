@@ -6,5 +6,18 @@ using System.Threading.Tasks;
 
 namespace OmniPrototype {
     public class OmIfStatementUiExtension : OmEntityUiExtension {
+
+        public ExpressionInputControl ConditionInput
+        {
+            get;
+            set;
+        }
+
+        public ExpressionInputControl BodyInput
+        {
+            get;
+            set;
+        }
+
     }
 }

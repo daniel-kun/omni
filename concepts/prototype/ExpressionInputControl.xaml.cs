@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
@@ -18,6 +19,10 @@ namespace OmniPrototype
         public delegate void ExpressionCreatedHandler(ExpressionInputControl theSender, OmStatement theExpression);
 
         public event ExpressionCreatedHandler ExpressionCreated;
+
+        public delegate void ContinuationInputCreatedHandler (ExpressionInputControl theSender);
+
+        public event ContinuationInputCreatedHandler ContinuationInputCreated;
 
         public ExpressionInputControl (OmContext theContext, OmScope theScope, OmType theType)
         {
@@ -58,9 +63,16 @@ namespace OmniPrototype
             if (e.AddedItems != null && e.AddedItems.Count > 0 && e.AddedItems[0] is OmEntityFactory)
             {
                 mPopup.IsOpen = false;
-                var factory = (OmEntityFactory)e.AddedItems[0];
-                Expression = factory.Create (Scope) as OmStatement;
+                SetExpression ((OmEntityFactory)e.AddedItems[0]);
             }
+        }
+
+        private void SetExpression (OmEntityFactory theFactory)
+        {
+            var newStatement = theFactory.Create(Scope) as OmStatement;
+            var uiExt = newStatement.GetMeta(Context).GetExtension("omni.ui") as OmMetaUiExtension;
+            uiExt.ApplyUiDefaults(Context, newStatement);
+            Expression = newStatement;
         }
 
         protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
@@ -97,7 +109,7 @@ namespace OmniPrototype
                 {
                     mPopup.IsOpen = false;
                     var factory = (OmEntityFactory)mPopupList.SelectedItem;
-                    Expression = factory.Create(Scope) as OmStatement;
+                    SetExpression(factory);
                 }
             }
         }
@@ -117,7 +129,7 @@ namespace OmniPrototype
                     handler(this, value);
                 }
                 // And now dissolve into the void
-                var panel = Parent as StackPanel;
+                var panel = Parent as Panel;
                 if (panel != null)
                 {
                     panel.Children.Remove(this);
@@ -157,6 +169,136 @@ namespace OmniPrototype
             */
         }
 
+        private Action<ExpressionInputControl> mInitializationRoutine;
+
+        public static IEnumerable<List <FrameworkElement>> CreateInputOrControls (OmContext                      theContext,
+                                                                                  OmScope                        theScope,
+                                                                                  OmStatement                    theStatement,
+                                                                                  OmType                         theTargetType,
+                                                                                  Action<ExpressionInputControl> theInitializeInput)
+        {
+            if (theStatement == null)
+            {
+                // Yay, create a cool input control now:
+                var input = new ExpressionInputControl(theContext, theScope, theTargetType);
+                input.mInitializationRoutine = theInitializeInput;
+                input.mInitializationRoutine (input);
+                yield return new List <FrameworkElement> () { input };
+            }
+            else
+            {
+                var childUiExt = theStatement.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
+                foreach (var controls in childUiExt.CreateControls2 (theContext, theStatement))
+                {
+                    yield return controls;
+                }
+            }
+        }
+
+        /// Specifies whether, when an expression has been selected for this input, a new ExpressionInputControl should be created and displayed
+        /// next to or beneath the old one. Used for e.g. block statements, parameter lists and any other kinds of lists of elements.
+        public enum Continuation
+        {
+            None,
+            RightTo,
+            Beneath
+        }
+
+        public void ReplaceWithExpression2(OmContext theContext, OmStatement theExpression, Continuation theContinuation = Continuation.None)
+        {
+            if (! (Parent is WrapPanel))
+            {
+                throw new Exception("Can not use ReplaceWithExpression2 if Parent is not a WrapPanel");
+            }
+            var panel = (Panel)Parent;
+            int oldIndex = panel.Children.IndexOf(this);
+            if (oldIndex < 0)
+            {
+                throw new Exception ("Can not use ReplaceWithExpression2 if this ExpressionInputControl is not part of the Parent panel");
+            }
+            if (! (panel.Parent is Grid))
+            {
+                throw new Exception("Can not use ReplaceWithExpression2 if Parent.Parent is not a Grid");
+            }
+            var linesPanel = (Grid)panel.Parent;
+            panel.Children.RemoveAt(oldIndex);
+            int oldLinesIndex = linesPanel.Children.IndexOf(panel);
+            if (oldLinesIndex < 0)
+            {
+                throw new Exception("Can not use ReplaceWithExpression2 if the parent WrapPanel is not part of it's parent Grid");
+            }
+            
+            var childUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
+            bool isFirstInline = true;
+            foreach (var line in childUiExt.CreateControls2 (theContext, theExpression))
+            {
+                if (! isFirstInline)
+                {
+                    panel = new WrapPanel();
+                    linesPanel.RowDefinitions.Add(new RowDefinition()
+                    {
+                        Height = GridLength.Auto
+                    });
+                    foreach (UIElement child in linesPanel.Children)
+                    {
+                        int row = Grid.GetRow(child);
+                        if (row > oldLinesIndex)
+                        {
+                            Grid.SetRow(child, row);
+                        }
+                    }
+                    Grid.SetRow(panel, ++oldLinesIndex);
+                    linesPanel.RowDefinitions.Add(new RowDefinition()
+                    {
+                        Height = GridLength.Auto
+                    });
+                    linesPanel.Children.Add(panel);
+                    oldIndex = 0;
+                }
+                isFirstInline = false;
+                foreach (var control in line) {
+                    panel.Children.Insert (oldIndex++, control);
+                }
+            }
+            switch (theContinuation)
+            {
+                case Continuation.Beneath:
+                    var continuationInput = new ExpressionInputControl (Context, Scope, TargetType);
+                    continuationInput.mInitializationRoutine = mInitializationRoutine;
+                    continuationInput.ExpressionCreated = ExpressionCreated;
+                    continuationInput.ContinuationInputCreated = ContinuationInputCreated;
+                    var newPanel = new WrapPanel();
+                    foreach (UIElement child in linesPanel.Children)
+                    {
+                        int row = Grid.GetRow(child);
+                        if (row > oldLinesIndex)
+                        {
+                            Grid.SetRow(child, row);
+                        }
+                    }
+                    linesPanel.RowDefinitions.Add(new RowDefinition()
+                    {
+                        Height = GridLength.Auto
+                    });
+                    Grid.SetRow(newPanel, ++oldLinesIndex);
+                    newPanel.Children.Add(continuationInput);
+                    linesPanel.Children.Add(newPanel);
+                    if (continuationInput.mInitializationRoutine != null) {
+                        continuationInput.mInitializationRoutine (continuationInput);
+                    }
+                    var handler = ContinuationInputCreated;
+                    if (handler != null) {
+                        handler (continuationInput);
+                    }
+                    break;
+                case Continuation.RightTo:
+                    // TODO
+                    break;
+            }
+        }
+
+        /// TODO: Create a function that either creates an ExpressionInputControl or the controls for a given, existing expression.
+        /// That way, a replace while constructing a new statement is not needed anymore, hence the ref theDefaultPos/ref thePosition/ref theIndex parameter is not needed anymore.
         public FrameworkElement ReplaceWithExpression (OmContext theContext, StackPanel theLinesPanel, WrapPanel thePanel, ref int theDefaultPos, OmStatement theExpression)
         {
             if (theExpression == null)
@@ -164,28 +306,39 @@ namespace OmniPrototype
                 return this;
             }
             var childUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
-            WrapPanel p = Parent as WrapPanel;
-            if (p == null)
+            Panel parent;
+            WrapPanel panel;
+            int index;
+            if (Parent is WrapPanel)
             {
-                p = thePanel;
+                panel = (WrapPanel)Parent;
+                parent = panel;
+                index = parent.Children.IndexOf(this);
+                parent.Children.RemoveAt(index);
             }
-            int pos = thePanel.Children.IndexOf(this);
-            if (pos < 0)
+            else if (Parent is StackPanel)
             {
-                pos = theDefaultPos;
+                parent = (StackPanel)Parent;
+                index = 0;
+                panel = new WrapPanel();
+                int myIndex = parent.Children.IndexOf(this);
+                parent.Children.Insert(myIndex, panel);
+                parent.Children.RemoveAt(myIndex);
             }
             else
             {
-                thePanel.Children.RemoveAt(pos);
+                panel = thePanel;
+                index = theDefaultPos;
             }
+
             Debug.Assert(thePanel.Children.IndexOf(this) == -1);
             bool wasFocused = IsKeyboardFocusWithin;
-            FrameworkElement focus = childUiExt.CreateControls(theContext, theLinesPanel, thePanel, ref pos, theExpression);
+            FrameworkElement focus = childUiExt.CreateControls(theContext, theLinesPanel, panel, ref index, theExpression);
             if (wasFocused && focus != null)
             {
                 focus.Focus();
             }
-            theDefaultPos = pos;
+            theDefaultPos = index;
             return null;
         }
 

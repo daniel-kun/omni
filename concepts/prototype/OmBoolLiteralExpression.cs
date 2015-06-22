@@ -27,7 +27,7 @@ namespace OmniPrototype
 
         private bool mValue = false;
 
-        public new OmMeta GetMetaStatic (OmContext theContext)
+        public static new OmMeta GetMetaStatic (OmContext theContext)
         {
             return theContext.BoolLiteralExpressionMeta;
         }
