@@ -51,6 +51,12 @@ Higher productivity and quality for programmers
 
 # Status quo
 
+Update: 23.06.2015
+
+More work on the input system Prototype, looks good so far. Well, not exactly pretty, but the mechanics are sound.
+Look at this awesome stuff:
+![](media/OmniInputMathTermsWithFractal.gif)
+
 Update: 10.06.2015
 
 The progress on the Prototype is coming along nicely. I chose to implement the prototype in C#, because a) I am much faster in GUI coding in C# + WPF than in C++ with Qt (but can't use it for the final product because it is not cross-platform) and b) I will not be able to copy+paste quick&dirty-code from the prototype to the production code. Here's a small teaser:
