@@ -297,51 +297,6 @@ namespace OmniPrototype
             }
         }
 
-        /// TODO: Create a function that either creates an ExpressionInputControl or the controls for a given, existing expression.
-        /// That way, a replace while constructing a new statement is not needed anymore, hence the ref theDefaultPos/ref thePosition/ref theIndex parameter is not needed anymore.
-        public FrameworkElement ReplaceWithExpression (OmContext theContext, StackPanel theLinesPanel, WrapPanel thePanel, ref int theDefaultPos, OmStatement theExpression)
-        {
-            if (theExpression == null)
-            {
-                return this;
-            }
-            var childUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
-            Panel parent;
-            WrapPanel panel;
-            int index;
-            if (Parent is WrapPanel)
-            {
-                panel = (WrapPanel)Parent;
-                parent = panel;
-                index = parent.Children.IndexOf(this);
-                parent.Children.RemoveAt(index);
-            }
-            else if (Parent is StackPanel)
-            {
-                parent = (StackPanel)Parent;
-                index = 0;
-                panel = new WrapPanel();
-                int myIndex = parent.Children.IndexOf(this);
-                parent.Children.Insert(myIndex, panel);
-                parent.Children.RemoveAt(myIndex);
-            }
-            else
-            {
-                panel = thePanel;
-                index = theDefaultPos;
-            }
-
-            Debug.Assert(thePanel.Children.IndexOf(this) == -1);
-            bool wasFocused = IsKeyboardFocusWithin;
-            FrameworkElement focus = childUiExt.CreateControls(theContext, theLinesPanel, panel, ref index, theExpression);
-            if (wasFocused && focus != null)
-            {
-                focus.Focus();
-            }
-            theDefaultPos = index;
-            return null;
-        }
-
         private OmStatement mExpression = null;
 
 
