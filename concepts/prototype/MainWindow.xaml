@@ -20,6 +20,7 @@
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="1"/>
         </Style>
+        <!--
         <Style TargetType="WrapPanel">
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Background" Value="Yellow"/>
@@ -28,6 +29,7 @@
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Background" Value="Blue"/>
         </Style>
+        -->
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
