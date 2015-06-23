@@ -18,7 +18,7 @@ namespace OmniPrototype
         public readonly OmMeta VariableDeclarationExpressionMeta = new OmMeta ("variable_declaration_expression", new OmVariableDeclarationExpressionParser ());
         public readonly OmMeta BoolLiteralExpressionMeta         = new OmMeta ("bool_literal_expression", new OmBoolLiteralExpressionParser ());
         public readonly OmMeta BlockStatementMeta                = new OmMeta ("block", null);
-        public readonly OmMeta IntLiteralExpressionMeta          = new OmMeta ("int_literal_expression", null);
+        public readonly OmMeta IntLiteralExpressionMeta          = new OmMeta ("int_literal_expression", new OmIntLiteralParser ());
         public readonly OmMeta VariableUseExpressionMeta         = new OmMeta ("variable_use_expression", new OmVariableUseExpressionParser ());
         public readonly OmMeta BinaryOperatorExpressionMeta      = new OmMeta ("binary_operator_expression", null);
         public readonly OmMeta IfStatementMeta                   = new OmMeta ("if_statement", new OmIfStatementParser ());

@@ -115,6 +115,8 @@
     <Compile Include="OmIfStatementUiExtension.cs" />
     <Compile Include="OmIntLiteralExpression.cs" />
     <Compile Include="OmIntLiteralExpressionUiExtension.cs" />
+    <Compile Include="OmIntLiteralFactory.cs" />
+    <Compile Include="OmIntLiteralParser.cs" />
     <Compile Include="OmIntLiteralxpressionMetaUiExtension.cs" />
     <Compile Include="OmMeta.cs" />
     <Compile Include="OmMetaExtension.cs" />

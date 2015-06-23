@@ -26,7 +26,6 @@ namespace OmniPrototype
     (<body>)"},
             };
 
-
             var block = new OmBlockStatement ();
             block.AddComponent ("1", new OmIntLiteralExpression()
             {
