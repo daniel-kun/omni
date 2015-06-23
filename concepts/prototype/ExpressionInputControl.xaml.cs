@@ -188,7 +188,7 @@ namespace OmniPrototype
             else
             {
                 var childUiExt = theStatement.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
-                foreach (var controls in childUiExt.CreateControls2 (theContext, theStatement))
+                foreach (var controls in childUiExt.CreateControls (theContext, theStatement))
                 {
                     yield return controls;
                 }
@@ -204,7 +204,7 @@ namespace OmniPrototype
             Beneath
         }
 
-        public void ReplaceWithExpression2(OmContext theContext, OmStatement theExpression, Continuation theContinuation = Continuation.None)
+        public void ReplaceWithExpression(OmContext theContext, OmStatement theExpression, Continuation theContinuation = Continuation.None)
         {
             if (! (Parent is WrapPanel))
             {
@@ -230,7 +230,7 @@ namespace OmniPrototype
             
             var childUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
             bool isFirstInline = true;
-            foreach (var line in childUiExt.CreateControls2 (theContext, theExpression))
+            foreach (var line in childUiExt.CreateControls (theContext, theExpression))
             {
                 if (! isFirstInline)
                 {

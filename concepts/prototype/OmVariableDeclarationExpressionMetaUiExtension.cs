@@ -20,7 +20,7 @@ namespace OmniPrototype
         /**
         @return First list entry is the in-place list of controls, the rest are new-line controls.
         **/
-        public override IEnumerable<List<FrameworkElement>> CreateControls2(OmContext theContext, OmStatement theExpression)
+        public override IEnumerable<List<FrameworkElement>> CreateControls(OmContext theContext, OmStatement theExpression)
         {
             var ext = theExpression.GetExtension(theContext, "omni.ui") as OmVariableDeclarationUiExtension;
             var varDecl = theExpression as OmVariableDeclarationExpression;

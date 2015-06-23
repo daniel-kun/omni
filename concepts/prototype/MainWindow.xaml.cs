@@ -112,7 +112,7 @@ namespace OmniPrototype
             });
             Grid.SetRow(firstLinePanel, theGrid.RowDefinitions.Count - 1);
             theGrid.Children.Add(firstLinePanel);
-            OmMetaUiControlCreator.ApplyControlsToLayout(theGrid, firstLinePanel, metaUiExt.CreateControls2(theContext, theStatement));
+            OmMetaUiControlCreator.ApplyControlsToLayout(theGrid, firstLinePanel, metaUiExt.CreateControls(theContext, theStatement));
         }
 
         private OmContext mContext1 = new OmContext();

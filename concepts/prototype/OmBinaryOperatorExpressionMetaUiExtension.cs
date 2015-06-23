@@ -14,18 +14,18 @@ namespace OmniPrototype
 
         private delegate FrameworkElement applyOperand(WrapPanel thePanel, ref int theIndex);
 
-        public override IEnumerable<List<FrameworkElement>> CreateControls2 (OmContext theContext, OmStatement theExpression)
+        public override IEnumerable<List<FrameworkElement>> CreateControls (OmContext theContext, OmStatement theExpression)
         {
             var ext = theExpression.GetExtension(theContext, "omni.ui") as OmBinaryOperatorExpressionUiExtension;
             var binOpExpr = theExpression as OmBinaryOperatorExpression;
 
             binOpExpr.LeftOperandChanged += (OmEntity theSender) =>
             {
-                ext.LeftOperandControl.ReplaceWithExpression2(theContext, binOpExpr.LeftOperand);
+                ext.LeftOperandControl.ReplaceWithExpression(theContext, binOpExpr.LeftOperand);
             };
             binOpExpr.RightOperandChanged += (OmEntity theSender) =>
             {
-                ext.RightOperandControl.ReplaceWithExpression2(theContext, binOpExpr.RightOperand);
+                ext.RightOperandControl.ReplaceWithExpression(theContext, binOpExpr.RightOperand);
             };
             binOpExpr.OperatorChanged += (OmEntity theSender) =>
             {

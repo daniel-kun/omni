@@ -16,7 +16,7 @@
             return new OmBoolLiteralExpressionUiExtension ();
         }
 
-        public override IEnumerable<List<FrameworkElement>> CreateControls2 (OmContext theContext, OmStatement theExpression)
+        public override IEnumerable<List<FrameworkElement>> CreateControls (OmContext theContext, OmStatement theExpression)
         {
             var ext = theExpression.GetExtension(theContext, "omni.ui") as OmBoolLiteralExpressionUiExtension;
             var literalExpr = theExpression as OmBoolLiteralExpression;

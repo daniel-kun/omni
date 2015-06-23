@@ -19,16 +19,16 @@ namespace OmniPrototype {
             ifStatement.Body = new OmBlockStatement();
         }
 
-        public override IEnumerable<List<FrameworkElement>> CreateControls2(OmContext theContext, OmStatement theExpression)
+        public override IEnumerable<List<FrameworkElement>> CreateControls(OmContext theContext, OmStatement theExpression)
         {
             var ifStatement = theExpression as OmIfStatement;
             var ext = ifStatement.GetExtension(theContext, "omni.ui") as OmIfStatementUiExtension;
 
             ifStatement.BodyChanged += (theIfStatement) => {
-                ext.BodyInput.ReplaceWithExpression2 (theContext, ifStatement.Body, ExpressionInputControl.Continuation.Beneath);
+                ext.BodyInput.ReplaceWithExpression (theContext, ifStatement.Body, ExpressionInputControl.Continuation.Beneath);
             };
             ifStatement.ConditionChanged += (theIfStatement) => {
-                ext.ConditionInput.ReplaceWithExpression2 (theContext, ifStatement.Condition);
+                ext.ConditionInput.ReplaceWithExpression (theContext, ifStatement.Condition);
             };
 
             var creator = new OmMetaUiControlCreator(

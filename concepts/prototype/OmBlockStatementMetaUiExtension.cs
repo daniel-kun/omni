@@ -12,14 +12,14 @@ namespace OmniPrototype {
         {
         }
 
-        public override IEnumerable <List <FrameworkElement>> CreateControls2(OmContext theContext, OmStatement theExpression)
+        public override IEnumerable <List <FrameworkElement>> CreateControls(OmContext theContext, OmStatement theExpression)
         {
             // thePanel is ignored, because blocks create new lines
             var block = theExpression as OmBlockStatement;
             var ext = block.GetExtension(theContext, "omni.ui") as OmBlockStatementUiExtension;
             block.ComponentAdded += (OmEntity theSender, string theKey, OmEntity theChild) =>
             {
-                ext.AddExpressionControl.ReplaceWithExpression2(theContext, theChild as OmStatement, ExpressionInputControl.Continuation.Beneath);
+                ext.AddExpressionControl.ReplaceWithExpression(theContext, theChild as OmStatement, ExpressionInputControl.Continuation.Beneath);
             };
 
             var creator = new OmMetaUiControlCreator(

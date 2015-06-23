@@ -24,7 +24,7 @@ namespace OmniPrototype
         /**
         @return First list entry is the in-place list of controls, the rest are new-line controls.
         **/
-        public virtual IEnumerable<List<FrameworkElement>> CreateControls2(OmContext theContext, OmStatement theExpression)
+        public virtual IEnumerable<List<FrameworkElement>> CreateControls(OmContext theContext, OmStatement theExpression)
         {
             return new List<List<FrameworkElement>>();
         }
