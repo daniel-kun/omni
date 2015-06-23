@@ -45,6 +45,10 @@ namespace OmniPrototype
                             (theInput) =>
                             {
                                 ext.LeftOperandControl = theInput;
+                                ext.LeftOperandControl.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theLeftExpression) =>
+                                {
+                                    binOpExpr.LeftOperand = theLeftExpression as OmExpression;
+                                };
                             });
                     }
                     else if (theName == "right")
@@ -57,6 +61,10 @@ namespace OmniPrototype
                             (theInput) =>
                             {
                                 ext.RightOperandControl = theInput;
+                                ext.RightOperandControl.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theRightExpression) =>
+                                {
+                                    binOpExpr.RightOperand = theRightExpression as OmExpression;
+                                };
                             });
                     }
                     else if (theName == "operator")

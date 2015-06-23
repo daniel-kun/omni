@@ -91,7 +91,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="OmBinaryOperatorExpression.cs" />
+    <Compile Include="OmBinaryOperatorExpressionFactory.cs" />
     <Compile Include="OmBinaryOperatorExpressionMetaUiExtension.cs" />
+    <Compile Include="OmBinaryOperatorExpressionParser.cs" />
     <Compile Include="OmBinaryOperatorExpressionUiExtension.cs" />
     <Compile Include="OmBlockStatement.cs" />
     <Compile Include="OmBlockStatementMetaUiExtension.cs" />
