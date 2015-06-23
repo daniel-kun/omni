@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -60,7 +61,7 @@ namespace OmniPrototype
                 yield return c.ToString ();
             }
             */
-            const string match = "{}[]()"; // "{}()[] \t\r\n"
+            const string match = "{}[]() \t\r\n"; // "{}()[] \t\r\n"
             int startIdx = 0;
             int endIdx = 0;
             do
@@ -266,23 +267,92 @@ namespace OmniPrototype
             }
         }
 
-        class Parantheses : FrameworkElement
+        public partial class TextStretchBlock2 : UserControl
         {
-            public Parantheses()
+            public TextStretchBlock2()
             {
-                MinWidth = 10;
+                Margin = new Thickness(3);
             }
 
-            protected override void OnRender(DrawingContext dc)
+            private FormattedText CreateFormattedText()
             {
-                //var text = new FormattedText("foobar", CultureInfo.CurrentCulture, System.Windows.FlowDirection.LeftToRight, new Typeface ("Courier New"), 28.0, Brushes.Black);
-                //dc.DrawText(text, new Point(0, 0));
-                var w = RenderSize.Width;
-                var h = RenderSize.Height;
-                var segment = new QuadraticBezierSegment(new Point(0, h / 2.0), new Point(w, h), true);
-                var path = new PathGeometry(new List<PathFigure> { new PathFigure(new Point(w, 0), new List<PathSegment> { segment }, false) });
-                dc.DrawGeometry(Brushes.Transparent, new Pen(Brushes.Black, 0.5), path);
-                //base.OnRender(dc);
+                var typeFaceEnum = FontFamily.GetTypefaces().GetEnumerator();
+                typeFaceEnum.MoveNext();
+                return new FormattedText(
+                    Text,
+                    CultureInfo.CurrentCulture,
+                    FlowDirection,
+                    typeFaceEnum.Current,
+                    FontSize,
+                    Foreground);
+            }
+
+            protected override Size MeasureOverride(Size constraint)
+            {
+                var geometry = CreateFormattedText().BuildGeometry(new Point(0, 0));
+                if (constraint.Height == 0)
+                {
+                    return new Size(0, 0);
+                }
+                else if (double.IsInfinity(geometry.Bounds.Width) || double.IsInfinity(geometry.Bounds.Height))
+                {
+                    return new Size(0, 0);
+                }
+                else if (double.IsInfinity(constraint.Height))
+                {
+                    return new Size(geometry.Bounds.Width, geometry.Bounds.Height);
+                }
+                else
+                {
+                    return new Size(geometry.Bounds.Width, constraint.Height);
+                }
+            }
+
+            protected override void OnRender(DrawingContext drawingContext)
+            {
+                base.OnRender(drawingContext);
+                var geometry = CreateFormattedText().BuildGeometry(new Point(0, 0));
+                if (geometry.Bounds.Width != 0 &&
+                    geometry.Bounds.Height != 0 &&
+                    !double.IsInfinity(geometry.Bounds.Width) &&
+                    !double.IsInfinity(geometry.Bounds.Height))
+                {
+                    var transforms = new TransformGroup();
+                    transforms.Children.Add(new TranslateTransform(-geometry.Bounds.Left, -geometry.Bounds.Top));
+                    transforms.Children.Add(new ScaleTransform(ActualWidth / geometry.Bounds.Width, ActualHeight / geometry.Bounds.Height));
+                    geometry.Transform = transforms;
+
+                    drawingContext.DrawGeometry(Brushes.Black, new Pen(Brushes.Black, 0.18), geometry);
+                }
+            }
+
+            public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+                "Text",
+                typeof(string),
+                typeof(TextStretchBlock2),
+                new FrameworkPropertyMetadata()
+                {
+                    AffectsMeasure = true,
+                    AffectsRender = true,
+                    PropertyChangedCallback = TextPropertyChanged
+                });
+
+            private static void TextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+            {
+                var self = (TextStretchBlock2)d;
+                self.InvalidateMeasure();
+            }
+
+            public string Text
+            {
+                get
+                {
+                    return (string)GetValue(TextProperty);
+                }
+                set
+                {
+                    SetValue(TextProperty, value);
+                }
             }
         }
 
@@ -319,9 +389,9 @@ namespace OmniPrototype
                     viewBox.Height = userControl.ActualHeight;
                 };
                 */
-                if (text == "(")
+                if (text.Contains("(") || text.Contains(")"))
                 {
-                    theControls.Add(new Parantheses ());
+                    theControls.Add(new TextStretchBlock2 () { Text = text });
                 }
                 else
                 {
