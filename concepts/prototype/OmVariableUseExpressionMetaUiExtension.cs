@@ -39,7 +39,7 @@ namespace OmniPrototype
                         throw new Exception(string.Format("Unknown placeholder name {0} for OmVariableUseExpression", thePlaceholderName));
                     }
                 });
-            return creator.CreateControlsFromTemplate2(theContext, GetTemplate(theContext));
+            return creator.CreateControlsFromTemplate(theContext, GetTemplate(theContext));
         }
 
     }

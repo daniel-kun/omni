@@ -76,7 +76,7 @@ namespace OmniPrototype
                     }
 
                 });
-            return creator.CreateControlsFromTemplate2(theContext, GetTemplate(theContext));
+            return creator.CreateControlsFromTemplate(theContext, GetTemplate(theContext));
         }
 
     }

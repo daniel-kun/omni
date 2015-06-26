@@ -98,7 +98,7 @@ namespace OmniPrototype
             }
         }
 
-        public IEnumerable <List <FrameworkElement>> CreateControlsFromTemplate2 (OmContext theContext, string theTemplate)
+        public IEnumerable <List <FrameworkElement>> CreateControlsFromTemplate (OmContext theContext, string theTemplate)
         {
             string[] lines = theTemplate.Split(new string[] { "\r\n" }, System.StringSplitOptions.None);
             foreach (var line in lines)
