@@ -27,14 +27,25 @@ namespace OmniPrototype
             };
 
             var block = new OmBlockStatement ();
-            block.AddComponent ("1", new OmIntLiteralExpression()
+            var variable1 = new OmVariableDeclarationExpression()
             {
-                Value = 42
+                InitializationExpression = new OmIntLiteralExpression()
+                {
+                    Value = 10
+                },
+                Name = "foobar"
+            };
+            block.AddComponent ("1", variable1);
+            block.AddComponent("2", new OmVariableUseExpression()
+            {
+                Variable = variable1
             });
+            /*
             block.AddComponent("2", new OmIntLiteralExpression()
             {
                 Value = 1337
             });
+            */
             CreateRootControl(mLinesPanel1, mContext1, block);
             CreateRootControl(mLinesPanel2, mContext2, block);
 

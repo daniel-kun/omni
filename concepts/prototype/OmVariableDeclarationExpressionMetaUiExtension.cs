@@ -25,32 +25,22 @@ namespace OmniPrototype
             var ext = theExpression.GetExtension(theContext, "omni.ui") as OmVariableDeclarationUiExtension;
             var varDecl = theExpression as OmVariableDeclarationExpression;
 
-            Action applyName = () =>
+            varDecl.NameChanged += (OmEntity theSender) =>
             {
                 if (ext.NameInput.Text != varDecl.Name)
                 {
                     ext.NameInput.Text = varDecl.Name;
                 }
             };
-
-            varDecl.NameChanged += (OmEntity theSender) =>
-            {
-                applyName();
-            };
-
-            /*
             varDecl.InitializationExpressionChanged += (OmEntity theSender) =>
             {
-
-                ext.InitializationExpressionInput.ReplaceWithExpression(theContext, theLinesPanel, thePanel, ref index, varDecl.InitializationExpression);
+                ext.InitializationExpressionInput.ReplaceWithExpression(theContext, varDecl.InitializationExpression);
             };
-            */
 
-            FrameworkElement focusElement = null;
             var creator = new OmMetaUiControlCreator(
-                (WrapPanel theP, ref int thePlaceholderIndex, string theName) =>
+                (string thePlaceholderName) =>
                 {
-                    if (theName == "name")
+                    if (thePlaceholderName == "name")
                     {
                         ext.NameInput = new TextBox()
                         {
@@ -62,14 +52,13 @@ namespace OmniPrototype
                         {
                             varDecl.Name = ext.NameInput.Text;
                         };
-                        focusElement = ext.NameInput;
-                        return ext.NameInput;
+                        return MakeSingleControlList (ext.NameInput);
                     }
-                    else if (theName == "initexpr")
+                    else if (thePlaceholderName == "initexpr")
                     {
-                        ExpressionInputControl.CreateInputOrControls(
+                        return ExpressionInputControl.CreateInputOrControls(
                             theContext,
-                            varDecl, 
+                            varDecl,
                             varDecl.InitializationExpression,
                             OmType.Void,
                             (ExpressionInputControl theInput) =>
@@ -78,13 +67,12 @@ namespace OmniPrototype
                                 theInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theNewExpression) =>
                                 {
                                     varDecl.InitializationExpression = theNewExpression as OmExpression;
-                                }; 
+                                };
                             });
-                        return ext.InitializationExpressionInput;
                     }
                     else
                     {
-                        throw new Exception(string.Format("In OmVariableDeclarationExpressionMetaUiExtension: Unknown text placeholder {0}", theName));
+                        throw new Exception(string.Format("In OmVariableDeclarationExpressionMetaUiExtension: Unknown text placeholder {0}", thePlaceholderName));
                     }
 
                 });

@@ -161,12 +161,6 @@ namespace OmniPrototype
             var list = new ObservableCollection<OmEntityFactory>(possibleExpressions);
             mPopupList.ItemsSource = list;
             mPopup.IsOpen = list.Count > 0;
-            /*
-            if (expressions.Count == 1)
-            {
-                Expression = expressions[0].Create (Scope) as OmExpression;
-            }
-            */
         }
 
         private Action<ExpressionInputControl> mInitializationRoutine;
