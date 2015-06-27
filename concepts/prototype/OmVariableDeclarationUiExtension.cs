@@ -2,7 +2,7 @@
 
 namespace OmniPrototype
 {
-    public class OmVariableDeclarationUiExtension : OmEntityExtension
+    public class OmVariableDeclarationUiExtension : OmEntityUiExtension
     {
         public TextBox NameInput
         {

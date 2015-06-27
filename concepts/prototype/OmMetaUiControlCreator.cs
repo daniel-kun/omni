@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Linq;
 
 namespace OmniPrototype
 {
@@ -98,7 +99,7 @@ namespace OmniPrototype
             }
         }
 
-        public IEnumerable <List <FrameworkElement>> CreateControlsFromTemplate (OmContext theContext, string theTemplate)
+        public IEnumerable <List <FrameworkElement>> CreateControlsFromTemplate (OmContext theContext, OmEntity theEntity, string theTemplate)
         {
             string[] lines = theTemplate.Split(new string[] { "\r\n" }, System.StringSplitOptions.None);
             foreach (var line in lines)
@@ -157,47 +158,34 @@ namespace OmniPrototype
                         lineRest = string.Empty;
                     }
                 }
-                yield return controls;
+                yield return WrapWithHosts(controls, theContext, theEntity);
                 foreach (var newLine in newLineControls)
                 {
-                    yield return newLine;
+                    yield return WrapWithHosts(newLine, theContext, theEntity);
                 }
+            }
+        }
+
+        private List<FrameworkElement> WrapWithHosts(List<FrameworkElement> controls, OmContext theContext, OmEntity theEntity)
+        {
+            if (theEntity != null)
+            {
+                var uiExt = theEntity.GetExtension(theContext, "omni.ui") as OmEntityUiExtension;
+                return new List<FrameworkElement>(controls.Select(control => new ExpressionControlSelectionHost()
+                {
+                    Content = control,
+                    UiExtension = uiExt
+                }));
+            }
+            else
+            {
+                return controls;
             }
         }
 
         private static void CreateStaticTextControls (List<FrameworkElement> theControls,string theStaticText, bool theIsBeforePlaceholder)
         {
             foreach(var text in SplitAtBrackets(theStaticText)) {
-                /*
-                var viewBox = new Viewbox()
-                {
-                    Child = new TextBlock()
-                    {
-                        Text = text,
-                        Foreground = ColorFromText(text),
-                        Background = Brushes.Bisque,
-                        Margin = new Thickness(0)
-                    },
-                    StretchDirection = StretchDirection.Both,
-                    VerticalAlignment = VerticalAlignment.Top,
-                    HorizontalAlignment = HorizontalAlignment.Left
-                };
-                */
-                // TODO Render text myself.... ;-(
-                /*var userControl = new UserControl () {
-                    Content = viewBox,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    HorizontalAlignment = HorizontalAlignment.Left,
-                    VerticalContentAlignment = VerticalAlignment.Top,
-                    HorizontalContentAlignment = HorizontalAlignment.Left,
-                    Background = Brushes.Beige
-                };
-                userControl.SizeChanged += (object sender, SizeChangedEventArgs e) =>
-                {
-                    viewBox.Width = userControl.ActualWidth;
-                    viewBox.Height = userControl.ActualHeight;
-                };
-                */
                 if (text.Contains("(") || text.Contains(")"))
                 {
                     theControls.Add(new TextStretchBlock()

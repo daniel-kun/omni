@@ -61,6 +61,8 @@ namespace OmniPrototype {
                         Grid.SetRow(panel, 0);
                         linesPanel.Children.Add(panel);
                         OmMetaUiControlCreator.ApplyControlsToLayout (
+                            null,
+                            theContext,
                             linesPanel,
                             panel,
                             ExpressionInputControl.CreateInputOrControls(
@@ -101,7 +103,7 @@ namespace OmniPrototype {
                         throw new Exception(string.Format("In OmVariableDeclarationExpressionMetaUiExtension: Unknown text placeholder {0}", thePlaceholderName));
                     }
                 });
-            return creator.CreateControlsFromTemplate(theContext, GetTemplate(theContext));
+            return creator.CreateControlsFromTemplate(theContext, theExpression, GetTemplate(theContext));
         }
 
         public override OmEntityExtension CreateExtension()
