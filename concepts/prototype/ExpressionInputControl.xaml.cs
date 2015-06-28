@@ -91,9 +91,7 @@ namespace OmniPrototype
             {
                 if ((mPopupList.SelectedIndex < mPopupList.Items.Count - 1) || (mPopupList.SelectedIndex == -1 && mPopupList.Items.Count > 0))
                 {
-                    mPopupList.SelectionChanged -= popupList_SelectionChanged;
-                    mPopupList.SelectedIndex = mPopupList.SelectedIndex + 1;
-                    mPopupList.SelectionChanged += popupList_SelectionChanged;
+                    SetPopupSelectedIndex(mPopupList.SelectedIndex + 1);
                 }
 
             }
@@ -101,9 +99,7 @@ namespace OmniPrototype
             {
                 if (mPopupList.SelectedIndex > 0)
                 {
-                    mPopupList.SelectionChanged -= popupList_SelectionChanged;
-                    mPopupList.SelectedIndex = mPopupList.SelectedIndex - 1;
-                    mPopupList.SelectionChanged += popupList_SelectionChanged;
+                    SetPopupSelectedIndex(mPopupList.SelectedIndex - 1);
                 }
             }
             else if (e.Key == Key.Enter || e.Key == Key.Return)
@@ -115,6 +111,13 @@ namespace OmniPrototype
                     SetExpression(factory);
                 }
             }
+        }
+
+        private void SetPopupSelectedIndex(int theSelectedIndex)
+        {
+            mPopupList.SelectionChanged -= popupList_SelectionChanged;
+            mPopupList.SelectedIndex = theSelectedIndex;
+            mPopupList.SelectionChanged += popupList_SelectionChanged;
         }
 
         public OmStatement Expression
@@ -164,6 +167,10 @@ namespace OmniPrototype
             var list = new ObservableCollection<OmEntityFactory>(possibleExpressions);
             mPopupList.ItemsSource = list;
             mPopup.IsOpen = list.Count > 0;
+            if (mPopup.IsOpen)
+            {
+                SetPopupSelectedIndex(0);
+            }
         }
 
         private Action<ExpressionInputControl> mInitializationRoutine;
