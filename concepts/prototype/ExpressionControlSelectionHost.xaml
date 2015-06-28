@@ -6,6 +6,7 @@
              xmlns:self="clr-namespace:OmniPrototype"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
+             Focusable="True"
              >
     <UserControl.Style>
         <Style TargetType="{x:Type self:ExpressionControlSelectionHost}">

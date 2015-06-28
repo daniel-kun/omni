@@ -23,25 +23,30 @@ namespace OmniPrototype
         public ExpressionControlSelectionHost()
         {
             InitializeComponent();
-            IsKeyboardFocusWithinChanged += ExpressionControlSelectionHost_IsKeyboardFocusWithinChanged;
         }
 
-        private void ExpressionControlSelectionHost_IsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e)
+        protected override void OnPreviewLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        {
+            base.OnPreviewLostKeyboardFocus(e);
+            UpdateIsSelected(e);
+        }
+
+        private void UpdateIsSelected(KeyboardFocusChangedEventArgs e)
         {
             if (UiExtension != null)
             {
-                if ((bool) e.NewValue)
+                Func <DependencyObject, bool> noSelectionHost = (child) =>
                 {
-                    foreach (var child in VisualTreeUtils.AllVisualChildren(this))
-                    {
-                        if (child is ExpressionControlSelectionHost && ((ExpressionControlSelectionHost)child).IsKeyboardFocusWithin)
-                        {
-                            return;
-                        }
-                    }
-                }
-                UiExtension.IsSelected = (bool) e.NewValue;
+                    return !(child is ExpressionControlSelectionHost);
+                };
+                UiExtension.IsSelected = VisualTreeUtils.AllVisualChildrenWithMeWhere(this, noSelectionHost).Where(child => child == e.NewFocus).Count() > 0;
             }
+        }
+
+        protected override void OnPreviewGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        {
+            base.OnPreviewGotKeyboardFocus(e);
+            UpdateIsSelected(e);
         }
 
         public OmEntityUiExtension UiExtension

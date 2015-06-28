@@ -17,6 +17,7 @@ namespace OmniPrototype
             // This enabled elements to show dashed focus rectangles even when received focus by code or per mouse click:
             typeof(KeyboardNavigation).GetProperty("AlwaysShowFocusVisual", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, true, null);
             InitializeComponent();
+            PreviewKeyUp += MainWindow_PreviewKeyUp;
 
             mContext2.Templates = new Dictionary<string, string>()
             {
@@ -116,6 +117,26 @@ namespace OmniPrototype
                          }
                      }});
              */
+        }
+
+        private void MainWindow_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                NavigateToControlParent();
+            }
+        }
+
+        private void NavigateToControlParent()
+        {
+            FrameworkElement focusedElement = FocusManager.GetFocusedElement(this) as FrameworkElement;
+            
+            var newFocus = VisualTreeUtils.FindVisualParent<ExpressionControlSelectionHost>(focusedElement);
+            if (newFocus != null)
+            {
+                newFocus.Focus();
+                FocusManager.SetFocusedElement(newFocus, newFocus);
+            }
         }
 
         private static void CreateRootControl(Grid theGrid, OmContext theContext, OmStatement theStatement)
