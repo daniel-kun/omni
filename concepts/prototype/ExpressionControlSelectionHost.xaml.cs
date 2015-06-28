@@ -33,13 +33,14 @@ namespace OmniPrototype
 
         private void UpdateIsSelected(KeyboardFocusChangedEventArgs e)
         {
-            if (UiExtension != null)
+            if (Entity != null)
             {
                 Func <DependencyObject, bool> noSelectionHost = (child) =>
                 {
                     return !(child is ExpressionControlSelectionHost);
                 };
-                UiExtension.IsSelected = VisualTreeUtils.AllVisualChildrenWithMeWhere(this, noSelectionHost).Where(child => child == e.NewFocus).Count() > 0;
+                Entity.WithAllExpressions <OmEntityUiExtension> ("omni.ui", extension =>
+                    extension.IsSelected = VisualTreeUtils.AllVisualChildrenWithMeWhere(this, noSelectionHost).Where(child => child == e.NewFocus).Count() > 0);
             }
         }
 
@@ -49,22 +50,24 @@ namespace OmniPrototype
             UpdateIsSelected(e);
         }
 
-        public OmEntityUiExtension UiExtension
+        public OmEntity Entity
         {
             get
             {
-                return mUiExtension;
+                return mEntity;
             }
             set
             {
-                if (mUiExtension != null)
+                if (mEntity != null)
                 {
-                    mUiExtension.SelectionChanged -= mUiExtension_SelectionChanged;
+                    mEntity.WithAllExpressions<OmEntityUiExtension>("omni.ui", extension =>
+                        extension.SelectionChanged -= mUiExtension_SelectionChanged);
                 }
-                mUiExtension = value;
-                if (mUiExtension != null)
+                mEntity = value;
+                if (mEntity != null)
                 {
-                    mUiExtension.SelectionChanged += mUiExtension_SelectionChanged;
+                    mEntity.WithAllExpressions<OmEntityUiExtension>("omni.ui", extension =>
+                        extension.SelectionChanged += mUiExtension_SelectionChanged);
                 }
             }
         }
@@ -89,7 +92,7 @@ namespace OmniPrototype
         // Using a DependencyProperty as the backing store for IsSelected.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsSelectedProperty =
             DependencyProperty.Register("IsSelected", typeof(bool), typeof(ExpressionControlSelectionHost), new PropertyMetadata(false));
-        private OmEntityUiExtension mUiExtension;
+        private OmEntity mEntity;
 
         
     }

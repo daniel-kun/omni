@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 namespace OmniPrototype
 {
@@ -129,6 +130,21 @@ namespace OmniPrototype
                 return result;
             }
             
+        }
+
+        public void WithAllExpressions <T> (string theName, Action <T> theAction) where T : OmEntityExtension
+        {
+            foreach (var contexts in mExtensions)
+            {
+                if (contexts.Value.ContainsKey(theName))
+                {
+                    var extension = contexts.Value[theName] as T;
+                    if (extension != null)
+                    {
+                        theAction(extension);
+                    }
+                }
+            }
         }
 
         private Dictionary<OmContext, Dictionary <string, OmEntityExtension>> mExtensions = new Dictionary<OmContext, Dictionary <string, OmEntityExtension>>();

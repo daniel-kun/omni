@@ -170,11 +170,10 @@ namespace OmniPrototype
         {
             if (theEntity != null)
             {
-                var uiExt = theEntity.GetExtension(theContext, "omni.ui") as OmEntityUiExtension;
                 return new List<FrameworkElement>(controls.Select(control => new ExpressionControlSelectionHost()
                 {
                     Content = control,
-                    UiExtension = uiExt
+                    Entity = theEntity
                 }));
             }
             else

@@ -108,7 +108,7 @@ namespace OmniPrototype
             yield return new List<FrameworkElement> { 
                 new ExpressionControlSelectionHost () {
                     Content = ext.Grid,
-                    UiExtension = ext
+                    Entity = binOpExpr
                 }
             };
         }
