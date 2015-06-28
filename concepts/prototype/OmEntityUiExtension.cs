@@ -4,6 +4,12 @@ namespace OmniPrototype
 {
     public class OmEntityUiExtension : OmEntityExtension
     {
+        public OmContext CreatedInContext
+        {
+            get;
+            set;
+        }
+
         public event Action <OmEntityUiExtension> SelectionChanged;
 
         private bool mIsSelected;

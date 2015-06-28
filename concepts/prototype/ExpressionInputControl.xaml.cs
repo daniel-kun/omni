@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -70,8 +71,10 @@ namespace OmniPrototype
         private void SetExpression (OmEntityFactory theFactory)
         {
             var newStatement = theFactory.Create(Scope) as OmStatement;
-            var uiExt = newStatement.GetMeta(Context).GetExtension("omni.ui") as OmMetaUiExtension;
-            uiExt.ApplyUiDefaults(Context, newStatement);
+            var uiMetaExt = newStatement.GetMeta(Context).GetExtension("omni.ui") as OmMetaUiExtension;
+            var uiExt = newStatement.GetExtension(Context, "omni.ui") as OmEntityUiExtension;
+            uiExt.CreatedInContext = Context;
+            uiMetaExt.ApplyUiDefaults(Context, newStatement);
             Expression = newStatement;
         }
 
@@ -230,9 +233,11 @@ namespace OmniPrototype
                 throw new Exception("Can not use ReplaceWithExpression2 if the parent WrapPanel is not part of it's parent Grid");
             }
             
-            var childUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
+            var childMetaUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
             bool isFirstInline = true;
-            var controls = childUiExt.CreateControls (theContext, theExpression);
+            var controls = childMetaUiExt.CreateControls (theContext, theExpression);
+            var childUiExt = theExpression.GetExtension(theContext, "omni.ui") as OmEntityUiExtension;
+            bool isFirstFocusable = true;
             foreach (var line in controls)
             {
                 if (! isFirstInline)
@@ -261,9 +266,48 @@ namespace OmniPrototype
                 isFirstInline = false;
                 foreach (var control in line) {
                     panel.Children.Insert (oldIndex++, control);
+                    isFirstFocusable = FocusIfFirstFocusableControl(theContext, childUiExt, isFirstFocusable, control);
                 }
             }
+            
             CreateContinuation(theContinuation, linesPanel, oldLinesIndex);
+        }
+
+        private bool FocusIfFirstFocusableControl(OmContext theContext, OmEntityUiExtension childUiExt, bool isFirstFocusable, FrameworkElement control)
+        {
+            if (childUiExt.CreatedInContext == theContext)
+            {
+                var c = ResolveControl(control);
+                if (isFirstFocusable && c != null)
+                {
+                    if (c.IsTabStop && c.Focusable)
+                    {
+                        isFirstFocusable = false;
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            c.Focus();
+                        }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+                    }
+                }
+            }
+            return isFirstFocusable;
+        }
+
+        private Control ResolveControl(FrameworkElement control)
+        {
+            if (control is ExpressionControlSelectionHost && ((ExpressionControlSelectionHost) control).Content is FrameworkElement)
+            {
+                control = (FrameworkElement) ((ExpressionControlSelectionHost)control).Content;
+            }
+            if (control is Control)
+            {
+                var c = (Control)control;
+                if (c.Focusable && c.IsTabStop)
+                {
+                    return c;
+                }
+            }
+            return null;
         }
 
         private void CreateContinuation (Continuation theContinuation, Grid linesPanel, int oldLinesIndex)
