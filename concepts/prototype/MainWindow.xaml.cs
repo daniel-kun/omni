@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace OmniPrototype
 {
@@ -11,6 +13,9 @@ namespace OmniPrototype
     {
         public MainWindow()
         {
+            // Very dirty hack to override the global system parameter "SPI_GETKEYBOARDCUES" (aka "Always show underlined hotkeys").
+            // This enabled elements to show dashed focus rectangles even when received focus by code or per mouse click:
+            typeof(KeyboardNavigation).GetProperty("AlwaysShowFocusVisual", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, true, null);
             InitializeComponent();
 
             mContext2.Templates = new Dictionary<string, string>()
@@ -124,8 +129,6 @@ namespace OmniPrototype
             Grid.SetRow(firstLinePanel, theGrid.RowDefinitions.Count - 1);
             theGrid.Children.Add(firstLinePanel);
             OmMetaUiControlCreator.ApplyControlsToLayout(
-                theStatement,
-                theContext,
                 theGrid,
                 firstLinePanel,
                 metaUiExt.CreateControls(theContext, theStatement));

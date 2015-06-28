@@ -61,8 +61,6 @@ namespace OmniPrototype {
                         Grid.SetRow(panel, 0);
                         linesPanel.Children.Add(panel);
                         OmMetaUiControlCreator.ApplyControlsToLayout (
-                            null,
-                            theContext,
                             linesPanel,
                             panel,
                             ExpressionInputControl.CreateInputOrControls(

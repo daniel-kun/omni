@@ -87,7 +87,7 @@ namespace OmniPrototype
             ext.Grid.Children.Add(ext.RightOpPanel);
             ext.Grid.Children.Add(rightParens);
 
-            OmMetaUiControlCreator.ApplyControlsToLayout (binOpExpr.LeftOperand, theContext, ext.Grid, ext.LeftOpPanel,
+            OmMetaUiControlCreator.ApplyControlsToLayout (ext.Grid, ext.LeftOpPanel,
                 ExpressionInputControl.CreateInputOrControls(theContext, binOpExpr, binOpExpr.LeftOperand, OmType.Void, (theInput) =>
                 {
                     ext.LeftOperandControl = theInput;
@@ -96,7 +96,7 @@ namespace OmniPrototype
                         binOpExpr.LeftOperand = theLeftExpression as OmExpression;
                     };
                 }));
-            OmMetaUiControlCreator.ApplyControlsToLayout(binOpExpr.RightOperand, theContext, ext.Grid, ext.RightOpPanel,
+            OmMetaUiControlCreator.ApplyControlsToLayout(ext.Grid, ext.RightOpPanel,
                 ExpressionInputControl.CreateInputOrControls(theContext, binOpExpr, binOpExpr.RightOperand, OmType.Void, (theInput) =>
                 {
                     ext.RightOperandControl = theInput;
