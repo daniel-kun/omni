@@ -17,6 +17,7 @@ namespace OmniPrototype
             // This enabled elements to show dashed focus rectangles even when received focus by code or per mouse click:
             typeof(KeyboardNavigation).GetProperty("AlwaysShowFocusVisual", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, true, null);
             InitializeComponent();
+            PreviewKeyDown += MainWindow_PreviewKeyDown;
             PreviewKeyUp += MainWindow_PreviewKeyUp;
 
             mContext2.Templates = new Dictionary<string, string>()
@@ -32,6 +33,7 @@ namespace OmniPrototype
     (<body>)"},
             };
 
+            /*
             var block = new OmBlockStatement ();
             var variable1 = new OmVariableDeclarationExpression()
             {
@@ -46,23 +48,17 @@ namespace OmniPrototype
             {
                 Variable = variable1
             });
-            /*
             block.AddComponent("2", new OmIntLiteralExpression()
             {
                 Value = 1337
             });
-            */
             CreateRootControl(mLinesPanel1, mContext1, block);
             CreateRootControl(mLinesPanel2, mContext2, block);
+            */
 
-            /*
              var rootBlock = new OmBlockStatement ();
-             var metaUiExt = OmBlockStatement.GetMetaStatic(mContext).GetExtension("omni.ui") as OmMetaUiExtension;
-             metaUiExt.CreateControls(mContext, mLinesPanel1, null, ref index, rootBlock);
-
-             //index = 0;
-             //var metaUiExt2 = OmBlockStatement.GetMetaStatic(mContext2).GetExtension("omni.ui") as OmMetaUiExtension;
-             //metaUiExt2.CreateControls(mContext2, mLinesPanel2, null, ref index, rootBlock);
+            CreateRootControl(mLinesPanel1, mContext1, rootBlock);
+            CreateRootControl(mLinesPanel2, mContext2, rootBlock);
 
              var varDecl = new OmVariableDeclarationExpression ()
              {
@@ -116,14 +112,78 @@ namespace OmniPrototype
                              Value = 20
                          }
                      }});
-             */
+        }
+
+        private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            // Very hacky way to let navigational direction key pass on to known controls that might "need" them
+            // (e.g. a TextBox that uses left/right keys), but use it for navigation if the focused control does not "need" them:
+            bool isSelectionHost = FocusManager.GetFocusedElement (this) is ExpressionControlSelectionHost;
+
+            bool handled = true;
+            switch (e.Key) {
+                case Key.Up:
+                    NavigateUp ();
+                    break;
+                case Key.Down:
+                    NavigateDown ();
+                    break;
+                case Key.Left:
+                    if (!isSelectionHost) {
+                        handled = false;
+                    } else {
+                        NavigateLeft ();
+                    }
+                    break;
+                case Key.Right:
+                    if (!isSelectionHost) {
+                        handled = false;
+                    } else {
+                        NavigateRight ();
+                    }
+                    break;
+                default:
+                    handled = false;
+                    break;
+            }
+            if (handled) {
+                e.Handled = true;
+            }
+        }
+
+        private void NavigateRight()
+        {
+            // TODO
+        }
+
+        private void NavigateLeft()
+        {
+            // TODO
+        }
+
+        private void NavigateDown()
+        {
+            // TODO
+        }
+
+        private void NavigateUp()
+        {
+            // TODO
         }
 
         private void MainWindow_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Escape)
-            {
-                NavigateToControlParent();
+            bool handled = true;
+            switch (e.Key) {
+                case Key.Escape:
+                    NavigateToControlParent();
+                    break;
+                default:
+                    handled = false;
+                    break;
+            }
+            if (handled) {
+                e.Handled = true;
             }
         }
 
