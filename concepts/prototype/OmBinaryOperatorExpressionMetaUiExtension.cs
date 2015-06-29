@@ -50,11 +50,13 @@ namespace OmniPrototype
 
             ext.LeftOpPanel = new WrapPanel()
             {
-                HorizontalAlignment = HorizontalAlignment.Center
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
             };
             ext.RightOpPanel = new WrapPanel()
             {
-                HorizontalAlignment = HorizontalAlignment.Center
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
             };
             ext.OpSelectionControl = new OperatorSelectionControl()
             {
