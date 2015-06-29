@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -70,8 +71,10 @@ namespace OmniPrototype
         private void SetExpression (OmEntityFactory theFactory)
         {
             var newStatement = theFactory.Create(Scope) as OmStatement;
-            var uiExt = newStatement.GetMeta(Context).GetExtension("omni.ui") as OmMetaUiExtension;
-            uiExt.ApplyUiDefaults(Context, newStatement);
+            var uiMetaExt = newStatement.GetMeta(Context).GetExtension("omni.ui") as OmMetaUiExtension;
+            var uiExt = newStatement.GetExtension(Context, "omni.ui") as OmEntityUiExtension;
+            uiExt.CreatedInContext = Context;
+            uiMetaExt.ApplyUiDefaults(Context, newStatement);
             Expression = newStatement;
         }
 
@@ -88,9 +91,7 @@ namespace OmniPrototype
             {
                 if ((mPopupList.SelectedIndex < mPopupList.Items.Count - 1) || (mPopupList.SelectedIndex == -1 && mPopupList.Items.Count > 0))
                 {
-                    mPopupList.SelectionChanged -= popupList_SelectionChanged;
-                    mPopupList.SelectedIndex = mPopupList.SelectedIndex + 1;
-                    mPopupList.SelectionChanged += popupList_SelectionChanged;
+                    SetPopupSelectedIndex(mPopupList.SelectedIndex + 1);
                 }
 
             }
@@ -98,9 +99,7 @@ namespace OmniPrototype
             {
                 if (mPopupList.SelectedIndex > 0)
                 {
-                    mPopupList.SelectionChanged -= popupList_SelectionChanged;
-                    mPopupList.SelectedIndex = mPopupList.SelectedIndex - 1;
-                    mPopupList.SelectionChanged += popupList_SelectionChanged;
+                    SetPopupSelectedIndex(mPopupList.SelectedIndex - 1);
                 }
             }
             else if (e.Key == Key.Enter || e.Key == Key.Return)
@@ -112,6 +111,13 @@ namespace OmniPrototype
                     SetExpression(factory);
                 }
             }
+        }
+
+        private void SetPopupSelectedIndex(int theSelectedIndex)
+        {
+            mPopupList.SelectionChanged -= popupList_SelectionChanged;
+            mPopupList.SelectedIndex = theSelectedIndex;
+            mPopupList.SelectionChanged += popupList_SelectionChanged;
         }
 
         public OmStatement Expression
@@ -161,12 +167,10 @@ namespace OmniPrototype
             var list = new ObservableCollection<OmEntityFactory>(possibleExpressions);
             mPopupList.ItemsSource = list;
             mPopup.IsOpen = list.Count > 0;
-            /*
-            if (expressions.Count == 1)
+            if (mPopup.IsOpen)
             {
-                Expression = expressions[0].Create (Scope) as OmExpression;
+                SetPopupSelectedIndex(0);
             }
-            */
         }
 
         private Action<ExpressionInputControl> mInitializationRoutine;
@@ -206,31 +210,42 @@ namespace OmniPrototype
 
         public void ReplaceWithExpression(OmContext theContext, OmStatement theExpression, Continuation theContinuation = Continuation.None)
         {
-            if (! (Parent is WrapPanel))
+            var parent = Parent;
+            FrameworkElement self = this;
+            if (parent is ExpressionControlSelectionHost)
+            {
+                self = (FrameworkElement)parent;
+                parent = self.Parent;
+            }
+            if (!(parent is WrapPanel))
             {
                 throw new Exception("Can not use ReplaceWithExpression2 if Parent is not a WrapPanel");
             }
-            var panel = (Panel)Parent;
-            int oldIndex = panel.Children.IndexOf(this);
+            var panel = (Panel)parent;
+            int oldIndex = panel.Children.IndexOf(self);
             if (oldIndex < 0)
             {
                 throw new Exception ("Can not use ReplaceWithExpression2 if this ExpressionInputControl is not part of the Parent panel");
             }
+            panel.Children.RemoveAt(oldIndex);
+            //int selfIndex = oldIndex++;
             if (! (panel.Parent is Grid))
             {
                 throw new Exception("Can not use ReplaceWithExpression2 if Parent.Parent is not a Grid");
             }
             var linesPanel = (Grid)panel.Parent;
-            panel.Children.RemoveAt(oldIndex);
             int oldLinesIndex = linesPanel.Children.IndexOf(panel);
             if (oldLinesIndex < 0)
             {
                 throw new Exception("Can not use ReplaceWithExpression2 if the parent WrapPanel is not part of it's parent Grid");
             }
             
-            var childUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
+            var childMetaUiExt = theExpression.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
             bool isFirstInline = true;
-            foreach (var line in childUiExt.CreateControls (theContext, theExpression))
+            var controls = childMetaUiExt.CreateControls (theContext, theExpression);
+            var childUiExt = theExpression.GetExtension(theContext, "omni.ui") as OmEntityUiExtension;
+            bool isFirstFocusable = true;
+            foreach (var line in controls)
             {
                 if (! isFirstInline)
                 {
@@ -258,12 +273,56 @@ namespace OmniPrototype
                 isFirstInline = false;
                 foreach (var control in line) {
                     panel.Children.Insert (oldIndex++, control);
+                    isFirstFocusable = FocusIfFirstFocusableControl(theContext, childUiExt, isFirstFocusable, control);
                 }
             }
+            
+            CreateContinuation(theContinuation, linesPanel, oldLinesIndex);
+        }
+
+        private bool FocusIfFirstFocusableControl(OmContext theContext, OmEntityUiExtension childUiExt, bool isFirstFocusable, FrameworkElement control)
+        {
+            if (childUiExt.CreatedInContext == theContext)
+            {
+                var c = ResolveControl(control);
+                if (isFirstFocusable && c != null)
+                {
+                    if (c.IsTabStop && c.Focusable)
+                    {
+                        isFirstFocusable = false;
+                        Dispatcher.Invoke(new Action(() =>
+                        {
+                            c.Focus();
+                        }), System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+                    }
+                }
+            }
+            return isFirstFocusable;
+        }
+
+        private Control ResolveControl(FrameworkElement control)
+        {
+            if (control is ExpressionControlSelectionHost && ((ExpressionControlSelectionHost) control).Content is FrameworkElement)
+            {
+                control = (FrameworkElement) ((ExpressionControlSelectionHost)control).Content;
+            }
+            if (control is Control)
+            {
+                var c = (Control)control;
+                if (c.Focusable && c.IsTabStop)
+                {
+                    return c;
+                }
+            }
+            return null;
+        }
+
+        private void CreateContinuation (Continuation theContinuation, Grid linesPanel, int oldLinesIndex)
+        {
             switch (theContinuation)
             {
                 case Continuation.Beneath:
-                    var continuationInput = new ExpressionInputControl (Context, Scope, TargetType);
+                    var continuationInput = new ExpressionInputControl(Context, Scope, TargetType);
                     continuationInput.mInitializationRoutine = mInitializationRoutine;
                     continuationInput.ExpressionCreated = ExpressionCreated;
                     continuationInput.ContinuationInputCreated = ContinuationInputCreated;
@@ -283,12 +342,14 @@ namespace OmniPrototype
                     Grid.SetRow(newPanel, ++oldLinesIndex);
                     newPanel.Children.Add(continuationInput);
                     linesPanel.Children.Add(newPanel);
-                    if (continuationInput.mInitializationRoutine != null) {
-                        continuationInput.mInitializationRoutine (continuationInput);
+                    if (continuationInput.mInitializationRoutine != null)
+                    {
+                        continuationInput.mInitializationRoutine(continuationInput);
                     }
                     var handler = ContinuationInputCreated;
-                    if (handler != null) {
-                        handler (continuationInput);
+                    if (handler != null)
+                    {
+                        handler(continuationInput);
                     }
                     break;
                 case Continuation.RightTo:

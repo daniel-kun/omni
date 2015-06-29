@@ -107,62 +107,12 @@ namespace OmniPrototype
                         binOpExpr.RightOperand = theRightExpression as OmExpression;
                     };
                 }));
-            //            var metaUiExt = theStatement.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
-//            OmMetaUiControlCreator.ApplyControlsToLayout(theGrid, firstLinePanel, metaUiExt.CreateControls(theContext, theStatement));
-
-            /*
-            var creator = new OmMetaUiControlCreator(
-                (string theName) =>
-                {
-                    if (theName == "left")
-                    {
-                        return ExpressionInputControl.CreateInputOrControls(
-                            theContext,
-                            theExpression,
-                            binOpExpr.LeftOperand,
-                            OmType.Void,
-                            (theInput) =>
-                            {
-                                ext.LeftOperandControl = theInput;
-                                ext.LeftOperandControl.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theLeftExpression) =>
-                                {
-                                    binOpExpr.LeftOperand = theLeftExpression as OmExpression;
-                                };
-                            });
-                    }
-                    else if (theName == "right")
-                    {
-                        return ExpressionInputControl.CreateInputOrControls(
-                            theContext,
-                            theExpression,
-                            binOpExpr.RightOperand,
-                            OmType.Void,
-                            (theInput) =>
-                            {
-                                ext.RightOperandControl = theInput;
-                                ext.RightOperandControl.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theRightExpression) =>
-                                {
-                                    binOpExpr.RightOperand = theRightExpression as OmExpression;
-                                };
-                            });
-                    }
-                    else if (theName == "operator")
-                    {
-                        var opSelCtrl = new OperatorSelectionControl()
-                        {
-                            Text = binOpExpr.Operator
-                        };
-                        return MakeSingleControlList(opSelCtrl);
-                     }
-                    else
-                    {
-                        throw new Exception(string.Format("In OmVariableDeclarationExpressionMetaUiExtension: Unknown text placeholder {0}", theName));
-                    }
-
-                });
-            return creator.CreateControlsFromTemplate2(theContext,  GetTemplate(theContext));
-            */
-            yield return new List<FrameworkElement> { ext.Grid };
+            yield return new List<FrameworkElement> { 
+                new ExpressionControlSelectionHost () {
+                    Content = ext.Grid,
+                    Entity = binOpExpr
+                }
+            };
         }
 
         private void UpdateOperandPositions(string theOperator, WrapPanel theLeftPanel, WrapPanel theRightPanel)

@@ -68,9 +68,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ExpressionControlSelectionHost.xaml.cs">
+      <DependentUpon>ExpressionControlSelectionHost.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TextStretchBlock.xaml.cs">
       <DependentUpon>TextStretchBlock.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VisualTreeUtils.cs" />
+    <Page Include="ExpressionControlSelectionHost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ExpressionInputControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

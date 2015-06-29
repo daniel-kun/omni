@@ -60,7 +60,7 @@
                     }
 
                 });
-            return creator.CreateControlsFromTemplate2 (theContext, GetTemplate(theContext));
+            return creator.CreateControlsFromTemplate(theContext, theExpression, GetTemplate(theContext));
         }
 
     }

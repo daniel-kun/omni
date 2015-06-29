@@ -16,6 +16,7 @@
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
             <Setter Property="BorderBrush" Value="#E2E2E2"/>
             <Setter Property="Margin" Value="1"/>
+            <Setter Property="Background" Value="Transparent"/>
         </Style>
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="1"/>

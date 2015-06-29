@@ -24,6 +24,9 @@ namespace OmniPrototype
             {
                 Source = this
             });
+            MouseUp += (object sender, MouseButtonEventArgs e) => {
+                Focus ();
+            };
         }
 
         public event EventHandler<EventArgs> TextChanged;
@@ -59,8 +62,6 @@ namespace OmniPrototype
                 handler(this, new EventArgs());
             }
         }
-
-
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {

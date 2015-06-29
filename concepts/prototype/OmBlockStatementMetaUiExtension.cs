@@ -50,7 +50,7 @@ namespace OmniPrototype {
                     }
 
                 });
-            return creator.CreateControlsFromTemplate2(theContext, GetTemplate(theContext));
+            return creator.CreateControlsFromTemplate(theContext, null, GetTemplate(theContext));
         }
 
         private void ExpressionCreatedFromInput (ExpressionInputControl theSender, OmStatement theNewExpression)

@@ -101,7 +101,7 @@ namespace OmniPrototype {
                         throw new Exception(string.Format("In OmVariableDeclarationExpressionMetaUiExtension: Unknown text placeholder {0}", thePlaceholderName));
                     }
                 });
-            return creator.CreateControlsFromTemplate2(theContext, GetTemplate(theContext));
+            return creator.CreateControlsFromTemplate(theContext, theExpression, GetTemplate(theContext));
         }
 
         public override OmEntityExtension CreateExtension()

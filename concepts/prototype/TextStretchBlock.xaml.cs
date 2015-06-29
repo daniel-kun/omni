@@ -74,7 +74,7 @@ namespace OmniPrototype
                 transforms.Children.Add(new ScaleTransform(ActualWidth / geometry.Bounds.Width, ActualHeight / geometry.Bounds.Height));
                 geometry.Transform = transforms;
 
-                drawingContext.DrawGeometry(Brushes.Black, new Pen(Brushes.Black, 0.18), geometry);
+                drawingContext.DrawGeometry(Foreground, new Pen(Foreground, 0.18), geometry);
             }
         }
 

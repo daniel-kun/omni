@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace OmniPrototype
 {
@@ -11,7 +13,11 @@ namespace OmniPrototype
     {
         public MainWindow()
         {
+            // Very dirty hack to override the global system parameter "SPI_GETKEYBOARDCUES" (aka "Always show underlined hotkeys").
+            // This enabled elements to show dashed focus rectangles even when received focus by code or per mouse click:
+            typeof(KeyboardNavigation).GetProperty("AlwaysShowFocusVisual", BindingFlags.NonPublic | BindingFlags.Static).SetValue(null, true, null);
             InitializeComponent();
+            PreviewKeyUp += MainWindow_PreviewKeyUp;
 
             mContext2.Templates = new Dictionary<string, string>()
             {
@@ -27,14 +33,25 @@ namespace OmniPrototype
             };
 
             var block = new OmBlockStatement ();
-            block.AddComponent ("1", new OmIntLiteralExpression()
+            var variable1 = new OmVariableDeclarationExpression()
             {
-                Value = 42
+                InitializationExpression = new OmIntLiteralExpression()
+                {
+                    Value = 10
+                },
+                Name = "foobar"
+            };
+            block.AddComponent ("1", variable1);
+            block.AddComponent("2", new OmVariableUseExpression()
+            {
+                Variable = variable1
             });
+            /*
             block.AddComponent("2", new OmIntLiteralExpression()
             {
                 Value = 1337
             });
+            */
             CreateRootControl(mLinesPanel1, mContext1, block);
             CreateRootControl(mLinesPanel2, mContext2, block);
 
@@ -102,6 +119,26 @@ namespace OmniPrototype
              */
         }
 
+        private void MainWindow_PreviewKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                NavigateToControlParent();
+            }
+        }
+
+        private void NavigateToControlParent()
+        {
+            FrameworkElement focusedElement = FocusManager.GetFocusedElement(this) as FrameworkElement;
+            
+            var newFocus = VisualTreeUtils.FindVisualParent<ExpressionControlSelectionHost>(focusedElement);
+            if (newFocus != null)
+            {
+                newFocus.Focus();
+                FocusManager.SetFocusedElement(newFocus, newFocus);
+            }
+        }
+
         private static void CreateRootControl(Grid theGrid, OmContext theContext, OmStatement theStatement)
         {
             var metaUiExt = theStatement.GetMeta(theContext).GetExtension("omni.ui") as OmMetaUiExtension;
@@ -112,7 +149,10 @@ namespace OmniPrototype
             });
             Grid.SetRow(firstLinePanel, theGrid.RowDefinitions.Count - 1);
             theGrid.Children.Add(firstLinePanel);
-            OmMetaUiControlCreator.ApplyControlsToLayout(theGrid, firstLinePanel, metaUiExt.CreateControls(theContext, theStatement));
+            OmMetaUiControlCreator.ApplyControlsToLayout(
+                theGrid,
+                firstLinePanel,
+                metaUiExt.CreateControls(theContext, theStatement));
         }
 
         private OmContext mContext1 = new OmContext();
