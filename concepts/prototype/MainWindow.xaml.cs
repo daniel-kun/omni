@@ -92,6 +92,23 @@ namespace OmniPrototype
                              Value = 20
                          }
                      }});
+             var varDecl4 = new OmVariableDeclarationExpression()
+             {
+                 Name = "foobar"
+             };
+             rootBlock.AddComponent("5", varDecl4);
+             varDecl4.InitializationExpression = new OmBinaryOperatorExpression()
+             {
+                 LeftOperand = new OmVariableUseExpression()
+                 {
+                     Variable = varDecl3
+                 },
+                 Operator = "/",
+                 RightOperand = new OmVariableUseExpression()
+                 {
+                     Variable = varDecl2
+                 }
+             };
         }
 
         private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
