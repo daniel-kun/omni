@@ -31,6 +31,23 @@ namespace OmniPrototype
             UpdateIsSelected(e);
         }
 
+        protected override void OnPreviewKeyUp(KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Return:
+                    foreach (var element in VisualTreeUtils.AllVisualChildren(this).Where(child => child is Control && ((Control)child).IsTabStop))
+                    {
+                        ((Control)element).Focus();
+                        break;
+                    }
+                    break;
+                default:
+                    base.OnPreviewKeyUp(e);
+                    break;
+            }
+        }
+
         private void UpdateIsSelected(KeyboardFocusChangedEventArgs e)
         {
             if (Entity != null)

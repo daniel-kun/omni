@@ -25,6 +25,22 @@ namespace OmniPrototype
             }
         }
 
+        public static Tuple <T, FrameworkElement> FindVisualParentAndDirectChild <T>(FrameworkElement theElement) where T : FrameworkElement
+        {
+            if (theElement.Parent is T)
+            {
+                return new Tuple <T, FrameworkElement> ((T)theElement.Parent, theElement);
+            }
+            else if (theElement.Parent is FrameworkElement)
+            {
+                return FindVisualParentAndDirectChild<T>((FrameworkElement)theElement.Parent);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public static IEnumerable<DependencyObject> AllVisualChildren(DependencyObject theParent)
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(theParent); ++i)
