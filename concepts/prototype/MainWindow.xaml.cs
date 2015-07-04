@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Linq;
+using System.Windows.Media;
 
 namespace OmniPrototype
 {
@@ -23,7 +24,7 @@ namespace OmniPrototype
             PreviewKeyDown += MainWindow_PreviewKeyDown;
             PreviewKeyUp += MainWindow_PreviewKeyUp;
 
-            mContext2.Templates = new Dictionary<string, string>()
+            mContextLispStyle.Templates = new Dictionary<string, string>()
             {
                 {"binary_operator_expression", "(<operator> <left> <right>)"},
                 {"block", "<statement>"},
@@ -37,8 +38,8 @@ namespace OmniPrototype
             };
 
              var rootBlock = new OmBlockStatement ();
-            CreateRootControl(mLinesPanel1, mContext1, rootBlock);
-            CreateRootControl(mLinesPanel2, mContext2, rootBlock);
+            CreateRootControl(mLinesPanel1, mContextCStyle, rootBlock);
+            CreateRootControl(mLinesPanel2, mContextLispStyle, rootBlock);
 
              var varDecl = new OmVariableDeclarationExpression ()
              {
@@ -94,39 +95,72 @@ namespace OmniPrototype
                      }});
         }
 
+        private void SetClipboardStatement (OmStatement theStatement, OmClipboardContext.ClipboardAction theAction)
+        {
+            mClipboardPanel.Children.Clear();
+            mContextClipboard.Action = theAction;
+            CreateRootControl(mClipboardPanel, mContextClipboard, theStatement);
+        }
+
+        private static bool IsClipboardAction(bool theIsSelectionHost, Key thePressedKey, Key theClipboardKey)
+        {
+            return theIsSelectionHost && thePressedKey == theClipboardKey && ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control);
+        }
+
         private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+
         {
             // Very hacky way to let navigational direction key pass on to known controls that might "need" them
             // (e.g. a TextBox that uses left/right keys), but use it for navigation if the focused control does not "need" them:
             var focusedElement = FocusManager.GetFocusedElement(this) as FrameworkElement;
             if (focusedElement != null)
             {
-                bool isSelectionHost = FocusManager.GetFocusedElement(this) is ExpressionControlSelectionHost;
+                bool isSelectionHost = focusedElement is ExpressionControlSelectionHost;
                 bool handled = true;
-                switch (e.Key) {
-                    case Key.Up:
-                        NavigateUp(focusedElement);
-                        break;
-                    case Key.Down:
-                        NavigateDown(focusedElement);
-                        break;
-                    case Key.Left:
-                        if (!isSelectionHost) {
+                if (IsClipboardAction (isSelectionHost, e.Key, Key.X))
+                {
+                    var selectionHost = (ExpressionControlSelectionHost)focusedElement;
+                    SetClipboardStatement(selectionHost.Entity as OmStatement, OmClipboardContext.ClipboardAction.Cut);
+                    //.Foreground = Brushes.LightGray;
+                }
+                else if (IsClipboardAction(isSelectionHost, e.Key, Key.C))
+                {
+                    var selectionHost = (ExpressionControlSelectionHost)focusedElement;
+                    SetClipboardStatement(selectionHost.Entity as OmStatement, OmClipboardContext.ClipboardAction.Copy);
+                    //.Foreground = Brushes.LightGray;
+                } else {
+                    switch (e.Key)
+                    {
+                        case Key.Up:
+                            NavigateUp(focusedElement);
+                            break;
+                        case Key.Down:
+                            NavigateDown(focusedElement);
+                            break;
+                        case Key.Left:
+                            if (!isSelectionHost)
+                            {
+                                handled = false;
+                            }
+                            else
+                            {
+                                NavigateLeft(focusedElement);
+                            }
+                            break;
+                        case Key.Right:
+                            if (!isSelectionHost)
+                            {
+                                handled = false;
+                            }
+                            else
+                            {
+                                NavigateRight(focusedElement);
+                            }
+                            break;
+                        default:
                             handled = false;
-                        } else {
-                            NavigateLeft(focusedElement);
-                        }
-                        break;
-                    case Key.Right:
-                        if (!isSelectionHost) {
-                            handled = false;
-                        } else {
-                            NavigateRight(focusedElement);
-                        }
-                        break;
-                    default:
-                        handled = false;
-                        break;
+                            break;
+                    }
                 }
                 if (handled) {
                     e.Handled = true;
@@ -289,7 +323,8 @@ namespace OmniPrototype
                 metaUiExt.CreateControls(theContext, theStatement));
         }
 
-        private OmContext mContext1 = new OmContext();
-        private OmContext mContext2 = new OmContext();
+        private OmContext mContextCStyle = new OmContext();
+        private OmContext mContextLispStyle = new OmContext();
+        private OmClipboardContext mContextClipboard = new OmClipboardContext ();
     }
 }

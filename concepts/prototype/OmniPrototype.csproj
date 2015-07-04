@@ -71,6 +71,7 @@
     <Compile Include="ExpressionControlSelectionHost.xaml.cs">
       <DependentUpon>ExpressionControlSelectionHost.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OmClipboardContext.cs" />
     <Compile Include="TextStretchBlock.xaml.cs">
       <DependentUpon>TextStretchBlock.xaml</DependentUpon>
     </Compile>
