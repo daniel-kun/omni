@@ -46,7 +46,8 @@ namespace OmniPrototype
                         {
                             Text = varDecl.Name,
                             MinWidth = 40,
-                            Foreground = Brushes.DarkRed
+                            Foreground = Brushes.DarkRed,
+                            VerticalAlignment=VerticalAlignment.Center
                         };
                         ext.NameInput.TextChanged += (object sender, TextChangedEventArgs e) =>
                         {
@@ -64,6 +65,7 @@ namespace OmniPrototype
                             (ExpressionInputControl theInput) =>
                             {
                                 ext.InitializationExpressionInput = theInput;
+                                ext.InitializationExpressionInput.VerticalAlignment = VerticalAlignment.Center;
                                 theInput.ExpressionCreated += (ExpressionInputControl theSender, OmStatement theNewExpression) =>
                                 {
                                     varDecl.InitializationExpression = theNewExpression as OmExpression;

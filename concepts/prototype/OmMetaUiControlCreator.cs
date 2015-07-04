@@ -190,14 +190,16 @@ namespace OmniPrototype
                     theControls.Add(new TextStretchBlock()
                     {
                         Text = text,
-                        Foreground = Brushes.Blue
+                        Foreground = Brushes.Blue,
+                        VerticalAlignment = VerticalAlignment.Stretch
                     });
                 }
                 else
                 {
                     theControls.Add(new TextBlock()
                     {
-                        Text = text
+                        Text = text,
+                        VerticalAlignment = VerticalAlignment.Center
                     });
                 }
             }
