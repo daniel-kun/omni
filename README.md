@@ -6,6 +6,8 @@
 
 # The Omni Programming Language Manifest
 
+[![Join the chat at https://gitter.im/daniel-kun/omni](https://badges.gitter.im/daniel-kun/omni.svg)](https://gitter.im/daniel-kun/omni?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This manifest declares goals that The Omni Programming Language is designed to reach.
 Omni is meant to provide a new way of coding. A way of coding where less time is spent on text editing and more time spent on engineering, designing, defining and changing logic and architecture, assuring quality and documenting.
 
