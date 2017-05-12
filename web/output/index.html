@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Omni Online Editor</title>
+
+	<link rel="stylesheet" type="text/css" href="style/main-compiled.css">
+	<link rel="stylesheet" type="text/css" href="style/main-manual.css">
+
+	<script type="text/javascript" src="Main-compiled.js"></script>
+</head>
+<body>
+    <div id="main"></div>
+
+	<script type="text/javascript">
+        var node = document.getElementById('main');
+        var app = Elm.Main.embed(node);
+    </script>
+	<script> document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>') </script>
+</body>
+</html>
