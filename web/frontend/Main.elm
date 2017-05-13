@@ -7,8 +7,8 @@ import Json.Decode exposing (list, string, int, field, Decoder, map2, map3)
 import Json.Encode
 import Material
 import Material.Scheme
-import InputPlaceholderView
-import IntLiteralView
+import Views.InputPlaceholder
+import Views.IntLiteral
 
 main =
     Html.program { init = init, update = update, view = view, subscriptions = subscriptions }
@@ -61,10 +61,10 @@ viewOmniElements elements =
     case elements of
         [] ->
             []
-        [IntLiteral v] ->
-            [p [] [ text (toString v) ]]
-        IntLiteral v::rest ->
-            p [] [ text (toString v) ] :: viewOmniElements rest
+        [MainModel.IntLiteral v] ->
+            [Views.IntLiteral.view v]
+        MainModel.IntLiteral v::rest ->
+            (Views.IntLiteral.view v) :: viewOmniElements rest
 
 view : Model -> Html Msg
 
@@ -72,7 +72,7 @@ view model =
     div [] 
     ((viewOmniElements model.elements) ++
     [
-        InputPlaceholderView.view Mdl model.mdl,
+        Views.InputPlaceholder.view Mdl model.mdl,
         p [] [ text model.dummy ]
     ] ++ 
     (viewSuggestionResponseItems model.activeSuggestions)) |> Material.Scheme.top
@@ -106,7 +106,7 @@ omniElementFromCreateElementResponse response =
         "int-literal" ->
             case String.toInt response.elementValue of
                 Ok val ->
-                    Ok (IntLiteral val)
+                    Ok (MainModel.IntLiteral val)
                 Err _ ->
                     Err ("Could not convert " ++ response.elementValue ++ " to int.")
         _ ->

@@ -1,7 +1,7 @@
-module InputPlaceholderView exposing (view)
+module Views.InputPlaceholder exposing (view)
 
 import MainModel exposing (Model, Msg)
-import IntLiteralView
+import Views.IntLiteral
 import Material.Textfield as Textfield
 import Material.Options as Options
 

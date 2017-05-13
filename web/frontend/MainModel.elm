@@ -2,6 +2,7 @@ module MainModel exposing (Model, Msg (..), OmniElement (..), SuggestionResponse
 
 import Material
 import Http
+import Views.IntLiteral
 
 type alias Model = { dummy: String, mdl: Material.Model, activeSuggestions: (List SuggestionResponseItem), elements: (List OmniElement) }
 
@@ -17,5 +18,5 @@ type Msg =
     ElementCreated (Result Http.Error CreateElementResponse)
 
 type OmniElement =
-    IntLiteral Int
+    IntLiteral Views.IntLiteral.Model
 
