@@ -1,9 +1,3 @@
-![Travis CI status]
-(https://travis-ci.org/daniel-kun/omni.svg?branch=master)
-
-![Coverity Scan status]
-(https://scan.coverity.com/projects/2559/badge.svg)
-
 # The Omni Programming Language Manifest
 
 [![Join the chat at https://gitter.im/daniel-kun/omni](https://badges.gitter.im/daniel-kun/omni.svg)](https://gitter.im/daniel-kun/omni?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -52,6 +46,14 @@ Higher productivity and quality for programmers
 - Vision (Coming soon)
 
 # Status quo
+
+Update: 15.05.2017
+
+After 2 years of hibernation, I returned to working on this project. I took the time to follow current development trends, see all the hilarious rise and fall of JavaScript-languages / Web Frontend Frameworks and contemplating about whether I should build Omni as an on-premise desktop software or an online SaaS.
+
+I finally concluded that a web based approach is more suitable to the current direction of the Developer Ecosystem and Communities. I re-started work on Omni using [Elm](http://elm-lang.org/) as a Front End language/framework and was somewhat surprised. [The Elm Architeture](https://guide.elm-lang.org/architecture/) actually will make implement Omni *much easier* than my last approach using WPF, and even more robust! I am very pleased with what I have seen and learned so far and am currently investigating Backend solutions. (I tried [ASP.NET Core](https://www.asp.net/), with which I already have experience, and am installing Scala, sbt and [Play](https://www.playframework.com/) right now. I'd like to have a "mainstream" functional language in the backend, to make contributions more accessible.)
+
+I'll post an update as soon as I have a similar prototype ready to what you can see in WPF below.
 
 Update: 23.06.2015
 
