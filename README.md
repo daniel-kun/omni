@@ -1,10 +1,10 @@
 **INFO** _My efforts around Omni have been on hold for a long time and will be for the foreseeable future - mostly because my kids keep me busy :-) In the meantime, a few other projects spawned and have made progress, that I would like to mention:_
 
-* [isomorƒ|https://isomorf.io/]
-* [Unison|http://unisonweb.org/]
-* [Expressions of Change|http://www.expressionsofchange.org/]
-* [Codeflow|http://codeflow.co/]
-* [Luna|http://www.luna-lang.org/]
+* [isomorƒ](https://isomorf.io/)
+* [Unison](http://unisonweb.org/)
+* [Expressions of Change](http://www.expressionsofchange.org/)
+* [Codeflow](http://codeflow.co/)
+* [Luna](http://www.luna-lang.org/)
 
 # The Omni Programming Language Manifest
 
