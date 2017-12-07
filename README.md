@@ -1,6 +1,12 @@
-# The Omni Programming Language Manifest
+**INFO** _My efforts around Omni have been on hold for a long time and will be for the foreseeable future - mostly because my kids keep me busy :-) In the meantime, a few other projects spawned and have made progress, that I would like to mention:_
 
-[![Join the chat at https://gitter.im/daniel-kun/omni](https://badges.gitter.im/daniel-kun/omni.svg)](https://gitter.im/daniel-kun/omni?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+* [isomorƒ|https://isomorf.io/]
+* [Unison|http://unisonweb.org/]
+* [Expressions of Change|http://www.expressionsofchange.org/]
+* [Codeflow|http://codeflow.co/]
+* [Luna|http://www.luna-lang.org/]
+
+# The Omni Programming Language Manifest
 
 This manifest declares goals that The Omni Programming Language is designed to reach.
 Omni is meant to provide a new way of coding. A way of coding where less time is spent on text editing and more time spent on engineering, designing, defining and changing logic and architecture, assuring quality and documenting.
